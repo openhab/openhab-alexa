@@ -1,0 +1,25 @@
+{
+    "header": {
+        "namespace": "Alexa.ConnectedHome.Control",
+        "name": "DecrementTargetTemperatureRequest",
+        "payloadVersion": "2",
+        "messageId": "be3717f6-110b-412e-bc74-11882ea9cc6b"
+    },
+    "payload": {
+        "accessToken": "sampleAccessToken",
+        "appliance": {
+            "applianceId": "ECHO_Thermostat_House_Temperature",
+            "additionalApplianceDetails": {
+                "itemType": "GroupItem",
+                "openhabVersion": "1",
+                "temperatureFormat": "fahrenheit"
+            }
+        },
+        "targetTemperature": {
+            "value": 1
+        },
+        "deltaTemperature": {
+            "value": 1
+        }
+    }
+}

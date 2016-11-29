@@ -1,0 +1,26 @@
+{
+    "header": {
+        "namespace": "Alexa.ConnectedHome.Control",
+        "name": "IncrementTargetTemperatureRequest",
+        "payloadVersion": "2",
+        "messageId": "d6278bc6-b9bd-423b-8ef5-107ba7df8318"
+    },
+    "payload": {
+        "accessToken": "sampleAccessToken",
+        "appliance": {
+            "applianceId": "Group_HVAC_Downstairs",
+            "additionalApplianceDetails": {
+                "itemType": "GroupItem",
+                "openhabVersion": "2",
+                "itemTag": "homekit:Temperature",
+                "temperatureFormat": "fahrenheit"
+            }
+        },
+        "targetTemperature": {
+            "value": 1
+        },
+        "deltaTemperature": {
+            "value": 1
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "header": {
+        "messageId": "d6278bc6-b9bd-423b-8ef5-107ba7df8318",
+        "name": "IncrementTargetTemperatureConfirmation",
+        "namespace": "Alexa.ConnectedHome.Control",
+        "payloadVersion": "2"
+    },
+    "payload": {
+        "targetTemperature": {
+            "value": "21.67"
+        },
+        "mode": {
+            "value": "COOL"
+        },
+        "previousState": {
+            "targetTemperature": {
+                "value": "21.11"
+            },
+            "mode": {
+                "value": "COOL"
+            }
+        }
+    }
+}

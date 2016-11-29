@@ -1,0 +1,22 @@
+{
+    "header": {
+        "namespace": "Alexa.ConnectedHome.Control",
+        "name": "SetPercentageRequest",
+        "payloadVersion": "2",
+        "messageId": "eab22202-94ea-49e1-b1e8-f61742ce29b4"
+    },
+    "payload": {
+        "accessToken": "sampleAccessToken",
+        "appliance": {
+            "applianceId": "Group_Movie",
+            "additionalApplianceDetails": {
+                "itemType": "GroupItem",
+                "openhabVersion": "2",
+                "itemTag": "homekit:DimmableLightbulb"
+            }
+        },
+        "percentageState": {
+            "value": 50
+        }
+    }
+}

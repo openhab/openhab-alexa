@@ -1,0 +1,397 @@
+{
+  "header": {
+    "messageId": "01ebf625-0b89-4c4d-b3aa-32340e894681",
+    "name": "DiscoverAppliancesResponse",
+    "namespace": "Alexa.ConnectedHome.Discovery",
+    "payloadVersion": "2"
+  },
+  "payload": {
+    "discoveredAppliances": [
+      {
+        "actions": [
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Switch_All_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Switch",
+        "version": "1",
+        "friendlyName": "All Lights",
+        "friendlyDescription": "Switch All Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Switch",
+          "itemRoom": "All",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Switch_Great_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Switch",
+        "version": "1",
+        "friendlyName": "Great Lights",
+        "friendlyDescription": "Switch Great Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Switch",
+          "itemRoom": "Great",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Switch_Kitchen_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Switch",
+        "version": "1",
+        "friendlyName": "Kitchen Lights",
+        "friendlyDescription": "Switch Kitchen Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Switch",
+          "itemRoom": "Kitchen",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Switch_Living_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Switch",
+        "version": "1",
+        "friendlyName": "Living Lights",
+        "friendlyDescription": "Switch Living Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Switch",
+          "itemRoom": "Living",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Switch_Office_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Switch",
+        "version": "1",
+        "friendlyName": "Office Lights",
+        "friendlyDescription": "Switch Office Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Switch",
+          "itemRoom": "Office",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Switch_Bed_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Switch",
+        "version": "1",
+        "friendlyName": "Bed Lights",
+        "friendlyDescription": "Switch Bed Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Switch",
+          "itemRoom": "Bed",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "incrementPercentage",
+          "decrementPercentage",
+          "setPercentage",
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Dimmer_All_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Dimmer",
+        "version": "1",
+        "friendlyName": "All Lights",
+        "friendlyDescription": "Dimmer All Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Dimmer",
+          "itemRoom": "All",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "incrementPercentage",
+          "decrementPercentage",
+          "setPercentage",
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Dimmer_Great_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Dimmer",
+        "version": "1",
+        "friendlyName": "Great Lights",
+        "friendlyDescription": "Dimmer Great Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Dimmer",
+          "itemRoom": "Great",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "incrementPercentage",
+          "decrementPercentage",
+          "setPercentage",
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Dimmer_Kitchen_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Dimmer",
+        "version": "1",
+        "friendlyName": "Kitchen Lights",
+        "friendlyDescription": "Dimmer Kitchen Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Dimmer",
+          "itemRoom": "Kitchen",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "incrementPercentage",
+          "decrementPercentage",
+          "setPercentage",
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Dimmer_Living_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Dimmer",
+        "version": "1",
+        "friendlyName": "Living Lights",
+        "friendlyDescription": "Dimmer Living Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Dimmer",
+          "itemRoom": "Living",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "incrementPercentage",
+          "decrementPercentage",
+          "setPercentage",
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Dimmer_Office_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Dimmer",
+        "version": "1",
+        "friendlyName": "Office Lights",
+        "friendlyDescription": "Dimmer Office Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Dimmer",
+          "itemRoom": "Office",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "incrementPercentage",
+          "decrementPercentage",
+          "setPercentage",
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Dimmer_Bed_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Dimmer",
+        "version": "1",
+        "friendlyName": "Bed Lights",
+        "friendlyDescription": "Dimmer Bed Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Dimmer",
+          "itemRoom": "Bed",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Switch_Office_Fan",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Switch",
+        "version": "1",
+        "friendlyName": "Office Fan",
+        "friendlyDescription": "Switch Office Fan via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "SwitchItem",
+          "itemClass": "Switch",
+          "itemRoom": "Office",
+          "itemLabel": "Fan",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Switch_Office_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Switch",
+        "version": "1",
+        "friendlyName": "Office Lights",
+        "friendlyDescription": "Switch Office Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Switch",
+          "itemRoom": "Office",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "incrementPercentage",
+          "decrementPercentage",
+          "setPercentage",
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Dimmer_Office_Lights",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Dimmer",
+        "version": "1",
+        "friendlyName": "Office Lights",
+        "friendlyDescription": "Dimmer Office Lights via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "GroupItem",
+          "itemClass": "Dimmer",
+          "itemRoom": "Office",
+          "itemLabel": "Lights",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "incrementTargetTemperature",
+          "decrementTargetTemperature",
+          "setTargetTemperature"
+        ],
+        "applianceId": "ECHO_Thermostat_House_Temperature",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Thermostat",
+        "version": "1",
+        "friendlyName": "House Temperature",
+        "friendlyDescription": "Thermostat House Temperature via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "temperatureFormat": "fahrenheit",
+          "itemType": "NumberItem",
+          "itemClass": "Thermostat",
+          "itemRoom": "House",
+          "itemLabel": "Temperature",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "incrementTargetTemperature",
+          "decrementTargetTemperature",
+          "setTargetTemperature"
+        ],
+        "applianceId": "ECHO_Thermostat_Basement_Temperature",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Thermostat",
+        "version": "1",
+        "friendlyName": "Basement Temperature",
+        "friendlyDescription": "Thermostat Basement Temperature via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "temperatureFormat": "fahrenheit",
+          "itemType": "NumberItem",
+          "itemClass": "Thermostat",
+          "itemRoom": "Basement",
+          "itemLabel": "Temperature",
+          "openhabVersion": "1"
+        }
+      },
+      {
+        "actions": [
+          "turnOn",
+          "turnOff"
+        ],
+        "applianceId": "ECHO_Scene_House_Relax",
+        "manufacturerName": "OpenHAB",
+        "modelName": "Scene",
+        "version": "1",
+        "friendlyName": "House Relax",
+        "friendlyDescription": "Scene House Relax via OpenHAB",
+        "isReachable": true,
+        "additionalApplianceDetails": {
+          "itemType": "SwitchItem",
+          "itemClass": "Scene",
+          "itemRoom": "House",
+          "itemLabel": "Relax",
+          "openhabVersion": "1"
+        }
+      }
+    ]
+  }
+}

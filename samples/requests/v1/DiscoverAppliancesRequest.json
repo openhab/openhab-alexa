@@ -1,0 +1,12 @@
+{
+  "header": {
+    "messageId": "01ebf625-0b89-4c4d-b3aa-32340e894681",
+	"name": "DiscoverAppliancesRequest",
+    "namespace": "Alexa.ConnectedHome.Discovery",
+	"payloadVersion": "2"
+    
+  },
+  "payload": {
+    "accessToken": "sampleAccessToken"
+  }
+}

@@ -1,0 +1,19 @@
+{
+    "header": {
+        "namespace": "Alexa.ConnectedHome.Control",
+        "name": "TurnOnRequest",
+        "payloadVersion": "2",
+        "messageId": "47ed6b40-93a6-42a2-ade6-c409c23f7f1b"
+    },
+    "payload": {
+        "accessToken": "sampleAccessToken",
+        "appliance": {
+            "applianceId": "Group_Dans_Office_Switch",
+            "additionalApplianceDetails": {
+                "itemType": "SwitchItem",
+                "openhabVersion": "2",
+                "itemTag": "homekit:Switch"
+            }
+        }
+    }
+}
