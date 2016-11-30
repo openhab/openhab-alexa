@@ -67,7 +67,7 @@ or `Fixes #XXX`, which will automatically close the issue when merged.
 
 ### Merge approval
 
-openHAB-cloud maintainers use LGTM (Looks Good To Me) in comments on the code review
+openHAB-alexa maintainers use LGTM (Looks Good To Me) in comments on the code review
 to indicate acceptance.
 
 ### Sign your work
@@ -132,7 +132,7 @@ There are several exceptions to the signing requirement. Currently these are:
 
 ## Community Guidelines
 
-We want to keep the openHAB-cloud community awesome, growing and collaborative. We
+We want to keep the openHAB-alexa community awesome, growing and collaborative. We
 need your help to keep it that way. To help with this we've come up with some
 general guidelines for the community as a whole:
 
