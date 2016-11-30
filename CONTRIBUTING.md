@@ -10,11 +10,6 @@ If your pull request is not accepted on the first try, don't be
 discouraged! If there's a problem with the implementation, hopefully you
 received feedback on what to improve.
 
-We're trying very hard to keep openHAB-cloud lean and focused. We don't want it
-to do everything for everybody. This means that we might decide against
-incorporating a new feature. However, there might be a way to implement
-that feature *on top of* openHAB-cloud.
-
 ### Discuss your design on the mailing list
 
 We recommend discussing your plans [in the discussion forum](https://community.openhab.org/)
@@ -26,7 +21,7 @@ else is working on the same thing.
 ### Create issues...
 
 Any significant improvement should be documented as [a GitHub
-issue](https://github.com/openhab/openhab-docker/issues?labels=enhancement&page=1&state=open) before anybody
+issue](https://github.com/openhab/openhab-alxea/issues?labels=enhancement&page=1&state=open) before anybody
 starts working on it.
 
 ### ...but check for existing issues first!
@@ -45,7 +40,7 @@ your documentation changes for clarity, concision, and correctness, as
 well as a clean documentation build.
 
 Write clean code. Universally formatted code promotes ease of writing, reading,
-and maintenance. 
+and maintenance.
 
 Pull requests descriptions should be as clear as possible and include a
 reference to all the issues that they address.
@@ -159,4 +154,3 @@ general guidelines for the community as a whole:
   respond to an email you are potentially sending to a large number of
   people.  Please consider this before you update.  Also remember that
   nobody likes spam.
-
