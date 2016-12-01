@@ -2,6 +2,8 @@
 
 This is a nodejs / lambda application that connects the Alexa Smart Home API to to a user's openHAB instance, either directly or through the openHAB Cloud service (preferred).  The Smart Home API is not a general skill API, it allows the user to bypass using a application wake work and instead ask Alexa to perform a smart home action like "Alexa turn lights on"
 
+This is designed to use the Homekit style tags in openHAB 2 to bind a user's devices to Alexa. There was work done to support openHAB 1.x (see oh1.js) but this is not currently working as there is no tagging mechanism in openHAB 1 and would require either overloading item names or overloading the sitemap concept to infer Alexa device types which did not seem desirable.
+
 # General Installation Instructions
 
 ## Requirements

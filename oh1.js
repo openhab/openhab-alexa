@@ -1,5 +1,17 @@
 /**
+ * Copyright (c) 2014-2016 by the respective copyright holders.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
+
+/**
  * An Amazon Echo Smart Home Skill API implementation for openHAB (v1.x)
+ *
+ * This is currently not working and is left here in case someone would like
+ * to pick it up.
  */
 var utils = require('./utils.js');
 var rest = require('./rest.js');
@@ -81,24 +93,24 @@ exports.handleControl = function (event, context) {
  * Turns a Switch Item on or off
  */
 function turnOnOff(context, event) {
-    var success = function (response) { 
+    var success = function (response) {
         var header = {
             messageId: event.header.messageId,
             name: event.header.name.replace("Request", "Confirmation"),
             namespace: event.header.namespace,
             payloadVersion: event.header.payloadVersion
         };
-        
+
         var payload = {};
-        
+
         var result = {
             header: header,
             payload: payload
         };
-        
+
         // DEBUG
         //utils.log('Done with result', result);
-        
+
         context.succeed(result);
     };
 
@@ -108,7 +120,7 @@ function turnOnOff(context, event) {
 
     var state = event.header.name === "TurnOnRequest" ? 'ON' : 'OFF';
 
-    postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);    
+    postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
 }
 
 /**
@@ -196,7 +208,7 @@ function adjustPercentage(context, event) {
  * Adjust a thermostat's temperature by first reading its current values
  **/
 function adjustTemperature(context, event) {
-    var success = function (response) {  
+    var success = function (response) {
         var targetTemperature;
         var currentTemperature;
         var heatingCoolingMode;
@@ -236,7 +248,7 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
     }
 
     var curValue = parseInt(targetTemperature.state);
-    
+
     var isF = event.payload.appliance.additionalApplianceDetails.temperatureFormat && event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
 
     var setValue;
@@ -251,12 +263,12 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
         setValue = curValue - event.payload.deltaTemperature.value;
         break;
     }
-    
+
     // DEBUG
     //utils.log("adjustTemperatureWithItems", "setValue  " + setValue);
-    
+
     var curMode = heatingCoolingMode ? heatingCoolingMode.state : "AUTO";
-     
+
     //if state returns as a decimal type, convert to string, this is a very common thermo pattern
     switch (curMode) {
     case '0': //off, not supported! Weird.
@@ -276,7 +288,7 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
         curMode = 'COOL';
         break;
     }
-    
+
     curMode = curMode.toUpperCase();
 
     var success = function (response) {
@@ -308,10 +320,10 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
             header: header,
             payload: payload
         };
-        
+
         // DEBUG
         //utils.log('AdjustTemp Done with result', JSON.stringify(result));
-        
+
         context.succeed(result);
     };
 
@@ -329,7 +341,7 @@ function discoverDevices(token, success, failure) {
     var getSuccess = function (items) {
         //DEBUG
         //utils.log("discoverDevices", JSON.stringify(items));
-        
+
         //Tags - Switchable/Dimmable/Thermostat
         var discoverdDevices = [];
         for (var itemNum in items) {
@@ -382,7 +394,7 @@ function discoverDevices(token, success, failure) {
                 if (actions !== null) {
                     // DEBUG
                     utils.log("adding " + item.name + " with tag: " + tag);
-                    
+
                     additionalApplianceDetails.itemType = item.type;
                     additionalApplianceDetails.itemTag = tag;
                     additionalApplianceDetails.openhabVersion = '1';

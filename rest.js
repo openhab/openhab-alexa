@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) 2014-2016 by the respective copyright holders.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
+ 
 var https = require('https');
 var config = require('./config');
 var utils = require('./utils.js');
@@ -86,7 +95,7 @@ function httpItemOptions(version, token, itemname, method, length) {
     } else {
         options.headers['Authorization'] = "Bearer " + token;
     }
-    
+
     // If no itemname was spcified; OH version is 1, we are in discovery mode - use OH1 discovery_path defined in config.js
     if (itemname === null && version === 1) {
         options.path = config.discovery_path + '?type=json';
