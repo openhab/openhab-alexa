@@ -56,6 +56,7 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
 
 * openHAB 2
   * Items are exposed via Homekit tags, the following is taken from the homekit binding in openHAB2:
+
   ```
   Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ]
   Dimmer BedroomLights "Bedroom Lights" <light> (gBedroom) [ "Lighting" ]
@@ -65,10 +66,12 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
   Number DownstairsThermostatTargetTemperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
   String DownstairsThermostatHeatingCoolingMode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
 ```
+
   * By default all temperatures are in Celsius, for Fahrenheit add the tag `temperatureFormat:fahrenheit` to the thermostat group item (which should also be tagged with `Thermostat`)
 
 
 ## Example Voice Commands
+
 Here are some example voice commands:
 
  * Alexa turn on Office Lights
