@@ -1,0 +1,24 @@
+{
+  "name": "openHAB.alexa-smarthome",
+  "version": "0.0.1",
+  "description": "An Amazon Smart Home API implementation for openHAB",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openhab/openhab-alexa.git"
+  },
+  "author": "openHAB",
+  "license": "EPLv1",
+  "bugs": {
+    "url": "https://github.com/openhab/openhab-alexa/issues"
+  },
+  "homepage": "https://github.com/openhab/openhab-alexa",
+  "optionalDependencies": {
+    "node-lambda": "0.1.5"
+  },
+  "scripts": {
+    "setup": "node-lambda setup",
+    "run": "node-lambda run",
+    "deploy": "node-lambda deploy"
+  }
+}
