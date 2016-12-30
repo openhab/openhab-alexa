@@ -49,7 +49,7 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
 * copy the ARN value from the very top of the screen.
 * login back to the Alexa console and select "configuration"
 * Paste the ARN value from your Lambda into the "Lambda ARN" Field
-* Fill out OAUTH2 information (from your oauth server or the Amazon Login service)
+* Fill out OAUTH2 information (from your oauth server or the Amazon Login service. See [this post](https://developer.amazon.com/public/community/post/Tx3CX1ETRZZ2NPC/Alexa-Account-Linking-5-Steps-to-Seamlessly-Link-Your-Alexa-Skill-with-Login-wit) for step-by-step instructions for _Login with Amazon_.)
 * MAKE SURE YOU HAVE VALID SSL CERTS AND CERT CHAINS!!!! I highly recommend using Lets Encrypt.   
 
 ## Item configuration
