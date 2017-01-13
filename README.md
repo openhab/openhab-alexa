@@ -65,10 +65,30 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
   Number DownstairsThermostatCurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
   Number DownstairsThermostatTargetTemperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
   String DownstairsThermostatHeatingCoolingMode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
-```
+  ```
 
   * By default all temperatures are in Celsius, for Fahrenheit add the tag `temperatureFormat:fahrenheit` to the thermostat group item (which should also be tagged with `Thermostat`)
+  * In addition you can tag Rollershutter items by `[ "Switchable" ]` and get support for `setPercentage`, `incrementPercentage`and `decrementPercentage` commands. Example:
 
+  ```
+  Rollershutter Shutter_GF_Kitchen "Rollershutter Kitchen" [ "Switchable" ]
+  ```
+
+  * With commands like `Alexa, set rollershutter kitchen to 100%` you control the rollershutter in the kitchen.
+  * If your rollershutters or blinds happen not to support aperture by percentage the following rule helps to achieve opening and closing:
+
+  ```
+  rule Rollershutter_Kitchen
+  when
+      Item Shutter_GF_Kitchen received command
+  then
+      if (receivedCommand < 50) { // in germany alexa often recognizes "0" as "9"
+        sendCommand(Shutter_GF_Kitchen, UP)
+      } else {
+        sendCommand(Shutter_GF_Kitchen, DOWN)
+      }
+  end
+  ```
 
 ## Example Voice Commands
 
