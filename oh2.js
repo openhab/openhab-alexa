@@ -352,22 +352,7 @@ function discoverDevices(token, success, failure) {
                 switch (tag) {
                 case "Lighting":
                 case "Switchable":
-                    if (item.type === "Switch" ||
-                        (item.type === "Group" && item.groupType && item.groupType === "Switch")) {
-                        actions = [
-                            "turnOn",
-                            "turnOff"
-                        ];
-                    } else if (item.type === "Dimmer" ||
-                        (item.type === "Group" && item.groupType && item.groupType === "Dimmer")) {
-                        actions = [
-                            "incrementPercentage",
-                            "decrementPercentage",
-                            "setPercentage",
-                            "turnOn",
-                            "turnOff"
-                        ];
-                    }
+                    actions = getSwitchableActions(item);
                     break;
                 case "CurrentTemperature":
                 case "homekit:heatingCoolingMode":
@@ -417,6 +402,35 @@ function discoverDevices(token, success, failure) {
     };
 
     getItems(token, getSuccess, failure);
+}
+
+function getSwitchableActions(item) {
+    var actions = null;
+    if (item.type === "Switch" ||
+        (item.type === "Group" && item.groupType && item.groupType === "Switch")) {
+        actions = [
+            "turnOn",
+            "turnOff"
+        ];
+    } else if (item.type === "Dimmer" ||
+        (item.type === "Group" && item.groupType && item.groupType === "Dimmer")) {
+        actions = [
+            "incrementPercentage",
+            "decrementPercentage",
+            "setPercentage",
+            "turnOn",
+            "turnOff"
+        ];
+    } else if (item.type === "Rollershutter" ||
+        (item.type === "Group" && item.groupType && item.groupType === "Rollershutter")) {
+        actions = [
+            "setPercentage",
+            "incrementPercentage",
+            "decrementPercentage"
+        ];
+    }
+
+    return actions;
 }
 
 function getItem(token, itemName, success, failure) {
