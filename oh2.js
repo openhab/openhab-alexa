@@ -117,8 +117,7 @@ function turnOnOff(context, event) {
 
     var state = event.header.name === "TurnOnRequest" ? 'ON' : 'OFF';
 
-    postItemCommand(event.payload.accessToken,
-        event.payload.appliance.applianceId, state, success, failure);
+    rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
 }
 
 /**
@@ -185,7 +184,7 @@ function adjustPercentage(context, event) {
             }
         }
 
-        postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, value.toString(), itemPostSuccess, failure);
+        rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, value.toString(), itemPostSuccess, failure);
     };
 
     /**
@@ -196,9 +195,9 @@ function adjustPercentage(context, event) {
     };
 
     if (isSetCommand) {
-        postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, event.payload.percentageState.value.toString(), itemPostSuccess, failure);
+        rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, event.payload.percentageState.value.toString(), itemPostSuccess, failure);
     } else if (event.payload.percentageState) {
-        getItem(event.payload.accessToken, event.payload.appliance.applianceId, itemGetSuccess, failure);
+        rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, itemGetSuccess, failure);
     } else {
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Invalid target percentage.'));
     }
@@ -235,7 +234,7 @@ function adjustTemperature(context, event) {
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
     };
 
-    getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
+    rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
 }
 
 /**
@@ -331,7 +330,7 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Unable to connect to server'));
     };
 
-    postItemCommand(event.payload.accessToken, targetTemperature.name, setValue.toString(), success, failure);
+    rest.postItemCommand(event.payload.accessToken, targetTemperature.name, setValue.toString(), success, failure);
 }
 
 /**
@@ -401,7 +400,7 @@ function discoverDevices(token, success, failure) {
         success(discoverdDevices);
     };
 
-    getItems(token, getSuccess, failure);
+    rest.getItems(token, getSuccess, failure);
 }
 
 function getSwitchableActions(item) {
@@ -431,16 +430,4 @@ function getSwitchableActions(item) {
     }
 
     return actions;
-}
-
-function getItem(token, itemName, success, failure) {
-    return rest.getItem(2, token, itemName, success, failure);
-}
-
-function getItems(token, success, failure) {
-    return rest.getItems(2, token, success, failure);
-}
-
-function postItemCommand(token, itemName, value, success, failure) {
-    return rest.postItemCommand(2, token, itemName, value, success, failure);
 }
