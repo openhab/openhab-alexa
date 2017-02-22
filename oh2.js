@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
- 
+
 /**
  * An Amazon Echo Smart Home Skill API implementation for openHAB (v2.x)
  */
@@ -420,6 +420,15 @@ function getSwitchableActions(item) {
             "turnOn",
             "turnOff"
         ];
+    } else if (item.type === "Color" ||
+        (item.type === "Group" && item.groupType && item.groupType === "Color")) {
+        actions = [
+            "incrementPercentage",
+            "decrementPercentage",
+            "setPercentage",
+            "turnOn",
+            "turnOff"
+        ];
     } else if (item.type === "Rollershutter" ||
         (item.type === "Group" && item.groupType && item.groupType === "Rollershutter")) {
         actions = [
@@ -428,6 +437,5 @@ function getSwitchableActions(item) {
             "decrementPercentage"
         ];
     }
-
     return actions;
 }
