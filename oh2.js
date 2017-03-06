@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
- 
+
 /**
  * An Amazon Echo Smart Home Skill API implementation for openHAB (v2.x)
  */
@@ -72,6 +72,9 @@ exports.handleControl = function (event, context) {
     case 'TurnOnRequest':
     case 'TurnOffRequest':
         turnOnOff(context, event);
+        break;
+    case 'GetTemperatureReadingRequest':
+        getCurrentTemperature(context, event);
         break;
     case 'SetTargetTemperatureRequest':
     case 'IncrementTargetTemperatureRequest':
@@ -204,30 +207,109 @@ function adjustPercentage(context, event) {
 }
 
 /**
+ * Retrives the current temperature of a Thermostat or standalone currentTemperature tagged item
+ **/
+function getCurrentTemperature(context, event) {
+
+    var success = function (item) {
+        //if this is a thermostat group, get the currentTemperature item
+        if(item.type == 'Group'){
+          var items = getThermostatItems(item.members);
+          item = items.currentTemperature;
+        }
+
+        if(!item || isNaN(item.state)){
+          context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', "thermostat missing current temperature"));
+          return;
+        }
+
+        var isF = event.payload.appliance.additionalApplianceDetails.temperatureFormat && event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
+        var header = {
+            messageId: event.header.messageId,
+            name: event.header.name.replace("Request", "Response"),
+            namespace: event.header.namespace,
+            payloadVersion: event.header.payloadVersion
+        };
+
+        var value = parseInt(item.state);
+        var payload = {
+          temperatureReading: {
+              value: isF ? utils.toC(value) : value
+          },
+          applianceResponseTimestamp: new Date().toISOString()
+        };
+
+        var result = {
+            header: header,
+            payload: payload
+        };
+        utils.log('Done with result', JSON.stringify(result));
+        context.succeed(result);
+    };
+
+    var failure = function (error) {
+        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+    };
+
+    rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
+}
+
+/**
+ * Retrives the current target temperature of a Thermostat
+ **/
+function getTargetTemperature(context, event) {
+
+    var success = function (thermostatGroup) {
+
+        var items = getThermostatItems(thermostatGroup.members);
+
+        if(!items.targetTemperature || isNaN(items.targetTemperature.state)){
+          context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', "thermostat missing current temperature"));
+          return;
+        }
+
+        var isF = event.payload.appliance.additionalApplianceDetails.temperatureFormat && event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
+        var header = {
+            messageId: event.header.messageId,
+            name: event.header.name.replace("Request", "Response"),
+            namespace: event.header.namespace,
+            payloadVersion: event.header.payloadVersion
+        };
+
+        var value = parseInt(items.targetTemperature.state);
+        var payload = {
+          targetTemperature: {
+              value: isF ? utils.toC(value) : value
+          },
+          applianceResponseTimestamp: new Date().toISOString(),
+          temperatureMode: {
+            value : items.heatingCoolingMode.
+          }
+        };
+
+        var result = {
+            header: header,
+            payload: payload
+        };
+        utils.log('Done with result', JSON.stringify(result));
+        context.succeed(result);
+    };
+
+    var failure = function (error) {
+        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+    };
+
+    rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
+}
+
+/**
  * Adjust a thermostat's temperature by first reading its current values
  **/
 function adjustTemperature(context, event) {
 
     var success = function (response) {
-        var targetTemperature;
-        var currentTemperature;
-        var heatingCoolingMode;
-
-        for (var memberNum in response.members) {
-            var member = response.members[memberNum];
-            for (var tagNum in member.tags) {
-                if (member.tags[tagNum] === 'CurrentTemperature') {
-                    currentTemperature = member;
-                }
-                if (member.tags[tagNum] === 'TargetTemperature') {
-                    targetTemperature = member;
-                }
-                if (member.tags[tagNum] === 'homekit:heatingCoolingMode') {
-                    heatingCoolingMode = member;
-                }
-            }
-        }
-        adjustTemperatureWithItems(context, event, currentTemperature, targetTemperature, heatingCoolingMode);
+        var items = getThermostatItems(response.members);
+        adjustTemperatureWithItems(context, event, items.currentTemperature, items.targetTemperature, items.heatingCoolingMode);
     };
 
     var failure = function (error) {
@@ -338,71 +420,118 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
  **/
 function discoverDevices(token, success, failure) {
 
-    var getSuccess = function (items) {
-        //DEBUG
-        utils.log("discoverDevices", JSON.stringify(items));
-        var discoverdDevices = [];
-        for (var itemNum in items) {
-            var item = items[itemNum];
-            for (var tagNum in item.tags) {
-                var tag = item.tags[tagNum];
-                var actions = null;
-                var additionalApplianceDetails = {};
-                switch (tag) {
-                case "Lighting":
-                case "Switchable":
-                    actions = getSwitchableActions(item);
-                    break;
-                case "CurrentTemperature":
-                case "homekit:heatingCoolingMode":
-                case "TargetTemperature":
-                    break;
-                case "Thermostat":
-                    //only group items are allowed to have a Temperature tag
-                    if (item.type === 'Group') {
-                        actions = [
-                            "incrementTargetTemperature",
-                            "decrementTargetTemperature",
-                            "setTargetTemperature"
-                        ];
-                        var formatIndex = item.tags.indexOf("Fahrenheit");
-                        if (formatIndex > -1) {
-                            additionalApplianceDetails.temperatureFormat = "fahrenheit";
-                        } else {
-                            additionalApplianceDetails.temperatureFormat = "celsius";
-                        }
-                    }
-                    break;
-                default:
-                    break;
-                }
-                if (actions !== null) {
-                    // DEBUG
-                    utils.log("adding " + item.name + " with tag: " + tag);
-                    additionalApplianceDetails.itemType = item.type;
-                    additionalApplianceDetails.itemTag = tag;
-                    additionalApplianceDetails.openhabVersion = '2';
-                    var discoverdDevice = {
-                        actions: actions,
-                        applianceId: item.name,
-                        manufacturerName: 'openHAB',
-                        modelName: tag,
-                        version: '2',
-                        friendlyName: item.label,
-                        friendlyDescription: item.type + ' ' + item.name + ' ' + tag + ' via openHAB',
-                        isReachable: true,
-                        additionalApplianceDetails: additionalApplianceDetails
-                    };
-                    discoverdDevices.push(discoverdDevice);
-                }
-            }
-        }
-        success(discoverdDevices);
+    //return true if a value in the first group is contained in the second group
+    var matchesGroup = function(groups1, groups2){
+      for(var num in groups1 ){
+        if(groups2.indexOf(groups1[num]) >= 0 )
+          return true;
+      }
+      return false;
     };
 
+    //checks for a Fahrenheit tag and sets the righ property on the
+    //additionalApplianceDetails response object
+    var setTempFormat = function(item, additionalApplianceDetails){
+      var formatIndex = item.tags.indexOf("Fahrenheit");
+      if (formatIndex > -1) {
+          additionalApplianceDetails.temperatureFormat = "fahrenheit";
+      } else {
+          additionalApplianceDetails.temperatureFormat = "celsius";
+      }
+    };
+
+    //callback for successfully getting items from rest call
+    var getSuccess = function (items) {
+        //DEBUG
+        //utils.log("discoverDevices", JSON.stringify(items));
+        var discoverdDevices = [];
+        var thermostatGroups = [];
+
+        //first retrive any thermostat Groups
+        (function () {
+          for (var itemNum in items) {
+            var item = items[itemNum];
+            for (var tagNum in item.tags) {
+              var tag = item.tags[tagNum];
+              if(tag == "Thermostat" && item.type === "Group"){
+                thermostatGroups.push(item);
+              }
+            }
+          }
+        })();
+
+        //now retieve all other items
+        (function () {
+          for (var itemNum in items) {
+              var item = items[itemNum];
+              for (var tagNum in item.tags) {
+                  var tag = item.tags[tagNum];
+                  var actions = null;
+                  var additionalApplianceDetails = {};
+                  switch (tag) {
+                  case "Lighting":
+                  case "Switchable":
+                      actions = getSwitchableActions(item);
+                      break;
+                  case "CurrentTemperature":
+                    //if this is not part of a thermostatGroup then add it 
+                    //standalone otherwise it will be available as a thermostat
+                    if(!matchesGroup(thermostatGroups, item.groupNames)){
+                      actions = [
+                          "getTemperatureReading"
+                      ];
+                      setTempFormat(item,additionalApplianceDetails);
+                    }
+                    break;
+                  case "homekit:heatingCoolingMode":
+                  case "TargetTemperature":
+                      break;
+                  case "Thermostat":
+                      //only group items are allowed to have a Temperature tag
+                      if (item.type === 'Group') {
+                          actions = [
+                              "incrementTargetTemperature",
+                              "decrementTargetTemperature",
+                              "setTargetTemperature",
+                              "getTargetTemperature",
+                              "getTemperatureReading"
+                          ];
+                          setTempFormat(item,additionalApplianceDetails);
+                      }
+                      break;
+                  default:
+                      break;
+                  }
+                  if (actions !== null) {
+                      // DEBUG
+                      //utils.log("DISCO", "adding " + item.name + " with tag: " + tag);
+                      additionalApplianceDetails.itemType = item.type;
+                      additionalApplianceDetails.itemTag = tag;
+                      additionalApplianceDetails.openhabVersion = '2';
+                      var discoverdDevice = {
+                          actions: actions,
+                          applianceId: item.name,
+                          manufacturerName: 'openHAB',
+                          modelName: tag,
+                          version: '2',
+                          friendlyName: item.label,
+                          friendlyDescription: item.type + ' ' + item.name + ' ' + tag + ' via openHAB',
+                          isReachable: true,
+                          additionalApplianceDetails: additionalApplianceDetails
+                      };
+                      discoverdDevices.push(discoverdDevice);
+                  }
+              }
+          }
+        })();
+        success(discoverdDevices);
+    };
     rest.getItems(token, getSuccess, failure);
 }
 
+/**
+* Given an item, returns an array of action that are supported.
+**/
 function getSwitchableActions(item) {
     var actions = null;
     if (item.type === "Switch" ||
@@ -430,4 +559,25 @@ function getSwitchableActions(item) {
     }
 
     return actions;
+}
+/**
+* Rerturns a thermostat object based on memebers of a thermo tagged group
+**/
+function getThermostatItems(thermoGroup) {
+    var values = {};
+    for (var memberNum in thermoGroup) {
+        var member = thermoGroup[memberNum];
+        for (var tagNum in member.tags) {
+            if (member.tags[tagNum] === 'CurrentTemperature') {
+                values.currentTemperature = member;
+            }
+            if (member.tags[tagNum] === 'TargetTemperature') {
+                values.targetTemperature = member;
+            }
+            if (member.tags[tagNum] === 'homekit:heatingCoolingMode') {
+                values.heatingCoolingMode = member;
+            }
+        }
+    }
+    return values;
 }

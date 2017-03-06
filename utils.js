@@ -12,7 +12,7 @@
  */
 function log(title, msg) {
     console.log('[DEBUG] (' + title + '): ' + msg);
-};
+}
 
 /**
  * Convert C to F

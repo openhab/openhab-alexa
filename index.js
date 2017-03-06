@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
- 
+
 var utils = require('./utils.js');
 var oh2 = require('./oh2.js');
 
@@ -35,6 +35,7 @@ exports.handler = function (event, context) {
          * parameter which indicates the appliance that needs to be acted on.
          */
     case 'Alexa.ConnectedHome.Control':
+    case 'Alexa.ConnectedHome.Query':
         oh2.handleControl(event, context);
         break;
 
