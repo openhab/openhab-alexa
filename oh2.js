@@ -283,7 +283,7 @@ function getTargetTemperature(context, event) {
           },
           applianceResponseTimestamp: new Date().toISOString(),
           temperatureMode: {
-            value : items.heatingCoolingMode.
+            value : items.heatingCoolingMode.state
           }
         };
 
@@ -474,7 +474,7 @@ function discoverDevices(token, success, failure) {
                       actions = getSwitchableActions(item);
                       break;
                   case "CurrentTemperature":
-                    //if this is not part of a thermostatGroup then add it 
+                    //if this is not part of a thermostatGroup then add it
                     //standalone otherwise it will be available as a thermostat
                     if(!matchesGroup(thermostatGroups, item.groupNames)){
                       actions = [
