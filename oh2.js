@@ -139,20 +139,18 @@ function getLockState(context, event) {
             payloadVersion: event.header.payloadVersion
         };
         var payload = {
-            lockState: item.state == "ON" ? "LOCKED" "UNLOCKED"
+           lockState: item.state == "ON" ? "LOCKED" : "UNLOCKED"
         };
         var result = {
             header: header,
             payload: payload
-       };
-   //utils.log('Done with result', JSON.stringify(result));
-   context.succeed(result);
-   };
-    
+        };
+        utils.log('Done with result', JSON.stringify(result));
+        context.succeed(result);
+    };
     var failure = function (error) {
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
-    };     
-    
+    };
     rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
 }
 
