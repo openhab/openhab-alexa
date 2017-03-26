@@ -88,11 +88,11 @@ exports.handleControl = function (event, context) {
         break;
             
     case 'GetLockStateRequest':
-            getLockState(context, event);
-            break;
+        getLockState(context, event);
+        break;
     case 'SetLockStateRequest':
-            setLockState(context, event);
-            break;
+        setLockState(context, event);
+        break;
     }
 };
 
