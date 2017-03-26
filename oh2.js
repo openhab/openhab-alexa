@@ -547,6 +547,12 @@ function discoverDevices(token, success, failure) {
                   var actions = null;
                   var additionalApplianceDetails = {};
                   switch (tag) {
+                  case "Locks":
+                    actions = [
+                        "GetLockStateRequest",
+                        "SetLockStateRequest"
+                    ];
+                    break;
                   case "Lighting":
                   case "Switchable":
                       actions = getSwitchableActions(item);
