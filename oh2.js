@@ -145,10 +145,9 @@ function getLockState(context, event) {
             header: header,
             payload: payload
        };
-   };   
-   utils.log('Done with result', JSON.stringify(result));
+   //utils.log('Done with result', JSON.stringify(result));
    context.succeed(result);
-}
+   };
     
     var failure = function (error) {
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
