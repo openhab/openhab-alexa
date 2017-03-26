@@ -139,7 +139,7 @@ function getLockState(context, event) {
             payloadVersion: event.header.payloadVersion
         };
         var payload = {
-           lockState: item.state == "ON" ? "LOCKED" : "UNLOCKED"
+            lockState: item.state == "ON" ? "LOCKED" : "UNLOCKED"
         };
         var result = {
             header: header,
