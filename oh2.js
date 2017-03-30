@@ -47,7 +47,7 @@ exports.handleDiscovery = function (event, context) {
         };
 
         // DEBUG
-        utils.log('Discovery', JSON.stringify(result));
+        //utils.log('Discovery', JSON.stringify(result));
 
         context.succeed(result);
         },
@@ -243,7 +243,7 @@ function getCurrentTemperature(context, event) {
             header: header,
             payload: payload
         };
-        utils.log('Done with result', JSON.stringify(result));
+        //utils.log('Done with result', JSON.stringify(result));
         context.succeed(result);
     };
 
@@ -291,7 +291,7 @@ function getTargetTemperature(context, event) {
             header: header,
             payload: payload
         };
-        utils.log('Done with result', JSON.stringify(result));
+        //utils.log('Done with result', JSON.stringify(result));
         context.succeed(result);
     };
 
@@ -454,7 +454,7 @@ function discoverDevices(token, success, failure) {
             for (var tagNum in item.tags) {
               var tag = item.tags[tagNum];
               if(tag == "Thermostat" && item.type === "Group"){
-                thermostatGroups.push(item);
+                thermostatGroups.push(item.name);
               }
             }
           }
@@ -561,7 +561,7 @@ function getSwitchableActions(item) {
     return actions;
 }
 /**
-* Rerturns a thermostat object based on memebers of a thermo tagged group
+* Rerturns a thermostat object based on memebers of a thermostat tagged group
 **/
 function getThermostatItems(thermoGroup) {
     var values = {};

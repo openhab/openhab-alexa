@@ -16,7 +16,7 @@ var oh2 = require('./oh2.js');
  */
 exports.handler = function (event, context) {
     // DEBUG
-    utils.log('Input', JSON.stringify(event));
+    //utils.log('Input', JSON.stringify(event));
 
     switch (event.header.namespace) {
         /**
