@@ -454,7 +454,7 @@ function discoverDevices(token, success, failure) {
             for (var tagNum in item.tags) {
               var tag = item.tags[tagNum];
               if(tag == "Thermostat" && item.type === "Group"){
-                thermostatGroups.push(item);
+                thermostatGroups.push(item.name);
               }
             }
           }
@@ -561,7 +561,7 @@ function getSwitchableActions(item) {
     return actions;
 }
 /**
-* Rerturns a thermostat object based on memebers of a thermo tagged group
+* Rerturns a thermostat object based on memebers of a thermostat tagged group
 **/
 function getThermostatItems(thermoGroup) {
     var values = {};
