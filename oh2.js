@@ -47,7 +47,7 @@ exports.handleDiscovery = function (event, context) {
         };
 
         // DEBUG
-        utils.log('Discovery', JSON.stringify(result));
+        //utils.log('Discovery', JSON.stringify(result));
 
         context.succeed(result);
         },
@@ -243,7 +243,7 @@ function getCurrentTemperature(context, event) {
             header: header,
             payload: payload
         };
-        utils.log('Done with result', JSON.stringify(result));
+        //utils.log('Done with result', JSON.stringify(result));
         context.succeed(result);
     };
 
@@ -291,7 +291,7 @@ function getTargetTemperature(context, event) {
             header: header,
             payload: payload
         };
-        utils.log('Done with result', JSON.stringify(result));
+        //utils.log('Done with result', JSON.stringify(result));
         context.succeed(result);
     };
 
