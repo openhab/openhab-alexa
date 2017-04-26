@@ -86,7 +86,6 @@ exports.handleControl = function (event, context) {
     case 'DecrementPercentageRequest':
         adjustPercentage(context, event);
         break;
-            
     case 'GetLockStateRequest':
         getLockState(context, event);
         break;
@@ -130,74 +129,6 @@ function turnOnOff(context, event) {
     rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
 }
 
-function getLockState(context, event) {
-    var success = function (item) {
-        var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Response"),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
-        };
-        var payload = {
-            lockState: item.state == "ON" ? "LOCKED" : "UNLOCKED"
-        };
-        var result = {
-            header: header,
-            payload: payload
-        };
-        utils.log('Done with result', JSON.stringify(result));
-        context.succeed(result);
-    };
-    var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
-    };
-    rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
-}
-
-function setLockState(context, event) {
-    var success = function (response) {
-        var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Confirmation"),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
-        };
-        
-        var payload = {};
-        
-        var success = function (item) {
-            payload = {
-                lockState: item.state == "ON" ? "LOCKED" : "UNLOCKED"
-            };
-        };
-        
-        var failiure = function (error) {
-            payload = {
-                lockState: event.payload.lockState == "UNLOCKED" ? "LOCKED" : "UNLOCKED" //reverse to signify error
-            };
-        };
-
-        rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failiure);
-
-        var result = {
-            header: header,
-            payload: payload
-        };
-
-        // DEBUG
-        //utils.log('Done with result', result);
-
-        context.succeed(result);
-    };
-
-    var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
-    };
-
-    var state = event.payload.lockState === "LOCKED" ? 'ON' : 'OFF';
-
-    rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
-}
 
 
 
@@ -493,6 +424,75 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
     rest.postItemCommand(event.payload.accessToken, targetTemperature.name, setValue.toString(), success, failure);
 }
 
+function getLockState(context, event) {
+    var success = function (item) {
+        var header = {
+            messageId: event.header.messageId,
+            name: event.header.name.replace("Request", "Response"),
+            namespace: event.header.namespace,
+            payloadVersion: event.header.payloadVersion
+        };
+        var payload = {
+            lockState: item.state == "ON" ? "LOCKED" : "UNLOCKED"
+        };
+        var result = {
+            header: header,
+            payload: payload
+        };
+        utils.log('Done with result', JSON.stringify(result));
+        context.succeed(result);
+    };
+    var failure = function (error) {
+        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+    };
+    rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
+}
+
+function setLockState(context, event) {
+    var success = function (response) {
+        var header = {
+            messageId: event.header.messageId,
+            name: event.header.name.replace("Request", "Confirmation"),
+            namespace: event.header.namespace,
+            payloadVersion: event.header.payloadVersion
+        };
+        
+        var payload = {};
+        
+        var success = function (item) {
+            payload = {
+                lockState: item.state == "ON" ? "LOCKED" : "UNLOCKED"
+            };
+        };
+        
+        var failiure = function (error) {
+            payload = {
+                lockState: event.payload.lockState == "UNLOCKED" ? "LOCKED" : "UNLOCKED" //reverse to signify error
+            };
+        };
+
+        rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failiure);
+
+        var result = {
+            header: header,
+            payload: payload
+        };
+
+        // DEBUG
+        //utils.log('Done with result', result);
+
+        context.succeed(result);
+    };
+
+    var failure = function (error) {
+        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+    };
+
+    var state = event.payload.lockState === "LOCKED" ? 'ON' : 'OFF';
+
+    rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
+}
+
 /**
  * Add all devices that have been tagged
  **/
@@ -547,7 +547,7 @@ function discoverDevices(token, success, failure) {
                   var actions = null;
                   var additionalApplianceDetails = {};
                   switch (tag) {
-                  case "Locks":
+                  case "Lock":
                       actions = [
                           "GetLockStateRequest",
                           "SetLockStateRequest"
