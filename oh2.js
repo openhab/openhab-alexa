@@ -86,6 +86,9 @@ exports.handleControl = function (event, context) {
     case 'DecrementPercentageRequest':
         adjustPercentage(context, event);
         break;
+    case 'SetColorRequest':
+        adjustColor(context, event);
+        break;
     }
 };
 
@@ -204,6 +207,43 @@ function adjustPercentage(context, event) {
     } else {
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Invalid target percentage.'));
     }
+}
+
+/**
+ * Color control
+ */
+function adjustColor(context, event) {
+    var success = function (response) {
+        var header = {
+            messageId: event.header.messageId,
+            name: event.header.name.replace("Request", "Confirmation"),
+            namespace: event.header.namespace,
+            payloadVersion: event.header.payloadVersion
+        };
+
+        var payload = {
+          achievedState : {
+            color : event.color
+          }
+        };
+
+        var result = {
+            header: header,
+            payload: payload
+        };
+
+        context.succeed(result);
+    };
+
+    var failure = function (error) {
+        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+    };
+
+    var h = event.color.hue;
+    var s = Math.round(event.color.saturation * 100);
+    var b = Math.round(event.color.brightness * 100);
+    var state = h + ',' + s + ',' + ',' + b;
+    rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
 }
 
 /**
@@ -556,7 +596,8 @@ function getSwitchableActions(item) {
             "decrementPercentage",
             "setPercentage",
             "turnOn",
-            "turnOff"
+            "turnOff",
+            "setColor"
         ];
     } else if (item.type === "Rollershutter" ||
         (item.type === "Group" && item.groupType && item.groupType === "Rollershutter")) {
