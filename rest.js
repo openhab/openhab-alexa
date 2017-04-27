@@ -6,7 +6,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
- 
+
 var https = require('https');
 var config = require('./config');
 var utils = require('./utils.js');
@@ -25,7 +25,7 @@ function getItems(token, success, failure) {
 function getItem(token, itemName, success, failure) {
     var options = httpItemOptions(token, itemName);
     // DEBUG
-    utils.log("GET", "https://" + options.hostname + ":" + options.port + options.path);
+    //utils.log("GET", "https://" + options.hostname + ":" + options.port + options.path);
 
     https.get(options, function (response) {
             if (response.statusCode != 200) {
@@ -57,7 +57,7 @@ function postItemCommand(token, itemName, value, success, failure) {
     var options = httpItemOptions(token, itemName, 'POST', value.length);
 
     // DEBUG
-    utils.log("POST", "https://" + options.hostname + ":" + options.port + options.path + " value " + value);
+    //utils.log("POST", "https://" + options.hostname + ":" + options.port + options.path + " value " + value);
 
     var req = https.request(options, function (response) {
         var body = '';

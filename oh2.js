@@ -47,7 +47,7 @@ exports.handleDiscovery = function (event, context) {
         };
 
         // DEBUG
-        utils.log('Discovery', JSON.stringify(result));
+        //utils.log('Discovery', JSON.stringify(result));
 
         context.succeed(result);
         },
@@ -85,6 +85,9 @@ exports.handleControl = function (event, context) {
     case 'IncrementPercentageRequest':
     case 'DecrementPercentageRequest':
         adjustPercentage(context, event);
+        break;
+    case 'SetColorRequest':
+        adjustColor(context, event);
         break;
     case 'GetLockStateRequest':
         getLockState(context, event);
@@ -216,6 +219,43 @@ function adjustPercentage(context, event) {
 }
 
 /**
+ * Color control
+ */
+function adjustColor(context, event) {
+    var success = function (response) {
+        var header = {
+            messageId: event.header.messageId,
+            name: event.header.name.replace("Request", "Confirmation"),
+            namespace: event.header.namespace,
+            payloadVersion: event.header.payloadVersion
+        };
+
+        var payload = {
+          achievedState : {
+            color : event.payload.color
+          }
+        };
+
+        var result = {
+            header: header,
+            payload: payload
+        };
+
+        context.succeed(result);
+    };
+
+    var failure = function (error) {
+        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+    };
+
+    var h = event.payload.color.hue;
+    var s = Math.round(event.payload.color.saturation * 100);
+    var b = Math.round(event.payload.color.brightness * 100);
+    var state = h + ',' + s + ',' + b;
+    rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
+}
+
+/**
  * Retrives the current temperature of a Thermostat or standalone currentTemperature tagged item
  **/
 function getCurrentTemperature(context, event) {
@@ -252,7 +292,7 @@ function getCurrentTemperature(context, event) {
             header: header,
             payload: payload
         };
-        utils.log('Done with result', JSON.stringify(result));
+        //utils.log('Done with result', JSON.stringify(result));
         context.succeed(result);
     };
 
@@ -300,7 +340,7 @@ function getTargetTemperature(context, event) {
             header: header,
             payload: payload
         };
-        utils.log('Done with result', JSON.stringify(result));
+        //utils.log('Done with result', JSON.stringify(result));
         context.succeed(result);
     };
 
@@ -532,7 +572,7 @@ function discoverDevices(token, success, failure) {
             for (var tagNum in item.tags) {
               var tag = item.tags[tagNum];
               if(tag == "Thermostat" && item.type === "Group"){
-                thermostatGroups.push(item);
+                thermostatGroups.push(item.name);
               }
             }
           }
@@ -633,6 +673,16 @@ function getSwitchableActions(item) {
             "turnOn",
             "turnOff"
         ];
+    } else if (item.type === "Color" ||
+        (item.type === "Group" && item.groupType && item.groupType === "Color")) {
+        actions = [
+            "incrementPercentage",
+            "decrementPercentage",
+            "setPercentage",
+            "turnOn",
+            "turnOff",
+            "setColor"
+        ];
     } else if (item.type === "Rollershutter" ||
         (item.type === "Group" && item.groupType && item.groupType === "Rollershutter")) {
         actions = [
@@ -641,11 +691,10 @@ function getSwitchableActions(item) {
             "decrementPercentage"
         ];
     }
-
     return actions;
 }
 /**
-* Rerturns a thermostat object based on memebers of a thermo tagged group
+* Rerturns a thermostat object based on memebers of a thermostat tagged group
 **/
 function getThermostatItems(thermoGroup) {
     var values = {};
