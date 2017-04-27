@@ -223,7 +223,7 @@ function adjustColor(context, event) {
 
         var payload = {
           achievedState : {
-            color : event.color
+            color : event.payload.color
           }
         };
 
@@ -239,10 +239,10 @@ function adjustColor(context, event) {
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
     };
 
-    var h = event.color.hue;
-    var s = Math.round(event.color.saturation * 100);
-    var b = Math.round(event.color.brightness * 100);
-    var state = h + ',' + s + ',' + ',' + b;
+    var h = event.payload.color.hue;
+    var s = Math.round(event.payload.color.saturation * 100);
+    var b = Math.round(event.payload.color.brightness * 100);
+    var state = h + ',' + s + ',' + b;
     rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
 }
 
