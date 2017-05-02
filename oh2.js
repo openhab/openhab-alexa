@@ -577,10 +577,10 @@ function discoverDevices(token, success, failure) {
                   switch (tag) {
                   case "Lock":
                       actions = [
-                          "GetLockStateRequest",
-                          "SetLockStateRequest"
+                          "getLockState",
+                          "setLockState"
                       ];
-                    break;
+                      break;
                   case "Lighting":
                   case "Switchable":
                       actions = getSwitchableActions(item);
