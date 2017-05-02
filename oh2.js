@@ -132,9 +132,6 @@ function turnOnOff(context, event) {
     rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
 }
 
-
-
-
 /**
  * Adjust a percentage value on a item
  **/
