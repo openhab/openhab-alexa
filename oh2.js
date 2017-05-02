@@ -76,6 +76,9 @@ exports.handleControl = function (event, context) {
     case 'GetTemperatureReadingRequest':
         getCurrentTemperature(context, event);
         break;
+    case 'GetTemperatureReadingRequest':
+        getTargetTemperature(context, event);
+        break;
     case 'SetTargetTemperatureRequest':
     case 'IncrementTargetTemperatureRequest':
     case 'DecrementTargetTemperatureRequest':
