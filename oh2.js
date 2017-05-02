@@ -76,7 +76,7 @@ exports.handleControl = function (event, context) {
     case 'GetTemperatureReadingRequest':
         getCurrentTemperature(context, event);
         break;
-    case 'GetTemperatureReadingRequest':
+    case 'GetTargetTemperatureRequest':
         getTargetTemperature(context, event);
         break;
     case 'SetTargetTemperatureRequest':
@@ -533,9 +533,9 @@ function discoverDevices(token, success, failure) {
                       //only group items are allowed to have a Temperature tag
                       if (item.type === 'Group') {
                           actions = [
+                              "setTargetTemperature",
                               "incrementTargetTemperature",
                               "decrementTargetTemperature",
-                              "setTargetTemperature",
                               "getTargetTemperature",
                               "getTemperatureReading"
                           ];
