@@ -498,7 +498,7 @@ function setLockState(context, event) {
         };
         
         var payload = {
-            lockState: event.payload.lockState == "LOCKED" ? "LOCKED" : "UNLOCKED" //signal success
+            lockState: event.payload.lockState //signal success
         };
         
         var result = {
