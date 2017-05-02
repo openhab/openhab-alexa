@@ -497,22 +497,10 @@ function setLockState(context, event) {
             payloadVersion: event.header.payloadVersion
         };
         
-        var payload = {};
-        
-        var success = function (item) {
-            payload = {
-                lockState: item.state == "ON" ? "LOCKED" : "UNLOCKED"
-            };
+        var payload = {
+            lockState: event.payload.lockState == "LOCKED" ? "LOCKED" : "UNLOCKED" //signal success
         };
         
-        var failiure = function (error) {
-            payload = {
-                lockState: event.payload.lockState == "UNLOCKED" ? "LOCKED" : "UNLOCKED" //reverse to signify error
-            };
-        };
-
-        rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failiure);
-
         var result = {
             header: header,
             payload: payload
