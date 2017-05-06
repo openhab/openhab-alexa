@@ -50,7 +50,38 @@ function generateControlError(messageId, name, code, description) {
     return result;
 }
 
+/**
+* Normilizes numeric/string thermostat modes to Alexa friendly ones
+**/
+function normalizeThermostatMode(mode){
+  //if state returns as a decimal type, convert to string, this is a very common thermo pattern
+  var m = mode;
+  switch (mode) {
+  case '0': //off, not supported! Weird. But nothing else todo.
+      m = 'OFF';
+      break;
+  case '1': //heating
+      m = 'HEAT';
+      break;
+  case '2': //cooling
+      m = 'COOL';
+      break;
+  case 'heat-cool': //nest auto
+  case '3': //auto
+      m = 'AUTO';
+      break;
+  }
+  return m.toUpperCase();
+}
+
+function isEventFahrenheit(event){
+  return event.payload.appliance.additionalApplianceDetails.temperatureFormat &&
+  event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
+}
+
 module.exports.log = log;
 module.exports.toF = toF;
 module.exports.toC = toC;
 module.exports.generateControlError = generateControlError;
+module.exports.normalizeThermostatMode = normalizeThermostatMode;
+module.exports.isEventFahrenheit = isEventFahrenheit;
