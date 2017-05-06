@@ -76,6 +76,9 @@ exports.handleControl = function (event, context) {
     case 'GetTemperatureReadingRequest':
         getCurrentTemperature(context, event);
         break;
+    case 'GetTargetTemperatureRequest':
+        getTargetTemperature(context, event);
+        break;
     case 'SetTargetTemperatureRequest':
     case 'IncrementTargetTemperatureRequest':
     case 'DecrementTargetTemperatureRequest':
@@ -263,7 +266,8 @@ function getCurrentTemperature(context, event) {
           return;
         }
 
-        var isF = event.payload.appliance.additionalApplianceDetails.temperatureFormat && event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
+        var isF = utils.isEventFahrenheit(event);
+
         var header = {
             messageId: event.header.messageId,
             name: event.header.name.replace("Request", "Response"),
@@ -308,7 +312,8 @@ function getTargetTemperature(context, event) {
           return;
         }
 
-        var isF = event.payload.appliance.additionalApplianceDetails.temperatureFormat && event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
+        var isF = utils.isEventFahrenheit(event);
+
         var header = {
             messageId: event.header.messageId,
             name: event.header.name.replace("Request", "Response"),
@@ -317,13 +322,15 @@ function getTargetTemperature(context, event) {
         };
 
         var value = parseInt(items.targetTemperature.state);
+        var mode = utils.normalizeThermostatMode(items.heatingCoolingMode ? items.heatingCoolingMode.state : "Unknown Mode");
+
         var payload = {
           targetTemperature: {
               value: isF ? utils.toC(value) : value
           },
           applianceResponseTimestamp: new Date().toISOString(),
           temperatureMode: {
-            value : items.heatingCoolingMode.state
+            value : mode
           }
         };
 
@@ -331,7 +338,7 @@ function getTargetTemperature(context, event) {
             header: header,
             payload: payload
         };
-        //utils.log('Done with result', JSON.stringify(result));
+        
         context.succeed(result);
     };
 
@@ -373,7 +380,7 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
     /**
      * Alexa needs everything in Celsius, we will need to respect what a user has set
      */
-    var isF = event.payload.appliance.additionalApplianceDetails.temperatureFormat && event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
+    var isF = utils.isEventFahrenheit(event);
 
     var setValue;
     switch (event.header.name) {
@@ -391,26 +398,7 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
     // DEBUG
     //utils.log("adjustTemperatureWithItems", "setValue  " + setValue);
 
-    var curMode = heatingCoolingMode ? heatingCoolingMode.state : "AUTO";
-
-    //if state returns as a decimal type, convert to string, this is a very common thermo pattern
-    switch (curMode) {
-    case '0': //off, not supported! Weird. But nothing else todo.
-        curMode = 'OFF';
-        break;
-    case '1': //auto
-    case 'heat-cool': //nest auto
-        curMode = 'AUTO';
-        break;
-    case '2': //heating
-        curMode = 'HEAT';
-        break;
-    case '3': //cooling
-        curMode = 'COOL';
-        break;
-    }
-
-    curMode = curMode.toUpperCase();
+    var curMode = utils.normalizeThermostatMode(heatingCoolingMode ? heatingCoolingMode.state : "AUTO");
 
     var success = function (response) {
         var header = {
@@ -472,8 +460,7 @@ function discoverDevices(token, success, failure) {
     //checks for a Fahrenheit tag and sets the righ property on the
     //additionalApplianceDetails response object
     var setTempFormat = function(item, additionalApplianceDetails){
-      var formatIndex = item.tags.indexOf("Fahrenheit");
-      if (formatIndex > -1) {
+      if (item.tags.indexOf("Fahrenheit") > -1 || item.tags.indexOf("fahrenheit") > -1) {
           additionalApplianceDetails.temperatureFormat = "fahrenheit";
       } else {
           additionalApplianceDetails.temperatureFormat = "celsius";
@@ -523,16 +510,16 @@ function discoverDevices(token, success, failure) {
                       setTempFormat(item,additionalApplianceDetails);
                     }
                     break;
-                  case "homekit:heatingCoolingMode":
+                  case "homekit:HeatingCoolingMode":
                   case "TargetTemperature":
                       break;
                   case "Thermostat":
                       //only group items are allowed to have a Temperature tag
                       if (item.type === 'Group') {
                           actions = [
+                              "setTargetTemperature",
                               "incrementTargetTemperature",
                               "decrementTargetTemperature",
-                              "setTargetTemperature",
                               "getTargetTemperature",
                               "getTemperatureReading"
                           ];
@@ -614,19 +601,18 @@ function getSwitchableActions(item) {
 **/
 function getThermostatItems(thermoGroup) {
     var values = {};
-    for (var memberNum in thermoGroup) {
-        var member = thermoGroup[memberNum];
-        for (var tagNum in member.tags) {
-            if (member.tags[tagNum] === 'CurrentTemperature') {
+    thermoGroup.forEach(function(member){
+        member.tags.forEach(function(tag){
+            if (tag === 'CurrentTemperature') {
                 values.currentTemperature = member;
             }
-            if (member.tags[tagNum] === 'TargetTemperature') {
+            if (tag === 'TargetTemperature') {
                 values.targetTemperature = member;
             }
-            if (member.tags[tagNum] === 'homekit:heatingCoolingMode') {
+            if (tag === 'homekit:HeatingCoolingMode') {
                 values.heatingCoolingMode = member;
             }
-        }
-    }
+        });
+    });
     return values;
-}
+  }
