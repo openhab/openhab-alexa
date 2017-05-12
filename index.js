@@ -16,7 +16,7 @@ var oh2 = require('./oh2.js');
  * Incoming events from Alexa Lighting APIs are processed via this method.
  */
 exports.handler = function (event, context) {
-  log.trace('Input: ' + JSON.stringify(event));
+  log.debug('Input: ' + JSON.stringify(event));
 
     switch (event.header.namespace) {
         /**
