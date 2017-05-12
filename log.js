@@ -12,7 +12,7 @@ var LEVELS = [
     'ERROR',
 ];
 
-var DEFAULT = 'ERROR';
+var DEFAULT = 'DEBUG';
 
 function log(level, message) {
     var setLevel = LEVELS.indexOf(process.env.LOG_LEVEL ?
