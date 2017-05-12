@@ -7,28 +7,28 @@
 var LEVELS = [
     'TRACE',
     'DEBUG',
-    'ERROR',
-    'WARN',
     'INFO',
+    'WARN',
+    'ERROR',
 ];
 
 var DEFAULT = 'ERROR';
 
 function log(level, message) {
     var setLevel = LEVELS.indexOf(process.env.LOG_LEVEL ?
-      process.env.LOG_LEVEL : DEFAULT);
+        process.env.LOG_LEVEL : DEFAULT);
     if (LEVELS.indexOf(level) < setLevel) {
         return;
     }
     switch (level) {
-    case 'ERROR':
-        console.error(message);
+    case 'INFO':
+        console.info(message);
         break;
     case 'WARN':
         console.warn(message);
         break;
-    case 'INFO':
-        console.info(message);
+    case 'ERROR':
+        console.error(message);
         break;
     default: // debug, trace
         console.log(message);
@@ -41,12 +41,12 @@ module.exports.trace = function (message) {
 module.exports.debug = function (message) {
     log('DEBUG', message);
 };
-module.exports.error = function (message) {
-    log('ERROR', message);
+module.exports.info = function (message) {
+    log('INFO', message);
 };
 module.exports.warn = function (message) {
     log('WARN', message);
 };
-module.exports.info = function (message) {
-    log('INFO', message);
+module.exports.error = function (message) {
+    log('ERROR', message);
 };
