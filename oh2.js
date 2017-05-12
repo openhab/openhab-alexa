@@ -10,11 +10,12 @@
 /**
  * An Amazon Echo Smart Home Skill API implementation for openHAB (v2.x)
  */
+var log = require('./log.js');
 var utils = require('./utils.js');
 var rest = require('./rest.js');
 
 /**
- * This method is invoked when we receive a "Discovery" message from Alexa Smart Home Skill.
+ * This method is invoked when we receive a 'Discovery' message from Alexa Smart Home Skill.
  * We are expected to respond back with a list of appliances that we have discovered for a given
  * customer.
  */
@@ -24,7 +25,7 @@ exports.handleDiscovery = function (event, context) {
      */
     var header = {
         messageId: event.header.messageId,
-        name: event.header.name.replace("Request", "Response"),
+        name: event.header.name.replace('Request', 'Response'),
         namespace: event.header.namespace,
         payloadVersion: event.header.payloadVersion
     };
@@ -46,12 +47,11 @@ exports.handleDiscovery = function (event, context) {
             payload: payload
         };
 
-        // DEBUG
-        //utils.log('Discovery', JSON.stringify(result));
-
+        log.debug('Discovery: ' + JSON.stringify(result));
         context.succeed(result);
         },
         function (error) {
+            log.error("discoverDevices failed: " + error.message);
             context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
         });
 };
@@ -108,7 +108,7 @@ function turnOnOff(context, event) {
     var success = function (response) {
         var header = {
             messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Confirmation"),
+            name: event.header.name.replace('Request', 'Confirmation'),
             namespace: event.header.namespace,
             payloadVersion: event.header.payloadVersion
         };
@@ -120,8 +120,7 @@ function turnOnOff(context, event) {
             payload: payload
         };
 
-        // DEBUG
-        //utils.log('Done with result', result);
+        log.debug('turnOnOff done with result' + JSON.stringify(result));
 
         context.succeed(result);
     };
@@ -130,7 +129,7 @@ function turnOnOff(context, event) {
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
     };
 
-    var state = event.header.name === "TurnOnRequest" ? 'ON' : 'OFF';
+    var state = event.header.name === 'TurnOnRequest' ? 'ON' : 'OFF';
 
     rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
 }
@@ -150,7 +149,7 @@ function adjustPercentage(context, event) {
 
         var header = {
             messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Confirmation"),
+            name: event.header.name.replace('Request', 'Confirmation'),
             namespace: event.header.namespace,
             payloadVersion: event.header.payloadVersion
         };
@@ -162,9 +161,7 @@ function adjustPercentage(context, event) {
             payload: payload
         };
 
-        // DEBUG
-        //utils.log('Done with result', result);
-
+        log.debug('adjustPercentage done with result ' + JSON.stringify(result));
         context.succeed(result);
     };
 
@@ -172,14 +169,15 @@ function adjustPercentage(context, event) {
      * Success Function for retrieveing an items state to use for INC/DEC logic
      */
     var itemGetSuccess = function (item) {
-        // DEBUG
-        //utils.log("itemGetSuccess", "item state " + item.state + " delta " + event.payload.deltaPercentage.value);
+
+      log.debug('itemGetSuccess: item state ' +
+      item.state + ' delta ' + event.payload.deltaPercentage.value);
 
         //inc/dec command
         //skip this if we don't have a number to start with
         if (isNaN(item.state)) {
             failure({
-                message: "Could not get numberic item state"
+                message: 'Could not get numberic item state'
             });
             return;
         }
@@ -225,7 +223,7 @@ function adjustColor(context, event) {
     var success = function (response) {
         var header = {
             messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Confirmation"),
+            name: event.header.name.replace('Request', 'Confirmation'),
             namespace: event.header.namespace,
             payloadVersion: event.header.payloadVersion
         };
@@ -268,7 +266,7 @@ function getCurrentTemperature(context, event) {
         }
 
         if(!item || isNaN(item.state)){
-          context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', "thermostat missing current temperature"));
+          context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'thermostat missing current temperature'));
           return;
         }
 
@@ -276,7 +274,7 @@ function getCurrentTemperature(context, event) {
 
         var header = {
             messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Response"),
+            name: event.header.name.replace('Request', 'Response'),
             namespace: event.header.namespace,
             payloadVersion: event.header.payloadVersion
         };
@@ -293,7 +291,7 @@ function getCurrentTemperature(context, event) {
             header: header,
             payload: payload
         };
-        //utils.log('Done with result', JSON.stringify(result));
+        log.debug('getCurrentTemperature done with result: ' + JSON.stringify(result));
         context.succeed(result);
     };
 
@@ -314,7 +312,7 @@ function getTargetTemperature(context, event) {
         var items = getThermostatItems(thermostatGroup.members);
 
         if(!items.targetTemperature || isNaN(items.targetTemperature.state)){
-          context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', "thermostat missing current temperature"));
+          context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'thermostat missing current temperature'));
           return;
         }
 
@@ -322,13 +320,13 @@ function getTargetTemperature(context, event) {
 
         var header = {
             messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Response"),
+            name: event.header.name.replace('Request', 'Response'),
             namespace: event.header.namespace,
             payloadVersion: event.header.payloadVersion
         };
 
         var value = parseInt(items.targetTemperature.state);
-        var mode = utils.normalizeThermostatMode(items.heatingCoolingMode ? items.heatingCoolingMode.state : "Unknown Mode");
+        var mode = utils.normalizeThermostatMode(items.heatingCoolingMode ? items.heatingCoolingMode.state : 'Unknown Mode');
 
         var payload = {
           targetTemperature: {
@@ -344,7 +342,7 @@ function getTargetTemperature(context, event) {
             header: header,
             payload: payload
         };
-        
+
         context.succeed(result);
     };
 
@@ -401,15 +399,14 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
         break;
     }
 
-    // DEBUG
-    //utils.log("adjustTemperatureWithItems", "setValue  " + setValue);
+    log.debug('adjustTemperatureWithItems setValue: ' + setValue);
 
-    var curMode = utils.normalizeThermostatMode(heatingCoolingMode ? heatingCoolingMode.state : "AUTO");
+    var curMode = utils.normalizeThermostatMode(heatingCoolingMode ? heatingCoolingMode.state : 'AUTO');
 
     var success = function (response) {
         var header = {
             messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Confirmation"),
+            name: event.header.name.replace('Request', 'Confirmation'),
             namespace: event.header.namespace,
             payloadVersion: event.header.payloadVersion
         };
@@ -436,9 +433,7 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
             payload: payload
         };
 
-        // DEBUG
-        //utils.log('Done with result', JSON.stringify(result));
-
+        log.debug('Done with result: ' + JSON.stringify(result));
         context.succeed(result);
     };
 
@@ -453,18 +448,18 @@ function getLockState(context, event) {
     var success = function (item) {
         var header = {
             messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Response"),
+            name: event.header.name.replace('Request', 'Response'),
             namespace: event.header.namespace,
             payloadVersion: event.header.payloadVersion
         };
         var payload = {
-            lockState: item.state == "ON" ? "LOCKED" : "UNLOCKED"
+            lockState: item.state == 'ON' ? 'LOCKED' : 'UNLOCKED'
         };
         var result = {
             header: header,
             payload: payload
         };
-        utils.log('Done with result', JSON.stringify(result));
+        log.debug('getLockState done with result: ' + JSON.stringify(result));
         context.succeed(result);
     };
     var failure = function (error) {
@@ -477,23 +472,21 @@ function setLockState(context, event) {
     var success = function (response) {
         var header = {
             messageId: event.header.messageId,
-            name: event.header.name.replace("Request", "Confirmation"),
+            name: event.header.name.replace('Request', 'Confirmation'),
             namespace: event.header.namespace,
             payloadVersion: event.header.payloadVersion
         };
-        
+
         var payload = {
             lockState: event.payload.lockState //signal success
         };
-        
+
         var result = {
             header: header,
             payload: payload
         };
 
-        // DEBUG
-        //utils.log('Done with result', result);
-
+        log.debug('setLockState done with result' + JSON.stringify(result));
         context.succeed(result);
     };
 
@@ -501,7 +494,7 @@ function setLockState(context, event) {
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
     };
 
-    var state = event.payload.lockState === "LOCKED" ? 'ON' : 'OFF';
+    var state = event.payload.lockState === 'LOCKED' ? 'ON' : 'OFF';
 
     rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
 }
@@ -523,17 +516,16 @@ function discoverDevices(token, success, failure) {
     //checks for a Fahrenheit tag and sets the righ property on the
     //additionalApplianceDetails response object
     var setTempFormat = function(item, additionalApplianceDetails){
-      if (item.tags.indexOf("Fahrenheit") > -1 || item.tags.indexOf("fahrenheit") > -1) {
-          additionalApplianceDetails.temperatureFormat = "fahrenheit";
+      if (item.tags.indexOf('Fahrenheit') > -1 || item.tags.indexOf('fahrenheit') > -1) {
+          additionalApplianceDetails.temperatureFormat = 'fahrenheit';
       } else {
-          additionalApplianceDetails.temperatureFormat = "celsius";
+          additionalApplianceDetails.temperatureFormat = 'celsius';
       }
     };
 
     //callback for successfully getting items from rest call
     var getSuccess = function (items) {
-        //DEBUG
-        //utils.log("discoverDevices", JSON.stringify(items));
+        log.debug('discoverDevices getSuccess: ' + JSON.stringify(items));
         var discoverdDevices = [];
         var thermostatGroups = [];
 
@@ -543,7 +535,7 @@ function discoverDevices(token, success, failure) {
             var item = items[itemNum];
             for (var tagNum in item.tags) {
               var tag = item.tags[tagNum];
-              if(tag == "Thermostat" && item.type === "Group"){
+              if(tag == 'Thermostat' && item.type === 'Group'){
                 thermostatGroups.push(item.name);
               }
             }
@@ -559,38 +551,38 @@ function discoverDevices(token, success, failure) {
                   var actions = null;
                   var additionalApplianceDetails = {};
                   switch (tag) {
-                  case "Lock":
+                  case 'Lock':
                       actions = [
-                          "getLockState",
-                          "setLockState"
+                          'getLockState',
+                          'setLockState'
                       ];
                       break;
-                  case "Lighting":
-                  case "Switchable":
+                  case 'Lighting':
+                  case 'Switchable':
                       actions = getSwitchableActions(item);
                       break;
-                  case "CurrentTemperature":
+                  case 'CurrentTemperature':
                     //if this is not part of a thermostatGroup then add it
                     //standalone otherwise it will be available as a thermostat
                     if(!matchesGroup(thermostatGroups, item.groupNames)){
                       actions = [
-                          "getTemperatureReading"
+                          'getTemperatureReading'
                       ];
                       setTempFormat(item,additionalApplianceDetails);
                     }
                     break;
-                  case "homekit:HeatingCoolingMode":
-                  case "TargetTemperature":
+                  case 'homekit:HeatingCoolingMode':
+                  case 'TargetTemperature':
                       break;
-                  case "Thermostat":
+                  case 'Thermostat':
                       //only group items are allowed to have a Temperature tag
                       if (item.type === 'Group') {
                           actions = [
-                              "setTargetTemperature",
-                              "incrementTargetTemperature",
-                              "decrementTargetTemperature",
-                              "getTargetTemperature",
-                              "getTemperatureReading"
+                              'setTargetTemperature',
+                              'incrementTargetTemperature',
+                              'decrementTargetTemperature',
+                              'getTargetTemperature',
+                              'getTemperatureReading'
                           ];
                           setTempFormat(item,additionalApplianceDetails);
                       }
@@ -600,7 +592,7 @@ function discoverDevices(token, success, failure) {
                   }
                   if (actions !== null) {
                       // DEBUG
-                      //utils.log("DISCO", "adding " + item.name + " with tag: " + tag);
+                      log.trace(' Discovery adding ' + item.name + ' with tag: ' + tag);
                       additionalApplianceDetails.itemType = item.type;
                       additionalApplianceDetails.itemTag = tag;
                       additionalApplianceDetails.openhabVersion = '2';
@@ -630,37 +622,37 @@ function discoverDevices(token, success, failure) {
 **/
 function getSwitchableActions(item) {
     var actions = null;
-    if (item.type === "Switch" ||
-        (item.type === "Group" && item.groupType && item.groupType === "Switch")) {
+    if (item.type === 'Switch' ||
+        (item.type === 'Group' && item.groupType && item.groupType === 'Switch')) {
         actions = [
-            "turnOn",
-            "turnOff"
+            'turnOn',
+            'turnOff'
         ];
-    } else if (item.type === "Dimmer" ||
-        (item.type === "Group" && item.groupType && item.groupType === "Dimmer")) {
+    } else if (item.type === 'Dimmer' ||
+        (item.type === 'Group' && item.groupType && item.groupType === 'Dimmer')) {
         actions = [
-            "incrementPercentage",
-            "decrementPercentage",
-            "setPercentage",
-            "turnOn",
-            "turnOff"
+            'incrementPercentage',
+            'decrementPercentage',
+            'setPercentage',
+            'turnOn',
+            'turnOff'
         ];
-    } else if (item.type === "Color" ||
-        (item.type === "Group" && item.groupType && item.groupType === "Color")) {
+    } else if (item.type === 'Color' ||
+        (item.type === 'Group' && item.groupType && item.groupType === 'Color')) {
         actions = [
-            "incrementPercentage",
-            "decrementPercentage",
-            "setPercentage",
-            "turnOn",
-            "turnOff",
-            "setColor"
+            'incrementPercentage',
+            'decrementPercentage',
+            'setPercentage',
+            'turnOn',
+            'turnOff',
+            'setColor'
         ];
-    } else if (item.type === "Rollershutter" ||
-        (item.type === "Group" && item.groupType && item.groupType === "Rollershutter")) {
+    } else if (item.type === 'Rollershutter' ||
+        (item.type === 'Group' && item.groupType && item.groupType === 'Rollershutter')) {
         actions = [
-            "setPercentage",
-            "incrementPercentage",
-            "decrementPercentage"
+            'setPercentage',
+            'incrementPercentage',
+            'decrementPercentage'
         ];
     }
     return actions;

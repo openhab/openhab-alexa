@@ -7,6 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
+var log = require('./log.js');
 var utils = require('./utils.js');
 var oh2 = require('./oh2.js');
 
@@ -15,12 +16,11 @@ var oh2 = require('./oh2.js');
  * Incoming events from Alexa Lighting APIs are processed via this method.
  */
 exports.handler = function (event, context) {
-    // DEBUG
-    //utils.log('Input', JSON.stringify(event));
+  log.trace('Input: ' + JSON.stringify(event));
 
     switch (event.header.namespace) {
         /**
-         * The namespace of "Discovery" indicates a request is being made to the lambda for
+         * The namespace of 'Discovery' indicates a request is being made to the lambda for
          * discovering all appliances associated with the customer's appliance cloud account.
          * can use the accessToken that is made available as part of the payload to determine
          * the customer.
@@ -30,8 +30,8 @@ exports.handler = function (event, context) {
         break;
 
         /**
-         * The namespace of "Control" indicates a request is being made to us to turn a
-         * given device on, off or brighten. This message comes with the "appliance"
+         * The namespace of 'Control' indicates a request is being made to us to turn a
+         * given device on, off or brighten. This message comes with the 'appliance'
          * parameter which indicates the appliance that needs to be acted on.
          */
     case 'Alexa.ConnectedHome.Control':
@@ -45,15 +45,15 @@ exports.handler = function (event, context) {
          */
     case 'Alexa.ConnectedHome.System':
         // TODO - handle unhealthy device responses
-        if (event.header.name === "HealthCheckRequest") {
+        if (event.header.name === 'HealthCheckRequest') {
             var headers = {
                 messageId: event.header.messageId,
-                name: event.header.name.replace("Request", "Response"),
+                name: event.header.name.replace('Request', 'Response'),
                 namespace: event.header.namespace,
                 payloadVersion: event.header.payloadVersion
             };
             var payloads = {
-                description: "The system is currently healthy",
+                description: 'The system is currently healthy',
                 isHealthy: true
             };
             var result = {
@@ -69,8 +69,7 @@ exports.handler = function (event, context) {
          * We received an unexpected message
          */
     default:
-        // DEBUG
-        utils.log('Err', 'No supported namespace: ' + event.header.namespace);
+        log.error('No supported namespace: ' + event.header.namespace);
         context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Something went wrong...'));
         break;
     }
