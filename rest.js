@@ -9,8 +9,6 @@
 
 var https = require('https');
 var config = require('./config');
-var utils = require('./utils.js');
-
 
 /**
  * Returns all items
@@ -24,13 +22,10 @@ function getItems(token, success, failure) {
  */
 function getItem(token, itemName, success, failure) {
     var options = httpItemOptions(token, itemName);
-    // DEBUG
-    //utils.log("GET", "https://" + options.hostname + ":" + options.port + options.path);
-
     https.get(options, function (response) {
             if (response.statusCode != 200) {
                 failure({
-                    message: "Error response " + response.statusCode
+                    message: 'Error response ' + response.statusCode
                 });
                 return;
             }
@@ -42,8 +37,7 @@ function getItem(token, itemName, success, failure) {
                 var resp = JSON.parse(body);
                 success(resp);
             });
-            response.on("error", function (e) {
-                utils.log("OPENHAB ERROR: " + e.message);
+            response.on('error', function (e) {
                 failure(e);
             });
         })
@@ -55,21 +49,16 @@ function getItem(token, itemName, success, failure) {
  **/
 function postItemCommand(token, itemName, value, success, failure) {
     var options = httpItemOptions(token, itemName, 'POST', value.length);
-
-    // DEBUG
-    //utils.log("POST", "https://" + options.hostname + ":" + options.port + options.path + " value " + value);
-
     var req = https.request(options, function (response) {
         var body = '';
         if (response.statusCode == 200 || response.statusCode == 201) {
             success(response);
         } else {
             failure({
-                message: "Error response " + response.statusCode
+                message: 'Error response ' + response.statusCode
             });
         }
-        response.on("error", function (e) {
-            utils.log("OPENHAB ERROR", e.message);
+        response.on('error', function (e) {
             failure(e);
         });
     });
@@ -85,7 +74,7 @@ function httpItemOptions(token, itemname, method, length) {
     var options = {
         hostname: config.host,
         port: config.port,
-        path: config.path + (itemname || ""),
+        path: config.path + (itemname || ''),
         method: method || 'GET',
         headers: {}
     };
@@ -93,7 +82,7 @@ function httpItemOptions(token, itemname, method, length) {
     if (config.userpass) {
         options.auth = config.userpass;
     } else {
-        options.headers['Authorization'] = "Bearer " + token;
+        options.headers['Authorization'] = 'Bearer ' + token;
     }
 
     if (method === 'POST' || method === 'PUT') {
