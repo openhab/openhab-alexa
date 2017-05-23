@@ -55,7 +55,7 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
 ## Item configuration
 
 * openHAB 2
-  * Items are exposed via Homekit tags, the following is taken from the homekit binding in openHAB2:
+  * There are 2 ways of tagging items for alexa, the first is to use Homekit tags, this would expose the items to both Alexa and Siri with a single tag. The following is taken from the homekit binding in openHAB2:
 
   ```
   Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ]
@@ -64,7 +64,19 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
   Group gDownstairsThermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
   Number DownstairsThermostatCurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
   Number DownstairsThermostatTargetTemperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
-  String DownstairsThermostatHeatingCoolingMode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
+  String DownstairsThermostatHeatingCoolingMode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCoolingMode"]
+  ```
+
+  * You may also prefix the the tag with "alexa:" which would only expose the item to Alexa.  If any one item is prefixed with "alexa:" then all items you wish to expose to Alexa must contain this prefix or they will be ignored. Eample:
+
+  ```
+  Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "alexa:Lighting" ]
+  Dimmer BedroomLights "Bedroom Lights" <light> (gBedroom) [ "alexa:Lighting" ]
+  Number BedroomTemperature "Bedroom Temperature" (gBedroom) [ "alexa:CurrentTemperature" ]
+  Group gDownstairsThermostat "Downstairs Thermostat" (gFF) [ "alexa:Thermostat" ]
+  Number DownstairsThermostatCurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "alexa:CurrentTemperature" ]
+  Number DownstairsThermostatTargetTemperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "alexa:TargetTemperature" ]
+  String DownstairsThermostatHeatingCoolingMode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "alexa:HeatingCoolingMode"]
   ```
 
   * Thermostats are created by adding the items of a thermostat to a group which has the tag "Thermostat" which follows the HomeKit binding configuration. see http://docs.openhab.org/addons/io/homekit/readme.html for more information on how to configure thermostats. Thermostats can have their target temperature set as well as be asked what the current temperature is.
@@ -91,6 +103,7 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
       }
   end
   ```
+  * Alexa has support for door locks, tag an item with "Lock" or "alexa:Lock".  At this time only unlocking (OFF command) is supported by Alexa.
 
 ## Example Voice Commands
 

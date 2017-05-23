@@ -14,6 +14,9 @@ var log = require('./log.js');
 var utils = require('./utils.js');
 var rest = require('./rest.js');
 
+//alexa namespace
+var NS = "alexa:";
+
 /**
  * This method is invoked when we receive a 'Discovery' message from Alexa Smart Home Skill.
  * We are expected to respond back with a list of appliances that we have discovered for a given
@@ -528,13 +531,17 @@ function discoverDevices(token, success, failure) {
         log.debug('discoverDevices getSuccess: ' + JSON.stringify(items));
         var discoverdDevices = [];
         var thermostatGroups = [];
-
-        //first retrive any thermostat Groups
+        var useNamespace = false;
+        //first retrive any thermostat Groups and Check for optional alexa
+        //namespace
         (function () {
           for (var itemNum in items) {
             var item = items[itemNum];
             for (var tagNum in item.tags) {
               var tag = item.tags[tagNum];
+              if(tag.indexOf(NS) === 0){
+                useNamespace = true;
+              }
               if(tag == 'Thermostat' && item.type === 'Group'){
                 thermostatGroups.push(item.name);
               }
@@ -548,8 +555,16 @@ function discoverDevices(token, success, failure) {
               var item = items[itemNum];
               for (var tagNum in item.tags) {
                   var tag = item.tags[tagNum];
+                  //if we require the alexa: namespace then break if not there
+                  if(useNamespace && tag.indexOf(NS) !== 0){
+                    continue;
+                  }
                   var actions = null;
                   var additionalApplianceDetails = {};
+                  //remove any alexa: namespace from tag
+                  if(tag.indexOf(NS) === 0){
+                    tag = tag.substr(NS.length);
+                  }
                   switch (tag) {
                   case 'Lock':
                       actions = [
@@ -572,6 +587,7 @@ function discoverDevices(token, success, failure) {
                     }
                     break;
                   case 'homekit:HeatingCoolingMode':
+                  case 'HeatingCoolingMode':
                   case 'TargetTemperature':
                       break;
                   case 'Thermostat':
@@ -664,13 +680,17 @@ function getThermostatItems(thermoGroup) {
     var values = {};
     thermoGroup.forEach(function(member){
         member.tags.forEach(function(tag){
+            if(tag.indexOf(NS) === 0){
+              tag = tag.substr(NS.length);
+            }
             if (tag === 'CurrentTemperature') {
                 values.currentTemperature = member;
             }
             if (tag === 'TargetTemperature') {
                 values.targetTemperature = member;
             }
-            if (tag === 'homekit:HeatingCoolingMode') {
+            if (tag === 'homekit:HeatingCoolingMode' ||
+                tag === 'HeatingCoolingMode') {
                 values.heatingCoolingMode = member;
             }
         });
