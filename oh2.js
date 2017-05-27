@@ -548,17 +548,44 @@ function discoverDevices(token, success, failure) {
               var item = items[itemNum];
               for (var tagNum in item.tags) {
                   var tag = item.tags[tagNum];
+
+                  /**
+                  * An array of actions that this device supports.
+                  **/
                   var actions = null;
+
+                  /**
+                  * A list of string name-value pairs that provide additional information about a device for use by the skill adapter. The contents of this property cannot exceed 5000 bytes. Also, the Smart Home Skill API  does not understand or use this data.
+                  **/
                   var additionalApplianceDetails = {};
+
+                  /**
+                  * Appliance and Scene Categories
+                  * CAMERA	Indicates media devices with video or photo capabilities.
+                  * LIGHT	Indicates light sources or fixtures.
+                  * SMARTLOCK	Indicates door locks.
+                  * SMARTPLUG	Indicates modules that are plugged into an existing electrical outlet.	Can control a variety of devices.
+                  * SWITCH	Indicates in-wall switches wired to the electrical system.	Can control a variety of devices.
+                  * THERMOSTAT	Indicates thermostats that control temperature, stand-alone air conditioners, or heaters with direct temperature control.
+                  * ACTIVITY_TRIGGER	Describes a combination of devices set to a specific state, when the state change must occur in a specific order. For example, a "watch Neflix" scene might require the
+                  *   1) TV to be powered on.
+                  *   2) Input set to HDMI1.	Applies to Scenes
+                  * SCENE_TRIGGER  Describes a combination of devices set to a specific state, when the order of the state change is not important. For example a bedtime scene might include turning off lights and lowering the thermostat, but the order is unimportant.	Applies to Scenes
+                  **/
+                  var applianceTypes = [];
+
                   switch (tag) {
                   case 'Lock':
                       actions = [
                           'getLockState',
                           'setLockState'
                       ];
+                      applianceTypes = ['SMARTLOCK'];
                       break;
                   case 'Lighting':
+                      applianceTypes = ['LIGHT'];
                   case 'Switchable':
+                      applianceTypes = ['SWITCH'];
                       actions = getSwitchableActions(item);
                       break;
                   case 'CurrentTemperature':
@@ -571,9 +598,6 @@ function discoverDevices(token, success, failure) {
                       setTempFormat(item,additionalApplianceDetails);
                     }
                     break;
-                  case 'homekit:HeatingCoolingMode':
-                  case 'TargetTemperature':
-                      break;
                   case 'Thermostat':
                       //only group items are allowed to have a Temperature tag
                       if (item.type === 'Group') {
@@ -585,6 +609,7 @@ function discoverDevices(token, success, failure) {
                               'getTemperatureReading'
                           ];
                           setTempFormat(item,additionalApplianceDetails);
+                          applianceTypes = ['THERMOSTAT'];
                       }
                       break;
                   default:
@@ -598,6 +623,7 @@ function discoverDevices(token, success, failure) {
                       additionalApplianceDetails.openhabVersion = '2';
                       var discoverdDevice = {
                           actions: actions,
+                          applianceTypes: applianceTypes,
                           applianceId: item.name,
                           manufacturerName: 'openHAB',
                           modelName: tag,
