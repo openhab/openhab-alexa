@@ -35,7 +35,7 @@ function getItem(token, itemName, success, failure) {
                     failure({
                         message: 'Error response ' + response.statusCode
                     });
-                    log.info('getItem failed for path: ' + options.path
+                    logger.info('getItem failed for path: ' + options.path
                     + ' code: ' + response.statusCode + ' data: ' + data);
                     return;
                 }
