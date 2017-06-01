@@ -7,12 +7,6 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-/**
- * Utility functions.
- */
-function log(title, msg) {
-    console.log('[DEBUG] (' + title + '): ' + msg);
-}
 
 /**
  * Convert C to F
@@ -79,7 +73,6 @@ function isEventFahrenheit(event){
   event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
 }
 
-module.exports.log = log;
 module.exports.toF = toF;
 module.exports.toC = toC;
 module.exports.generateControlError = generateControlError;

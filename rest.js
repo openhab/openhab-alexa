@@ -9,6 +9,7 @@
 
 var https = require('https');
 var config = require('./config');
+var logger = require('./log');
 
 /**
  * Returns all items
@@ -23,20 +24,25 @@ function getItems(token, success, failure) {
 function getItem(token, itemName, success, failure) {
     var options = httpItemOptions(token, itemName);
     https.get(options, function (response) {
-            if (response.statusCode != 200) {
-                failure({
-                    message: 'Error response ' + response.statusCode
-                });
-                return;
-            }
             var body = '';
+
             response.on('data', function (data) {
                 body += data.toString('utf-8');
             });
+
             response.on('end', function () {
+                if (response.statusCode != 200) {
+                    failure({
+                        message: 'Error response ' + response.statusCode
+                    });
+                    log.info('getItem failed for path: ' + options.path
+                    + ' code: ' + response.statusCode + ' data: ' + data);
+                    return;
+                }
                 var resp = JSON.parse(body);
                 success(resp);
             });
+
             response.on('error', function (e) {
                 failure(e);
             });
