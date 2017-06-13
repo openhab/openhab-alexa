@@ -279,7 +279,7 @@ function getCurrentTemperature(context, event) {
             payloadVersion: event.header.payloadVersion
         };
 
-        var value = parseInt(item.state);
+        var value = parseFloat(item.state);
         var payload = {
           temperatureReading: {
               value: isF ? utils.toC(value) : value
@@ -325,7 +325,7 @@ function getTargetTemperature(context, event) {
             payloadVersion: event.header.payloadVersion
         };
 
-        var value = parseInt(items.targetTemperature.state);
+        var value = parseFloat(items.targetTemperature.state);
         var mode = utils.normalizeThermostatMode(items.heatingCoolingMode ? items.heatingCoolingMode.state : 'Unknown Mode');
 
         var payload = {
@@ -379,7 +379,7 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
         return;
     }
 
-    var curValue = parseInt(targetTemperature.state);
+    var curValue = parseFloat(targetTemperature.state);
 
     /**
      * Alexa needs everything in Celsius, we will need to respect what a user has set
