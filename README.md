@@ -102,3 +102,12 @@ Here are some example voice commands:
  * Alexa turn on Home Theater Scene
  * Alexa dim Kitchen Lights to 30 percent
  * Alexa set house temperature to 70 degrees
+ 
+ ## Icons
+ These can be uploaded to Amazon Skill's Publishing Information section:
+ 
+ 
+Image Size | Image
+------------ | -------------
+108x108 | ![openhab-logo-square108](https://user-images.githubusercontent.com/4563854/29528721-0b8eab3a-866b-11e7-8cd3-f7c278d9e396.png)
+512x512 | ![openhab-logo-square512](https://user-images.githubusercontent.com/4563854/29528722-0b91e49e-866b-11e7-9a53-8aabe3a73c0e.png)
