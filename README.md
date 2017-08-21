@@ -109,5 +109,5 @@ Here are some example voice commands:
  
 Image Size | Image
 ------------ | -------------
-108x108 | ![openhab-logo-square108](https://user-images.githubusercontent.com/4563854/29528721-0b8eab3a-866b-11e7-8cd3-f7c278d9e396.png)
-512x512 | ![openhab-logo-square512](https://user-images.githubusercontent.com/4563854/29528722-0b91e49e-866b-11e7-9a53-8aabe3a73c0e.png)
+108x108 | ![openhab-logo-square108](https://user-images.githubusercontent.com/4563854/29541785-54bc308c-86a4-11e7-9580-3c5722c81503.png)
+512x512 | ![openhab-logo-square512](https://user-images.githubusercontent.com/4563854/29541784-54b4cd60-86a4-11e7-9fa5-a15bcf5a22f5.png)
