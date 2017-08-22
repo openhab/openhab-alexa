@@ -1,0 +1,80 @@
+# Amazon Alexa Smart Home skill for openHAB 2
+Amazon certified openHAB2 as a [smarthome skill for Alexa](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L). This skill allows you to connect your openHAB setup through the myopenHAB.org cloud service to Amazon Alexa. With this skill you can control items that respond to on/off and numeric commands as well as limited support for thermostats. The skill is supported for English (U.S.), English (U.K.), and German languages. 
+
+# General configuration Instructions
+## Requirements
+* myopenHAB.org cloud service running on your instance of openHAB2
+* Amazon accout
+* Echo, Echo Dot, or another way to use Alexa (e.g. [Reverb](https://reverb.ai/))
+<!--- did I miss something? --->
+
+## Skill Configuration
+Visit the [Alexa-Website](https://alexa.amazon.com/) or use the belonging app on your mobile. Navigate to "Smart Home" -> "Configure Smart Home" and search for openHAB. Follow the Instructions there to autohorise Alexa using your myopenhab.org-account.
+If you did not "tag" any items until now first follow the steps below before you search for devices. (You can try, but you will not find any ;) )
+
+## Item Configuration
+You have to tag your items to make them useable by Alexa. See [Tagging](http://docs.openhab.org/configuration/items.html#tagging)
+
+Since tagging (actualy) is a new feature it differs by the way you manage your items.
+
+* **Items via .items - file**
+
+  Some examples of tagged items are:
+  ```
+  Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ]
+  Dimmer BedroomLights "Bedroom Lights" <light> (gBedroom) [ "Lighting" ]
+  Number BedroomTemperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ]
+  
+  Group gDownstairsThermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
+  Number DownstairsThermostatCurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
+  Number DownstairsThermostatTargetTemperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
+  String DownstairsThermostatHeatingCoolingMode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
+  ```
+  Please make sure to place your tag infront of the channel-informations. e.g.
+   ```
+   Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ] {channel="..."}
+   ```
+* **Items via PaperUI**
+ 
+   There (actually) is no easy way to tag yout Items via PaperUI.
+ 
+   Some users managed to tag items via REST API. Have a loot at [this post](https://community.openhab.org/t/apply-tags-to-items-added-linked-in-paper-ui/19443/11?u=mboremski).
+   <!--- Are there more relevant ways to configure items? --->
+   <!--- Should we add a chapter for availabletags? --->
+
+After tagging your items you can go back to the Alexa-configurations and search for devices.
+
+## Example Voice Commands
+Here are some example voice commands:
+
+ * Alexa turn on Office Lights
+ * Alexa turn off Pool Waterfall
+ * Alexa turn on House Fan
+ * Alexa turn on Home Theater Scene
+ * Alexa dim Kitchen Lights to 30 percent
+ * Alexa set house temperature to 70 degrees
+
+
+## Additional comments
+<!--- you have better suggestions for the Headline? --->
+* Thermostats are created by adding the items of a thermostat to a group which has the tag "Thermostat" which follows the HomeKit binding configuration. see http://docs.openhab.org/addons/io/homekit/readme.html for more information on how to configure thermostats. Thermostats can have their target temperature set as well as be asked what the current temperature is.
+* Channels which are tagged "CurrentTemperature" but NOT part of a thermostat group will be exposed as a Temperature item in Alexa and can be asked what their current value is ("Alex what is the upstairs temperature? ")
+* By default all temperatures are in Celsius, for Fahrenheit add the tag `Fahrenheit` to the thermostat group item (which should also be tagged with `Thermostat`).  For standalone temperature channels, add it directly to the item.
+* In addition you can tag Rollershutter items by `[ "Switchable" ]` and get support for `setPercentage`, `incrementPercentage`and `decrementPercentage` commands. Example:
+  ```
+  Rollershutter Shutter_GF_Kitchen "Rollershutter Kitchen" [ "Switchable" ]
+  ```
+* With commands like `Alexa, set rollershutter kitchen to 100%` you control the rollershutter in the kitchen.
+* If your rollershutters or blinds happen not to support aperture by percentage the following rule helps to achieve opening and closing:
+  ```
+  rule Rollershutter_Kitchen
+  when
+      Item Shutter_GF_Kitchen received command
+  then
+      if (receivedCommand < 50) { // in germany alexa often recognizes "0" as "9"
+        sendCommand(Shutter_GF_Kitchen, UP)
+      } else {
+        sendCommand(Shutter_GF_Kitchen, DOWN)
+      }
+  end
+  ```
