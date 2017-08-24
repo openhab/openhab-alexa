@@ -14,15 +14,16 @@ The skill is supported for English (U.S.), English (U.K.), and German languages.
 * Echo, Echo Dot, or another way to use Alexa (e.g. [Reverb](https://reverb.ai/))
 <!--- did I miss something? --->
 
-## Skill Configuration
+## 1. Skill Configuration
 
-Visit the [Alexa-Website](https://alexa.amazon.com/) or use the belonging app on your mobile.
-Navigate to "Smart Home" -> "Configure Smart Home" and search for openHAB.
-Follow the Instructions there to autohorise Alexa using your myopenhab.org-account.
-If you did not "tag" any items until now first follow the steps below before you search for devices.
+1. Visit the [Alexa-Website](https://alexa.amazon.com/) or use the belonging app on your mobile.
+2. Navigate to "Smart Home" -> "Configure Smart Home" and search for openHAB.
+3. Follow the Instructions there to autohorise Alexa using your myopenhab.org-account.
+
+If you did not "tag" any items until now, first follow the steps below before you search for devices.
 (You can try, but you will not find any ;) )
 
-## Item Configuration
+## 2. Item Configuration
 
 You have to tag your items to make them useable by Alexa.
 See [Tagging](http://docs.openhab.org/configuration/items.html#tagging)
@@ -58,6 +59,8 @@ Since tagging (actualy) is a new feature it differs by the way you manage your i
    Have a loot at [this post](https://community.openhab.org/t/apply-tags-to-items-added-linked-in-paper-ui/19443/11?u=mboremski).
    <!--- Are there more relevant ways to configure items? --->
    <!--- Should we add a chapter for availabletags? --->
+
+## 3. Final Configuration
 
 After tagging your items you can go back to the Alexa-configurations and search for devices.
 
