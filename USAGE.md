@@ -34,7 +34,7 @@ Since tagging (actualy) is a new feature it differs by the way you manage your i
 
   Some examples of tagged items are:
   
-  ```
+  ```java
   Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ]
   Dimmer BedroomLights "Bedroom Lights" <light> (gBedroom) [ "Lighting" ]
   Number BedroomTemperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ]
@@ -47,7 +47,7 @@ Since tagging (actualy) is a new feature it differs by the way you manage your i
   
   Please make sure to place your tag infront of the channel-informations. e.g.
   
-   ```
+   ```java
    Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ] {channel="..."}
    ```
    
@@ -88,12 +88,12 @@ Thermostats can have their target temperature set as well as be asked what the c
 For standalone temperature channels, add it directly to the item.
 * In addition you can tag Rollershutter items by `[ "Switchable" ]` and get support for `setPercentage`, `incrementPercentage`and `decrementPercentage` commands.
 Example:
-  ```
+  ```java
   Rollershutter Shutter_GF_Kitchen "Rollershutter Kitchen" [ "Switchable" ]
   ```
 * With commands like `Alexa, set rollershutter kitchen to 100%` you control the rollershutter in the kitchen.
 * If your rollershutters or blinds happen not to support aperture by percentage the following rule helps to achieve opening and closing:
-  ```
+  ```java
   rule Rollershutter_Kitchen
   when
       Item Shutter_GF_Kitchen received command
