@@ -36,7 +36,7 @@ function getItem(token, itemName, success, failure) {
                         message: 'Error response ' + response.statusCode
                     });
                     logger.info('getItem failed for path: ' + options.path +
-                    ' code: ' + response.statusCode + ' data: ' + data);
+                    ' code: ' + response.statusCode + ' data: ' + body);
                     return;
                 }
                 var resp = JSON.parse(body);
