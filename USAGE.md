@@ -5,28 +5,19 @@ This skill allows you to connect your openHAB setup through the myopenHAB.org cl
 With this skill you can control items that respond to on/off and numeric commands as well as limited support for thermostats.
 The skill is supported for English (U.S.), English (U.K.), and German languages. 
 
-# General configuration Instructions
+## General configuration Instructions
 
-## Requirements
+### Requirements
 
-* myopenHAB.org cloud service running on your instance of openHAB2
-* Amazon accout
+* [openHAB Cloud Connector](http://docs.openhab.org/addons/io/openhabcloud/readme.html)
+* Amazon account
 * Echo, Echo Dot, or another way to use Alexa (e.g. [Reverb](https://reverb.ai/))
 <!--- did I miss something? --->
 
-## 1. Skill Configuration
-
-1. Visit the [Alexa-Website](https://alexa.amazon.com/) or use the belonging app on your mobile.
-2. Navigate to "Smart Home" -> "Configure Smart Home" and search for openHAB.
-3. Follow the Instructions there to autohorise Alexa using your myopenhab.org-account.
-
-If you did not "tag" any items until now, first follow the steps below before you search for devices.
-(You can try, but you will not find any ;) )
-
-## 2. Item Configuration
+### 1. Item Configuration
 
 You have to tag your items to make them useable by Alexa.
-See [Tagging](http://docs.openhab.org/configuration/items.html#tagging)
+See [Tagging](http://docs.openhab.org/configuration/items.html#tagging) for more details.
 
 Since tagging (actualy) is a new feature it differs by the way you manage your items.
 
@@ -35,20 +26,21 @@ Since tagging (actualy) is a new feature it differs by the way you manage your i
   Some examples of tagged items are:
   
   ```java
-  Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ]
-  Dimmer BedroomLights "Bedroom Lights" <light> (gBedroom) [ "Lighting" ]
-  Number BedroomTemperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ]
+  Switch Kitchen_Lights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ]
+  Dimmer Bedroom_Lights "Bedroom Lights" <light> (gBedroom) [ "Lighting" ]
+  Number Bedroom_Temperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ]
   
-  Group gDownstairsThermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
-  Number DownstairsThermostatCurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
-  Number DownstairsThermostatTargetTemperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
-  String DownstairsThermostatHeatingCoolingMode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
+  Group gDownstairs_Thermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
+  Number Downstairs_Thermostat_CurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
+  Number Downstairs_Thermostat_Target_Temperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
+  String Downstairs_Thermostat_Heating_Cooling_Mode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
   ```
   
   Please make sure to place your tag infront of the channel-informations. e.g.
+  See [Item Definition and Syntax](http://docs.openhab.org/configuration/items.html#item-definition-and-syntax)
   
    ```java
-   Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ] {channel="..."}
+   Switch Kitchen_Lights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ] {channel="..."}
    ```
    
 * **Items via PaperUI**
@@ -60,28 +52,35 @@ Since tagging (actualy) is a new feature it differs by the way you manage your i
    <!--- Are there more relevant ways to configure items? --->
    <!--- Should we add a chapter for availabletags? --->
 
-## 3. Final Configuration
+### 2. Skill Configuration
+
+1. Visit the [Alexa-Website](https://alexa.amazon.com/) or use the belonging app on your mobile.
+2. Navigate to "Smart Home" -> "Configure Smart Home" and search for openHAB.
+3. Follow the Instructions there to authorise Alexa using your myopenhab.org-account.
+
+If you did not "tag" any items until now, first follow the steps below before you search for devices.
+(You can try, but you will not find any ;) )
+
+### 3. Final Configuration
 
 After tagging your items you can go back to the Alexa-configurations and search for devices.
 
-## Example Voice Commands
+### Example Voice Commands
 
 Here are some example voice commands:
 
- * Alexa turn on Office Lights
- * Alexa turn off Pool Waterfall
- * Alexa turn on House Fan
- * Alexa turn on Home Theater Scene
- * Alexa dim Kitchen Lights to 30 percent
- * Alexa set house temperature to 70 degrees
+ * "Alexa. turn on Kitchen Lights"
+ * "Alexa, turn off Kitchen Lights"
+ * "Alexa, turn on Bedroom Lights"
+ * "Alexa, turn on Bedroom Lights"
+ * "Alexa, dim Kitchen Lights to 30 percent"
 
-
-## Additional comments
+### Additional comments
 
 <!--- you have better suggestions for the Headline? --->
 
 * Thermostats are created by adding the items of a thermostat to a group which has the tag "Thermostat" which follows the HomeKit binding configuration. 
-See http://docs.openhab.org/addons/io/homekit/readme.html for more information on how to configure thermostats.
+See [HomeKit Add-on](http://docs.openhab.org/addons/io/homekit/readme.html) for more information on how to configure thermostats.
 Thermostats can have their target temperature set as well as be asked what the current temperature is.
 * Channels which are tagged "CurrentTemperature" but NOT part of a thermostat group will be exposed as a Temperature item in Alexa and can be asked what their current value is ("Alex what is the upstairs temperature? ")
 * By default all temperatures are in Celsius, for Fahrenheit add the tag `Fahrenheit` to the thermostat group item (which should also be tagged with `Thermostat`).
