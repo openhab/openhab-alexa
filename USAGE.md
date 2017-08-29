@@ -1,11 +1,12 @@
-# Amazon Alexa Smart Home skill for openHAB 2
+# Amazon Alexa Smart Home Skill for openHAB 2
 
 Amazon certified openHAB2 as a [smarthome skill for Alexa](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L).
 This skill allows you to connect your openHAB setup through the myopenHAB.org cloud service to Amazon Alexa.
-With this skill you can control items that respond to on/off and numeric commands as well as limited support for thermostats.
+With this skill you can control items that respond to on/off and numeric commands.
+The Skill as well has limited support for thermostats.
 The skill is supported for English (U.S.), English (U.K.), and German languages. 
 
-## General configuration Instructions
+## General Configuration Instructions
 
 ### Requirements
 
@@ -19,16 +20,16 @@ The skill is supported for English (U.S.), English (U.K.), and German languages.
 You have to tag your items to make them useable by Alexa.
 See [Tagging](http://docs.openhab.org/configuration/items.html#tagging) for more details.
 
-* **Items via .items - file**
+* **Items via .items - File**
 
   Some examples of tagged items are:
   
   ```java
-  Switch Kitchen_Lights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ]
-  Dimmer Bedroom_Lights "Bedroom Lights" <light> (gBedroom) [ "Lighting" ]
+  Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) [ "Lighting" ]
+  Dimmer Bedroom_Light "Bedroom Light" <light> (gBedroom) [ "Lighting" ]
   Number Bedroom_Temperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ]
   
-  Group gDownstairs_Thermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
+  Group gDownstairsThermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
   Number Downstairs_Thermostat_CurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
   Number Downstairs_Thermostat_Target_Temperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
   String Downstairs_Thermostat_Heating_Cooling_Mode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
@@ -38,7 +39,7 @@ See [Tagging](http://docs.openhab.org/configuration/items.html#tagging) for more
   See [Item Definition and Syntax](http://docs.openhab.org/configuration/items.html#item-definition-and-syntax)
   
    ```java
-   Switch Kitchen_Lights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ] {channel="..."}
+   Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) [ "Lighting" ] {channel="..."}
    ```
    
 * **Items via PaperUI**
@@ -64,13 +65,13 @@ After tagging your items you can go back to the Alexa-configurations and search 
 
 Here are some example voice commands:
 
- * "Alexa. turn on Kitchen Lights"
- * "Alexa, turn off Kitchen Lights"
- * "Alexa, turn on Bedroom Lights"
- * "Alexa, turn on Bedroom Lights"
+ * "Alexa. turn on Kitchen Light"
+ * "Alexa, turn off Kitchen Light"
+ * "Alexa, turn on Bedroom Light"
+ * "Alexa, turn on Bedroom Light"
  * "Alexa, dim Kitchen Lights to 30 percent"
 
-### Additional comments
+### Additional Comments
 
 <!--- you have better suggestions for the Headline? --->
 
