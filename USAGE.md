@@ -1,7 +1,10 @@
 # Amazon Alexa Smart Home Skill for openHAB 2
 
 Amazon certified openHAB2 as a [smarthome skill for Alexa](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L).
+This page describes how to use the skill certified by Amazon.
 This skill allows you to connect your openHAB setup through the myopenHAB.org cloud service to Amazon Alexa.
+(See [README.md](https://github.com/openhab/openhab-alexa/blob/master/README.md) for other setup-options regarding your own openHAB-cloud.)
+
 With this skill you can control items that respond to on/off and numeric commands.
 The Skill as well has limited support for thermostats.
 The skill is supported for English (U.S.), English (U.K.), and German languages. 
@@ -10,7 +13,7 @@ The skill is supported for English (U.S.), English (U.K.), and German languages.
 
 ### Requirements
 
-* [openHAB Cloud Connector](http://docs.openhab.org/addons/io/openhabcloud/readme.html)
+* [openHAB Cloud Connector](http://docs.openhab.org/addons/io/openhabcloud/readme.html) configured using myopenHAB.org
 * Amazon account
 * Echo, Echo Dot, or another way to use Alexa (e.g. [Reverb](https://reverb.ai/))
 <!--- did I miss something? --->
