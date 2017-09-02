@@ -2,8 +2,8 @@
 
 Amazon certified openHAB2 as a [smarthome skill for Alexa](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L).
 This page describes how to use the skill certified by Amazon.
-This skill allows you to connect your openHAB setup through the myopenHAB.org cloud service to Amazon Alexa.
-(See [README.md](https://github.com/openhab/openhab-alexa/blob/master/README.md) for other setup-options regarding your own openHAB-cloud.)
+This skill allows you to connect your openHAB setup through the [myopenHAB.org](http://myopenHAB.org) cloud service to Amazon Alexa.
+(See [README.md](https://github.com/openhab/openhab-alexa/blob/master/README.md) for other setup options regarding your own openHAB cloud.)
 
 With this skill you can control items that respond to on/off and numeric commands.
 The Skill as well has limited support for thermostats.
@@ -15,8 +15,7 @@ The skill is supported for English (U.S.), English (U.K.), and German languages.
 
 * [openHAB Cloud Connector](http://docs.openhab.org/addons/io/openhabcloud/readme.html) configured using myopenHAB.org
 * Amazon account
-* Echo, Echo Dot, or another way to use Alexa (e.g. [Reverb](https://reverb.ai/))
-<!--- did I miss something? --->
+* Amazon Echo, Amazon Echo Dot or compatible Alexa speaker or solution (e.g. [Reverb](https://reverb.ai/))
 
 ### 1. Item Configuration
 
@@ -25,6 +24,13 @@ See [Tagging](http://docs.openhab.org/configuration/items.html#tagging) for more
 
 * **Items via .items - File**
 
+  Please make sure to place your tag infront of the channel-informations. e.g.
+  See [Item Definition and Syntax](http://docs.openhab.org/configuration/items.html#item-definition-and-syntax)
+  
+   ```java
+   Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) [ "Lighting" ] {channel="..."}
+   ```
+   
   Some examples of tagged items are:
   
   ```java
@@ -37,17 +43,10 @@ See [Tagging](http://docs.openhab.org/configuration/items.html#tagging) for more
   Number Downstairs_Thermostat_Target_Temperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
   String Downstairs_Thermostat_Heating_Cooling_Mode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
   ```
-  
-  Please make sure to place your tag infront of the channel-informations. e.g.
-  See [Item Definition and Syntax](http://docs.openhab.org/configuration/items.html#item-definition-and-syntax)
-  
-   ```java
-   Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) [ "Lighting" ] {channel="..."}
-   ```
-   
+
 * **Items via PaperUI**
  
-   There (actually) is no easy way to tag yout Items via PaperUI.
+   There is no easy way to tag yout Items via PaperUI.
  
    Some users managed to tag items via REST API.
    Have a loot at [this post](https://community.openhab.org/t/apply-tags-to-items-added-linked-in-paper-ui/19443/11?u=mboremski).
@@ -68,7 +67,7 @@ After tagging your items you can go back to the Alexa-configurations and search 
 
 Here are some example voice commands:
 
- * "Alexa. turn on Kitchen Light"
+ * "Alexa, turn on Kitchen Light"
  * "Alexa, turn off Kitchen Light"
  * "Alexa, turn on Bedroom Light"
  * "Alexa, turn on Bedroom Light"
