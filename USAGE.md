@@ -24,19 +24,14 @@ Pleas see the [HomeKit item configuration](http://docs.openhab.org/addons/io/hom
 
 * **Items via .items - File**
 
-  Please make sure to place your tag infront of the channel-informations.
   See [Item Definition and Syntax](http://docs.openhab.org/configuration/items.html#item-definition-and-syntax)
-  
-   ```java
-   Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) [ "Lighting" ] {channel="..."}
-   ```
-   
+     
   Some examples of tagged items are:
   
   ```java
-  Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) [ "Lighting" ]
-  Dimmer Bedroom_Light "Bedroom Light" <light> (gBedroom) [ "Lighting" ]
-  Number Bedroom_Temperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ]
+  Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) [ "Lighting" ] {channel="..."}
+  Dimmer Bedroom_Light "Bedroom Light" <light> (gBedroom) [ "Lighting" ] {channel="..."}
+  Number Bedroom_Temperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ] {channel="..."}
   
   Group gDownstairsThermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
   Number Downstairs_Thermostat_CurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
