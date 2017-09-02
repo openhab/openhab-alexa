@@ -46,7 +46,7 @@ See [Tagging](http://docs.openhab.org/configuration/items.html#tagging) for more
 
 * **Items via PaperUI**
  
-   There is no easy way to tag yout Items via PaperUI.
+   There is no easy way to tag your Items via PaperUI.
  
    Some users managed to tag items via REST API.
    Have a loot at [this post](https://community.openhab.org/t/apply-tags-to-items-added-linked-in-paper-ui/19443/11?u=mboremski).
