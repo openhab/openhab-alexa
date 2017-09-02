@@ -44,12 +44,11 @@ Pleas see the [HomeKit item configuration](http://docs.openhab.org/addons/io/hom
   String Downstairs_Thermostat_Heating_Cooling_Mode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
   ```
 
-* **Items via PaperUI**
- 
-   There is no easy way to tag your Items via PaperUI.
- 
-   Some users managed to tag items via REST API.
-   Have a loot at [this post](https://community.openhab.org/t/apply-tags-to-items-added-linked-in-paper-ui/19443/11?u=mboremski).
+* **Other Configuration Options**
+
+    * The interactive REST API interface available through the openHAB 2 dashboard
+    * PaperUI does not yet allow manipulation of tags
+
    <!--- Are there more relevant ways to configure items? --->
    <!--- Should we add a chapter for availabletags? --->
 
@@ -72,6 +71,8 @@ Here are some example voice commands:
  * "Alexa, turn on Bedroom Light"
  * "Alexa, turn on Bedroom Light"
  * "Alexa, dim Kitchen Lights to 30 percent"
+ * "Alexa, what is the downstairs temperature?"
+ * "Alexa, set the downstairs temperature to 72 degrees"
 
 ### Additional Comments
 
@@ -79,7 +80,6 @@ Here are some example voice commands:
 
 * Thermostats are created by adding the items of a thermostat to a group which has the tag "Thermostat" which follows the HomeKit binding configuration. 
 See [HomeKit Add-on](http://docs.openhab.org/addons/io/homekit/readme.html) for more information on how to configure thermostats.
-Thermostats can have their target temperature set as well as be asked what the current temperature is.
 * Channels which are tagged "CurrentTemperature" but NOT part of a thermostat group will be exposed as a Temperature item in Alexa and can be asked what their current value is ("Alex what is the upstairs temperature? ")
 * By default all temperatures are in Celsius, for Fahrenheit add the tag `Fahrenheit` to the thermostat group item (which should also be tagged with `Thermostat`).
 For standalone temperature channels, add it directly to the item.
@@ -89,16 +89,3 @@ Example:
   Rollershutter Shutter_GF_Kitchen "Rollershutter Kitchen" [ "Switchable" ]
   ```
 * With commands like `Alexa, set rollershutter kitchen to 100%` you control the rollershutter in the kitchen.
-* If your rollershutters or blinds happen not to support aperture by percentage the following rule helps to achieve opening and closing:
-  ```java
-  rule Rollershutter_Kitchen
-  when
-      Item Shutter_GF_Kitchen received command
-  then
-      if (receivedCommand < 50) { // in germany alexa often recognizes "0" as "9"
-        sendCommand(Shutter_GF_Kitchen, UP)
-      } else {
-        sendCommand(Shutter_GF_Kitchen, DOWN)
-      }
-  end
-  ```
