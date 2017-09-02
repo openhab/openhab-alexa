@@ -67,7 +67,7 @@ Here are some example voice commands:
  * "Alexa, turn on Bedroom Light"
  * "Alexa, dim Kitchen Lights to 30 percent"
  * "Alexa, what is the downstairs temperature?"
- * "Alexa, set the downstairs temperature to 72 degrees"
+ * "Alexa, set the downstairs temperature to 22 degrees"
 
 ### Additional Comments
 
