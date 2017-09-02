@@ -19,12 +19,12 @@ The skill is supported for English (U.S.), English (U.K.), and German languages.
 
 ### 1. Item Configuration
 
-You have to tag your items to make them useable by Alexa.
-See [Tagging](http://docs.openhab.org/configuration/items.html#tagging) for more details.
+Items are exposed to Alexa through the use of tags which follow the [Homitkit](http://docs.openhab.org/addons/io/homekit/readme.html) binding tagging syntax.
+Pleas see the [HomeKit item configuration](http://docs.openhab.org/addons/io/homekit/readme.html#item-configuration) page for information on how to tag items.
 
 * **Items via .items - File**
 
-  Please make sure to place your tag infront of the channel-informations. e.g.
+  Please make sure to place your tag infront of the channel-informations.
   See [Item Definition and Syntax](http://docs.openhab.org/configuration/items.html#item-definition-and-syntax)
   
    ```java
