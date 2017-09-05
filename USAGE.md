@@ -19,7 +19,7 @@ The skill is supported for English (U.S.), English (U.K.), and German languages.
 
 ### 1. Item Configuration
 
-Items are exposed to Alexa through the use of tags which follow the [Homitkit](http://docs.openhab.org/addons/io/homekit/readme.html) binding tagging syntax.
+Items are exposed to Alexa through the use of tags which follow the [HomeKit](http://docs.openhab.org/addons/io/homekit/readme.html) binding tagging syntax.
 Pleas see the [HomeKit item configuration](http://docs.openhab.org/addons/io/homekit/readme.html#item-configuration) page for information on how to tag items.
 
 * **Items via .items - File**
@@ -49,13 +49,13 @@ Pleas see the [HomeKit item configuration](http://docs.openhab.org/addons/io/hom
 
 ### 2. Skill Configuration
 
-1. Visit the [Alexa-Website](https://alexa.amazon.com/) or use the belonging app on your mobile.
+1. Visit the [Alexa website](https://alexa.amazon.com/) or use the Alexa app on your mobile device.
 2. Navigate to "Smart Home" -> "Configure Smart Home" and search for openHAB.
-3. Follow the Instructions there to authorise Alexa using your myopenhab.org-account.
+3. Follow the instructions to authorize Alexa using your myopenhab.org account.
 
 ### 3. Final Configuration
 
-After tagging your items you can go back to the Alexa-configurations and search for devices.
+After tagging your items you can go back to the Alexa application and search for devices.
 
 ### Example Voice Commands
 
