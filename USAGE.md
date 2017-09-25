@@ -1,13 +1,14 @@
-# Amazon Alexa Smart Home Skill for openHAB 2
+# Amazon Alexa Skill
 
-Amazon certified openHAB2 as a [smarthome skill for Alexa](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L).
-This page describes how to use the skill certified by Amazon.
-This skill allows you to connect your openHAB setup through the [myopenHAB.org](http://myopenHAB.org) cloud service to Amazon Alexa.
-(See [README.md](https://github.com/openhab/openhab-alexa/blob/master/README.md) for other setup options and development information.)
+An intelligent voice guided personal assistant. Amazon Alexa became famous by the Amazon Echo speaker but is also available through independent solutions. The certified openHAB Alexa skill allows to naturally control the openHAB smart home by voiced commands.  
 
-With this skill you can control items that respond to on/off and numeric commands.
-The Skill as well has limited support for thermostats.
-The skill is supported for English (U.S.), English (U.K.), and German languages. 
+This page describes how to use the [openHAB Alexa Smart Home Skill](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L).
+The skill connects your openHAB setup through the [myopenHAB.org](http://myopenHAB.org) cloud service to Amazon Alexa.
+(See [this document](https://github.com/openhab/openhab-alexa/blob/master/README.md) for other setup options and development information.)
+
+With this skill you can control Items that respond to on/off and numeric commands.
+The skill as well has limited support for thermostats.
+Currently supported are the English (U.S.), English (U.K.), and German language. 
 
 ## General Configuration Instructions
 
@@ -20,7 +21,7 @@ The skill is supported for English (U.S.), English (U.K.), and German languages.
 ### 1. Item Configuration
 
 Items are exposed to Alexa through the use of tags which follow the [HomeKit](http://docs.openhab.org/addons/io/homekit/readme.html) binding tagging syntax.
-Pleas see the [HomeKit item configuration](http://docs.openhab.org/addons/io/homekit/readme.html#item-configuration) page for information on how to tag items.
+See the [Hue Emulation](http://docs.openhab.org/addons/io/hueemulation/readme.html) and [HomeKit Add-on](http://docs.openhab.org/addons/io/homekit/readme.html) documentation for details about tagging and available tags.
 
 * **Items via .items - File**
 
@@ -29,14 +30,14 @@ Pleas see the [HomeKit item configuration](http://docs.openhab.org/addons/io/hom
   Some examples of tagged items are:
   
   ```java
-  Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) [ "Lighting" ] {channel="..."}
-  Dimmer Bedroom_Light "Bedroom Light" <light> (gBedroom) [ "Lighting" ] {channel="..."}
-  Number Bedroom_Temperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ] {channel="..."}
+  Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) ["Lighting"] {channel="..."}
+  Dimmer Bedroom_Light "Bedroom Light" <light> (gBedroom) ["Lighting"] {channel="..."}
+  Number Bedroom_Temperature "Bedroom Temperature" (gBedroom) ["CurrentTemperature"] {channel="..."}
   
-  Group gDownstairsThermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
-  Number Downstairs_Thermostat_CurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
-  Number Downstairs_Thermostat_Target_Temperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
-  String Downstairs_Thermostat_Heating_Cooling_Mode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling
+  Group gDownstairsThermostat "Downstairs Thermostat" (gFF) ["Thermostat"]
+  Number Downstairs_Thermostat_CurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) ["CurrentTemperature"]
+  Number Downstairs_Thermostat_Target_Temperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) ["TargetTemperature"]
+  String Downstairs_Thermostat_Heating_Cooling_Mode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) ["homekit:HeatingCooling"]
   ```
 
 * **Other Configuration Options**
@@ -44,8 +45,24 @@ Pleas see the [HomeKit item configuration](http://docs.openhab.org/addons/io/hom
     * The interactive REST API interface available through the openHAB 2 dashboard
     * PaperUI does not yet allow manipulation of tags
 
-   <!--- Are there more relevant ways to configure items? --->
-   <!--- Should we add a chapter for availabletags? --->
+#### Item Label Recommendation
+
+Matching of voice commands to Items happens based on the Item label (e.g. "Kitchen Light").
+It is therefore advisable, to choose labels that can be used to form natural commands.
+As an example, compare "Alexa, turn on the *Kitchen Light*" vs. "Alexa, turn on the *Ground Floor LEDs Kitchen*".
+
+In combination with the Alexa skill (and other similar services) you are thereby tempted to break with your naming scheme and introduce confusion into your setup.
+openHAB Tip: YOu may define multiple Items bound to one channel.
+Instead of manipulating the label of one single Item, you can define multiple Items specifically for voice commands.
+See the following example:
+
+```java
+// Common/main Item bound to a binding channel
+Switch Kitchen_Light    "Ground Floor LEDs Kitchen" <light> (gKitchen) {channel="..."}
+// Two Items with labels fitting for voice commands, bound to the same binding channel
+Switch Kitchen_Light_A  "Kitchen Light"                   ["Lighting"] {channel="..."}
+Switch Kitchen_Light_A2 "Kitchen LEDs"                    ["Lighting"] {channel="..."}
+```
 
 ### 2. Skill Configuration
 
@@ -61,17 +78,15 @@ After tagging your items you can go back to the Alexa application and search for
 
 Here are some example voice commands:
 
- * "Alexa, turn on Kitchen Light"
- * "Alexa, turn off Kitchen Light"
- * "Alexa, turn on Bedroom Light"
- * "Alexa, turn on Bedroom Light"
- * "Alexa, dim Kitchen Lights to 30 percent"
- * "Alexa, what is the downstairs temperature?"
- * "Alexa, set the downstairs temperature to 22 degrees"
+<!-- https://www.amazon.com/gp/help/customer/display.html?nodeId=201751280 -->
+
+- "Alexa, turn on the Kitchen Light"
+- "Alexa, turn off the Kitchen Light"
+- "Alexa, dim the Kitchen Lights to 30 percent"
+- "Alexa, what's the downstairs temperature?"
+- "Alexa, set the downstairs temperature to 22 degrees"
 
 ### Additional Comments
-
-<!--- you have better suggestions for the Headline? --->
 
 * Thermostats are created by adding the items of a thermostat to a group which has the tag "Thermostat" which follows the HomeKit binding configuration. 
 See [HomeKit Add-on](http://docs.openhab.org/addons/io/homekit/readme.html) for more information on how to configure thermostats.
