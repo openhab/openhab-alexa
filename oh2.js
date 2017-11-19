@@ -582,6 +582,13 @@ function discoverDevices(token, success, failure) {
                       ];
                       applianceTypes = ['SMARTLOCK'];
                       break;
+                  case 'Outlet':
+                      actions = [
+                          'turnOn',
+                          'turnOff'
+                      ];
+                      applianceTypes = ['SMARTPLUG'];
+                      break;
                   case 'Lighting':
                       applianceTypes = ['LIGHT'];
                       actions = getSwitchableActions(item);
