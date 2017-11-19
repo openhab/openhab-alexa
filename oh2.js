@@ -584,6 +584,8 @@ function discoverDevices(token, success, failure) {
                       break;
                   case 'Lighting':
                       applianceTypes = ['LIGHT'];
+                      actions = getSwitchableActions(item);
+                      break;
                   case 'Switchable':
                       applianceTypes = ['SWITCH'];
                       actions = getSwitchableActions(item);
