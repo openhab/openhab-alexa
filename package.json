@@ -20,5 +20,8 @@
     "setup": "node-lambda setup",
     "run": "node-lambda run",
     "deploy": "node-lambda deploy"
+  },
+  "dependencies": {
+    "uuid": "^3.2.1"
   }
 }

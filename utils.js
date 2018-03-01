@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-
+var TAG_PATTERN =  /^Alexa\.(\w+)\.(\w+)/;
 /**
  * Convert C to F
  */
@@ -73,8 +73,117 @@ function isEventFahrenheit(event){
   event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
 }
 
+function generateResponseHeader(header){
+  return {
+    messageId: header.messageId,
+    name: "Response",
+    namespace: header.namespace,
+    payloadVersion: header.payloadVersion
+  };
+}
+
+function date() {
+  var d = new Date();
+  return d.toISOString();
+}
+
+/**
+ * Creates/Modifies a map structure to assoicate items to an endpoint from Alexa cookies
+ * eg:
+ * 
+ * cookie: {
+ *  "Alexa.ThermostatController.targetSetpoint" : "FooTargetSetPoint"
+ *  "Alexa.ThermostatController.upperSetpoint" : "FooUpperSetPoint
+ *  "Alexa.ThermostatController.lowerSetpoint" : "FooLowerSetPoint"
+ *  "Alexa.PowerController.powerState" : "FooSwitch"
+ * }
+ * 
+ * returns:
+ * 
+ * propertyMap:
+ *  {
+ *    ThermostatController : {
+ *      targetSetpoint : "FooTargetSetPoint",
+ *      upperSetpoint : "FooUpperSetPoint",
+ *      lowerSetpoint : "FooLowerSetPoint",
+ *    },
+ *    PowerController : {
+ *      powerState : "FooSwitch"
+ *    }
+ *    
+ *  }
+ * @param {object} cookies 
+ */
+function cookiesToPropertyMap(cookies) {
+    var propertyMap = {}
+    Object.keys(cookies).forEach(function (key) {
+      var matches;
+      //eg. Alex.ThermostatController.targetSetpoint
+      if ((matches = TAG_PATTERN.exec(key)) !== null) {
+        var itemName = cookies[key];
+        var groupName = matches[1];
+        var property = matches[2];
+        if (!propertyMap[groupName]) {
+          propertyMap[groupName] = {};
+        }
+        propertyMap[groupName][property] = itemName;
+      }
+    });
+    return propertyMap;
+  }
+  
+  /**
+   * Creates/Modifies a map structure to assoicate items to an endpoint from tags, will return a new map
+   * if propertyMap is omitted or null, otherwise will modify the existing map (and return it as well)
+   * eg:
+   * 
+   * OH Tags
+   * 
+   * ["Alexa.ThermostatController.targetSetpoint"]
+   * ["Alexa.ThermostatController.upperSetpoint"]
+   * ["Alexa.ThermostatController.lowerSetpoint"]
+   * ["Alexa.PowerController.powerState"]
+   * 
+   * returns
+   * 
+   * propertyMap:
+   *  {
+   *    ThermostatController : {
+   *      targetSetpoint : "FooTargetSetPoint",
+   *      upperSetpoint : "FooUpperSetPoint",
+   *      lowerSetpoint : "FooLowerSetPoint",
+   *    },
+   *    PowerController : {
+   *      powerState : "FooSwitch"
+   *    }
+   *    
+   *  }
+   * @param {String} item 
+   * @param {object} propertyMap 
+   */
+  function tagsToPropertyMap(item, propertyMap) {
+    if(!propertyMap){
+      propertyMap = {}
+    }
+    item.tags.forEach(function (tag) {
+      var matches;
+      if ((matches = TAG_PATTERN.exec(tag)) !== null) {
+        var groupName = matches[1];
+        var property = matches[2];
+        if (!propertyMap[groupName]) {
+          propertyMap[groupName] = {};
+        }
+        propertyMap[groupName][property] = item.name;
+      }
+    });
+    return propertyMap;
+  }
+  
 module.exports.toF = toF;
 module.exports.toC = toC;
 module.exports.generateControlError = generateControlError;
 module.exports.normalizeThermostatMode = normalizeThermostatMode;
 module.exports.isEventFahrenheit = isEventFahrenheit;
+module.exports.date = date;
+module.exports.cookiesToPropertyMap = cookiesToPropertyMap;
+module.exports.tagsToPropertyMap = tagsToPropertyMap;

@@ -8,22 +8,46 @@
  */
 
 var https = require('https');
+var http = require('http');
 var config = require('./config');
 var logger = require('./log');
+
+var http = config.proto && config.proto == 'http' ? http : https;
 
 /**
  * Returns all items
  */
 function getItems(token, success, failure) {
-    return getItem(token, null, success, failure);
+    return getItemOrItems(token, null, null, success, failure);
+}
+
+/**
+ * Returns all items as just Name and State
+ */
+function getItemStates(token, success, failure) {
+    return getItemOrItems(token, null, 'fields=name,state', success, failure);
+}
+
+/**
+ * Returns all items
+ */
+function getItemsRecursively(token, success, failure) {
+    return getItemOrItems(token, null, 'recursive=true', success, failure);
 }
 
 /**
  * Returns a single item
  */
 function getItem(token, itemName, success, failure) {
-    var options = httpItemOptions(token, itemName);
-    https.get(options, function (response) {
+    return getItemOrItems(token, itemName, null, success, failure);
+}
+
+/**
+ * Returns a single item
+ */
+function getItemOrItems(token, itemName, paramters, success, failure) {
+    var options = httpItemOptions(token, itemName,'GET', paramters);
+    http.get(options, function (response) {
             var body = '';
 
             response.on('data', function (data) {
@@ -36,7 +60,7 @@ function getItem(token, itemName, success, failure) {
                         message: 'Error response ' + response.statusCode
                     });
                     logger.info('getItem failed for path: ' + options.path +
-                    ' code: ' + response.statusCode + ' data: ' + data);
+                    ' code: ' + response.statusCode + ' body: ' + body);
                     return;
                 }
                 var resp = JSON.parse(body);
@@ -54,8 +78,9 @@ function getItem(token, itemName, success, failure) {
  * POST a command to a item
  **/
 function postItemCommand(token, itemName, value, success, failure) {
-    var options = httpItemOptions(token, itemName, 'POST', value.length);
-    var req = https.request(options, function (response) {
+    var data = value.toString();
+    var options = httpItemOptions(token, itemName, 'POST', null, data.length);
+    var req = http.request(options, function (response) {
         var body = '';
         if (response.statusCode == 200 || response.statusCode == 201) {
             success(response);
@@ -69,18 +94,18 @@ function postItemCommand(token, itemName, value, success, failure) {
         });
     });
 
-    req.write(value);
+    req.write(data);
     req.end();
 }
 
 /**
  * Returns a http option object sutiable for item commands
  */
-function httpItemOptions(token, itemname, method, length) {
+function httpItemOptions(token, itemname, method, paramters, length) {
     var options = {
         hostname: config.host,
         port: config.port,
-        path: config.path + (itemname || ''),
+        path: config.path + (itemname || '') + (paramters ? '?' + paramters : ''),
         method: method || 'GET',
         headers: {}
     };
@@ -100,4 +125,6 @@ function httpItemOptions(token, itemname, method, length) {
 
 module.exports.getItems = getItems;
 module.exports.getItem = getItem;
+module.exports.getItemsRecursively = getItemsRecursively;
+module.exports.getItemStates = getItemStates;
 module.exports.postItemCommand = postItemCommand;
