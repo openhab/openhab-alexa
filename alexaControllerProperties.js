@@ -192,19 +192,19 @@ AlexaControllerProperties.prototype.propertiesResponseForItems = function (items
       case "PowerLevelController": //Dimmer or Number, Rollershutter [Lighting]
         item = itemByName(group.powerLevel);
         if(item){
-          properties.push(self.powerLevelStateProperty(item.state));
+          properties.push(self.powerLevelStateProperty(parseInt(item.state)));
         }
         break;
       case "BrightnessController":
         item = itemByName(group.brightness);
         if(item){
-          properties.push(self.brightnessStateProperty(item.state));
+          properties.push(self.brightnessStateProperty(parseInt(item.state)));
         }
         break;
       case "PercentageController":
         item = itemByName(group.percentage);
         if(item){
-          properties.push(self.percentageStateProperty(item.state));
+          properties.push(self.percentageStateProperty(parseInt(item.state)));
         }
         break;
       case "ColorController": //Color [Lighting]

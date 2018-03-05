@@ -14,7 +14,7 @@
 var AlexaCapabilities = function () {
 };
 
-AlexaCapabilities.prototype.alexa = function() {
+AlexaCapabilities.prototype.alexa = function () {
   return {
     "type": "AlexaInterface",
     "interface": "Alexa",
@@ -38,7 +38,7 @@ AlexaCapabilities.prototype.powerController = function (name) {
         "retrievable": true
       }
     },
-    catagory : "SWITCH",
+    catagory: "SWITCH",
     itemMap: itemMap
   };
 };
@@ -60,7 +60,7 @@ AlexaCapabilities.prototype.brightnessController = function (name) {
         "retrievable": true
       }
     },
-    catagory : "LIGHT",
+    catagory: "LIGHT",
     itemMap: itemMap
   };
 };
@@ -81,7 +81,7 @@ AlexaCapabilities.prototype.powerLevelController = function (name) {
         "retrievable": true
       }
     },
-    catagory : "LIGHT",
+    catagory: "LIGHT",
     itemMap: itemMap
   };
 };
@@ -102,7 +102,7 @@ AlexaCapabilities.prototype.percentageController = function (name) {
         "retrievable": true
       }
     },
-    catagory : "LIGHT",
+    catagory: "LIGHT",
     itemMap: itemMap
   };
 };
@@ -145,7 +145,7 @@ AlexaCapabilities.prototype.thermostatController = function (targetSetpointName,
         "retrievable": true
       }
     },
-    catagory : "THERMOSTAT",
+    catagory: "THERMOSTAT",
     itemMap: itemMap
   };
 };
@@ -167,7 +167,7 @@ AlexaCapabilities.prototype.temperatureSensor = function (name) {
         "retrievable": true
       }
     },
-    catagory : "TEMPERATURE_SENSOR",
+    catagory: "TEMPERATURE_SENSOR",
     itemMap: itemMap
   };
 };
@@ -188,7 +188,7 @@ AlexaCapabilities.prototype.lockController = function (name) {
         "retrievable": true
       }
     },
-    catagory : "SMARTLOCK",
+    catagory: "SMARTLOCK",
     itemMap: itemMap
   };
 };
@@ -209,7 +209,7 @@ AlexaCapabilities.prototype.colorController = function (name) {
         "retrievable": true
       }
     },
-    catagory : "LIGHT",
+    catagory: "LIGHT",
     itemMap: itemMap
   };
 };
@@ -230,7 +230,7 @@ AlexaCapabilities.prototype.colorTemperatureController = function () {
         "retrievable": true
       }
     },
-    catagory : "LIGHT",
+    catagory: "LIGHT",
     itemMap: itemMap
   };
 };
@@ -246,7 +246,7 @@ AlexaCapabilities.prototype.sceneController = function () {
       "supportsDeactivation": false,
       "proactivelyReported": false
     },
-    catagory : "SCENE_TRIGGER",
+    catagory: "SCENE_TRIGGER",
     itemMap: itemMap
   };
 
@@ -261,7 +261,7 @@ AlexaCapabilities.prototype.sceneController = function () {
  * @param {*} videoCodec 
  * @param {*} audioCodec 
  */
-AlexaCapabilities.prototype.cameraStreamController = function (protocol,width,height,authType,videoCodec,audioCodec) {
+AlexaCapabilities.prototype.cameraStreamController = function (protocol, width, height, authType, videoCodec, audioCodec) {
   var itemMap = {};
   itemMap["Alexa.CameraStreamController.resolutions"] = name;
   return {
@@ -288,7 +288,7 @@ AlexaCapabilities.prototype.cameraStreamController = function (protocol,width,he
         ]
       }]
     },
-    catagory : "CAMERA",
+    catagory: "CAMERA",
     itemMap: itemMap
   };
 };
@@ -315,7 +315,7 @@ AlexaCapabilities.prototype.channelController = function (name) {
         "retrievable": true
       }
     },
-    catagory : "TV",
+    catagory: "TV",
     itemMap: itemMap
   }
 }
@@ -338,7 +338,7 @@ AlexaCapabilities.prototype.inputController = function (name) {
         "retrievable": true
       }
     },
-    catagory : "ACTIVITY_TRIGGER",
+    catagory: "ACTIVITY_TRIGGER",
     itemMap: itemMap
   }
 }
@@ -369,7 +369,7 @@ AlexaCapabilities.prototype.speaker = function (volumeName, mutedName) {
         "retrievable": true
       }
     },
-    catagory : "SPEAKER",
+    catagory: "SPEAKER",
     itemMap: itemMap
   };
 };
@@ -400,7 +400,7 @@ AlexaCapabilities.prototype.stepSpeaker = function (volumeName, mutedName) {
         "retrievable": true
       }
     },
-    catagory : "SPEAKER",
+    catagory: "SPEAKER",
     itemMap: itemMap
   };
 };
@@ -413,9 +413,10 @@ AlexaCapabilities.prototype.playbackController = function () {
       "type": "AlexaInterface",
       "interface": "Alexa.PlaybackController",
       "version": "3",
-      "proactivelyReported": false
+      "proactivelyReported": false,
+      "supportedOperations": ["Play", "Pause", "Next", "Previous", "Rewind", "FastForward", "Stop"]
     },
-    catagory : "",
+    catagory: "",
     itemMap: itemMap
   };
 
