@@ -81,7 +81,7 @@ AlexaCapabilities.prototype.powerLevelController = function (name) {
         "retrievable": true
       }
     },
-    catagory: "LIGHT",
+    catagory: "OTHER",
     itemMap: itemMap
   };
 };
@@ -102,7 +102,7 @@ AlexaCapabilities.prototype.percentageController = function (name) {
         "retrievable": true
       }
     },
-    catagory: "LIGHT",
+    catagory: "OTHER",
     itemMap: itemMap
   };
 };
@@ -416,7 +416,7 @@ AlexaCapabilities.prototype.playbackController = function () {
       "proactivelyReported": false,
       "supportedOperations": ["Play", "Pause", "Next", "Previous", "Rewind", "FastForward", "Stop"]
     },
-    catagory: "",
+    catagory: "OTHER",
     itemMap: itemMap
   };
 

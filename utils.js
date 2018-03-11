@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-var TAG_PATTERN =  /^Alexa\.(\w+)\.(\w+)/;
+var TAG_PATTERN =  /^Alexa\.(\w+)\.(\w+)(?::(.+))?/;
 /**
  * Convert C to F
  */
@@ -139,10 +139,10 @@ function cookiesToPropertyMap(cookies) {
    * 
    * OH Tags
    * 
-   * ["Alexa.ThermostatController.targetSetpoint"]
-   * ["Alexa.ThermostatController.upperSetpoint"]
-   * ["Alexa.ThermostatController.lowerSetpoint"]
-   * ["Alexa.PowerController.powerState"]
+   * Number FooTargetSetPoint "Foo Target SetPoint" ["Alexa.ThermostatController.targetSetpoint"]
+   * Number FooUpperSetPoint  "Foo Upper SetPoint"  ["Alexa.ThermostatController.upperSetpoint"]
+   * Number FooLowerSetPoint  "Foo Lower SetPoint"  ["Alexa.ThermostatController.lowerSetpoint"]
+   * Switch FooSwitch         "FooSwitch"           ["Alexa.PowerController.powerState"]
    * 
    * returns
    * 

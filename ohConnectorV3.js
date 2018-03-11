@@ -241,7 +241,6 @@ function setColor(directive, context) {
 }
 
 function setTargetTemperature(directive, context) {
-
   var propertyMap = utils.cookiesToPropertyMap(directive.endpoint.cookie);
   var properties = propertyMap.ThermostatController;
   var promises = [];
@@ -251,23 +250,23 @@ function setTargetTemperature(directive, context) {
       var state = directive.payload[propertyName].value;
       var itemName = properties[propertyName];
       console.log("Setting " + itemName + " to " + state);
-      promises.push(new Promise(function(resolve, reject) {
+      promises.push(new Promise(function (resolve, reject) {
         console.log("PROMISE Setting " + itemName + " to " + state);
         rest.postItemCommand(directive.endpoint.scope.token,
           itemName, state, function (response) {
             console.log("setTargetTemperature POST response to " + itemName + " : " + response);
-            items.push({name:itemName,state:state});
+            items.push({ name: itemName, state: state });
             resolve(response);
-          }, function (error){
+          }, function (error) {
             console.log("setTargetTemperature POST ERROR to " + itemName + " : " + error);
             reject(error);
           });
       }));
     }
   });
-  Promise.all(promises).then(function(values) {
-  console.log("Promise ALL done");
-  console.log("Promise items " + JSON.stringify(items));
+  Promise.all(promises).then(function (values) {
+    console.log("Promise ALL done");
+    console.log("Promise items " + JSON.stringify(items));
     var result = {
       context: {
         properties: controllerProperties.propertiesResponseForItems(items, directive.endpoint.cookie)
@@ -279,7 +278,7 @@ function setTargetTemperature(directive, context) {
     };
     log.debug('setTargetTemperature done with result' + JSON.stringify(result));
     context.succeed(result);
-  }).catch(function(err){
+  }).catch(function (err) {
     log.debug('setTargetTemperature error ' + err);
     context.done(null,
       generateGenericErrorResponse(directive));
@@ -341,8 +340,8 @@ function adjustSpeakerVolume(directive, context) {
   var itemName = directive.endpoint.cookie['Alexa.Speaker.volume'];
   rest.getItem(directive.endpoint.scope.token,
     itemName, function (item) {
-      var state = parseInt(item.state); 
-      if(isNaN(state)){
+      var state = parseInt(item.state);
+      if (isNaN(state)) {
         state = 0;
       }
       state += directive.payload.volume;
@@ -503,14 +502,14 @@ function discoverDevices(directive, context) {
           case "PowerController":
             controller = alexaCapabilities.powerController(properties.powerState);
             break;
-          case "BrightnessController":
-            controller = alexaCapabilities.brightnessController(properties.brightness);
+          case "PercentageController":
+            controller = alexaCapabilities.percentageController(properties.percentage);
             break;
           case "PowerLevelController":
             controller = alexaCapabilities.powerLevelController(properties.powerLevel);
             break;
-          case "PercentageController":
-            controller = alexaCapabilities.percentageController(properties.percentage);
+          case "BrightnessController":
+            controller = alexaCapabilities.brightnessController(properties.brightness);
             break;
           case "ColorController":
             controller = alexaCapabilities.colorController(properties.color);
@@ -518,23 +517,23 @@ function discoverDevices(directive, context) {
           case "ColorTemperatureController":
             controller = alexaCapabilities.colorTemperatureController(properties.colorTemperatureInKelvin);
             break;
-          case "ThermostatController":
-            controller = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
-            break;
           case "TemperatureSensor":
             controller = alexaCapabilities.temperatureSensor(properties.temperature);
             break;
-          case "Speaker":
-            controller = alexaCapabilities.speaker(properties.volume, properties.muted);
+          case "ThermostatController":
+            controller = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
             break;
           case "LockController":
             controller = alexaCapabilities.lockController(properties.lockState);
             break;
-          case "CameraStreamController":
-            controller = alexaCapabilities.lockController(properties.lockState);
-            break;
+          // case "CameraStreamController":
+          //   controller = alexaCapabilities.lockController(properties.lockState);
+          //   break;
           case "SceneController":
             controller = alexaCapabilities.sceneController(properties.scene);
+            break;
+          case "Speaker":
+            controller = alexaCapabilities.speaker(properties.volume, properties.muted);
             break;
           case "InputController":
             controller = alexaCapabilities.inputController(properties.input);
