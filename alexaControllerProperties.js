@@ -159,16 +159,14 @@ AlexaControllerProperties.prototype.generateProperty = function (namespace, name
 
 /**
  * Given an array of items (name,state only) and a Alexa cookies object, generate a property response for all 
- * endpoints listed in the cookies
+ * endpoints listed in the propertyMap
  *  
  * @param {array} items 
- * @param {object} cookies 
+ * @param {object} propertyMap 
  */
-AlexaControllerProperties.prototype.propertiesResponseForItems = function (items, cookies) {
+AlexaControllerProperties.prototype.propertiesResponseForItems = function (items, propertyMap) {
   var self = this;
   var properties = [];
-
-  var propertyMap = utils.cookiesToPropertyMap(cookies);
 
   function itemByName(itemName) {
     if (!itemName) {
@@ -184,32 +182,32 @@ AlexaControllerProperties.prototype.propertiesResponseForItems = function (items
     var group = propertyMap[groupName];
     switch (groupName) {
       case "PowerController": //Switch, Dimmer [Switchable]
-        item = itemByName(group.powerState);
-        if(item){
+        item = itemByName(group.powerState.itemName);
+        if (item) {
           properties.push(self.powerStateProperty(item.state));
         }
         break;
       case "PowerLevelController": //Dimmer or Number, Rollershutter [Lighting]
-        item = itemByName(group.powerLevel);
-        if(item){
+        item = itemByName(group.powerLevel.itemName);
+        if (item) {
           properties.push(self.powerLevelStateProperty(parseInt(item.state)));
         }
         break;
       case "BrightnessController":
-        item = itemByName(group.brightness);
-        if(item){
+        item = itemByName(group.brightness.itemName);
+        if (item) {
           properties.push(self.brightnessStateProperty(parseInt(item.state)));
         }
         break;
       case "PercentageController":
-        item = itemByName(group.percentage);
-        if(item){
+        item = itemByName(group.percentage.itemName);
+        if (item) {
           properties.push(self.percentageStateProperty(parseInt(item.state)));
         }
         break;
       case "ColorController": //Color [Lighting]
-        item = itemByName(group.color);
-        if(item){
+        item = itemByName(group.color.itemName);
+        if (item) {
           properties.push(self.colorStateProperty(item.state));
         }
         break;
@@ -218,42 +216,50 @@ AlexaControllerProperties.prototype.propertiesResponseForItems = function (items
       case "ChannelController": //String [Alexa@Channel]
         break;
       case "ThermostatController": //Group [Thermostat]
-        var scale = group.scale ? group.scale : "CELSIUS";
+        var scale = group.parameters.scale ? group.parameters.scale.toUpperCase() : "CELSIUS";
         if (group.targetSetpoint) {
-          item = itemByName(group.targetSetpoint);
-          if(item){
-            properties.push(self.targetSetpointStateProperty(itemByName(group.targetSetpoint).state, scale));
+          item = itemByName(group.targetSetpoint.itemName);
+          if (item) {
+            var scale = group.targetSetpoint.parameters.scale ?
+              group.targetSetpoint.parameters.scale.toUpperCase() : "CELSIUS";
+            properties.push(self.targetSetpointStateProperty(item.state, scale));
           }
         }
         if (group.upperSetpoint) {
-          item = itemByName(group.upperSetpoint);
-          if(item){
-            properties.push(self.upperSetpointStateProperty(itemByName(group.upperSetpoint).state, scale));
+          item = itemByName(group.upperSetpoint.itemName);
+          if (item) {
+            scale = group.upperSetpoint.parameters.scale ?
+              group.upperSetpoint.parameters.scale.toUpperCase() : "CELSIUS";
+            properties.push(self.upperSetpointStateProperty(item.state, scale));
           }
         }
         if (group.lowerSetpoint) {
-          item = itemByName(group.lowerSetpoint);
-          if(item){
-            properties.push(self.lowerSetpointStateProperty(itemByName(group.lowerSetpoint).state, scale));
+          item = itemByName(group.lowerSetpoint.itemName);
+          if (item) {
+            scale = group.lowerSetpoint.parameters.scale ?
+              group.lowerSetpoint.parameters.scale.toUpperCase() : "CELSIUS";
+            properties.push(self.lowerSetpointStateProperty(item.state, scale));
           }
         }
         if (group.thermostatMode) {
-          item = itemByName(group.thermostatMode);
-          if(item){
-            properties.push(self.thermostatModeStateProperty(itemByName(group.thermostatMode).state));
+          item = itemByName(group.thermostatMode.itemNamee);
+          if (item) {
+            properties.push(self.thermostatModeStateProperty(item.state));
           }
         }
         break;
       case "TemperatureSensor":
-        var scale = group.scale ? group.scale : "CELSIUS";
-        item = itemByName(group.temperature);
-        if(item){
+        item = itemByName(group.temperature.itemName);
+        if (item) {
+          var scale = group.temperature.parameters.scale ?
+            group.temperature.parameters.scale.toUpperCase() : "CELSIUS";
+          properties.push(self.targetSetpointStateProperty(item.state, scale));
           properties.push(self.temperatureSensorStateProperty(item.state));
         }
         break;
       case "LockController": //Switch [Lock]
-        item = itemByName(group.lockState);
-        if(item){
+        item = itemByName(group.lockState.itemName);
+        if (item) {
           properties.push(self.lockStateProperty(item.state));
         }
         break;

@@ -25,6 +25,11 @@ var controllerProperties = require('./alexaControllerProperties.js');
 exports.handleRequest = function (directive, context) {
   var namespace = directive.header.namespace; //ex: Alexa.BrightnessController
   var name = directive.header.name; // ex: AdjustBrightness
+
+  //if we have a JSON cookie, parse it and set on endpoint
+  if(directive.endpoint && directive.endpoint.cookie && directive.endpoint.cookie.propertyMap){
+    directive.endpoint._propertyMap = JSON.parse(directive.endpoint.cookie.propertyMap)
+  }
   switch (namespace) {
     case "Alexa":
       switch (name) {
@@ -114,7 +119,7 @@ exports.handleRequest = function (directive, context) {
 function reportState(directive, context) {
   rest.getItemStates(directive.endpoint.scope.token,
     function (items) {
-      var properties = controllerProperties.propertiesResponseForItems(items, directive.endpoint.cookie);
+      var properties = controllerProperties.propertiesResponseForItems(items, directive.endpoint._propertyMap);
       var result = {
         context: {
           properties: properties
@@ -127,7 +132,10 @@ function reportState(directive, context) {
             payloadVersion: directive.header.payloadVersion,
             correlationToken: directive.header.correlationToken
           },
-          endpoint: directive.endpoint,
+          endpoint: {
+            scope : directive.endpoint.scope,
+            endpointId : directive.endpoint.endpointId
+          },
           payload: {}
         }
       };
@@ -143,9 +151,9 @@ function reportState(directive, context) {
  * @param {*} directive 
  * @param {*} context 
  */
-function setPowerState(directive, context) {
+function  setPowerState(directive, context) {
   var state = directive.header.name === 'TurnOn' ? 'ON' : 'OFF';
-  var itemName = directive.endpoint.cookie['Alexa.PowerController.powerState'];
+  var itemName = directive.endpoint._propertyMap.PowerController.powerState.itemName;
   postItemAndReturn(directive, context, itemName, state);
 }
 
@@ -195,7 +203,7 @@ function adjustPercentage(directive, context) {
   }
 
   // "Alexa.PercentageController.percentage" : "FooItem:" 
-  var itemName = directive.endpoint.cookie[directive.header.namespace + '.' + propertyName];
+  var itemName = directive.endpoint._propertyMap[directive.header.namespace][propertyName].itemName;
   log.debug('Turning ' + itemName + ' to ' + payloadValue);
 
   //if this is a set command then just post it, otherwise we need to first retrieve the value of the item
@@ -241,35 +249,36 @@ function setColor(directive, context) {
 }
 
 function setTargetTemperature(directive, context) {
-  var propertyMap = utils.cookiesToPropertyMap(directive.endpoint.cookie);
-  var properties = propertyMap.ThermostatController;
+
+  var properties = directive.endpoint._propertyMap.ThermostatController;
   var promises = [];
   var items = [];
   Object.keys(properties).forEach(function (propertyName) {
     if (directive.payload[propertyName]) {
       var state = directive.payload[propertyName].value;
-      var itemName = properties[propertyName];
+      var item = properties[propertyName];
+      var itemName = item.itemName;
       console.log("Setting " + itemName + " to " + state);
-      promises.push(new Promise(function (resolve, reject) {
+      promises.push(new Promise(function(resolve, reject) {
         console.log("PROMISE Setting " + itemName + " to " + state);
         rest.postItemCommand(directive.endpoint.scope.token,
           itemName, state, function (response) {
             console.log("setTargetTemperature POST response to " + itemName + " : " + response);
-            items.push({ name: itemName, state: state });
+            items.push({name:itemName,state:state});
             resolve(response);
-          }, function (error) {
+          }, function (error){
             console.log("setTargetTemperature POST ERROR to " + itemName + " : " + error);
             reject(error);
           });
       }));
     }
   });
-  Promise.all(promises).then(function (values) {
-    console.log("Promise ALL done");
-    console.log("Promise items " + JSON.stringify(items));
+  Promise.all(promises).then(function(values) {
+  console.log("Promise ALL done");
+  console.log("Promise items " + JSON.stringify(items));
     var result = {
       context: {
-        properties: controllerProperties.propertiesResponseForItems(items, directive.endpoint.cookie)
+        properties: controllerProperties.propertiesResponseForItems(items, directive.endpoint._propertyMap)
       },
       event: {
         header: generateResponseHeader(directive.header),
@@ -278,7 +287,7 @@ function setTargetTemperature(directive, context) {
     };
     log.debug('setTargetTemperature done with result' + JSON.stringify(result));
     context.succeed(result);
-  }).catch(function (err) {
+  }).catch(function(err){
     log.debug('setTargetTemperature error ' + err);
     context.done(null,
       generateGenericErrorResponse(directive));
@@ -287,10 +296,9 @@ function setTargetTemperature(directive, context) {
 }
 
 function adjustTargetTemperature(directive, endpoint) {
-  var propertyMap = utils.cookiesToPropertyMap(directive.endpoint.cookie);
-  var properties = propertyMap.ThermostatController;
+  var properties = directive.endpoint._propertyMap.ThermostatController;
   if (properties.targetSetpoint) {
-    var itemName = properties.targetSetpoint;
+    var itemName = properties.targetSetpoint.itemName;
     rest.getItem(directive.endpoint.scope.token,
       itemName, function (item) {
         var state = item.state + directive.payload.targetSetpointDelta.value;
@@ -306,42 +314,49 @@ function adjustTargetTemperature(directive, endpoint) {
 
 function setThermostatMode(directive, context) {
   var state = directive.payload.thermostatMode.value;
-  var itemName = directive.endpoint.cookie['Alexa.ThermostatController.thermostatMode'];
+  var modeProps = directive.endpoint._propertyMap.ThermostatController.thermostatMode;
+  if(modeProps.parameters[state]){
+    state = modeProps.parameters[state];
+  }
+  if(modeProps.parameters[state]){
+    state = modeProps.parameters[state];
+  }
+  var itemName = directive.endpoint._propertyMap.ThermostatController.thermostatMode.itemName;
   postItemAndReturn(directive, context, itemName, state);
 }
 
 function setLockState(directive, context) {
   //LOCK / UNLOCK
   var state = directive.header.name == 'LOCKED' ? 'ON' : 'OFF';
-  var itemName = directive.endpoint.cookie['Alexa.LockController.lockState'];
+  var itemName = directive.endpoint._propertyMap.LockController.lockState.itemName;
   postItemAndReturn(directive, context, itemName, state);
 }
 
 function setInput(directive, context) {
-  var itemName = directive.endpoint.cookie['Alexa.InputController.input'];
+  var itemName = directive.endpoint._propertyMap.InputController.input.itemName;
   var state = directive.payload.input;
   postItemAndReturn(directive, context, itemName, state);
 }
 
 function setPlayback(directive, context) {
-  var itemName = directive.endpoint.cookie['Alexa.PlaybackController.playback'];
+  var itemName = directive.endpoint._propertyMap.PlaybackController.playback.itemName;
   //PLAY, PAUSE, etc....
   var state = directive.header.name.toUpperCase();
   postItemAndReturn(directive, context, itemName, state);
 }
 
 function setScene(directive, context) {
-  var itemName = directive.endpoint.cookie['Alexa.SceneController.scene'];
+  var itemName = directive.endpoint._propertyMap.SceneController.scene.itemName;
   var state = directive.header.name == 'Activate' ? "ON" : "OFF";
   postItemAndReturn(directive, context, itemName, state);
 }
 
 function adjustSpeakerVolume(directive, context) {
-  var itemName = directive.endpoint.cookie['Alexa.Speaker.volume'];
+  var itemName = directive.endpoint._propertyMap.Speaker.volume.itemName;
   rest.getItem(directive.endpoint.scope.token,
     itemName, function (item) {
-      var state = parseInt(item.state);
-      if (isNaN(state)) {
+      var state = parseInt(item.state); 
+      if(isNaN(state)){
         state = 0;
       }
       state += directive.payload.volume;
@@ -353,26 +368,26 @@ function adjustSpeakerVolume(directive, context) {
   );
 }
 
-function setSpeakerVolume(directive, context) {
-  var itemName = directive.endpoint.cookie['Alexa.Speaker.volume'];
+function setSpeakerVolume(directive,context) {
+  var itemName = directive.endpoint._propertyMap.Speaker.volume.itemName;
   var state = directive.payload.volume;
   postItemAndReturn(directive, context, itemName, state);
 }
 
 function setSpeakerMute(directive, context) {
-  var itemName = directive.endpoint.cookie['Alexa.Speaker.mute'];
+  var itemName = directive.endpoint._propertyMap.Speaker.mute.itemName;
   var state = directive.payload.mute ? "ON" : "OFF"
   postItemAndReturn(directive, context, itemName, state);
 }
 
 function adjustStepSpeakerVolume(directive, context) {
-  var itemName = directive.endpoint.cookie['Alexa.StepSpeaker.volume'];
+  var itemName = directive.endpoint._propertyMap.StepSpeaker.volume.itemName;
   var state = directive.payload.volume;
   postItemAndReturn(directive, context, itemName, state);
 }
 
 function setStepSpeakerMute(directive, context) {
-  var itemName = directive.endpoint.cookie['Alexa.StepSpeaker.mute'];
+  var itemName = directive.endpoint._propertyMap.StepSpeaker.mute.itemName;
   var state = directive.payload.mute ? "ON" : "OFF"
   postItemAndReturn(directive, context, itemName, state);
 }
@@ -391,10 +406,14 @@ function postItemAndReturn(directive, context, itemName, state) {
     itemName, state, function (response) {
       var result = {
         context: {
-          properties: controllerProperties.propertiesResponseForItems([{ name: itemName, state: state }], directive.endpoint.cookie)
+          properties: controllerProperties.propertiesResponseForItems([{ name: itemName, state: state }], directive.endpoint._propertyMap)
         },
         event: {
           header: generateResponseHeader(directive.header),
+          endpoint: {
+            scope : directive.endpoint.scope,
+            endpointId : directive.endpoint.endpointId
+          },
           payload: {}
         }
       };
@@ -435,7 +454,10 @@ function generateGenericErrorResponse(directive) {
         payloadVersion: directive.header.payloadVersion,
         correlationToken: directive.header.correlationToken
       },
-      endpoint: directive.endpoint,
+      endpoint: {
+        scope : directive.endpoint.scope,
+        endpointId : directive.endpoint.endpointId
+      },
       payload: {
         type: "ENDPOINT_UNREACHABLE",
         message: "Unable to reach device"
@@ -470,7 +492,6 @@ function discoverDevices(directive, context) {
       //array of device capabilities
       var capabilities = [];
       var displayCategories = [];
-      var cookies = {};
 
       var propertyMap;
 
@@ -500,46 +521,46 @@ function discoverDevices(directive, context) {
         var controller;
         switch (groupName) {
           case "PowerController":
-            controller = alexaCapabilities.powerController(properties.powerState);
-            break;
-          case "PercentageController":
-            controller = alexaCapabilities.percentageController(properties.percentage);
-            break;
-          case "PowerLevelController":
-            controller = alexaCapabilities.powerLevelController(properties.powerLevel);
+            controller = alexaCapabilities.powerController();
             break;
           case "BrightnessController":
-            controller = alexaCapabilities.brightnessController(properties.brightness);
+            controller = alexaCapabilities.brightnessController();
+            break;
+          case "PowerLevelController":
+            controller = alexaCapabilities.powerLevelController();
+            break;
+          case "PercentageController":
+            controller = alexaCapabilities.percentageController();
             break;
           case "ColorController":
-            controller = alexaCapabilities.colorController(properties.color);
+            controller = alexaCapabilities.colorController();
             break;
           case "ColorTemperatureController":
-            controller = alexaCapabilities.colorTemperatureController(properties.colorTemperatureInKelvin);
-            break;
-          case "TemperatureSensor":
-            controller = alexaCapabilities.temperatureSensor(properties.temperature);
+            controller = alexaCapabilities.colorTemperatureController();
             break;
           case "ThermostatController":
             controller = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
             break;
-          case "LockController":
-            controller = alexaCapabilities.lockController(properties.lockState);
-            break;
-          // case "CameraStreamController":
-          //   controller = alexaCapabilities.lockController(properties.lockState);
-          //   break;
-          case "SceneController":
-            controller = alexaCapabilities.sceneController(properties.scene);
+          case "TemperatureSensor":
+            controller = alexaCapabilities.temperatureSensor();
             break;
           case "Speaker":
-            controller = alexaCapabilities.speaker(properties.volume, properties.muted);
+            controller = alexaCapabilities.speaker();
+            break;
+          case "LockController":
+            controller = alexaCapabilities.lockController();
+            break;
+          case "CameraStreamController":
+            controller = alexaCapabilities.lockController(properties.cameraStreamConfigurations);
+            break;
+          case "SceneController":
+            controller = alexaCapabilities.sceneController();
             break;
           case "InputController":
-            controller = alexaCapabilities.inputController(properties.input);
+            controller = alexaCapabilities.inputController();
             break;
           case "PlaybackController":
-            controller = alexaCapabilities.playbackController(properties.input);
+            controller = alexaCapabilities.playbackController();
             break;
           default:
             break;
@@ -548,7 +569,6 @@ function discoverDevices(directive, context) {
         if (controller) {
           log.debug("groupName: " + groupName + " controller: " + JSON.stringify(controller));
           capabilities.push(controller.capabilities);
-          cookies = Object.assign(cookies, controller.itemMap);
           if (!displayCategories.includes(controller.catagory)) {
             displayCategories.push(controller.catagory);
           }
@@ -561,7 +581,9 @@ function discoverDevices(directive, context) {
         friendlyName: item.label,
         description: item.type + ' ' + item.name + ' via openHAB',
         displayCategories: displayCategories,
-        cookie: cookies,
+        cookie: {
+          propertyMap : JSON.stringify(propertyMap)
+        },
         capabilities: capabilities
       };
       discoverdDevices.push(discoverdDevice);

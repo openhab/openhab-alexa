@@ -22,9 +22,7 @@ AlexaCapabilities.prototype.alexa = function () {
   }
 }
 
-AlexaCapabilities.prototype.powerController = function (name) {
-  var itemMap = {};
-  itemMap["Alexa.PowerController.powerState"] = name;
+AlexaCapabilities.prototype.powerController = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -39,14 +37,11 @@ AlexaCapabilities.prototype.powerController = function (name) {
       }
     },
     catagory: "SWITCH",
-    itemMap: itemMap
   };
 };
 
 
-AlexaCapabilities.prototype.brightnessController = function (name) {
-  var itemMap = {};
-  itemMap["Alexa.BrightnessController.brightness"] = name;
+AlexaCapabilities.prototype.brightnessController = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -60,14 +55,11 @@ AlexaCapabilities.prototype.brightnessController = function (name) {
         "retrievable": true
       }
     },
-    catagory: "LIGHT",
-    itemMap: itemMap
+    catagory: "LIGHT"
   };
 };
 
-AlexaCapabilities.prototype.powerLevelController = function (name) {
-  var itemMap = {};
-  itemMap["Alexa.PowerLevelController.powerLevel"] = name;
+AlexaCapabilities.prototype.powerLevelController = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -81,14 +73,11 @@ AlexaCapabilities.prototype.powerLevelController = function (name) {
         "retrievable": true
       }
     },
-    catagory: "OTHER",
-    itemMap: itemMap
+    catagory: "OTHER"
   };
 };
 
-AlexaCapabilities.prototype.percentageController = function (name) {
-  var itemMap = {};
-  itemMap["Alexa.PercentageController.percentage"] = name;
+AlexaCapabilities.prototype.percentageController = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -102,34 +91,28 @@ AlexaCapabilities.prototype.percentageController = function (name) {
         "retrievable": true
       }
     },
-    catagory: "OTHER",
-    itemMap: itemMap
+    catagory: "OTHER"
   };
 };
 
-AlexaCapabilities.prototype.thermostatController = function (targetSetpointName, upperSetpointName, lowerSetpointName, thermostatModeName) {
-  var itemMap = {};
+AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upperSetpoint, lowerSetpoint, thermostatMode) {
   var supported = [];
-  if (targetSetpointName) {
-    itemMap["Alexa.ThermostatController.targetSetpoint"] = targetSetpointName;
+  if (targetSetpoint) {
     supported.push({
       "name": "targetSetpoint"
     })
   }
-  if (upperSetpointName) {
-    itemMap["Alexa.ThermostatController.upperSetpoint"] = upperSetpointName;
+  if (upperSetpoint) {
     supported.push({
       "name": "upperSetpoint"
     })
   }
-  if (lowerSetpointName) {
-    itemMap["Alexa.ThermostatController.lowerSetpoint"] = lowerSetpointName;
+  if (lowerSetpoint) {
     supported.push({
       "name": "lowerSetpoint"
     })
   }
-  if (thermostatModeName) {
-    itemMap["Alexa.ThermostatController.thermostatMode"] = thermostatModeName;
+  if (thermostatMode) {
     supported.push({
       "name": "thermostatMode"
     })
@@ -145,15 +128,12 @@ AlexaCapabilities.prototype.thermostatController = function (targetSetpointName,
         "retrievable": true
       }
     },
-    catagory: "THERMOSTAT",
-    itemMap: itemMap
+    catagory: "THERMOSTAT"
   };
 };
 
 
-AlexaCapabilities.prototype.temperatureSensor = function (name) {
-  var itemMap = {};
-  itemMap["Alexa.TemperatureSensor.temperature"] = name;
+AlexaCapabilities.prototype.temperatureSensor = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -168,13 +148,10 @@ AlexaCapabilities.prototype.temperatureSensor = function (name) {
       }
     },
     catagory: "TEMPERATURE_SENSOR",
-    itemMap: itemMap
   };
 };
 
-AlexaCapabilities.prototype.lockController = function (name) {
-  var itemMap = {};
-  itemMap["Alexa.LockController.lockState"] = name;
+AlexaCapabilities.prototype.lockController = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -188,14 +165,11 @@ AlexaCapabilities.prototype.lockController = function (name) {
         "retrievable": true
       }
     },
-    catagory: "SMARTLOCK",
-    itemMap: itemMap
+    catagory: "SMARTLOCK"
   };
 };
 
-AlexaCapabilities.prototype.colorController = function (name) {
-  var itemMap = {};
-  itemMap["Alexa.ColorController.color"] = name;
+AlexaCapabilities.prototype.colorController = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -209,15 +183,12 @@ AlexaCapabilities.prototype.colorController = function (name) {
         "retrievable": true
       }
     },
-    catagory: "LIGHT",
-    itemMap: itemMap
+    catagory: "LIGHT"
   };
 };
 
 AlexaCapabilities.prototype.colorTemperatureController = function () {
-  var itemMap = {};
-  itemMap["Alexa.ColorTemperatureController.colorTemperatureInKelvin"] = name;
-  return {
+ return {
     capabilities: {
       "type": "AlexaInterface",
       "interface": "Alexa.ColorTemperatureController",
@@ -230,14 +201,11 @@ AlexaCapabilities.prototype.colorTemperatureController = function () {
         "retrievable": true
       }
     },
-    catagory: "LIGHT",
-    itemMap: itemMap
+    catagory: "LIGHT"
   };
 };
 
 AlexaCapabilities.prototype.sceneController = function () {
-  var itemMap = {};
-  itemMap["Alexa.SceneController.scene"] = name;
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -246,8 +214,7 @@ AlexaCapabilities.prototype.sceneController = function () {
       "supportsDeactivation": false,
       "proactivelyReported": false
     },
-    catagory: "SCENE_TRIGGER",
-    itemMap: itemMap
+    catagory: "SCENE_TRIGGER"
   };
 
 };
@@ -261,9 +228,7 @@ AlexaCapabilities.prototype.sceneController = function () {
  * @param {*} videoCodec 
  * @param {*} audioCodec 
  */
-AlexaCapabilities.prototype.cameraStreamController = function (protocol, width, height, authType, videoCodec, audioCodec) {
-  var itemMap = {};
-  itemMap["Alexa.CameraStreamController.resolutions"] = name;
+AlexaCapabilities.prototype.cameraStreamController = function (cameraStreamConfigurations) {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -289,7 +254,7 @@ AlexaCapabilities.prototype.cameraStreamController = function (protocol, width, 
       }]
     },
     catagory: "CAMERA",
-    itemMap: itemMap
+    cookies: cookies
   };
 };
 
@@ -298,8 +263,8 @@ AlexaCapabilities.prototype.cameraStreamController = function (protocol, width, 
  * @param {*} name 
  */
 AlexaCapabilities.prototype.channelController = function (name) {
-  var itemMap = {};
-  itemMap["Alexa.ChannelController.channel"] = name;
+  var cookies = {};
+  cookies["Alexa.ChannelController.channel"] = JSON.stringify(name);
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -316,13 +281,13 @@ AlexaCapabilities.prototype.channelController = function (name) {
       }
     },
     catagory: "TV",
-    itemMap: itemMap
+    cookies: cookies
   }
 }
 
 AlexaCapabilities.prototype.inputController = function (name) {
-  var itemMap = {};
-  itemMap["Alexa.InputController.input"] = name;
+  var cookies = {};
+  cookies["Alexa.InputController.input"] = JSON.stringify(name);
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -339,21 +304,21 @@ AlexaCapabilities.prototype.inputController = function (name) {
       }
     },
     catagory: "ACTIVITY_TRIGGER",
-    itemMap: itemMap
+    cookies: cookies
   }
 }
 
 AlexaCapabilities.prototype.speaker = function (volumeName, mutedName) {
-  var itemMap = {};
+  var cookies = {};
   var supported = [];
   if (volumeName) {
-    itemMap["Alexa.Speaker.volume"] = volumeName;
+    cookies["Alexa.Speaker.volume"] = JSON.stringify(volumeName);
     supported.push({
       "name": "volume"
     })
   }
   if (mutedName) {
-    itemMap["Alexa.Speaker.mute"] = mutedName;
+    cookies["Alexa.Speaker.mute"] = JSON.stringify(mutedName);
     supported.push({
       "name": "mute"
     })
@@ -370,21 +335,21 @@ AlexaCapabilities.prototype.speaker = function (volumeName, mutedName) {
       }
     },
     catagory: "SPEAKER",
-    itemMap: itemMap
+    cookies: cookies
   };
 };
 
 AlexaCapabilities.prototype.stepSpeaker = function (volumeName, mutedName) {
-  var itemMap = {};
+  var cookies = {};
   var supported = [];
   if (volumeName) {
-    itemMap["Alexa.StepSpeaker.volume"] = volumeName;
+    cookies["Alexa.StepSpeaker.volume"] = JSON.stringify(volumeName);
     supported.push({
       "name": "volume"
     })
   }
   if (mutedName) {
-    itemMap["Alexa.StepSpeaker.mute"] = mutedName;
+    cookies["Alexa.StepSpeaker.mute"] = JSON.stringify(mutedName);
     supported.push({
       "name": "mute"
     })
@@ -401,13 +366,13 @@ AlexaCapabilities.prototype.stepSpeaker = function (volumeName, mutedName) {
       }
     },
     catagory: "SPEAKER",
-    itemMap: itemMap
+    cookies: cookies
   };
 };
 
 AlexaCapabilities.prototype.playbackController = function () {
-  var itemMap = {};
-  itemMap["Alexa.PlaybackController.playback"] = name;
+  var cookies = {};
+  cookies["Alexa.PlaybackController.playback"] = JSON.stringify(name);
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -417,7 +382,7 @@ AlexaCapabilities.prototype.playbackController = function () {
       "supportedOperations": ["Play", "Pause", "Next", "Previous", "Rewind", "FastForward", "Stop"]
     },
     catagory: "OTHER",
-    itemMap: itemMap
+    cookies: cookies
   };
 
 };
