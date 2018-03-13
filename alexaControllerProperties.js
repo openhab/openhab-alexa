@@ -98,7 +98,7 @@ AlexaControllerProperties.prototype.lowerSetpointStateProperty = function (state
   });
 }
 /**
- * Returns a property response for targetSetpoint endpoints
+ * Returns a property response for upperSetpoint endpoints
  * @param {float} state 
  * @param {string} scale 
  */
@@ -216,7 +216,6 @@ AlexaControllerProperties.prototype.propertiesResponseForItems = function (items
       case "ChannelController": //String [Alexa@Channel]
         break;
       case "ThermostatController": //Group [Thermostat]
-        var scale = group.parameters.scale ? group.parameters.scale.toUpperCase() : "CELSIUS";
         if (group.targetSetpoint) {
           item = itemByName(group.targetSetpoint.itemName);
           if (item) {
@@ -242,9 +241,17 @@ AlexaControllerProperties.prototype.propertiesResponseForItems = function (items
           }
         }
         if (group.thermostatMode) {
-          item = itemByName(group.thermostatMode.itemNamee);
+          item = itemByName(group.thermostatMode.itemName);
           if (item) {
-            properties.push(self.thermostatModeStateProperty(item.state));
+            var state = item.state;
+            ['OFF','HEAT','COOL','AUTO'].forEach(function(mode){
+              var mappedMode = group.thermostatMode.parameters[mode];
+              if(mappedMode === item.state.toString()){
+                state = mode;
+                return; //returns forEach
+              }
+            });
+            properties.push(self.thermostatModeStateProperty(state));
           }
         }
         break;
@@ -253,8 +260,7 @@ AlexaControllerProperties.prototype.propertiesResponseForItems = function (items
         if (item) {
           var scale = group.temperature.parameters.scale ?
             group.temperature.parameters.scale.toUpperCase() : "CELSIUS";
-          properties.push(self.targetSetpointStateProperty(item.state, scale));
-          properties.push(self.temperatureSensorStateProperty(item.state));
+          properties.push(self.temperatureSensorStateProperty(item.state, scale));
         }
         break;
       case "LockController": //Switch [Lock]

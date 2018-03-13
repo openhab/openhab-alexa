@@ -201,9 +201,9 @@ function adjustPercentage(directive, context) {
       payloadValue = directive.payload.brightness;
       break;
   }
-
-  // "Alexa.PercentageController.percentage" : "FooItem:" 
-  var itemName = directive.endpoint._propertyMap[directive.header.namespace][propertyName].itemName;
+  //remove 'Alexa.' from namespace
+  var namespace = directive.header.namespace.split('Alexa.')[1];
+  var itemName = directive.endpoint._propertyMap[namespace][propertyName].itemName;
   log.debug('Turning ' + itemName + ' to ' + payloadValue);
 
   //if this is a set command then just post it, otherwise we need to first retrieve the value of the item
@@ -256,8 +256,7 @@ function setTargetTemperature(directive, context) {
   Object.keys(properties).forEach(function (propertyName) {
     if (directive.payload[propertyName]) {
       var state = directive.payload[propertyName].value;
-      var item = properties[propertyName];
-      var itemName = item.itemName;
+      var itemName = properties[propertyName.itemName];
       console.log("Setting " + itemName + " to " + state);
       promises.push(new Promise(function(resolve, reject) {
         console.log("PROMISE Setting " + itemName + " to " + state);
@@ -538,11 +537,11 @@ function discoverDevices(directive, context) {
           case "ColorTemperatureController":
             controller = alexaCapabilities.colorTemperatureController();
             break;
-          case "ThermostatController":
-            controller = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
-            break;
           case "TemperatureSensor":
             controller = alexaCapabilities.temperatureSensor();
+            break;
+          case "ThermostatController":
+            controller = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
             break;
           case "Speaker":
             controller = alexaCapabilities.speaker();
@@ -568,10 +567,12 @@ function discoverDevices(directive, context) {
 
         if (controller) {
           log.debug("groupName: " + groupName + " controller: " + JSON.stringify(controller));
+          //we should check for user supplied catagories here as well in the propertyMap
           capabilities.push(controller.capabilities);
-          if (!displayCategories.includes(controller.catagory)) {
-            displayCategories.push(controller.catagory);
-          }
+          displayCategories = [controller.catagory];
+          // if (!displayCategories.includes(controller.catagory)) {
+          //   displayCategories.push(controller.catagory);
+          // }
         }
       });
 

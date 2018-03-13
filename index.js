@@ -18,17 +18,17 @@ var ohv3 = require('./ohConnectorV3.js');
  */
 exports.handler = function (event, context) {
   log.debug('Input: ' + JSON.stringify(event));
-    var version = parseInt(event.directive ? event.directive.header.payloadVersion : event.header.payloadVersion);
-    switch (version){
-      case 3:
-        ohv3.handleRequest(event.directive,context);
-        break;
-      case 2:
-        ohv2.handleRequest(event,context);
-        break;
-      default:
-        log.error('No supported payloadVersion: ' + event.header.payloadVersion);
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Something went wrong...'));
-      break;w
-    }
+  var version = parseInt(event.directive ? event.directive.header.payloadVersion : event.header.payloadVersion);
+  switch (version) {
+    case 3:
+      ohv3.handleRequest(event.directive, context);
+      break;
+    case 2:
+      ohv2.handleRequest(event, context);
+      break;
+    default:
+      log.error('No supported payloadVersion: ' + event.header.payloadVersion);
+      context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Something went wrong...'));
+      break;
+  }
 };

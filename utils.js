@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-var TAG_PATTERN = /^Alexa\.(\w+)\.(\w+)(?::(.+))?/;
+var TAG_PATTERN = /^Alexa\.(\w+)\.(\w+)(?::(\S+))?/;
 
 /**
  * Convert C to F
@@ -95,10 +95,10 @@ function date() {
  * 
  * OH Tags
  * 
- * Number FooTargetSetPoint "Foo Target SetPoint" ["Alexa.ThermostatController.targetSetpoint:scale=fahrenheit"]
- * Number FooUpperSetPoint  "Foo Upper SetPoint"  ["Alexa.ThermostatController.upperSetpoint:scale=fahrenheit"]
- * Number FooLowerSetPoint  "Foo Lower SetPoint"  ["Alexa.ThermostatController.lowerSetpoint:scale=fahrenheit"]
- * String FooMode           "Foo Mode"            ["Alexa.ThermostatController.thermostatMode:off=0,heat=1,cool=2,auto=3"
+ * Number FooTargetSetPoint "Foo Target SetPoint" ["Alexa.ThermostatController.targetSetpoint:scale=Fahrenheit"]
+ * Number FooUpperSetPoint  "Foo Upper SetPoint"  ["Alexa.ThermostatController.upperSetpoint:scale=Fahrenheit"]
+ * Number FooLowerSetPoint  "Foo Lower SetPoint"  ["Alexa.ThermostatController.lowerSetpoint:scale=Fahrenheit"]
+ * String FooMode           "Foo Mode"            ["Alexa.ThermostatController.thermostatMode:OFF=0,HEAT=1,COOL=2,AUTO=3"
  * Switch FooSwitch         "FooSwitch"           ["Alexa.PowerController.powerState"]
  * 
  * returns
@@ -109,28 +109,28 @@ function date() {
   *      targetSetpoint : {
   *          itemName: "FooTargetSetPoint",
   *          parameters: {
-  *            scale : "fahrenheit",
+  *            scale : "Fahrenheit",
   *         }
   *      },
   *      upperSetpoint : {
   *          itemName: "FooTargetSetPoint",
   *          parameters: {
-  *            scale : "fahrenheit",
+  *            scale : "Fahrenheit",
   *         }
   *      },
   *      lowerSetpoint : {
   *          itemName: "FooTargetSetPoint",
   *          parameters: {
-  *            scale : "fahrenheit",
+  *            scale : "Fahrenheit",
   *         }
   *      },
   *      thermostatMode : {
   *          itemName: "FooMode",
   *          parameters: {
-  *            off : "0",
-  *            heat : "1",
-  *            cool : "2",
-  *            auto : "3"
+  *            OFF : "0",
+  *            HEAT : "1",
+  *            COOL : "2",
+  *            AUTO : "3"
   *         }
   *      }
   *    },
@@ -151,18 +151,20 @@ function tagsToPropertyMap(item, propertyMap) {
     if ((matches = TAG_PATTERN.exec(tag)) !== null) {
       var groupName = matches[1];
       var property = matches[2];
+      var parameters = matches[3];
+
       if (!propertyMap[groupName]) {
         propertyMap[groupName] = {};
       }
       propertyMap[groupName][property] = {};
       propertyMap[groupName][property].parameters = {};
       propertyMap[groupName][property].itemName = item.name;
-      if (matches.lengh == 4) {
-        var params = matches[3].split(",");
+      if (parameters) {
+        var params = parameters.split(",");
         params.forEach(function (param) {
           var keyValue = param.split("=");
           if (keyValue.length == 2) {
-            paramMap[key] = value;
+            propertyMap[groupName][property].parameters[keyValue[0]] = keyValue[1];
           }
         });
       }
