@@ -17,6 +17,8 @@ var rest = require('./rest.js');
 var alexaCapabilities = require('./alexaCapabilities.js');
 var controllerProperties = require('./alexaControllerProperties.js');
 
+var GROUP_TAG_PATTERN = /^Alexa\.Endpoint\.(\w+)/;
+
 /**
  * Main entry point for all requests
  * @param {*} directive 
@@ -493,15 +495,23 @@ function discoverDevices(directive, context) {
       var displayCategories = [];
 
       var propertyMap;
-
+      var groupTag;
       //OH Goups can act as a single Endpoint using its children for capabilities
-      if (item.type == 'Group' && item.tags.includes('Alexa.Endpoint')) {
-        item.members.forEach(function (member) {
-          log.debug("adding " + member.name + " to group " + item.name);
-          groupItems.push(member.name);
-          propertyMap = utils.tagsToPropertyMap(member, propertyMap);
-          //log.debug("propertyMap with " + member.name + " : " + JSON.stringify(propertyMap));
-        });
+      if (item.type == 'Group') {
+        item.tags.forEach(function(tag){
+          //found matching Endpoint tag
+        if(groupMatch = tag.match(GROUP_TAG_PATTERN)){ 
+          item.members.forEach(function (member) {
+            log.debug("adding " + member.name + " to group " + item.name);
+            groupItems.push(member.name);
+            propertyMap = utils.tagsToPropertyMap(member, propertyMap);
+            //log.debug("propertyMap with " + member.name + " : " + JSON.stringify(propertyMap));
+          });
+          //set dispay category for group
+          displayCategories = [groupMatch[1].toUpperCase];
+          return; //returns forEach
+        }
+      });
       } else {
         propertyMap = utils.tagsToPropertyMap(item);
       }
@@ -515,10 +525,10 @@ function discoverDevices(directive, context) {
 
       capabilities.push(alexaCapabilities.alexa());
 
-      Object.keys(propertyMap).forEach(function (groupName) {
-        var properties = propertyMap[groupName];
+      Object.keys(propertyMap).forEach(function (interfaceName) {
+        var properties = propertyMap[interfaceName];
         var controller;
-        switch (groupName) {
+        switch (interfaceName) {
           case "PowerController":
             controller = alexaCapabilities.powerController();
             break;
@@ -566,13 +576,18 @@ function discoverDevices(directive, context) {
         }
 
         if (controller) {
-          log.debug("groupName: " + groupName + " controller: " + JSON.stringify(controller));
-          //we should check for user supplied catagories here as well in the propertyMap
+          log.debug("interfaceName: " + interfaceName + " controller: " + JSON.stringify(controller));
           capabilities.push(controller.capabilities);
-          displayCategories = [controller.catagory];
-          // if (!displayCategories.includes(controller.catagory)) {
-          //   displayCategories.push(controller.catagory);
-          // }
+
+          //we have not yet set any catgories for this yet
+          if(!displayCategories){
+            //if the user has supplied categoires in the tag use that, otherwise use defaults.
+            if(properties.catagories && properties.catagories.length > 0 ){
+              displayCategories = properties.catagories;
+            } else {
+              displayCategories = [controller.catagory];
+            }
+          }
         }
       });
 
@@ -649,7 +664,7 @@ function convertV2Item(item) {
         break;
       case 'Thermostat':
         if (item.type == 'Group') {
-          item.tags.push('Alexa.Endpoint');
+          item.tags.push('Alexa.Endpoint.Thermostat');
           item.members.forEach(convertV2Item);
         }
         break;

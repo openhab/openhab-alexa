@@ -149,22 +149,30 @@ function tagsToPropertyMap(item, propertyMap) {
   item.tags.forEach(function (tag) {
     var matches;
     if ((matches = TAG_PATTERN.exec(tag)) !== null) {
-      var groupName = matches[1];
+      var interfaceName = matches[1];
       var property = matches[2];
       var parameters = matches[3];
 
-      if (!propertyMap[groupName]) {
-        propertyMap[groupName] = {};
+      if (!propertyMap[interfaceName]) {
+        propertyMap[interfaceName] = {};
       }
-      propertyMap[groupName][property] = {};
-      propertyMap[groupName][property].parameters = {};
-      propertyMap[groupName][property].itemName = item.name;
+      propertyMap[interfaceName][property] = {};
+      propertyMap[interfaceName][property].parameters = {};
+      propertyMap[interfaceName][property].itemName = item.name;
       if (parameters) {
         var params = parameters.split(",");
         params.forEach(function (param) {
           var keyValue = param.split("=");
           if (keyValue.length == 2) {
-            propertyMap[groupName][property].parameters[keyValue[0]] = keyValue[1];
+            //if a tag has a category parameter add this to the interface instead of the property
+            if(keyValue[0] == 'category'){
+              if(!propertyMap[interfaceName].categories){
+                propertyMap[interfaceName].categories = [];
+              }
+              propertyMap[interfaceName].categories.push(keyValue[1].toUpperCase());
+            } else {
+              propertyMap[interfaceName][property].parameters[keyValue[0]] = keyValue[1];
+            }
           }
         });
       }

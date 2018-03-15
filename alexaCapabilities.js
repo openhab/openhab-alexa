@@ -253,8 +253,7 @@ AlexaCapabilities.prototype.cameraStreamController = function (cameraStreamConfi
         ]
       }]
     },
-    catagory: "CAMERA",
-    cookies: cookies
+    catagory: "CAMERA"
   };
 };
 
@@ -262,9 +261,7 @@ AlexaCapabilities.prototype.cameraStreamController = function (cameraStreamConfi
  * Not implemented yet!
  * @param {*} name 
  */
-AlexaCapabilities.prototype.channelController = function (name) {
-  var cookies = {};
-  cookies["Alexa.ChannelController.channel"] = JSON.stringify(name);
+AlexaCapabilities.prototype.channelController = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -280,14 +277,11 @@ AlexaCapabilities.prototype.channelController = function (name) {
         "retrievable": true
       }
     },
-    catagory: "TV",
-    cookies: cookies
+    catagory: "TV"
   }
 }
 
-AlexaCapabilities.prototype.inputController = function (name) {
-  var cookies = {};
-  cookies["Alexa.InputController.input"] = JSON.stringify(name);
+AlexaCapabilities.prototype.inputController = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -303,22 +297,18 @@ AlexaCapabilities.prototype.inputController = function (name) {
         "retrievable": true
       }
     },
-    catagory: "ACTIVITY_TRIGGER",
-    cookies: cookies
+    catagory: "ACTIVITY_TRIGGER"
   }
 }
 
 AlexaCapabilities.prototype.speaker = function (volumeName, mutedName) {
-  var cookies = {};
   var supported = [];
   if (volumeName) {
-    cookies["Alexa.Speaker.volume"] = JSON.stringify(volumeName);
     supported.push({
       "name": "volume"
     })
   }
   if (mutedName) {
-    cookies["Alexa.Speaker.mute"] = JSON.stringify(mutedName);
     supported.push({
       "name": "mute"
     })
@@ -334,22 +324,18 @@ AlexaCapabilities.prototype.speaker = function (volumeName, mutedName) {
         "retrievable": true
       }
     },
-    catagory: "SPEAKER",
-    cookies: cookies
+    catagory: "SPEAKER"
   };
 };
 
 AlexaCapabilities.prototype.stepSpeaker = function (volumeName, mutedName) {
-  var cookies = {};
   var supported = [];
   if (volumeName) {
-    cookies["Alexa.StepSpeaker.volume"] = JSON.stringify(volumeName);
     supported.push({
       "name": "volume"
     })
   }
   if (mutedName) {
-    cookies["Alexa.StepSpeaker.mute"] = JSON.stringify(mutedName);
     supported.push({
       "name": "mute"
     })
@@ -365,14 +351,11 @@ AlexaCapabilities.prototype.stepSpeaker = function (volumeName, mutedName) {
         "retrievable": true
       }
     },
-    catagory: "SPEAKER",
-    cookies: cookies
+    catagory: "SPEAKER"
   };
 };
 
 AlexaCapabilities.prototype.playbackController = function () {
-  var cookies = {};
-  cookies["Alexa.PlaybackController.playback"] = JSON.stringify(name);
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -381,8 +364,7 @@ AlexaCapabilities.prototype.playbackController = function () {
       "proactivelyReported": false,
       "supportedOperations": ["Play", "Pause", "Next", "Previous", "Rewind", "FastForward", "Stop"]
     },
-    catagory: "OTHER",
-    cookies: cookies
+    catagory: "OTHER"
   };
 
 };
