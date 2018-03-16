@@ -19,39 +19,46 @@ var controllerProperties = require('./alexaControllerProperties.js');
 
 var GROUP_TAG_PATTERN = /^Alexa\.Endpoint\.(\w+)/;
 
+var directive;
+var context;
+var propertyMap;
+
 /**
  * Main entry point for all requests
  * @param {*} directive 
  * @param {*} context 
  */
-exports.handleRequest = function (directive, context) {
+exports.handleRequest = function (_directive, _context) {
+  directive = _directive;
+  context = _context;
+  //if we have a JSON cookie, parse it and set on endpoint
+  if(directive.endpoint && directive.endpoint.cookie && directive.endpoint.cookie.propertyMap){
+    propertyMap = JSON.parse(directive.endpoint.cookie.propertyMap)
+  }
+
   var namespace = directive.header.namespace; //ex: Alexa.BrightnessController
   var name = directive.header.name; // ex: AdjustBrightness
 
-  //if we have a JSON cookie, parse it and set on endpoint
-  if(directive.endpoint && directive.endpoint.cookie && directive.endpoint.cookie.propertyMap){
-    directive.endpoint._propertyMap = JSON.parse(directive.endpoint.cookie.propertyMap)
-  }
   switch (namespace) {
     case "Alexa":
       switch (name) {
         case 'ReportState':
-          reportState(directive, context);
+          reportState();
       }
       break;
     case "Alexa.Discovery":
-      discoverDevices(directive, context);
+      discoverDevices();
       break;
     case "Alexa.PowerController":
-      setPowerState(directive, context);
+      setPowerState();
       break;
     case "Alexa.PowerLevelController":
     case "Alexa.BrightnessController":
     case "Alexa.PercentageController":
-      adjustPercentage(directive, context);
+      adjustPercentage();
       break;
     case "Alexa.ColorController":
-      setColor(directive, context);
+      setColor();
       break;
     case "Alexa.ColorTemperatureController":
       break;
@@ -60,48 +67,48 @@ exports.handleRequest = function (directive, context) {
     case "Alexa.ThermostatController":
       switch (name) {
         case 'AdjustTargetTemperature':
-          adjustTargetTemperature(directive, context);
+          adjustTargetTemperature();
           break;
         case 'SetTargetTemperature':
-          setTargetTemperature(directive, context);
+          setTargetTemperature();
           break;
         case 'SetThermostatMode':
-          setThermostatMode(directive, context);
+          setThermostatMode();
           break;
       }
       break;
     case "Alexa.LockController":
-      setLockState(directive, context);
+      setLockState();
       break;
     case "Alexa.InputController":
-      setInput(directive, context);
+      setInput();
       break;
     case "Alexa.PlaybackController":
-      setPlayback(directive, context);
+      setPlayback();
       break;
     case "Alexa.SceneController":
-      setScene(directive, context);
+      setScene();
       break;
     case "Alexa.Speaker":
       switch (name) {
         case "AdjustVolume":
-          adjustSpeakerVolume(directive, context);
+          adjustSpeakerVolume();
           break;
         case "SetVolume":
-          setSpeakerVolume(directive, context);
+          setSpeakerVolume();
           break;
         case "SetMute":
-          setSpeakerMute(directive, context);
+          setSpeakerMute();
           break;
       }
       break;
     case "Alexa.StepSpeaker":
       switch (name) {
         case "AdjustVolume":
-          adjustStepSpeakerVolume(directive, context);
+          adjustStepSpeakerVolume();
           break;
         case "SetMute":
-          setStepSpeakerMute(directive, context);
+          setStepSpeakerMute();
           break;
       }
       break;
@@ -110,7 +117,6 @@ exports.handleRequest = function (directive, context) {
       break;
     default:
   }
-
 };
 
 /**
@@ -118,10 +124,10 @@ exports.handleRequest = function (directive, context) {
  * @param {*} directive 
  * @param {*} context 
  */
-function reportState(directive, context) {
+function reportState() {
   rest.getItemStates(directive.endpoint.scope.token,
     function (items) {
-      var properties = controllerProperties.propertiesResponseForItems(items, directive.endpoint._propertyMap);
+      var properties = controllerProperties.propertiesResponseForItems(items, propertyMap);
       var result = {
         context: {
           properties: properties
@@ -153,10 +159,10 @@ function reportState(directive, context) {
  * @param {*} directive 
  * @param {*} context 
  */
-function  setPowerState(directive, context) {
+function  setPowerState() {
   var state = directive.header.name === 'TurnOn' ? 'ON' : 'OFF';
-  var itemName = directive.endpoint._propertyMap.PowerController.powerState.itemName;
-  postItemAndReturn(directive, context, itemName, state);
+  var itemName = propertyMap.PowerController.powerState.itemName;
+  postItemAndReturn(itemName, state);
 }
 
 /**
@@ -164,8 +170,7 @@ function  setPowerState(directive, context) {
  * @param {*} directive 
  * @param {*} context 
  */
-function adjustPercentage(directive, context) {
-
+function adjustPercentage() {
   //is this a set command, or Increment/Decrement command
   var isSetCommand;
   var propertyName;
@@ -205,13 +210,13 @@ function adjustPercentage(directive, context) {
   }
   //remove 'Alexa.' from namespace
   var namespace = directive.header.namespace.split('Alexa.')[1];
-  var itemName = directive.endpoint._propertyMap[namespace][propertyName].itemName;
+  var itemName = propertyMap[namespace][propertyName].itemName;
   log.debug('Turning ' + itemName + ' to ' + payloadValue);
 
   //if this is a set command then just post it, otherwise we need to first retrieve the value of the item
   // so we can adjust it and then post it.
   if (isSetCommand) {
-    postItemAndReturn(directive, context, itemName, payloadValue);
+    postItemAndReturn(itemName, payloadValue);
   } else {
     rest.getItem(directive.endpoint.scope.token,
       itemName, function (item) {
@@ -229,7 +234,7 @@ function adjustPercentage(directive, context) {
         var newState = oldState + parseInt(payloadValue);
         newState = Math.min(100, newState);
         newState = Math.max(0, newState);
-        postItemAndReturn(directive, context, itemName, newState);
+        postItemAndReturn(itemName, newState);
       }, function (error) {
         context.done(null, generateGenericErrorResponse(directive));
       }
@@ -242,17 +247,17 @@ function adjustPercentage(directive, context) {
  * @param {*} directive 
  * @param {*} context 
  */
-function setColor(directive, context) {
+function setColor() {
   var h = directive.payload.color.hue;
   var s = Math.round(directive.payload.color.saturation * 100);
   var b = Math.round(directive.payload.color.brightness * 100);
   var state = h + ',' + s + ',' + b;
-  postItemAndReturn(directive, context, itemName, state);
+  postItemAndReturn(itemName, state);
 }
 
-function setTargetTemperature(directive, context) {
+function setTargetTemperature() {
 
-  var properties = directive.endpoint._propertyMap.ThermostatController;
+  var properties = propertyMap.ThermostatController;
   var promises = [];
   var items = [];
   Object.keys(properties).forEach(function (propertyName) {
@@ -279,7 +284,7 @@ function setTargetTemperature(directive, context) {
   console.log("Promise items " + JSON.stringify(items));
     var result = {
       context: {
-        properties: controllerProperties.propertiesResponseForItems(items, directive.endpoint._propertyMap)
+        properties: controllerProperties.propertiesResponseForItems(items, propertyMap)
       },
       event: {
         header: generateResponseHeader(directive.header),
@@ -297,13 +302,13 @@ function setTargetTemperature(directive, context) {
 }
 
 function adjustTargetTemperature(directive, endpoint) {
-  var properties = directive.endpoint._propertyMap.ThermostatController;
+  var properties = propertyMap.ThermostatController;
   if (properties.targetSetpoint) {
     var itemName = properties.targetSetpoint.itemName;
     rest.getItem(directive.endpoint.scope.token,
       itemName, function (item) {
         var state = item.state + directive.payload.targetSetpointDelta.value;
-        postItemAndReturn(directive, context, itemName, state);
+        postItemAndReturn(itemName, state);
       }, function (error) {
         context.done(null,
           generateGenericErrorResponse(directive));
@@ -313,47 +318,47 @@ function adjustTargetTemperature(directive, endpoint) {
 }
 
 
-function setThermostatMode(directive, context) {
+function setThermostatMode() {
   var state = directive.payload.thermostatMode.value;
-  var modeProps = directive.endpoint._propertyMap.ThermostatController.thermostatMode;
+  var modeProps = propertyMap.ThermostatController.thermostatMode;
   if(modeProps.parameters[state]){
     state = modeProps.parameters[state];
   }
   if(modeProps.parameters[state]){
     state = modeProps.parameters[state];
   }
-  var itemName = directive.endpoint._propertyMap.ThermostatController.thermostatMode.itemName;
-  postItemAndReturn(directive, context, itemName, state);
+  var itemName = propertyMap.ThermostatController.thermostatMode.itemName;
+  postItemAndReturn(itemName, state);
 }
 
-function setLockState(directive, context) {
+function setLockState() {
   //LOCK / UNLOCK
   var state = directive.header.name == 'LOCKED' ? 'ON' : 'OFF';
-  var itemName = directive.endpoint._propertyMap.LockController.lockState.itemName;
-  postItemAndReturn(directive, context, itemName, state);
+  var itemName = propertyMap.LockController.lockState.itemName;
+  postItemAndReturn(itemName, state);
 }
 
-function setInput(directive, context) {
-  var itemName = directive.endpoint._propertyMap.InputController.input.itemName;
+function setInput() {
+  var itemName = propertyMap.InputController.input.itemName;
   var state = directive.payload.input;
-  postItemAndReturn(directive, context, itemName, state);
+  postItemAndReturn(itemName, state);
 }
 
-function setPlayback(directive, context) {
-  var itemName = directive.endpoint._propertyMap.PlaybackController.playback.itemName;
+function setPlayback() {
+  var itemName = propertyMap.PlaybackController.playback.itemName;
   //PLAY, PAUSE, etc....
   var state = directive.header.name.toUpperCase();
-  postItemAndReturn(directive, context, itemName, state);
+  postItemAndReturn(itemName, state);
 }
 
-function setScene(directive, context) {
-  var itemName = directive.endpoint._propertyMap.SceneController.scene.itemName;
+function setScene() {
+  var itemName = propertyMap.SceneController.scene.itemName;
   var state = directive.header.name == 'Activate' ? "ON" : "OFF";
-  postItemAndReturn(directive, context, itemName, state);
+  postItemAndReturn(itemName, state);
 }
 
-function adjustSpeakerVolume(directive, context) {
-  var itemName = directive.endpoint._propertyMap.Speaker.volume.itemName;
+function adjustSpeakerVolume() {
+  var itemName = propertyMap.Speaker.volume.itemName;
   rest.getItem(directive.endpoint.scope.token,
     itemName, function (item) {
       var state = parseInt(item.state); 
@@ -361,7 +366,7 @@ function adjustSpeakerVolume(directive, context) {
         state = 0;
       }
       state += directive.payload.volume;
-      postItemAndReturn(directive, context, itemName, state);
+      postItemAndReturn(itemName, state);
     }, function (error) {
       context.done(null,
         generateGenericErrorResponse(directive));
@@ -370,27 +375,27 @@ function adjustSpeakerVolume(directive, context) {
 }
 
 function setSpeakerVolume(directive,context) {
-  var itemName = directive.endpoint._propertyMap.Speaker.volume.itemName;
+  var itemName = propertyMap.Speaker.volume.itemName;
   var state = directive.payload.volume;
-  postItemAndReturn(directive, context, itemName, state);
+  postItemAndReturn(itemName, state);
 }
 
-function setSpeakerMute(directive, context) {
-  var itemName = directive.endpoint._propertyMap.Speaker.mute.itemName;
+function setSpeakerMute() {
+  var itemName = propertyMap.Speaker.mute.itemName;
   var state = directive.payload.mute ? "ON" : "OFF"
-  postItemAndReturn(directive, context, itemName, state);
+  postItemAndReturn(itemName, state);
 }
 
-function adjustStepSpeakerVolume(directive, context) {
-  var itemName = directive.endpoint._propertyMap.StepSpeaker.volume.itemName;
+function adjustStepSpeakerVolume() {
+  var itemName = propertyMap.StepSpeaker.volume.itemName;
   var state = directive.payload.volume;
-  postItemAndReturn(directive, context, itemName, state);
+  postItemAndReturn(itemName, state);
 }
 
-function setStepSpeakerMute(directive, context) {
-  var itemName = directive.endpoint._propertyMap.StepSpeaker.mute.itemName;
+function setStepSpeakerMute() {
+  var itemName = propertyMap.StepSpeaker.mute.itemName;
   var state = directive.payload.mute ? "ON" : "OFF"
-  postItemAndReturn(directive, context, itemName, state);
+  postItemAndReturn(itemName, state);
 }
 
 /**
@@ -401,13 +406,13 @@ function setStepSpeakerMute(directive, context) {
  * @param {*} itemName 
  * @param {*} state 
  */
-function postItemAndReturn(directive, context, itemName, state) {
+function postItemAndReturn(itemName, state) {
   log.debug('postItemAndReturn Setting ' + itemName + ' to ' + state);
   rest.postItemCommand(directive.endpoint.scope.token,
     itemName, state, function (response) {
       var result = {
         context: {
-          properties: controllerProperties.propertiesResponseForItems([{ name: itemName, state: state }], directive.endpoint._propertyMap)
+          properties: controllerProperties.propertiesResponseForItems([{ name: itemName, state: state }], propertyMap)
         },
         event: {
           header: generateResponseHeader(directive.header),
@@ -472,7 +477,7 @@ function generateGenericErrorResponse(directive) {
  * @param {*} directive 
  * @param {*} context 
  */
-function discoverDevices(directive, context) {
+function discoverDevices() {
   //request all items with groups 
   rest.getItemsRecursively(directive.payload.scope.token, function (items) {
 
@@ -492,7 +497,7 @@ function discoverDevices(directive, context) {
       }
       //array of device capabilities
       var capabilities = [];
-      var displayCategories = [];
+      var displayCategories;
 
       var propertyMap;
       var groupTag;

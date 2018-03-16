@@ -73,7 +73,7 @@ AlexaCapabilities.prototype.powerLevelController = function () {
         "retrievable": true
       }
     },
-    catagory: "OTHER"
+    catagory: "LIGHT"
   };
 };
 

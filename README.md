@@ -124,7 +124,7 @@ String Channel  "Channel" (Stereo)  ["Alexa.ChannelController.channel"]
 Player Player   "Player"  (Stereo)  ["Alexa.PlaybackController.playback"]
 ```
 #### Supported item mapping tags
-* The following our a list of supported mapping tags. 
+* The following are a list of supported tags. 
   * Alexa.PowerController.powerState
     * Items that turn on or off such as light switchs, power states, etc..
     * ON, OFF
@@ -148,7 +148,7 @@ Player Player   "Player"  (Stereo)  ["Alexa.PlaybackController.playback"]
     * supports additional properties:
       * scale=Fahrenheit
       * scale=Celsius
-      * defaults to scale-Celsius if omitted.
+      * defaults to scale=Celsius if omitted.
   * Alexa.ThermostatController.upperSetpoint
     * Items that represent a upper or HEAT setpont for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is tagged (default to Celsius).
     * Number or Float values
@@ -156,7 +156,7 @@ Player Player   "Player"  (Stereo)  ["Alexa.PlaybackController.playback"]
     * supports additional properties:
       * scale=Fahrenheit
       * scale=Celsius
-      * defaults to scale-Celsius if omitted.
+      * defaults to scale=Celsius if omitted.
   * Alexa.ThermostatController.lowerSetpoint
     * Items that represent a lower or COOL setpont for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is tagged (for example, scale=Fahrenheit, defaults to Celsius if ommitted).
     * Number or Float values
@@ -166,7 +166,7 @@ Player Player   "Player"  (Stereo)  ["Alexa.PlaybackController.playback"]
       * defaults to scale=Celsius if omitted.
   * Alexa.ThermostatController.thermostatMode
     * Items that represent the mode for a thermostat, default string values are "OFF,HEAT,COOL,AUTO", but these can be mapped to other values in the tag
-    * String or Number commands
+    * String or Number
     * Defualt category: THERMOSTAT 
     * supports additional properties which map alexa mdoes to user defined modes (for example AUTO=3)
       * OFF=...
@@ -186,7 +186,7 @@ Player Player   "Player"  (Stereo)  ["Alexa.PlaybackController.playback"]
       * Defualt category: SMARTLOCK
   * Alexa.ColorController.color
       * Items that represent a color
-      * R,G,B (Color commands)
+      * H,S,B
       * Defualt category: LIGHT
   * Alexa.SceneController.scene
       * Items that represent a scene
@@ -221,8 +221,8 @@ Player Player   "Player"  (Stereo)  ["Alexa.PlaybackController.playback"]
       * "PLAY", "PAUSE", "NEXT", "PREVIOUS", "REWIND", "FASTFORWARD", "STOP"
       * Defualt category: OTHER
 * Item Categories
-    * Alexa has certain categories that effect how voice control and thier mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and assocaite a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHTS" or "SWITCH" to send the command to.  
-    * You can overide this default value on items by adding it as a parameter to the tag ```Switch LightSwitch "Light Switch" ["Alexa.PowerController.powerState:category=OTHER"]
+    * Alexa has certain categories that effect how voice control and thier mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and assocaite a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHTS" to send the command to.  
+    * You can overide this default value on items by adding it as a parameter to the tag, ex: ```Switch LightSwitch "Light Switch" ["Alexa.PowerController.powerState:category=OTHER"]```
     * List of Alexa categories from Amazon API docs:
 
 Category	| Description	| Notes 
