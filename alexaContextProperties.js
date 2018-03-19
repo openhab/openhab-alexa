@@ -12,14 +12,14 @@
 */
 var utils = require('./utils.js');
 
-var AlexaControllerProperties = function () {
+var AlexaContextProperties = function () {
 };
 
 /**
  * 
  * @param {*} state 
  */
-AlexaControllerProperties.prototype.powerStateProperty = function (state) {
+AlexaContextProperties.prototype.powerStateProperty = function (state) {
   if (!isNaN(state)) {
     var num = parseInt(state);
     state = num > 0 ? 'ON' : 'OFF'
@@ -31,7 +31,7 @@ AlexaControllerProperties.prototype.powerStateProperty = function (state) {
 * Returns a property response for percentage endpoints
 * @param {*} state 
 */
-AlexaControllerProperties.prototype.percentageStateProperty = function (state) {
+AlexaContextProperties.prototype.percentageStateProperty = function (state) {
   if (isNaN(state)) {
     state = state == "ON" ? 100 : 0;
   }
@@ -42,7 +42,7 @@ AlexaControllerProperties.prototype.percentageStateProperty = function (state) {
  * Returns a property response for brightness endpoints
  * @param {*} state 
  */
-AlexaControllerProperties.prototype.brightnessStateProperty = function (state) {
+AlexaContextProperties.prototype.brightnessStateProperty = function (state) {
   if (isNaN(state)) {
     state = state == "ON" ? 100 : 0;
   }
@@ -53,7 +53,7 @@ AlexaControllerProperties.prototype.brightnessStateProperty = function (state) {
  * Returns a property response for power level endpoints
  * @param {*} state 
  */
-AlexaControllerProperties.prototype.powerLevelStateProperty = function (state) {
+AlexaContextProperties.prototype.powerLevelStateProperty = function (state) {
   if (isNaN(state)) {
     state = state == "ON" ? 100 : 0;
   }
@@ -64,7 +64,7 @@ AlexaControllerProperties.prototype.powerLevelStateProperty = function (state) {
  * Returns a property response for color endpoints
  * @param {*} state 
  */
-AlexaControllerProperties.prototype.colorStateProperty = function (state) {
+AlexaContextProperties.prototype.colorStateProperty = function (state) {
   var hsb = state.split(',');
   return this.generateProperty('Alexa.ColorController', 'color', {
     hue: parseInt(hsb[0]),
@@ -79,7 +79,7 @@ AlexaControllerProperties.prototype.colorStateProperty = function (state) {
  * @param {float} state 
  * @param {string} scale 
  */
-AlexaControllerProperties.prototype.targetSetpointStateProperty = function (state, scale) {
+AlexaContextProperties.prototype.targetSetpointStateProperty = function (state, scale) {
   return this.generateProperty('Alexa.ThermostatController', 'targetSetpoint', {
     value: state,
     scale: scale
@@ -91,7 +91,7 @@ AlexaControllerProperties.prototype.targetSetpointStateProperty = function (stat
  * @param {float} state 
  * @param {string} scale 
  */
-AlexaControllerProperties.prototype.lowerSetpointStateProperty = function (state, scale) {
+AlexaContextProperties.prototype.lowerSetpointStateProperty = function (state, scale) {
   return this.generateProperty('Alexa.ThermostatController', 'lowerSetpoint', {
     value: state,
     scale: scale
@@ -102,7 +102,7 @@ AlexaControllerProperties.prototype.lowerSetpointStateProperty = function (state
  * @param {float} state 
  * @param {string} scale 
  */
-AlexaControllerProperties.prototype.upperSetpointStateProperty = function (state, scale) {
+AlexaContextProperties.prototype.upperSetpointStateProperty = function (state, scale) {
   return this.generateProperty('Alexa.ThermostatController', 'upperSetpoint', {
     value: state,
     scale: scale
@@ -112,7 +112,7 @@ AlexaControllerProperties.prototype.upperSetpointStateProperty = function (state
  * Returns a property response for thermostatMode endpoints
  * @param {float} state 
  */
-AlexaControllerProperties.prototype.thermostatModeStateProperty = function (state) {
+AlexaContextProperties.prototype.thermostatModeStateProperty = function (state) {
   return this.generateProperty('Alexa.ThermostatController', 'thermostatMode', state);
 }
 
@@ -121,7 +121,7 @@ AlexaControllerProperties.prototype.thermostatModeStateProperty = function (stat
  * @param {float} state
  * @param {string} scale  
  */
-AlexaControllerProperties.prototype.temperatureSensorStateProperty = function (state, scale) {
+AlexaContextProperties.prototype.temperatureSensorStateProperty = function (state, scale) {
   return this.generateProperty('Alexa.TemperatureSensor', 'temperature', {
     value: state,
     scale: scale
@@ -132,7 +132,7 @@ AlexaControllerProperties.prototype.temperatureSensorStateProperty = function (s
 * 
 * @param {*} state 
 */
-AlexaControllerProperties.prototype.lockStateProperty = function (state) {
+AlexaContextProperties.prototype.lockStateProperty = function (state) {
   var locked = state == 'ON' ? "LOCKED" : "UNLOCKED";
   return this.generateProperty('Alexa.LockController', 'lockState', state);
 }
@@ -141,13 +141,13 @@ AlexaControllerProperties.prototype.lockStateProperty = function (state) {
 * 
 * @param {*} state 
 */
-AlexaControllerProperties.prototype.endpointHealthProperty = function () {
+AlexaContextProperties.prototype.endpointHealthProperty = function () {
   return this.generateProperty('Alexa.EndpointHealth', 'connectivity', {
     value: "OK"
   });
 }
 
-AlexaControllerProperties.prototype.generateProperty = function (namespace, name, value) {
+AlexaContextProperties.prototype.generateProperty = function (namespace, name, value) {
   return {
     namespace: namespace,
     name: name,
@@ -164,7 +164,7 @@ AlexaControllerProperties.prototype.generateProperty = function (namespace, name
  * @param {array} items 
  * @param {object} propertyMap 
  */
-AlexaControllerProperties.prototype.propertiesResponseForItems = function (items, propertyMap) {
+AlexaContextProperties.prototype.propertiesResponseForItems = function (items, propertyMap) {
   var self = this;
   var properties = [];
 
@@ -289,4 +289,4 @@ AlexaControllerProperties.prototype.propertiesResponseForItems = function (items
 
   return properties;
 }
-module.exports = new AlexaControllerProperties();
+module.exports = new AlexaContextProperties();
