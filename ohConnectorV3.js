@@ -121,8 +121,6 @@ exports.handleRequest = function (_directive, _context) {
 
 /**
  * Answers a "ReportState" request.  Returns the state(s) of an endpoint
- * @param {*} directive 
- * @param {*} context 
  */
 function reportState() {
   rest.getItemStates(directive.endpoint.scope.token,
@@ -156,8 +154,6 @@ function reportState() {
 
 /**
  * Turns a Switch ON or OFF
- * @param {*} directive 
- * @param {*} context 
  */
 function  setPowerState() {
   var state = directive.header.name === 'TurnOn' ? 'ON' : 'OFF';
@@ -167,8 +163,6 @@ function  setPowerState() {
 
 /**
  * Adjust a percentage value on a item
- * @param {*} directive 
- * @param {*} context 
  */
 function adjustPercentage() {
   //is this a set command, or Increment/Decrement command
@@ -244,8 +238,6 @@ function adjustPercentage() {
 
 /**
  * Set the color of a color item
- * @param {*} directive 
- * @param {*} context 
  */
 function setColor() {
   var h = directive.payload.color.hue;
@@ -255,8 +247,11 @@ function setColor() {
   postItemAndReturn(itemName, state);
 }
 
+/**
+ * Sets the taget temperature, this can include upper, lower and target setpoints
+ * in the same request.
+ */
 function setTargetTemperature() {
-
   var properties = propertyMap.ThermostatController;
   var promises = [];
   var items = [];
@@ -301,7 +296,10 @@ function setTargetTemperature() {
 
 }
 
-function adjustTargetTemperature(directive, endpoint) {
+/**
+ * Adjusts the target setpoint + or - the targetSetpointDelta
+ */
+function adjustTargetTemperature() {
   var properties = propertyMap.ThermostatController;
   if (properties.targetSetpoint) {
     var itemName = properties.targetSetpoint.itemName;
@@ -317,13 +315,13 @@ function adjustTargetTemperature(directive, endpoint) {
   }
 }
 
-
+/**
+ * Sets the mode of the thermostat
+ */
 function setThermostatMode() {
   var state = directive.payload.thermostatMode.value;
+  //user defined mappings (OFF, HEAT,COOL, AUTO)
   var modeProps = propertyMap.ThermostatController.thermostatMode;
-  if(modeProps.parameters[state]){
-    state = modeProps.parameters[state];
-  }
   if(modeProps.parameters[state]){
     state = modeProps.parameters[state];
   }
@@ -331,32 +329,44 @@ function setThermostatMode() {
   postItemAndReturn(itemName, state);
 }
 
+/**
+ * Locks (ON) or unlocks (OFF) a item
+ */
 function setLockState() {
-  //LOCK / UNLOCK
   var state = directive.header.name == 'LOCKED' ? 'ON' : 'OFF';
   var itemName = propertyMap.LockController.lockState.itemName;
   postItemAndReturn(itemName, state);
 }
 
+/**
+ * Sends the input value (HDMI1, Music, etc..) to a string item
+ */
 function setInput() {
   var itemName = propertyMap.InputController.input.itemName;
   var state = directive.payload.input;
   postItemAndReturn(itemName, state);
 }
-
+/**
+ * Sends a playback command (PLAY, PASUE, REWIND, etc..) to a string or player item 
+ */
 function setPlayback() {
   var itemName = propertyMap.PlaybackController.playback.itemName;
-  //PLAY, PAUSE, etc....
   var state = directive.header.name.toUpperCase();
   postItemAndReturn(itemName, state);
 }
 
+/**
+ * Sends a send name to a string item
+ */
 function setScene() {
   var itemName = propertyMap.SceneController.scene.itemName;
   var state = directive.header.name == 'Activate' ? "ON" : "OFF";
   postItemAndReturn(itemName, state);
 }
 
+/**
+ * Adjusts a number + or - the volume payload
+ */
 function adjustSpeakerVolume() {
   var itemName = propertyMap.Speaker.volume.itemName;
   rest.getItem(directive.endpoint.scope.token,
@@ -374,24 +384,36 @@ function adjustSpeakerVolume() {
   );
 }
 
-function setSpeakerVolume(directive,context) {
+/**
+ * Sets a number item to the volume payload
+ */
+function setSpeakerVolume() {
   var itemName = propertyMap.Speaker.volume.itemName;
   var state = directive.payload.volume;
   postItemAndReturn(itemName, state);
 }
 
+/**
+ * Sets a switch item to muted (ON), or unmuted (OFF)
+ */
 function setSpeakerMute() {
   var itemName = propertyMap.Speaker.mute.itemName;
   var state = directive.payload.mute ? "ON" : "OFF"
   postItemAndReturn(itemName, state);
 }
 
+/**
+ * Sends a volume step (+1, -1) to a item
+ */
 function adjustStepSpeakerVolume() {
   var itemName = propertyMap.StepSpeaker.volume.itemName;
   var state = directive.payload.volume;
   postItemAndReturn(itemName, state);
 }
 
+/**
+ * Sets a switch item to muted (ON), or unmuted (OFF)
+ */
 function setStepSpeakerMute() {
   var itemName = propertyMap.StepSpeaker.mute.itemName;
   var state = directive.payload.mute ? "ON" : "OFF"
@@ -401,8 +423,6 @@ function setStepSpeakerMute() {
 /**
  * 
  * Generic method to post an item to OH and then return a formatted result to the Alexa request
- * @param {*} directive 
- * @param {*} context 
  * @param {*} itemName 
  * @param {*} state 
  */
@@ -489,7 +509,7 @@ function discoverDevices() {
 
     //convert v2 style tags to v3
     convertV2Items(items);
-
+    log.debug("Items: " + JSON.stringify(items));
     items.forEach(function (item) {
       //this item is already part of a group
       if (groupItems.includes(item.name)) {
@@ -497,7 +517,13 @@ function discoverDevices() {
       }
       //array of device capabilities
       var capabilities = [];
-      var displayCategories;
+      
+      var displayCategories = [];
+      function addDisplayCatagory(catagory){
+        if(!displayCategories.includes(catagory)){
+          displayCategories.push(catagory);
+        }
+      }
 
       var propertyMap;
       var groupTag;
@@ -506,12 +532,14 @@ function discoverDevices() {
         item.tags.forEach(function(tag){
           //found matching Endpoint tag
         if(groupMatch = tag.match(GROUP_TAG_PATTERN)){ 
+          log.debug("found group " + groupMatch[0] + " for item " + item.name);  
           item.members.forEach(function (member) {
+            log.debug("adding  " + member.name + " to group " + item.name);  
             groupItems.push(member.name);
             propertyMap = utils.tagsToPropertyMap(member, propertyMap);
           });
           //set dispay category for group
-          displayCategories = [groupMatch[1].toUpperCase()];
+          displayCategories.push(groupMatch[1].toUpperCase());
           return; //returns forEach
         }
       });
@@ -563,7 +591,7 @@ function discoverDevices() {
             capability = alexaCapabilities.lockController();
             break;
           case "CameraStreamController":
-            capability = alexaCapabilities.lockController(properties.cameraStreamConfigurations);
+            capability = alexaCapabilities.cameraStreamController(properties.cameraStreamConfigurations);
             break;
           case "SceneController":
             capability = alexaCapabilities.sceneController();
@@ -581,16 +609,23 @@ function discoverDevices() {
         if (capability) {
           //log.debug("interfaceName: " + interfaceName + " capability: " + JSON.stringify(capability));
           capabilities.push(capability.capabilities);
-
-          //we have not yet set any catgories for this endpoint yet
-          if(!displayCategories){
-            //if the user has supplied categoires in the tag use that, otherwise use defaults.
             if(properties.catagories && properties.catagories.length > 0 ){
-              displayCategories = properties.catagories;
+              properties.catagories.forEach(function(catagory){
+                addDisplayCatagory(catagory);
+              });
             } else {
-              displayCategories = [capability.catagory];
+              addDisplayCatagory(capability.catagory);
             }
-          }
+          
+          // //we have not yet set any catgories for this endpoint yet
+          // if(!displayCategories){
+          //   //if the user has supplied categoires in the tag use that, otherwise use defaults.
+          //   if(properties.catagories && properties.catagories.length > 0 ){
+          //     displayCategories = properties.catagories;
+          //   } else {
+          //     displayCategories = [capability.catagory];
+          //   }
+          // }
         }
       });
 
@@ -677,7 +712,12 @@ function convertV2Item(item) {
       case 'Thermostat':
         if (item.type == 'Group') {
           item.tags.push('Alexa.Endpoint.Thermostat');
-          item.members.forEach(convertV2Item);
+          item.members.forEach(function(member){
+            //if they tagged the group with a scale, add it to each member
+            var scale = v2Tempformat(item);
+            member.tags.push(scale);
+            convertV2Item(member);
+          });
         }
         break;
       case 'Lock':
