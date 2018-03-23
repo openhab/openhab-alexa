@@ -82,7 +82,7 @@ AlexaContextProperties.prototype.colorStateProperty = function (state) {
 AlexaContextProperties.prototype.targetSetpointStateProperty = function (state, scale) {
   return this.generateProperty('Alexa.ThermostatController', 'targetSetpoint', {
     value: state,
-    scale: scale
+    scale: parseFloat(scale)
   });
 }
 
@@ -93,7 +93,7 @@ AlexaContextProperties.prototype.targetSetpointStateProperty = function (state, 
  */
 AlexaContextProperties.prototype.lowerSetpointStateProperty = function (state, scale) {
   return this.generateProperty('Alexa.ThermostatController', 'lowerSetpoint', {
-    value: state,
+    value: parseFloat(state),
     scale: scale
   });
 }
@@ -104,7 +104,7 @@ AlexaContextProperties.prototype.lowerSetpointStateProperty = function (state, s
  */
 AlexaContextProperties.prototype.upperSetpointStateProperty = function (state, scale) {
   return this.generateProperty('Alexa.ThermostatController', 'upperSetpoint', {
-    value: state,
+    value: parseFloat(state),
     scale: scale
   });
 }
@@ -123,7 +123,7 @@ AlexaContextProperties.prototype.thermostatModeStateProperty = function (state) 
  */
 AlexaContextProperties.prototype.temperatureSensorStateProperty = function (state, scale) {
   return this.generateProperty('Alexa.TemperatureSensor', 'temperature', {
-    value: state,
+    value: parseFloat(state),
     scale: scale
   });
 }
@@ -213,7 +213,7 @@ AlexaContextProperties.prototype.propertiesResponseForItems = function (items, p
         break;
       case "ColorTemperatureController": //Dimmer
         break;
-      case "ChannelController": //String [Alexa@Channel]
+      case "ChannelController":
         break;
       case "ThermostatController": //Group [Thermostat]
         if (group.targetSetpoint) {
