@@ -66,10 +66,19 @@ AlexaContextProperties.prototype.powerLevelStateProperty = function (state) {
  */
 AlexaContextProperties.prototype.colorStateProperty = function (state) {
   var hsb = state.split(',');
+  var h =  parseInt(hsb[0]);
+  var s =  parseFloat(hsb[1]);
+  var b =  parseFloat(hsb[2]);
+  if(s > 0){
+    s = s / 100.0;
+  }
+  if(b > 0){
+    b = b / 100.0;
+  }
   return this.generateProperty('Alexa.ColorController', 'color', {
-    hue: parseInt(hsb[0]),
-    brightness: parseInt(hsb[1]),
-    saturation: parseInt(hsb[2])
+    hue: h,
+    saturation: s,
+    brightness: b
   });
 }
 

@@ -244,6 +244,7 @@ function setColor() {
   var s = Math.round(directive.payload.color.saturation * 100);
   var b = Math.round(directive.payload.color.brightness * 100);
   var state = h + ',' + s + ',' + b;
+  var itemName = propertyMap.ColorController.color.itemName;
   postItemAndReturn(itemName, state);
 }
 
