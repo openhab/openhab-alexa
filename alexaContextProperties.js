@@ -143,7 +143,7 @@ AlexaContextProperties.prototype.temperatureSensorStateProperty = function (stat
 */
 AlexaContextProperties.prototype.lockStateProperty = function (state) {
   var locked = state == 'ON' ? "LOCKED" : "UNLOCKED";
-  return this.generateProperty('Alexa.LockController', 'lockState', state);
+  return this.generateProperty('Alexa.LockController', 'lockState', locked);
 }
 
 /**

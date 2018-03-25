@@ -334,7 +334,7 @@ function setThermostatMode() {
  * Locks (ON) or unlocks (OFF) a item
  */
 function setLockState() {
-  var state = directive.header.name == 'LOCKED' ? 'ON' : 'OFF';
+  var state = directive.header.name.toUpperCase() == 'LOCK' ? 'ON' : 'OFF';
   var itemName = propertyMap.LockController.lockState.itemName;
   postItemAndReturn(itemName, state);
 }
