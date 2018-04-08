@@ -259,7 +259,7 @@ function setTargetTemperature() {
   Object.keys(properties).forEach(function (propertyName) {
     if (directive.payload[propertyName]) {
       var state = directive.payload[propertyName].value;
-      var itemName = properties[propertyName.itemName];
+      var itemName = properties[propertyName].itemName;
       console.log("Setting " + itemName + " to " + state);
       promises.push(new Promise(function(resolve, reject) {
         console.log("PROMISE Setting " + itemName + " to " + state);
@@ -726,11 +726,11 @@ function convertV2Item(item) {
         break;
       case 'CurrentTemperature':
         var scale = v2Tempformat(item);
-        item.tags.push('Alexa.ThermostatController.targetSetpoint:scale=' + scale);
+        item.tags.push('Alexa.TemperatureSensor.temperature:scale=' + scale);
         break;
       case 'TargetTemperature':
         var scale = v2Tempformat(item);
-        item.tags.push('Alexa.TemperatureSensor.temperature:scale=' + scale);
+        item.tags.push('Alexa.ThermostatController.targetSetpoint:scale=' + scale);
         break;
       case 'homekit:HeatingCoolingMode':
         item.tags.push('Alexa.ThermostatController.thermostatMode:OFF=0,HEAT=1,COOL=2,AUTO-3');
