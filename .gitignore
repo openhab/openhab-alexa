@@ -1,6 +1,7 @@
 .env
 config.js
 /nbproject/
+.vscode
 
 # Logs
 logs

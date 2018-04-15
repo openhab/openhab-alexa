@@ -19,9 +19,13 @@
   "scripts": {
     "setup": "node-lambda setup",
     "run": "node-lambda run",
-    "deploy": "node-lambda deploy"
+    "deploy": "node-lambda deploy",
+    "test": "MODE=test ./node_modules/mocha/bin/mocha test/**/*.js"
   },
   "dependencies": {
     "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "mocha": "^5.0.5"
   }
 }
