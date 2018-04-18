@@ -3,7 +3,8 @@ var ohv3 = require('../ohConnectorV3.js');
 var rest = require('../rest.js');
 
 describe('ohConnectorV3 Test', function () {
-	describe('discover Items', function () {
+
+	describe('Discovery', function () {
 
 		// mock rest call
 		var input;
@@ -116,6 +117,51 @@ describe('ohConnectorV3 Test', function () {
 			assert.equal(capabilities[1].interface, "Alexa.PowerController");
 			assert.equal(capabilities[2].interface, "Alexa.BrightnessController");
 			assert.equal(capabilities[3].interface, "Alexa.ColorController");
+		});
+	});
+
+	describe('BrightnessController', function() {
+
+		// mock rest call
+		var input;
+		rest.postItemCommand = function(token, itemname, value, success) {
+			success(input);
+		};
+
+		var capture = { "result" : null };
+		var context = { "succeed": function(result) { capture.result = result; }};
+
+		it('set brightness at color item', function () {
+			var input = {
+				"header": {
+					"namespace": "Alexa.BrightnessController",
+					"name": "SetBrightness",
+					"payloadVersion": "3"
+				},
+				"endpoint": {
+					"scope": {
+						"type": "BearerToken",
+						"token": ""
+					},
+					"endpointId": "light1",
+					"cookie": {
+						"propertyMap": "{\"PowerController\":{\"powerState\":{\"parameters\":{},\"itemName\":\"light1\"}},\"BrightnessController\":{\"brightness\":{\"parameters\":{},\"itemName\":\"light1\"}},\"ColorController\":{\"color\":{\"parameters\":{},\"itemName\":\"light1\"}}}"
+					}
+				},
+				"payload": {
+					"brightness": 20
+				}
+			};
+
+			ohv3.handleRequest(input, context);
+
+			var properties = capture.result.context.properties;
+			assert.equal(properties.length, 4);
+			assert.equal(properties[0].name, "powerState");
+			assert.equal(properties[0].value, "ON");
+			assert.equal(properties[1].name, "brightness");
+			assert.equal(properties[1].value, 20);
+			assert.equal(properties[2].name, "color");
 		});
 	});
 });
