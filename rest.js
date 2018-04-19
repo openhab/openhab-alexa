@@ -45,8 +45,8 @@ function getItem(token, itemName, success, failure) {
 /**
  * Returns a single item
  */
-function getItemOrItems(token, itemName, paramters, success, failure) {
-    var options = httpItemOptions(token, itemName,'GET', paramters);
+function getItemOrItems(token, itemName, parameters, success, failure) {
+    var options = httpItemOptions(token, itemName, 'GET', parameters);
     http.get(options, function (response) {
             var body = '';
 
@@ -101,11 +101,11 @@ function postItemCommand(token, itemName, value, success, failure) {
 /**
  * Returns a http option object sutiable for item commands
  */
-function httpItemOptions(token, itemname, method, paramters, length) {
+function httpItemOptions(token, itemName, method, parameters, length) {
     var options = {
         hostname: config.host,
         port: config.port,
-        path: config.path + (itemname || '') + (paramters ? '?' + paramters : ''),
+        path: config.path + (itemName || '') + (parameters ? '?' + parameters : ''),
         method: method || 'GET',
         headers: {}
     };

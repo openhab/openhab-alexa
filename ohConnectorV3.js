@@ -25,8 +25,8 @@ var propertyMap;
 
 /**
  * Main entry point for all requests
- * @param {*} directive 
- * @param {*} context 
+ * @param {*} directive
+ * @param {*} context
  */
 exports.handleRequest = function (_directive, _context) {
   directive = _directive;
@@ -218,9 +218,6 @@ function adjustPercentage() {
 
         //skip this if we don't have a number to start with
         if (isNaN(item.state)) {
-          failure({
-            message: 'Could not get numberic item state'
-          });
           context.done(null, generateGenericErrorResponse(directive));
         }
         var oldState = parseInt(item.state);
@@ -240,8 +237,8 @@ function adjustPercentage() {
  */
 function setColor() {
   var h = directive.payload.color.hue;
-  var s = Math.round(directive.payload.color.saturation * 100);
-  var b = Math.round(directive.payload.color.brightness * 100);
+  var s = directive.payload.color.saturation * 100.0;
+  var b = directive.payload.color.brightness * 100.0;
   var state = h + ',' + s + ',' + b;
   var itemName = propertyMap.ColorController.color.itemName;
   postItemAndReturn(itemName, state);
@@ -259,24 +256,24 @@ function setTargetTemperature() {
     if (directive.payload[propertyName]) {
       var state = directive.payload[propertyName].value;
       var itemName = properties[propertyName].itemName;
-      console.log("Setting " + itemName + " to " + state);
+      log.debug("Setting " + itemName + " to " + state);
       promises.push(new Promise(function(resolve, reject) {
-        console.log("PROMISE Setting " + itemName + " to " + state);
+        log.debug("PROMISE Setting " + itemName + " to " + state);
         rest.postItemCommand(directive.endpoint.scope.token,
           itemName, state, function (response) {
-            console.log("setTargetTemperature POST response to " + itemName + " : " + response);
+            log.debug("setTargetTemperature POST response to " + itemName + " : " + response);
             items.push({name:itemName,state:state});
             resolve(response);
           }, function (error){
-            console.log("setTargetTemperature POST ERROR to " + itemName + " : " + error);
+            log.debug("setTargetTemperature POST ERROR to " + itemName + " : " + error);
             reject(error);
           });
       }));
     }
   });
   Promise.all(promises).then(function(values) {
-  console.log("Promise ALL done");
-  console.log("Promise items " + JSON.stringify(items));
+    log.debug("Promise ALL done");
+    log.debug("Promise items " + JSON.stringify(items));
     var result = {
       context: {
         properties: contextProperties.propertiesResponseForItems(items, propertyMap)
@@ -333,7 +330,7 @@ function setThermostatMode() {
  * Locks (ON) or unlocks (OFF) a item
  */
 function setLockState() {
-  var state = directive.header.name.toUpperCase() == 'LOCK' ? 'ON' : 'OFF';
+  var state = directive.header.name.toUpperCase() === 'LOCK' ? 'ON' : 'OFF';
   var itemName = propertyMap.LockController.lockState.itemName;
   postItemAndReturn(itemName, state);
 }
@@ -347,7 +344,7 @@ function setInput() {
   postItemAndReturn(itemName, state);
 }
 /**
- * Sends a playback command (PLAY, PASUE, REWIND, etc..) to a string or player item 
+ * Sends a playback command (PLAY, PASUE, REWIND, etc..) to a string or player item
  */
 function setPlayback() {
   var itemName = propertyMap.PlaybackController.playback.itemName;
@@ -360,7 +357,7 @@ function setPlayback() {
  */
 function setScene() {
   var itemName = propertyMap.SceneController.scene.itemName;
-  var state = directive.header.name == 'Activate' ? "ON" : "OFF";
+  var state = directive.header.name === 'Activate' ? "ON" : "OFF";
   postItemAndReturn(itemName, state);
 }
 
@@ -371,7 +368,7 @@ function adjustSpeakerVolume() {
   var itemName = propertyMap.Speaker.volume.itemName;
   rest.getItem(directive.endpoint.scope.token,
     itemName, function (item) {
-      var state = parseInt(item.state); 
+      var state = parseInt(item.state);
       if(isNaN(state)){
         state = 0;
       }
@@ -421,18 +418,18 @@ function setStepSpeakerMute() {
 }
 
 /**
- * 
- * Generic method to post an item to OH and then return a formatted result to the Alexa request
- * @param {*} itemName 
- * @param {*} state 
+ *
+ * Generic method to get the latest state of an item in OH and then return a formatted result to the Alexa request
+ * @param {*} itemName
  */
-function postItemAndReturn(itemName, state) {
-  log.debug('postItemAndReturn Setting ' + itemName + ' to ' + state);
-  rest.postItemCommand(directive.endpoint.scope.token,
-    itemName, state, function (response) {
+function getItemStateAndReturn(itemName) {
+  log.debug('getItemStateAndReturn Getting ' + itemName + ' latest state');
+  rest.getItem(directive.endpoint.scope.token,
+    itemName, function (item) {
       var result = {
         context: {
-          properties: contextProperties.propertiesResponseForItems([{ name: itemName, state: state }], propertyMap)
+          properties: contextProperties.propertiesResponseForItems(
+            [{ name: item.name, state: item.state, type: item.type }], propertyMap)
         },
         event: {
           header: generateResponseHeader(directive.header),
@@ -453,8 +450,26 @@ function postItemAndReturn(itemName, state) {
 }
 
 /**
+ *
+ * Generic method to post an item to OH and then return a formatted result to the Alexa request
+ * @param {*} itemName
+ * @param {*} state
+ */
+function postItemAndReturn(itemName, state) {
+  log.debug('postItemAndReturn Setting ' + itemName + ' to ' + state);
+  rest.postItemCommand(directive.endpoint.scope.token,
+    itemName, state, function (response) {
+      getItemStateAndReturn(itemName);
+    }, function (error) {
+      context.done(null,
+        generateGenericErrorResponse(directive));
+    }
+  );
+}
+
+/**
  * V3 response header
- * @param {*} header 
+ * @param {*} header
  */
 function generateResponseHeader(header) {
   return {
@@ -467,38 +482,49 @@ function generateResponseHeader(header) {
 }
 
 /**
+ * V3 Control Error Response
+ * @param {*} directive
+ * @param {*} payload
+ */
+function generateControlError(directive, payload) {
+    var header = {
+        namespace: 'Alexa',
+        name: 'ErrorResponse',
+        messageId: directive.header.messageId,
+        correlationToken: directive.header.correlationToken,
+        payloadVersion: directive.header.payloadVersion
+    };
+
+    var result = {
+        event: {
+            header: header,
+            endpoint: directive.endpoint,
+            payload: payload
+        }
+    };
+
+    log.debug('generateControlError done with result' + JSON.stringify(result));
+    return result;
+}
+
+/**
  * V3 Generic Error Response
- * @param {*} directive 
+ * @param {*} directive
  */
 function generateGenericErrorResponse(directive) {
-  var result = {
-    event: {
-      header: {
-        messageId: directive.header.messageId,
-        name: "ErrorResponse",
-        namespace: "Alexa",
-        payloadVersion: directive.header.payloadVersion,
-        correlationToken: directive.header.correlationToken
-      },
-      endpoint: {
-        scope : directive.endpoint.scope,
-        endpointId : directive.endpoint.endpointId
-      },
-      payload: {
-        type: "ENDPOINT_UNREACHABLE",
-        message: "Unable to reach device"
-      }
-    }
-  };
+  return generateControlError(directive, {
+    type: "ENDPOINT_UNREACHABLE",
+    message: "Unable to reach device"
+  });
 }
 
 /**
  * Device discovery
- * @param {*} directive 
- * @param {*} context 
+ * @param {*} directive
+ * @param {*} context
  */
 function discoverDevices() {
-  //request all items with groups 
+  //request all items with groups
   rest.getItemsRecursively(directive.payload.scope.token, function (items) {
 
     var discoverdDevices = [];
@@ -517,11 +543,11 @@ function discoverDevices() {
       }
       //array of device capabilities
       var capabilities = [];
-      
+
       var displayCategories = [];
-      function addDisplayCatagory(catagory){
-        if(!displayCategories.includes(catagory)){
-          displayCategories.push(catagory);
+      function addDisplayCategory(category){
+        if(!displayCategories.includes(category)){
+          displayCategories.push(category);
         }
       }
 
@@ -529,7 +555,7 @@ function discoverDevices() {
       var isEndpointGroup = false;
 
       //OH Goups can act as a single Endpoint using its children for capabilities
-      if (item.type == 'Group') {
+      if (item.type === 'Group') {
         item.tags.forEach(function(tag){
           //found matching Endpoint tag
           var groupMatch;
@@ -614,21 +640,21 @@ function discoverDevices() {
         if (capability) {
           //log.debug("interfaceName: " + interfaceName + " capability: " + JSON.stringify(capability));
           capabilities.push(capability.capabilities);
-            if(properties.catagories && properties.catagories.length > 0 ){
-              properties.catagories.forEach(function(catagory){
-                addDisplayCatagory(catagory);
-              });
-            } else {
-              addDisplayCatagory(capability.catagory);
-            }
-          
+          if(properties.categories && properties.categories.length > 0 ){
+            properties.categories.forEach(function(category){
+              addDisplayCategory(category);
+            });
+          } else {
+            addDisplayCategory(capability.category);
+          }
+
           // //we have not yet set any catgories for this endpoint yet
           // if(!displayCategories){
           //   //if the user has supplied categoires in the tag use that, otherwise use defaults.
-          //   if(properties.catagories && properties.catagories.length > 0 ){
-          //     displayCategories = properties.catagories;
+          //   if(properties.categories && properties.categories.length > 0 ){
+          //     displayCategories = properties.categories;
           //   } else {
-          //     displayCategories = [capability.catagory];
+          //     displayCategories = [capability.category];
           //   }
           // }
         }
@@ -680,13 +706,14 @@ function discoverDevices() {
     context.succeed(result);
   }, function (error) {
     log.error("discoverDevices failed: " + error.message);
-    context.done(null, utils.generateControlError(directive.header.messageId, directive.header.name, 'DependentServiceUnavailableError', error.message));
+    context.done(null,
+      generateGenericErrorResponse(directive));
   });
 }
 
 /**
  * Convert v2 tag on items to V3
- * @param {*} items 
+ * @param {*} items
  */
 function convertV2Items(items) {
   items.forEach(function (item) {
@@ -696,7 +723,7 @@ function convertV2Items(items) {
 
 /**
  * Convert v2 tag on a single item to V3
- * @param {*} item 
+ * @param {*} item
  */
 function convertV2Item(item) {
 
@@ -715,7 +742,7 @@ function convertV2Item(item) {
         item.tags = item.tags.concat(getV2SwitchableCapabilities(item));
         break;
       case 'Thermostat':
-        if (item.type == 'Group') {
+        if (item.type === 'Group') {
           item.tags.push('Alexa.Endpoint.Thermostat');
           item.members.forEach(function(member){
             //if they tagged the group with a scale, add it to each member
@@ -737,7 +764,7 @@ function convertV2Item(item) {
         item.tags.push('Alexa.ThermostatController.targetSetpoint:scale=' + scale);
         break;
       case 'homekit:HeatingCoolingMode':
-        item.tags.push('Alexa.ThermostatController.thermostatMode:OFF=0,HEAT=1,COOL=2,AUTO-3');
+        item.tags.push('Alexa.ThermostatController.thermostatMode:OFF=0,HEAT=1,COOL=2,AUTO=3');
         break;
     }
   });
@@ -745,7 +772,7 @@ function convertV2Item(item) {
 
 /**
  * V2 style tags, given an item, returns an array of action that are supported.
- * @param {*} item 
+ * @param {*} item
  */
 function getV2SwitchableCapabilities(item) {
   if (item.type === 'Switch' ||
@@ -761,6 +788,6 @@ function getV2SwitchableCapabilities(item) {
     (item.type === 'Group' && item.groupType && item.groupType === 'Rollershutter')) {
     return ["Alexa.PowerController.powerState", "Alexa.PercentageController.percentage:category=OTHER"]
   } else {
-    return null;
+    return [];
   }
 }
