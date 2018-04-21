@@ -1,167 +1,88 @@
-var assert = require('assert');
 var ohv3 = require('../ohConnectorV3.js');
 var rest = require('../rest.js');
+var common = require('./common.js');
+var settings = require('./settings.js');
+var assert = common.assert;
+var utils = common.utils;
 
 describe('ohConnectorV3 Test', function () {
 
-	describe('Discovery', function () {
+  var capture, context, input;
 
-		// mock rest call
-		var input;
-		rest.getItemsRecursively = function(token, success, failure) {
-			success(input);
-		};
+  before(function () {
+    // set log level to error
+    process.env.LOG_LEVEL = 'ERROR';
 
-		var directive = { 
-			"header" : { "namespace" : "Alexa.Discovery" } ,
-			"payload" : { "scope" : { "token" : ""} } 
-		};
-		var capture = { "result" : null };
-		var context = { "succeed": function(result) { capture.result = result; }};
+    // mock rest external calls
+    rest.getItem = function(token, itemName, success, failure) {
+      success(input.staged ? input.values.shift() : input.values);
+    };
+    rest.getItemsRecursively = function(token, success, failure) {
+      success(input.staged ? input.values.shift() : input.values);
+    };
+    rest.getItemStates = function(token, success, failure) {
+      success(input.staged ? input.values.shift() : input.values);
+    };
+    rest.postItemCommand = function(token, itemName, value, success) {
+      capture.commands.push({"name": itemName, "value": value});
+      success({"statusCode": 200});
+    };
 
-		it('tagged light group and its tagged children should be discovered', function () {
+    // mock aws lamnda context calls
+    context = {
+      "succeed": function(result) { capture.result = result; },
+      "done": function(error, result) { capture.result = result; }
+    };
+  });
 
-			// Group:Switch:OR(ON,OFF) lightGroup ["Lighting"]
-			// Color light1 (lightGroup) ["Lighting"]
-			// Color light2 (lightGroup) ["Lighting"]
-			input = [
-				{
-					"link": "https://localhost:8443/rest/items/light1",
-					"type": "Color",
-					"name": "light1",
-					"category": "lightbulb",
-					"tags": ["Lighting"],
-				},
-				{
-					"link": "https://localhost:8443/rest/items/light2",
-					"type": "Color",
-					"name": "light2",
-					"category": "lightbulb",
-					"tags": ["Lighting"],
-				},
-				{
-					"members": [
-						{
-							"link": "https://localhost:8443/rest/items/light1",
-							"type": "Color",
-							"name": "light1",
-							"category": "lightbulb",
-							"tags": ["Lighting"],
-						},
-						{
-							"link": "https://localhost:8443/rest/items/light2",
-							"type": "Color",
-							"name": "light2",
-							"category": "lightbulb",
-							"tags": ["Lighting"],
-						}
-					],
-					"groupType": "Switch",
-					"function": {
-						"name": "OR",
-						"params": ["ON","OFF"]
-					},
-					"link": "https://localhost:8443/rest/items/lightGroup",
-					"type": "Group",
-					"name": "lightGroup",
-					"category": "switch",
-					"tags": ["Lighting"],
-				}
-			];
+  beforeEach(function () {
+    // reset mock variables
+    input = {"staged": false, "values": null};
+    capture = {"commands": [], "result" : null};
+  });
 
-			ohv3.handleRequest(directive, context);
+  // Discovery Tests
+  describe('Discovery Interface', function () {
+    var directive = utils.generateDirectiveRequest({
+      "header": {
+        "namespace": "Alexa.Discovery",
+        "name": "Discover"
+      }
+    });
 
-			var endpoints = capture.result.event.payload.endpoints;
-			assert.equal(endpoints.length, 3);
+    Object.keys(settings.testCases.discovery).forEach(function(name) {
+      settings.testCases.discovery[name].forEach(function(path) {
+        var test = require(path);
 
-			var capabilities = endpoints[0].capabilities;
-			assert.equal(capabilities.length, 4);
-			assert.equal(capabilities[0].interface, "Alexa");
-			assert.equal(capabilities[1].interface, "Alexa.PowerController");
-			assert.equal(capabilities[2].interface, "Alexa.BrightnessController");
-			assert.equal(capabilities[3].interface, "Alexa.ColorController");
+        it(test.description, function () {
+          input = test.input;
+          ohv3.handleRequest(directive, context);
+          assert.discoverEndpoints(capture.result.event.payload.endpoints, test.expected);
+        });
+      });
+    });
+  });
 
-			capabilities = endpoints[1].capabilities;
-			assert.equal(capabilities.length, 4);
-			assert.equal(capabilities[0].interface, "Alexa");
-			assert.equal(capabilities[1].interface, "Alexa.PowerController");
-			assert.equal(capabilities[2].interface, "Alexa.BrightnessController");
-			assert.equal(capabilities[3].interface, "Alexa.ColorController");
+  // Controller Tests
+  Object.keys(settings.testCases.controllers).forEach(function(name){
+    describe(name + ' Interface', function () {
+      settings.testCases.controllers[name].forEach(function(path){
+        var tests = require(path);
 
-			capabilities = endpoints[2].capabilities;
-			assert.equal(capabilities.length, 2);
-			assert.equal(capabilities[0].interface, "Alexa");
-			assert.equal(capabilities[1].interface, "Alexa.PowerController");
-		});
-
-		it('single color light should be discovered', function () {
-			
-			input = [
-				{
-					"link": "https://localhost:8443/rest/items/light1",
-					"type": "Color",
-					"name": "light1",
-					"category": "lightbulb",
-					"tags": ["Lighting"],
-				}
-			];
-
-			ohv3.handleRequest(directive, context);
-
-			var endpoints = capture.result.event.payload.endpoints;
-			assert.equal(endpoints.length, 1);
-
-			var capabilities = endpoints[0].capabilities;
-			assert.equal(capabilities.length, 4);
-			assert.equal(capabilities[0].interface, "Alexa");
-			assert.equal(capabilities[1].interface, "Alexa.PowerController");
-			assert.equal(capabilities[2].interface, "Alexa.BrightnessController");
-			assert.equal(capabilities[3].interface, "Alexa.ColorController");
-		});
-	});
-
-	describe('BrightnessController', function() {
-
-		// mock rest call
-		var input;
-		rest.postItemCommand = function(token, itemname, value, success) {
-			success(input);
-		};
-
-		var capture = { "result" : null };
-		var context = { "succeed": function(result) { capture.result = result; }};
-
-		it('set brightness at color item', function () {
-			var input = {
-				"header": {
-					"namespace": "Alexa.BrightnessController",
-					"name": "SetBrightness",
-					"payloadVersion": "3"
-				},
-				"endpoint": {
-					"scope": {
-						"type": "BearerToken",
-						"token": ""
-					},
-					"endpointId": "light1",
-					"cookie": {
-						"propertyMap": "{\"PowerController\":{\"powerState\":{\"parameters\":{},\"itemName\":\"light1\"}},\"BrightnessController\":{\"brightness\":{\"parameters\":{},\"itemName\":\"light1\"}},\"ColorController\":{\"color\":{\"parameters\":{},\"itemName\":\"light1\"}}}"
-					}
-				},
-				"payload": {
-					"brightness": 20
-				}
-			};
-
-			ohv3.handleRequest(input, context);
-
-			var properties = capture.result.context.properties;
-			assert.equal(properties.length, 4);
-			assert.equal(properties[0].name, "powerState");
-			assert.equal(properties[0].value, "ON");
-			assert.equal(properties[1].name, "brightness");
-			assert.equal(properties[1].value, 20);
-			assert.equal(properties[2].name, "color");
-		});
-	});
+        tests.forEach(function(test) {
+          it(test.description, function(done) {
+            input = test.expected.openhab.input;
+            ohv3.handleRequest(utils.generateDirectiveRequest(test.directive), context);
+            // Wait for async functions
+            setTimeout(function() {
+              // console.log("Capture: " + JSON.stringify(capture, null, 2));
+              assert.captureResult(capture.result, test.expected.alexa.response);
+              assert.deepEqual(capture.commands, test.expected.openhab.commands);
+              done();
+            }, 5);
+          });
+        });
+      });
+    });
+  });
 });
