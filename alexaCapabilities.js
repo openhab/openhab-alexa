@@ -205,13 +205,13 @@ AlexaCapabilities.prototype.colorTemperatureController = function () {
   };
 };
 
-AlexaCapabilities.prototype.sceneController = function () {
+AlexaCapabilities.prototype.sceneController = function (scene) {
   return {
     capabilities: {
       "type": "AlexaInterface",
       "interface": "Alexa.SceneController",
       "version": "3",
-      "supportsDeactivation": false,
+      "supportsDeactivation": ['0', 'false'].includes(scene.parameters.supportsDeactivation) ? false : true,
       "proactivelyReported": false
     },
     category: "SCENE_TRIGGER"

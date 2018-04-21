@@ -358,7 +358,33 @@ function setPlayback() {
 function setScene() {
   var itemName = propertyMap.SceneController.scene.itemName;
   var state = directive.header.name === 'Activate' ? "ON" : "OFF";
-  postItemAndReturn(itemName, state);
+  rest.postItemCommand(directive.endpoint.scope.token,
+    itemName, state, function (response) {
+      var result = {
+        context: {},
+        event: {
+          header: {
+            messageId: uuid(),
+            name: directive.header.name === 'Activate' ? 'ActivationStarted' : 'DeactivationStarted',
+            namespace: directive.header.namespace,
+            payloadVersion: directive.header.payloadVersion,
+            correlationToken: directive.header.correlationToken
+          },
+          payload: {
+            cause: {
+              type: 'VOICE_INTERACTION'
+            },
+            timestamp: utils.date()
+          }
+        }
+      };
+      log.debug('setScene done with result' + JSON.stringify(result));
+      context.succeed(result);
+    }, function (error) {
+      context.done(null,
+        generateGenericErrorResponse(directive));
+    }
+  );
 }
 
 /**
@@ -625,7 +651,7 @@ function discoverDevices() {
             capability = alexaCapabilities.cameraStreamController(properties.cameraStreamConfigurations);
             break;
           case "SceneController":
-            capability = alexaCapabilities.sceneController();
+            capability = alexaCapabilities.sceneController(properties.scene);
             break;
           case "InputController":
             capability = alexaCapabilities.inputController();

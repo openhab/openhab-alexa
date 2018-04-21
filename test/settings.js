@@ -8,6 +8,9 @@ var settings = {
       "Lock": [
         "./test_discoverLock.js"
       ],
+      "Scene": [
+        "./test_discoverScene.js"
+      ],
       "Switch": [
         "./test_discoverSwitchRollershutter.js"
       ],
@@ -33,6 +36,9 @@ var settings = {
       ],
       "PowerLevelController": [
         "./test_controllerPowerLevel.js"
+      ],
+      "SceneController": [
+        "./test_controllerScene.js"
       ],
     }
   }
