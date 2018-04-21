@@ -15,6 +15,9 @@ var settings = {
       "Switch": [
         "./test_discoverSwitchRollershutter.js"
       ],
+      "Thermostat": [
+        "./test_discoverThermostat.js"
+      ],
     },
     "controllers": {
       "Alexa": [
@@ -43,6 +46,10 @@ var settings = {
       ],
       "SceneController": [
         "./test_controllerScene.js"
+      ],
+      "ThermostatController": [
+        "./test_controllerThermostatMode.js",
+        "./test_controllerThermostatTemperature.js"
       ],
     }
   }

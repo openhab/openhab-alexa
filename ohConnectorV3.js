@@ -359,7 +359,7 @@ function adjustTargetTemperature() {
     var itemName = properties.targetSetpoint.itemName;
     rest.getItem(directive.endpoint.scope.token,
       itemName, function (item) {
-        var state = item.state + directive.payload.targetSetpointDelta.value;
+        var state = parseFloat(item.state) + directive.payload.targetSetpointDelta.value;
         postItemAndReturn(itemName, state);
       }, function (error) {
         context.done(null,
@@ -373,14 +373,19 @@ function adjustTargetTemperature() {
  * Sets the mode of the thermostat
  */
 function setThermostatMode() {
-  var state = directive.payload.thermostatMode.value;
-  //user defined mappings (OFF, HEAT,COOL, AUTO)
-  var modeProps = propertyMap.ThermostatController.thermostatMode;
-  if(modeProps.parameters[state]){
-    state = modeProps.parameters[state];
-  }
+  var state = utils.normalizeThermostatMode(directive.payload.thermostatMode.value,
+    propertyMap.ThermostatController.thermostatMode.parameters);
   var itemName = propertyMap.ThermostatController.thermostatMode.itemName;
-  postItemAndReturn(itemName, state);
+
+  if (state) {
+    postItemAndReturn(itemName, state);
+  } else {
+    context.done(null,
+      generateControlError(directive, {
+        type: "UNSUPPORTED_THERMOSTAT_MODE",
+        message: itemName + " doesn't support thermostat mode [" + directive.payload.thermostatMode.value + "]",
+      }));
+  }
 }
 
 /**

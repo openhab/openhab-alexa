@@ -10,27 +10,40 @@
 var TAG_PATTERN = /^Alexa\.(\w+)\.(\w+)(?::(\S+))?/;
 
 /**
-* Normilizes numeric/string thermostat modes to Alexa friendly ones
+* Define thermostat mode mapping based on binding used in OH
 **/
-function normalizeThermostatMode(mode) {
-  //if state returns as a decimal type, convert to string, this is a very common thermo pattern
-  var m = mode;
-  switch (mode) {
-    case '0': //off, not supported! Weird. But nothing else todo.
-      m = 'OFF';
-      break;
-    case '1': //heating
-      m = 'HEAT';
-      break;
-    case '2': //cooling
-      m = 'COOL';
-      break;
-    case 'heat-cool': //nest auto
-    case '3': //auto
-      m = 'AUTO';
-      break;
+var THERMOSTAT_MODE_MAPPING = {
+  ecobee: {AUTO: 'auto', COOL: 'cool', HEAT: 'heat', OFF: 'off'},
+  nest: {AUTO: 'heat-cool', COOL: 'cool', HEAT: 'heat', ECO: 'eco', OFF: 'off'},
+  zwave: {AUTO: '3', COOL: '2', HEAT: '1', OFF: '0'},
+  default: {AUTO: 'auto', COOL: 'cool', HEAT: 'heat', ECO: 'eco', OFF: 'off'}
+};
+
+/**
+* Normilizes thermostat modes based on binding name
+*   Alexa: AUTO, COOL, HEAT, ECO, OFF
+*   OH: depending on thermostat binding or user mappings defined
+**/
+function normalizeThermostatMode(mode, parameters) {
+  var alexaModes = ['AUTO', 'COOL', 'HEAT', 'ECO', 'OFF'];
+  var bindingName = parameters.binding ? parameters.binding.toLowerCase() : 'default';
+  var userMap = Object.keys(parameters).reduce(function(obj, param) {
+    if (alexaModes.includes(param)) obj[param] = parameters[param];
+    return obj;
+  }, {});
+  var thermostatModeMap = Object.keys(userMap).length > 0 ? userMap : THERMOSTAT_MODE_MAPPING[bindingName];
+
+  // Convert Alexa to OH
+  if (alexaModes.includes(mode)) {
+    return thermostatModeMap[mode];
   }
-  return m.toUpperCase();
+  // Convert OH to Alexa
+  else {
+    return Object.keys(thermostatModeMap).reduce(function(result, alexaMode) {
+      if (thermostatModeMap[alexaMode] === mode.toString()) result = alexaMode;
+      return result;
+    }, undefined);
+  }
 }
 
 /**

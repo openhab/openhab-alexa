@@ -143,7 +143,9 @@ AlexaContextProperties.prototype.upperSetpointStateProperty = function (state, s
  * @param {string} state
  */
 AlexaContextProperties.prototype.thermostatModeStateProperty = function (state) {
-  return this.generateProperty('Alexa.ThermostatController', 'thermostatMode', state);
+  return this.generateProperty('Alexa.ThermostatController', 'thermostatMode', {
+    value: state
+  });
 }
 
 /**
@@ -282,14 +284,7 @@ AlexaContextProperties.prototype.propertiesResponseForItems = function (items, p
         if (group.thermostatMode) {
           item = itemByName(group.thermostatMode.itemName);
           if (item) {
-            var state = item.state;
-            ['OFF','HEAT','COOL','AUTO'].forEach(function(mode){
-              var mappedMode = group.thermostatMode.parameters[mode];
-              if(mappedMode === item.state.toString()){
-                state = mode;
-                return; //returns forEach
-              }
-            });
+            var state = utils.normalizeThermostatMode(item.state, group.thermostatMode.parameters);
             properties.push(self.thermostatModeStateProperty(state));
           }
         }
