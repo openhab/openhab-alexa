@@ -63,8 +63,6 @@ exports.handleRequest = function (_directive, _context) {
     case "Alexa.ColorTemperatureController":
       adjustColorTemperature();
       break;
-    case "Alexa.ChannelController":
-      break;
     case "Alexa.ThermostatController":
       switch (name) {
         case 'AdjustTargetTemperature':
@@ -80,6 +78,16 @@ exports.handleRequest = function (_directive, _context) {
       break;
     case "Alexa.LockController":
       setLockState();
+      break;
+    case "Alexa.ChannelController":
+      switch (name) {
+        case 'ChangeChannel':
+          setChannel();
+          break;
+        case 'SkipChannels':
+          adjustChannel();
+          break;
+      }
       break;
     case "Alexa.InputController":
       setInput();
@@ -398,11 +406,41 @@ function setLockState() {
 }
 
 /**
+ * Sends the channel value to a string or number item
+ */
+function setChannel() {
+  var itemName = propertyMap.ChannelController.channel.itemName;
+  var state = directive.payload.channel.number;
+  postItemAndReturn(itemName, state);
+}
+
+/**
+ * Adjusts the channel value to a number item
+ */
+function adjustChannel() {
+  var itemName = propertyMap.ChannelController.channel.itemName;
+  rest.getItem(directive.endpoint.scope.token,
+    itemName, function (item) {
+      var state = parseInt(item.state);
+      if(isNaN(state)){
+        state = Math.abs(directive.payload.channelCount);
+      } else {
+        state += directive.payload.channelCount;
+      }
+      postItemAndReturn(itemName, state.toString());
+    }, function (error) {
+      context.done(null,
+        generateGenericErrorResponse(directive));
+    }
+  );
+}
+
+/**
  * Sends the input value (HDMI1, Music, etc..) to a string item
  */
 function setInput() {
   var itemName = propertyMap.InputController.input.itemName;
-  var state = directive.payload.input;
+  var state = directive.payload.input.replace(/\s/g, '').toUpperCase();
   postItemAndReturn(itemName, state);
 }
 /**
@@ -454,13 +492,17 @@ function setScene() {
  */
 function adjustSpeakerVolume() {
   var itemName = propertyMap.Speaker.volume.itemName;
+  var defaultIncrement = parseInt(propertyMap.Speaker.volume.parameters.increment);
+  var volumeIncrement = directive.payload.volumeDefault && defaultIncrement > 0 ?
+    (directive.payload.volume >= 0 ? 1 : -1) * defaultIncrement : directive.payload.volume;
   rest.getItem(directive.endpoint.scope.token,
     itemName, function (item) {
       var state = parseInt(item.state);
       if(isNaN(state)){
-        state = 0;
+        state = Math.abs(volumeIncrement);
+      } else {
+        state += volumeIncrement;
       }
-      state += directive.payload.volume;
       postItemAndReturn(itemName, state);
     }, function (error) {
       context.done(null,
@@ -482,8 +524,8 @@ function setSpeakerVolume() {
  * Sets a switch item to muted (ON), or unmuted (OFF)
  */
 function setSpeakerMute() {
-  var itemName = propertyMap.Speaker.mute.itemName;
-  var state = directive.payload.mute ? "ON" : "OFF"
+  var itemName = propertyMap.Speaker.muted.itemName;
+  var state = directive.payload.mute ? "ON" : "OFF";
   postItemAndReturn(itemName, state);
 }
 
@@ -492,16 +534,28 @@ function setSpeakerMute() {
  */
 function adjustStepSpeakerVolume() {
   var itemName = propertyMap.StepSpeaker.volume.itemName;
-  var state = directive.payload.volume;
-  postItemAndReturn(itemName, state);
+  rest.getItem(directive.endpoint.scope.token,
+    itemName, function (item) {
+      var state = parseInt(item.state);
+      if(isNaN(state)){
+        state = Math.abs(directive.payload.volumeSteps);
+      } else {
+        state += directive.payload.volumeSteps;
+      }
+      postItemAndReturn(itemName, state);
+    }, function (error) {
+      context.done(null,
+        generateGenericErrorResponse(directive));
+      }
+    );
 }
 
 /**
  * Sets a switch item to muted (ON), or unmuted (OFF)
  */
 function setStepSpeakerMute() {
-  var itemName = propertyMap.StepSpeaker.mute.itemName;
-  var state = directive.payload.mute ? "ON" : "OFF"
+  var itemName = propertyMap.StepSpeaker.muted.itemName;
+  var state = directive.payload.mute ? "ON" : "OFF";
   postItemAndReturn(itemName, state);
 }
 
@@ -704,7 +758,7 @@ function discoverDevices() {
             capability = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
             break;
           case "Speaker":
-            capability = alexaCapabilities.speaker();
+            capability = alexaCapabilities.speaker(properties.volume, properties.muted);
             break;
           case "LockController":
             capability = alexaCapabilities.lockController();
@@ -714,6 +768,9 @@ function discoverDevices() {
             break;
           case "SceneController":
             capability = alexaCapabilities.sceneController(properties.scene);
+            break;
+          case "ChannelController":
+            capability = alexaCapabilities.channelController();
             break;
           case "InputController":
             capability = alexaCapabilities.inputController();

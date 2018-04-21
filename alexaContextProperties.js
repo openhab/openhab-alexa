@@ -170,6 +170,42 @@ AlexaContextProperties.prototype.lockStateProperty = function (state) {
 }
 
 /**
+ * Returns a property response for channel endpoints
+ * @param {string} state
+ */
+AlexaContextProperties.prototype.channelStateProperty = function (state) {
+  return this.generateProperty('Alexa.ChannelController', 'channel', {
+    number: state
+  });
+}
+
+/**
+ * Returns a property response for input endpoints
+ * @param {string} state
+ */
+AlexaContextProperties.prototype.inputStateProperty = function (state) {
+  return this.generateProperty('Alexa.InputController', 'input', state);
+}
+
+
+/**
+ * Returns a property response for speaker muted endpoints
+ * @param {string} state
+ */
+AlexaContextProperties.prototype.speakerMutedStateProperty = function (state) {
+  var muted = state === "ON" ? true : false;
+  return this.generateProperty('Alexa.Speaker', 'muted', muted);
+}
+
+/**
+ * Returns a property response for speaker volume endpoints
+ * @param {integer} state
+ */
+AlexaContextProperties.prototype.speakerVolumeStateProperty = function (state) {
+  return this.generateProperty('Alexa.Speaker', 'volume', parseInt(state));
+}
+
+/**
  * Returns a property response for health endpoints
  */
 AlexaContextProperties.prototype.endpointHealthProperty = function () {
@@ -254,8 +290,6 @@ AlexaContextProperties.prototype.propertiesResponseForItems = function (items, p
           properties.push(self.colorTemperatureStateProperty(item.state, item.type));
         }
         break;
-      case "ChannelController":
-        break;
       case "ThermostatController": //Group [Thermostat]
         if (group.targetSetpoint) {
           item = itemByName(group.targetSetpoint.itemName);
@@ -303,13 +337,35 @@ AlexaContextProperties.prototype.propertiesResponseForItems = function (items, p
           properties.push(self.lockStateProperty(item.state));
         }
         break;
+      case "ChannelController": //Number [Alexa@Channel]
+        item = itemByName(group.channel.itemName);
+        if (item){
+          properties.push(self.channelStateProperty(item.state));
+        }
+        break;
       case "InputController": //String [Alexa@Input]
+        item = itemByName(group.input.itemName);
+        if(item){
+          properties.push(self.inputStateProperty(item.state));
+        }
         break;
       case "PlaybackController": //Player or Group? [Alexa@Player]
         break;
       case "SceneController": //Switch ? [Scene]
         break;
       case "Speaker": //Group ? (volume dimmer, mute switch) [Alexa@Speaker]
+        if (group.muted) {
+          item = itemByName(group.muted.itemName);
+          if(item){
+            properties.push(self.speakerMutedStateProperty(item.state));
+          }
+        }
+        if (group.volume) {
+          item = itemByName(group.volume.itemName);
+          if(item){
+            properties.push(self.speakerVolumeStateProperty(item.state));
+          }
+        }
         break;
       case "StepSpeaker": //Group ? (steup string, mute, not really sure) [Alexa@StepSpeaker]
         break;

@@ -297,20 +297,20 @@ AlexaCapabilities.prototype.inputController = function () {
         "retrievable": true
       }
     },
-    category: "ACTIVITY_TRIGGER"
+    category: "TV"
   }
 }
 
-AlexaCapabilities.prototype.speaker = function (volumeName, mutedName) {
+AlexaCapabilities.prototype.speaker = function (volume, muted) {
   var supported = [];
-  if (volumeName) {
+  if (volume) {
     supported.push({
       "name": "volume"
     })
   }
-  if (mutedName) {
+  if (muted) {
     supported.push({
-      "name": "mute"
+      "name": "muted"
     })
   }
   return {
@@ -328,18 +328,7 @@ AlexaCapabilities.prototype.speaker = function (volumeName, mutedName) {
   };
 };
 
-AlexaCapabilities.prototype.stepSpeaker = function (volumeName, mutedName) {
-  var supported = [];
-  if (volumeName) {
-    supported.push({
-      "name": "volume"
-    })
-  }
-  if (mutedName) {
-    supported.push({
-      "name": "mute"
-    })
-  }
+AlexaCapabilities.prototype.stepSpeaker = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
