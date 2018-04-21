@@ -33,6 +33,35 @@ function normalizeThermostatMode(mode) {
   return m.toUpperCase();
 }
 
+/**
+* Normilizes color temperature value based on item type
+*   Alexa colorTemperature api property spectrum from 1000K (warmer) to 10000K (colder)
+*
+*   Two item types:
+*     - Dimmer: colder (0%) to warmer (100%) based of Alexa color temperature spectrum [hue and lifx support]
+*     - Number: color temperature value in K [custom integration]
+**/
+function normalizeColorTemperature(value, type) {
+  // Return if value not numeric
+  if (isNaN(value)) {
+    return;
+  }
+
+  var minValue = 1000;
+  var maxValue = 10000;
+  switch (type) {
+    case 'Dimmer':
+      if (value > 100) {  // Convert Alexa to OH
+        return (maxValue - value) / (maxValue - minValue) * 100;
+      } else {            // Convert OH to Alexa
+        return maxValue - (value * (maxValue - minValue) / 100);
+      }
+    case 'Number':
+      // No convertion needed between Alexa & OH
+      return value < minValue ? minValue : value < maxValue ? value : maxValue;
+  }
+}
+
 function date() {
   var d = new Date();
   return d.toISOString();
@@ -132,5 +161,6 @@ function tagsToPropertyMap(item, propertyMap) {
 }
 
 module.exports.normalizeThermostatMode = normalizeThermostatMode;
+module.exports.normalizeColorTemperature = normalizeColorTemperature;
 module.exports.date = date;
 module.exports.tagsToPropertyMap = tagsToPropertyMap;

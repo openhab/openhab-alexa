@@ -3,6 +3,7 @@ var settings = {
     "discovery": {
       "Light": [
         "./test_discoverLightColor.js",
+        "./test_discoverLightColorTemperature.js",
         "./test_discoverLightGroup.js"
       ],
       "Lock": [
@@ -24,6 +25,9 @@ var settings = {
       ],
       "ColorController": [
         "./test_controllerColor.js"
+      ],
+      "ColorTemperatureController": [
+        "./test_controllerColorTemperature.js"
       ],
       "LockController": [
         "./test_controllerLock.js"

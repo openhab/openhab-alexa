@@ -61,6 +61,7 @@ exports.handleRequest = function (_directive, _context) {
       setColor();
       break;
     case "Alexa.ColorTemperatureController":
+      adjustColorTemperature();
       break;
     case "Alexa.ChannelController":
       break;
@@ -242,6 +243,62 @@ function setColor() {
   var state = h + ',' + s + ',' + b;
   var itemName = propertyMap.ColorController.color.itemName;
   postItemAndReturn(itemName, state);
+}
+
+/**
+ * Set the color of a color item
+ */
+function adjustColorTemperature() {
+  var properties = propertyMap.ColorTemperatureController;
+  var itemName = properties.colorTemperatureInKelvin.itemName;
+
+  rest.getItem(directive.endpoint.scope.token,
+    itemName, function (item) {
+      var state;
+
+      if (directive.header.name === 'SetColorTemperature') {
+        state = utils.normalizeColorTemperature(directive.payload.colorTemperatureInKelvin, item.type);
+      } else {
+        // Generate error if in color mode (color controller property defined & empty state)
+        if (propertyMap.ColorController && !parseInt(item.state)) {
+          context.done(null,
+            generateControlError(directive, {
+              type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
+              message: 'The light is currently set to a color.',
+              currentDeviceMode: 'COLOR'
+            })
+          );
+          return;
+        }
+        // Generate error if state not a number
+        if (isNaN(item.state)) {
+          log.debug('adjustColorTemperature error: Could not get numeric item state');
+          context.done(null,
+            generateGenericErrorResponse(directive)
+          );
+          return;
+        }
+
+        var isIncreaseRequest = directive.header.name === 'IncreaseColorTemperature';
+        var increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment) || 500;
+
+        switch (item.type) {
+          case 'Dimmer':
+            // Send reverse command to OH since cold (0%) and warm (100%)
+            state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
+            break;
+          case 'Number':
+            // Increment current state by defined value as Number item doesn't support IncreaseDecreaseType commands
+            state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * increment;
+            state = utils.normalizeColorTemperature(state, item.type);
+            break;
+        }
+      }
+
+      log.debug('adjustColorTemperature to value: ' + state);
+      postItemAndReturn(itemName, state);
+    }
+  );
 }
 
 /**

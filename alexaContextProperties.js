@@ -95,6 +95,16 @@ AlexaContextProperties.prototype.colorStateProperty = function (state) {
 }
 
 /**
+ * Returns a property response for color temperature ndpoints
+ * @param {integer} state
+ * @param {string} type
+ */
+AlexaContextProperties.prototype.colorTemperatureStateProperty = function (state, type) {
+  state = utils.normalizeColorTemperature(state, type);
+  return this.generateProperty('Alexa.ColorTemperatureController', 'colorTemperatureInKelvin', parseInt(state));
+}
+
+/**
  * Returns a property response for targetSetpoint endpoints
  * @param {float} state
  * @param {string} scale
@@ -236,7 +246,11 @@ AlexaContextProperties.prototype.propertiesResponseForItems = function (items, p
           properties.push(self.colorStateProperty(item.state));
         }
         break;
-      case "ColorTemperatureController": //Dimmer
+      case "ColorTemperatureController": //Dimmer or Number
+        item = itemByName(group.colorTemperatureInKelvin.itemName);
+        if(item){
+          properties.push(self.colorTemperatureStateProperty(item.state, item.type));
+        }
         break;
       case "ChannelController":
         break;
