@@ -65,6 +65,12 @@ AlexaContextProperties.prototype.powerLevelStateProperty = function (state) {
  * @param {*} state 
  */
 AlexaContextProperties.prototype.colorStateProperty = function (state) {
+  // color item may receive brightness value
+  if (!isNaN(state)) {
+    var num = parseInt(state);
+    state = '0,0,' + num;
+  }
+
   var hsb = state.split(',');
   var h =  parseInt(hsb[0]);
   var s =  parseFloat(hsb[1]);

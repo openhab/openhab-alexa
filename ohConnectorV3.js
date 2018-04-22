@@ -112,7 +112,6 @@ exports.handleRequest = function (_directive, _context) {
           break;
       }
       break;
-      break;
     case "Alexa.CameraStreamController":
       break;
     default:
@@ -527,24 +526,29 @@ function discoverDevices() {
       }
 
       var propertyMap;
-      var groupTag;
+      var isEndpointGroup = false;
+
       //OH Goups can act as a single Endpoint using its children for capabilities
       if (item.type == 'Group') {
         item.tags.forEach(function(tag){
           //found matching Endpoint tag
-        if(groupMatch = tag.match(GROUP_TAG_PATTERN)){ 
-          log.debug("found group " + groupMatch[0] + " for item " + item.name);  
-          item.members.forEach(function (member) {
-            log.debug("adding  " + member.name + " to group " + item.name);  
-            groupItems.push(member.name);
-            propertyMap = utils.tagsToPropertyMap(member, propertyMap);
-          });
-          //set dispay category for group
-          displayCategories.push(groupMatch[1].toUpperCase());
-          return; //returns forEach
-        }
-      });
-      } else {
+          var groupMatch;
+          if(groupMatch = tag.match(GROUP_TAG_PATTERN)){
+            log.debug("found group " + groupMatch[0] + " for item " + item.name);
+            isEndpointGroup = true;
+            item.members.forEach(function (member) {
+              log.debug("adding  " + member.name + " to group " + item.name);
+              groupItems.push(member.name);
+              propertyMap = utils.tagsToPropertyMap(member, propertyMap);
+            });
+            //set dispay category for group
+            displayCategories.push(groupMatch[1].toUpperCase());
+            return; //returns forEach
+          }
+        });
+      }
+
+      if(!isEndpointGroup) {
         propertyMap = utils.tagsToPropertyMap(item);
       }
 
