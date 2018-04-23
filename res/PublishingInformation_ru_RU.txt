@@ -1,0 +1,46 @@
+Short Skill Description:
+Voice controls for your openHAB home automation controller
+
+
+Full Skill Description:
+An openHAB (Open Home Automation Bus) Skill, which allows your Amazon Echo(s) to securely control your devices.
+openHAB is different than other HA solutions in that it is completely vendor-neutral, hardware/protocol-agnostic, provides multiple user interfaces and is free and open source.
+
+Please note that to use this Skill it is required that:
+
+ * You have deployed and configured an openHAB server
+ * You are using the openHAB Cloud binding and cloud service
+ * openHAB2 items must use voice tags to expose items.
+
+Here are some example voice commands:
+
+ * Turn on Office Lights
+ * Turn off Pool Waterfall
+ * Turn on House Fan
+ * Turn on Home Theater Scene
+ * Dim Kitchen Lights to 30 percent
+ * Set house temperature to 70 degrees
+
+For a full list of of supported technologies, see:
+http://www.openhab.org/features/supported-technologies.html
+
+
+Category:
+Smart Home
+
+
+Keywords:
+openHAB, Home Automation, Smart Home, Connected Home,
+
+
+Testing Instructions:
+Provision an openHAB 2.x Server, install the 'demo items', configure, enable the my.openhab IO binding, create a my.openhab.org account and set your servers UUID & secret, say 'Alexa, Discover my devices'.
+You can then see the demo device states being controlled by Amazon Echo via the openHAB Web UI.
+
+
+Privacy Policy URL:
+http://www.openhab.org/terms.html
+
+
+Terms of Use URL:
+http://www.openhab.org/terms.html
