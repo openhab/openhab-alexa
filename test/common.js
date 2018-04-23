@@ -1,5 +1,10 @@
 var assert = require('chai').assert;
 
+// set log level to error in test environment
+if (process.env.NODE_ENV === 'test') {
+  process.env.LOG_LEVEL = 'ERROR';
+}
+
 /**
  * Generate directive request based of default template
  * @param  {*} request
@@ -29,6 +34,12 @@ function generateDirectiveRequest(request) {
     "endpoint": Object.assign(template.endpoint, request.endpoint),
     "payload": Object.assign(template.payload, request.payload)
   };
+  // update directive if payloadVersion set to 2
+  if (directive.header.payloadVersion === "2") {
+    directive.payload.accessToken = directive.endpoint.scope.token;
+    delete directive.header.correlationToken;
+    delete directive.endpoint.scope;
+  }
   // remove endpoint if no id defined
   if (directive.endpoint.endpointId === null) {
     // move endpoint scope to payload if defined
@@ -41,7 +52,7 @@ function generateDirectiveRequest(request) {
 }
 
 /**
- * Get list of capabilities namespace
+ * Get list of capabilities namespaces
  * @param {*} capabilities
  */
 function getCapabilitiesNamespaces(capabilities) {
@@ -58,62 +69,107 @@ function getCapabilitiesNamespaces(capabilities) {
 };
 
 /**
- * Get capability object or parameter value based on interface name
+ * Get list of capabilities parameters
  * @param {*} capabilities
- * @param {*} interfaceName
- * @param {*} parameter (optional)
  */
-function getCapabilityByInterface(capabilities, interfaceName, parameter) {
-  var result = capabilities.find(capability => capability.interface === interfaceName);
-  if (result) {
-    return parameter ? result[parameter] : result;
+function getCapabilitiesParameters(capabilities) {
+  return capabilities.reduce(function(result, capability) {
+    Object.keys(capability).forEach(function(parameter) {
+      if (parameter !== 'properties') {
+        result[capability.interface + '.' + parameter] = capability[parameter];
+      }
+    });
+    return result;
+  }, {});
+};
+
+/**
+ * Assert captured calls
+ * @param {*} calls
+ * @param {*} expected
+ */
+assert.capturedCalls = function(calls, expected) {
+  if (expected) {
+    assert.deepEqual(calls, expected);
   }
 };
 
 /**
- * Assert capture result
+ * Assert captured result
  * @param {*} result
  * @param {*} expected
  */
-assert.captureResult = function(result, expected) {
-  Object.keys(expected).forEach(function(key) {
-     if (typeof expected[key] === 'object') {
-       assert.exists(result[key]);
-       assert.captureResult(result[key], expected[key]);
-     } else {
-       assert.equal(result[key], expected[key]);
-     }
-   });
+assert.capturedResult = function(result, expected) {
+  if (expected) {
+    Object.keys(expected).forEach(function(key) {
+      if (typeof expected[key] === 'object') {
+        assert.exists(result[key]);
+        assert.capturedResult(result[key], expected[key]);
+      } else {
+        assert.equal(result[key], expected[key]);
+      }
+    });
+  }
 };
 
 /**
- * Assert discover endpoints
+ * Assert discovered appliances (v2)
+ * @param {*} appliances
+ * @param {*} results
+ */
+assert.discoveredAppliances = function(appliances, results) {
+  assert.equal(appliances.length, Object.keys(results).length);
+
+  appliances.forEach(function(appliance) {
+    var expected = results[appliance.applianceId];
+    assert.isDefined(expected);
+
+    Object.keys(expected).forEach(function(key) {
+      switch (key) {
+        case 'actions':
+        case 'applianceTypes':
+          assert.sameMembers(appliance[key], expected[key]);
+          break;
+        case 'additionalApplianceDetails':
+          assert.include(appliance[key], expected[key]);
+          break;
+        default:
+          assert.equal(appliance[key], expected[key]);
+      }
+    });
+  });
+};
+
+/**
+ * Assert discovered endpoints (v3)
  * @param {*} endpoints
  * @param {*} results
  */
-assert.discoverEndpoints = function(endpoints, results) {
+assert.discoveredEndpoints = function(endpoints, results) {
   assert.equal(endpoints.length, Object.keys(results).length);
 
   endpoints.forEach(function(endpoint) {
     var expected = results[endpoint.endpointId];
+    assert.isDefined(expected);
 
-    if (!expected) {
-      return;
-    }
-    if (expected.capabilities) {
-      assert.sameMembers(getCapabilitiesNamespaces(endpoint.capabilities), expected.capabilities);
-    }
-    if (expected.displayCategories) {
-      assert.sameMembers(endpoint.displayCategories, expected.displayCategories);
-    }
-    if (expected.parameters) {
-      Object.keys(expected.parameters).forEach(function(parameter) {
-        var match;
-        if (match = parameter.match(/^(\w+)\:(\w+)/)) {
-          assert.deepEqual(getCapabilityByInterface(endpoint.capabilities, match[0], match[1]), expected.parameters[parameter]);
-        }
-      });
-    }
+    Object.keys(expected).forEach(function(key) {
+      switch (key) {
+        case 'capabilities':
+          assert.sameMembers(getCapabilitiesNamespaces(endpoint.capabilities), expected.capabilities);
+          break;
+        case 'displayCategories':
+          assert.sameMembers(endpoint.displayCategories, expected.displayCategories);
+          break;
+        case 'parameters':
+          assert.deepInclude(getCapabilitiesParameters(endpoint.capabilities), expected.parameters);
+          break;
+        case 'propertyMap':
+          assert.deepInclude(JSON.parse(endpoint.cookie.propertyMap), expected.propertyMap);
+          break;
+        default:
+          assert.equal(endpoint[key], expected[key]);
+      }
+    });
   });
 };
 

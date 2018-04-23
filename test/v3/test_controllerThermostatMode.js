@@ -24,30 +24,30 @@ module.exports = [
         }
       }
     },
+    mocked: {
+      openhab: {"name": "thermostatMode", "state": "2", "type": "String"}
+    },
     expected: {
-      "alexa": {
-        "response": {
-          "context": {
-            "properties": [{
-              "namespace": "Alexa.ThermostatController",
-              "name": "thermostatMode",
-              "value": {
-                "value": "COOL",
-              }
-            }]
-          },
-          "event": {
-            "header": {
-              "namespace":"Alexa",
-              "name": "Response"
-            },
+      alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.ThermostatController",
+            "name": "thermostatMode",
+            "value": {
+              "value": "COOL",
+            }
+          }]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
           }
         }
       },
-      "openhab": {
-        "commands": [{"name": "thermostatMode", "value": "2"}],
-        "input": {"staged": false, "values": {"name": "thermostatMode", "state": "2", "type": "String"}}
-      }
+      openhab: [
+        {"name": "thermostatMode", "value": "2"}
+      ]
     }
   },
   {
@@ -73,30 +73,30 @@ module.exports = [
         }
       }
     },
+    mocked: {
+      openhab: {"name": "thermostatMode", "state": "heat-cool", "type": "String"}
+    },
     expected: {
-      "alexa": {
-        "response": {
-          "context": {
-            "properties": [{
-              "namespace": "Alexa.ThermostatController",
-              "name": "thermostatMode",
-              "value": {
-                "value": "AUTO",
-              }
-            }]
-          },
-          "event": {
-            "header": {
-              "namespace":"Alexa",
-              "name": "Response"
-            },
+      alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.ThermostatController",
+            "name": "thermostatMode",
+            "value": {
+              "value": "AUTO",
+            }
+          }]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
           }
         }
       },
-      "openhab": {
-        "commands": [{"name": "thermostatMode", "value": "heat-cool"}],
-        "input": {"staged": false, "values": {"name": "thermostatMode", "state": "heat-cool", "type": "String"}}
-      }
+      openhab: [
+        {"name": "thermostatMode", "value": "heat-cool"}
+      ]
     }
   },
   {
@@ -124,25 +124,21 @@ module.exports = [
         }
       }
     },
+    mocked: {},
     expected: {
-      "alexa": {
-        "response": {
-          "event": {
-            "header": {
-              "namespace":"Alexa",
-              "name": "ErrorResponse"
-            },
-            "payload": {
-              type: "UNSUPPORTED_THERMOSTAT_MODE",
-              message: "thermostatMode doesn't support thermostat mode [ECO]",
-            }
+      alexa: {
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "ErrorResponse"
+          },
+          "payload": {
+            type: "UNSUPPORTED_THERMOSTAT_MODE",
+            message: "thermostatMode doesn't support thermostat mode [ECO]",
           }
         }
       },
-      "openhab": {
-        "commands": [],
-        "input": {"staged": false, "values": null}
-      }
+      openhab: []
     }
   }
 ];

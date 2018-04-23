@@ -27,30 +27,30 @@ module.exports = [
         }
       }
     },
+    mocked: {
+      openhab: {"name": "gTelevision", "state": "1234", "type": "Number"}
+    },
     expected: {
-      "alexa": {
-        "response": {
-          "context": {
-            "properties": [{
-              "namespace": "Alexa.ChannelController",
-              "name": "channel",
-              "value": {
-                "number": "1234"
-              }
-            }]
-          },
-          "event": {
-            "header": {
-              "namespace":"Alexa",
-              "name": "Response"
-            },
+      alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.ChannelController",
+            "name": "channel",
+            "value": {
+              "number": "1234"
+            }
+          }]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
           }
         }
       },
-      "openhab": {
-        "commands": [{"name": "gTelevision", "value": "1234"}],
-        "input": {"staged": false, "values": {"name": "gTelevision", "state": "1234", "type": "Number"}}
-      }
+      openhab: [
+        {"name": "gTelevision", "value": "1234"}
+      ]
     }
   },
   {
@@ -72,33 +72,34 @@ module.exports = [
         "channelCount": -4
       }
     },
+    mocked: {
+      openhab: [
+        {"name": "gTelevision", "state": "1234", "type": "Number"},
+        {"name": "gTelevision", "state": "1230", "type": "Number"}
+      ],
+      staged: true
+    },
     expected: {
-      "alexa": {
-        "response": {
-          "context": {
-            "properties": [{
-              "namespace": "Alexa.ChannelController",
-              "name": "channel",
-              "value": {
-                "number": "1230"
-              }
-            }]
-          },
-          "event": {
-            "header": {
-              "namespace":"Alexa",
-              "name": "Response"
-            },
+      alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.ChannelController",
+            "name": "channel",
+            "value": {
+              "number": "1230"
+            }
+          }]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
           }
         }
       },
-      "openhab": {
-        "commands": [{"name": "gTelevision", "value": "1230"}],
-        "input": {"staged": true, "values": [
-          {"name": "gTelevision", "state": "1234", "type": "Number"},
-          {"name": "gTelevision", "state": "1230", "type": "Number"}
-        ]}
-      }
+      openhab: [
+        {"name": "gTelevision", "value": "1230"}
+      ]
     }
   }
 ];

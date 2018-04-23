@@ -15,26 +15,25 @@ module.exports = [
         }
       }
     },
+    mocked: {},
     expected: {
-      "alexa": {
-        "response": {
-          "event": {
-            "header": {
-              "namespace":"Alexa.SceneController",
-              "name": "ActivationStarted"
-            },
-            "payload": {
-              "cause": {
-                "type": "VOICE_INTERACTION"}
-              }
+      alexa: {
+        "event": {
+          "header": {
+            "namespace":"Alexa.SceneController",
+            "name": "ActivationStarted"
+          },
+          "payload": {
+            "cause": {
+              "type": "VOICE_INTERACTION"
+            }
           }
         }
       },
-      "openhab": {
-        "commands": [{"name": "scene1", "value": "ON"}],
-        "input": {"staged": false, "values": null}
-      }
-    },
+      openhab: [
+        {"name": "scene1", "value": "ON"}
+      ]
+    }
   },
   {
     description: "deactivate scene",
@@ -52,25 +51,24 @@ module.exports = [
         }
       }
     },
+    mocked: {},
     expected: {
-      "alexa": {
-        "response": {
-          "event": {
-            "header": {
-              "namespace":"Alexa.SceneController",
-              "name": "DeactivationStarted"
-            },
-            "payload": {
-              "cause": {
-                "type": "VOICE_INTERACTION"}
-              }
+      alexa: {
+        "event": {
+          "header": {
+            "namespace":"Alexa.SceneController",
+            "name": "DeactivationStarted"
+          },
+          "payload": {
+            "cause": {
+              "type": "VOICE_INTERACTION"
+            }
           }
         }
       },
-      "openhab": {
-        "commands": [{"name": "scene1", "value": "OFF"}],
-        "input": {"staged": false, "values": null}
-      }
+      openhab: [
+        {"name": "scene1", "value": "OFF"}
+      ]
     }
   }
 ];

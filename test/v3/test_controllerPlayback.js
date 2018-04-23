@@ -15,24 +15,24 @@ module.exports = [
         }
       }
     },
+    mocked: {
+      openhab: {"name": "speakerPlayer", "state": "PLAY", "type": "Player"}
+    },
     expected: {
-      "alexa": {
-        "response": {
-          "context": {
-            "properties": []
+      alexa: {
+        "context": {
+          "properties": []
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
           },
-          "event": {
-            "header": {
-              "namespace":"Alexa",
-              "name": "Response"
-            },
-          }
         }
       },
-      "openhab": {
-        "commands": [{"name": "speakerPlayer", "value": "PLAY"}],
-        "input": {"staged": false, "values": {"name": "speakerPlayer", "state": "PLAY", "type": "Player"}}
-      }
+      openhab: [
+        {"name": "speakerPlayer", "value": "PLAY"}
+      ]
     }
   }
 ];

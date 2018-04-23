@@ -18,28 +18,29 @@ module.exports = [
         "volumeSteps": 10
       }
     },
+    mocked: {
+      openhab: [
+        {"name": "stepSpeakerVolume", "state": "40", "type": "Dimmer"},
+        {"name": "stepSpeakerVolume", "state": "50", "type": "Dimmer"}
+      ],
+      staged: true
+    },
     expected: {
-      "alexa": {
-        "response": {
-          "context": {
-            "properties": []
-          },
-          "event": {
-            "header": {
-              "namespace":"Alexa",
-              "name": "Response"
-            },
+      alexa: {
+        "context": {
+          "properties": []
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
           }
         }
       },
-      "openhab": {
-        "commands": [{"name": "stepSpeakerVolume", "value": 50}],
-        "input": {"staged": true, "values": [
-          {"name": "stepSpeakerVolume", "state": "40", "type": "Dimmer"},
-          {"name": "stepSpeakerVolume", "state": "50", "type": "Dimmer"}
-        ]}
-      }
-    },
+      openhab: [
+        {"name": "stepSpeakerVolume", "value": 50}
+      ]
+    }
   },
   {
     description: "set mute volume",
@@ -60,24 +61,24 @@ module.exports = [
         "mute": true
       }
     },
+    mocked: {
+      openhab: {"name": "stepSpeakerMute", "state": "ON", "type": "Switch"}
+    },
     expected: {
-      "alexa": {
-        "response": {
-          "context": {
-            "properties": []
-          },
-          "event": {
-            "header": {
-              "namespace":"Alexa",
-              "name": "Response"
-            },
+      alexa: {
+        "context": {
+          "properties": []
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
           }
         }
       },
-      "openhab": {
-        "commands": [{"name": "stepSpeakerMute", "value": "ON"}],
-        "input": {"staged": false, "values": {"name": "stepSpeakerMute", "state": "ON", "type": "Switch"}}
-      }
-    },
+      openhab: [
+        {"name": "stepSpeakerMute", "value": "ON"}
+      ]
+    }
   }
 ];
