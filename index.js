@@ -8,7 +8,6 @@
  */
 
 var log = require('./log.js');
-var utils = require('./utils.js');
 var ohv2 = require('./ohConnectorV2.js');
 var ohv3 = require('./ohConnectorV3.js');
 
@@ -28,7 +27,7 @@ exports.handler = function (event, context) {
       break;
     default:
       log.error('No supported payloadVersion: ' + event.header.payloadVersion);
-      context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Something went wrong...'));
+      context.fail('No supported payloadVersion.');
       break;
   }
 };

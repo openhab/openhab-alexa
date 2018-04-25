@@ -24,7 +24,7 @@ var THERMOSTAT_MODE_MAPPING = {
 *   Alexa: AUTO, COOL, HEAT, ECO, OFF
 *   OH: depending on thermostat binding or user mappings defined
 **/
-function normalizeThermostatMode(mode, parameters) {
+function normalizeThermostatMode(mode, parameters = {}) {
   var alexaModes = ['AUTO', 'COOL', 'HEAT', 'ECO', 'OFF'];
   var bindingName = parameters.binding ? parameters.binding.toLowerCase() : 'default';
   var userMap = Object.keys(parameters).reduce(function(obj, param) {
@@ -134,10 +134,7 @@ function date() {
  * @param {String} item
  * @param {object} propertyMap
  */
-function tagsToPropertyMap(item, propertyMap) {
-  if (!propertyMap) {
-    propertyMap = {}
-  }
+function tagsToPropertyMap(item, propertyMap = {}) {
   item.tags.forEach(function (tag) {
     var matches;
     if ((matches = TAG_PATTERN.exec(tag)) !== null) {
