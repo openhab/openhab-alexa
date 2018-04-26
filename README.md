@@ -1,6 +1,6 @@
 # Amazon Alexa Smart Home skill for openHAB 2
 
-This is a nodejs / lambda application that connects the Alexa Smart Home API to to a user's openHAB instance, either directly or through the openHAB Cloud service (preferred).  The Smart Home API is not a general skill API, it allows the user to bypass using a application wake work and instead ask Alexa to perform a smart home action like "Alexa turn lights on"
+This is a nodejs / lambda application that connects the Alexa Smart Home API to a user's openHAB instance, either directly or through the openHAB Cloud service (preferred).  The Smart Home API is not a general skill API, it allows the user to bypass using a application wake work and instead ask Alexa to perform a smart home action like "Alexa turn lights on"
 
 This is designed to use the Homekit style tags in openHAB 2 to bind a user's devices to Alexa. This does not work with openHAB 1.x because there is no tagging mechanism. If you want to use the Alexa Smart Home skill with openHAB 1, you may use [this fork](https://github.com/paphko/openhab-alexa/tree/oh1_oh2_groups) which uses a group to bind user's devices to Alexa.
 
@@ -42,7 +42,7 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
 * run `npm install` to install the nodejs dependencies
 * copy config_sample.js to config.js
 * copy env_sample to .env
-* change config files to match your enviroment.
+* change config files to match your environment.
 * run "node-lambda deploy"
 * login to the amazon lambda console and select the newly created project,
 * Under "Event Sources"  add a "smart home skill" event source, for Application Id, add the Application Id from the Alexa developer portal
@@ -60,37 +60,37 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
 
 ### Version 3 (v3) Item mapping
 
-The Alexa skill API uses the conept of "endpoints".  Endpoints are addresable entities that expose functionaility in the form of capability interfaces.  
+The Alexa skill API uses the concept of "endpoints".  Endpoints are addressable entities that expose functionality in the form of capability interfaces.  
 
 #### Single items
-Single items in openHAB can be mapped to single endpoint in Alex through the use of one or more "Alex" tags. 
+Single items in openHAB can be mapped to single endpoint in Alex through the use of one or more "Alex" tags.
 
 An simple example of this is a light switch. In openHAB a light switch is defined as a "Switch" item and responds to ON or OFF commands.
 ```
-Switch LightSwitch "Light Switch" 
+Switch LightSwitch "Light Switch"
 ```
 In the Alexa skill a light switch endpoint implements the "Alexa.PowerController" interface and exposes a "powerState" property. To map our openHAB switch to a PowerController endpoint we use a Alexa specific tag:
 ```
 Switch LightSwitch "Light Switch" ["Alexa.PowerController.powerState"]
 ```
-Setting this on a single item will create an Alexa endpoint with the spoken addressable name "Light Switch" and map the powerState property to our item. You can ask Alexa to turn "Light Switch" on or off as well as ask for its current state. 
+Setting this on a single item will create an Alexa endpoint with the spoken addressable name "Light Switch" and map the powerState property to our item. You can ask Alexa to turn "Light Switch" on or off as well as ask for its current state.
 
-A slighty more complex example would be a Light Dimmer.  In openHAB a dimmer object responds to both percentage and ON / OFF commands.  In Alex this is two different interfaces.  To support both types of commands, we need to add both tags to the item:
+A slightly more complex example would be a Light Dimmer.  In openHAB a dimmer object responds to both percentage and ON / OFF commands.  In Alex this is two different interfaces.  To support both types of commands, we need to add both tags to the item:
 ```
 Dimmer LightSwicth "Light Switch" ["Alexa.PowerController.powerState","Alexa.BrightnessController.brightness"]
 ```
 
-You can ask Alexa to "Turn Light Switch .." on or off, "Set Light Switch to .." a certain percentage as well as ask for its current state. 
+You can ask Alexa to "Turn Light Switch .." on or off, "Set Light Switch to .." a certain percentage as well as ask for its current state.
 
-NOTE: the Alexa skill has 3 different percentage interfaces, BrightnessController, PowerLevelController and PercentageController.  Your ttem should only be tagged with ONE of these that best descibes the type of device.  So for lights this would be the BrightnessController, for rollershades this would be PercentageController.   The skill will not prevent adding more then one, but voice control may suffer for that device. 
+NOTE: the Alexa skill has 3 different percentage interfaces, BrightnessController, PowerLevelController and PercentageController.  Your item should only be tagged with ONE of these that best describes the type of device.  So for lights this would be the BrightnessController, for roller shades this would be PercentageController.   The skill will not prevent adding more then one, but voice control may suffer for that device.
 
 #### Group Items
 
-While single mapping items works for many use cases, occasionally multiple openHAB items need to be mapped to a single enpoint in Alex.
+While single mapping items works for many use cases, occasionally multiple openHAB items need to be mapped to a single endpoint in Alex.
 
-For this example we will use 2 different use cases, a thermostat and a stereo. 
+For this example we will use 2 different use cases, a thermostat and a stereo.
 
-In openHAB a thermostat is modeled as many different items, typically there are items for setpoints (target, heat, cool), modes, and the current temperature. To map these items to a single endpoint in Alexa, we will add them to a group which also uses a "Alexa" tag.   When items are tagged, but are also a member of a group that is tagged, they will be added to the group endpoint and not exposed as thier own endpoints. 
+In openHAB a thermostat is modeled as many different items, typically there are items for set points (target, heat, cool), modes, and the current temperature. To map these items to a single endpoint in Alexa, we will add them to a group which also uses a "Alexa" tag.   When items are tagged, but are also a member of a group that is tagged, they will be added to the group endpoint and not exposed as their own endpoints.
 
 ```
   Group  Thermostat    "Bedroom"                                ["Alexa.Endpoint.Thermostat"]	  
@@ -100,9 +100,9 @@ In openHAB a thermostat is modeled as many different items, typically there are 
   Number Mode          "Mode [%s]"               (Thermostat)   ["Alexa.ThermostatController.thermostatMode"]
   ```
 
-  The group tag also describes the category for the endpoint, in this case a "Thermostat".  See the section below on Group mapping tags and categories for a complete list.  In this example a single endpoint is created called "Bedroom", its various interfaces are mapped to different openHAB items.  You can ask Alexa "Set the Bedroom heat to 72" and the 'HeatSetpoint` will recieve the command, likewise you can ask Alexa "Whats the temperature of the Bedroom" and Alexa will query the 'Temperature' items for its value.
+  The group tag also describes the category for the endpoint, in this case a "Thermostat".  See the section below on Group mapping tags and categories for a complete list.  In this example a single endpoint is created called "Bedroom", its various interfaces are mapped to different openHAB items.  You can ask Alexa "Set the Bedroom heat to 72" and the 'HeatSetpoint` will receive the command, likewise you can ask Alexa "What's the temperature of the Bedroom" and Alexa will query the 'Temperature' items for its value.
 
-  When mapping items, sometime we need to pass aditional parameters to Alexa to set things like what scale to use (Fahrenheit) or what values our items expect for certain states (thermostat modes). These paramters can be passed in the tags, if they are omitted, then reasonable defaults are used.  In our above example we may wish to use Fahrenheit as our temperature scale, and map the mode strings to numbers.  This would look like:
+  When mapping items, sometime we need to pass additional parameters to Alexa to set things like what scale to use (Fahrenheit) or what values our items expect for certain states (thermostat modes). These parameters can be passed in the tags, if they are omitted, then reasonable defaults are used.  In our above example we may wish to use Fahrenheit as our temperature scale, and map the mode strings to numbers.  This would look like:
 
 ```
   Group  Thermostat    "Thermostat"                             ["Alexa.Endpoint.Thermostat"]	  
@@ -112,7 +112,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
   Number Mode          "Mode [%s]"               (Thermostat)   ["Alexa.ThermostatController.thermostatMode:OFF=0,HEAT=1,COOL=2,AUTO=3"]
   ```
 
-  A Stereo is another example of a single enpoint that needs many items to function properly.  Power, volume, input, speakers and player controlers are all typical use cases for a stereo that a user may wish to control.
+  A Stereo is another example of a single endpoint that needs many items to function properly.  Power, volume, input, speakers and player controllers are all typical use cases for a stereo that a user may wish to control.
 
 ```
 Group Stereo    "Stereo"            ["Alexa.Endpoint.Speaker"]
@@ -124,110 +124,131 @@ String Channel  "Channel" (Stereo)  ["Alexa.ChannelController.channel"]
 Player Player   "Player"  (Stereo)  ["Alexa.PlaybackController.playback"]
 ```
 #### Supported item mapping tags
-* The following are a list of supported tags. 
+* The following are a list of supported tags.
   * Alexa.PowerController.powerState
-    * Items that turn on or off such as light switchs, power states, etc..
+    * Items that turn on or off such as light switches, power states, etc..
     * ON, OFF
-    * Defualt category: SWITCH
+    * Default category: SWITCH
   * Alexa.BrightnessController.brightness
-    * Items which response to percentage level and brightness commands (dim, brighten, percent), typically lights. 
+    * Items which response to percentage level and brightness commands (dim, brighten, percent), typically lights.
     * Numbers
-    * Defualt category: LIGHT
+    * Default category: LIGHT
   * Alexa.PowerLevelController.powerLevel
     * Items which respond to a specific number setting
     * Numbers
-    * Defualt category: OTHER
+    * Default category: SWITCH
   * Alexa.PercentageController.percentage
-    * Items which repond to percentage commands such as rollershutters.
+    * Items which respond to percentage commands such as roller shutters.
     * Numbers
-    * Defualt category: OTHER
+    * Default category: OTHER
   * Alexa.ThermostatController.targetSetpoint
-    * Items that represent a target setpont for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is tagged (default to Celsius).
+    * Items that represent a target set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is tagged (default to Celsius).
     * Number or Float values
-    * Defualt category: THERMOSTAT
+    * Default category: THERMOSTAT
     * supports additional properties:
       * scale=Fahrenheit
       * scale=Celsius
       * defaults to scale=Celsius if omitted.
   * Alexa.ThermostatController.upperSetpoint
-    * Items that represent a upper or HEAT setpont for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is tagged (default to Celsius).
+    * Items that represent a upper or HEAT set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is tagged (default to Celsius).
     * Number or Float values
-    * Defualt category: THERMOSTAT
+    * Default category: THERMOSTAT
     * supports additional properties:
       * scale=Fahrenheit
       * scale=Celsius
       * defaults to scale=Celsius if omitted.
   * Alexa.ThermostatController.lowerSetpoint
-    * Items that represent a lower or COOL setpont for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is tagged (for example, scale=Fahrenheit, defaults to Celsius if ommitted).
+    * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is tagged (for example, scale=Fahrenheit, defaults to Celsius if omitted).
     * Number or Float values
-    * Defualt category: THERMOSTAT
+    * Default category: THERMOSTAT
     * supports additional properties:
       * scale=...
       * defaults to scale=Celsius if omitted.
   * Alexa.ThermostatController.thermostatMode
-    * Items that represent the mode for a thermostat, default string values are "OFF,HEAT,COOL,AUTO", but these can be mapped to other values in the tag
+    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the tag. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=...)
     * String or Number
-    * Defualt category: THERMOSTAT 
-    * supports additional properties which map alexa mdoes to user defined modes (for example AUTO=3)
+    * Default category: THERMOSTAT
+    * supports additional properties:
       * OFF=...
       * HEAT=...
       * COOL=...
+      * ECO=...
       * AUTO=...
+      * binding=ecobee [OFF=off, HEAT=heat, COOL=cool, AUTO=auto]
+      * binding=nest [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=heat-cool]
+      * binding=zwave [OFF=0, HEAT=1, COOL=2, AUTO=3]
+      * defaults to binding=default [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=auto] if omitted
   * Alexa.TemperatureSensor.temperature
-    * Items that represent the current temperature, value may be in Celsius or Fahrenheit depending on how the item is tagged (for example, scale=Fahrenheit, defaults to Celsius if ommitted).
+    * Items that represent the current temperature, value may be in Celsius or Fahrenheit depending on how the item is tagged (for example, scale=Fahrenheit, defaults to Celsius if omitted).
     * Number or Float values
-    * Defualt category: TEMPERATURE_SENSOR
+    * Default category: TEMPERATURE_SENSOR
     * supports additional properties:
       * scale=...
       * defaults to scale=Celsius if omitted.
   * Alexa.LockController.lockState
       * Items that represent the state of a lock (ON locked, OFF unlocked)
       * ON, OFF
-      * Defualt category: SMARTLOCK
+      * Default category: SMARTLOCK
   * Alexa.ColorController.color
       * Items that represent a color
       * H,S,B
-      * Defualt category: LIGHT
+      * Default category: LIGHT
+  * Alexa.ColorTemperatureController.colorTemperatureInKelvin
+      * Items that represents a color temperature, default increment value may be specified in tag parameters. For dimmer typed items adjustments, INCREASE/DECREASE commands will be sent instead if increment value not defined, while number typed items will default to 500K increments.
+      * Two item types supported:
+        * Dimmer: colder (0%) to warmer (100%) based of Alexa color temperature spectrum [Hue and LIFX support]
+        * Number: color temperature value in K [custom integration]
+      * Default category: LIGHT
+      * supports additional properties:
+        * increment=N (in % for dimmer/in K for number)
+        * defaults to increment=INCREASE/DECREASE (Dimmer) or increment=500 (Number) if omitted
   * Alexa.SceneController.scene
-      * Items that represent a scene
+      * Items that represent a scene or an activity depending on defined category and may be set not to support deactivation requests based on tag parameters.
       * String
-      * Defualt category: SCENE_TRIGGER
+      * Default category: SCENE_TRIGGER
+      * supports additional properties:
+        * supportsDeactivation=false
+        * supportsDeactivation=true
+        * defaults to supportsDeactivation=true if omitted
   * Alexa.ChannelController.channel
       * Items that represent a channel
       * String
-      * Defualt category: TV
+      * Default category: TV
   * Alexa.Alexa.InputController.input
       * Items that represent a source input (ex, "HDMI 1", or "MUSIC" on a stereo)
       * String
-      * Defualt category: ACTIVITY_TRIGGER
+      * Default category: TV
   * Alexa.Speaker.volume
-      * Items that represent a volume level
+      * Items that represent a volume level, default increment may be specified in tag parameters
       * Number
-      * Defualt category: SPEAKER
-  * Alexa.Speaker.mute
-      * Items that represent a mute state (ON muted, OFF unmuted)
+      * Default category: SPEAKER
+      * supports additional properties:
+        * increment=N
+        * defaults to increment=10 (standard value provided by Alexa) if omitted.
+  * Alexa.Speaker.muted
+      * Items that represent a muted state (ON muted, OFF unmuted)
       * ON, OFF
-      * Defualt category: SPEAKER
+      * Default category: SPEAKER
   * Alexa.StepSpeaker.volume
-      * Items that represent a volume level controlled in steps only (for example IR controlled, ex: +1, -1) 
+      * Items that represent a volume level controlled in steps only (for example IR controlled, ex: +1, -1)
       * String
-      * Defualt category: SPEAKER
-  * Alexa.StepSpeaker.mute
-      * Items that represent a mute state (ON muted, OFF unmuted)
+      * Default category: SPEAKER
+  * Alexa.StepSpeaker.muted
+      * Items that represent a muted state (ON muted, OFF unmuted)
       * ON, OFF
-      * Defualt category: SPEAKER
+      * Default category: SPEAKER
   * Alexa.PlaybackController.playback
-      * Items that represent the playback of a AV device (mostly compatable with Player Items)
+      * Items that represent the playback of a AV device (mostly compatible with Player Items)
       * "PLAY", "PAUSE", "NEXT", "PREVIOUS", "REWIND", "FASTFORWARD", "STOP"
-      * Defualt category: OTHER
+      * Default category: OTHER
 * Item Categories
-    * Alexa has certain categories that effect how voice control and thier mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and assocaite a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHTS" to send the command to.  
-    * You can overide this default value on items by adding it as a parameter to the tag, ex: ```Switch LightSwitch "Light Switch" ["Alexa.PowerController.powerState:category=OTHER"]```
+    * Alexa has certain categories that effect how voice control and their mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and associate a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHTS" to send the command to.  
+    * You can override this default value on items by adding it as a parameter to the tag, ex: ```Switch LightSwitch "Light Switch" ["Alexa.PowerController.powerState:category=OTHER"]```
     * List of Alexa categories from Amazon API docs:
 
-Category	| Description	| Notes 
+Category	| Description	| Notes
 ---------|-------------|-------
-ACTIVITY_TRIGGER	| Describes a combination of devices set to a specific state, when the state change must occur in a specific order. |For example, a "watch Neflix" scene might require the: 1. TV to be powered on & 2. Input set to HDMI1.	| Applies to Scenes
+ACTIVITY_TRIGGER	| Describes a combination of devices set to a specific state, when the state change must occur in a specific order. |For example, a "watch Netflix" scene might require the: 1. TV to be powered on & 2. Input set to HDMI1.	| Applies to Scenes
 CAMERA	| Indicates media devices with video or photo capabilities.	 
 DOOR	| Indicates a door.	 
 LIGHT	| Indicates light sources or fixtures.	 
@@ -242,9 +263,9 @@ THERMOSTAT	| Indicates endpoints that control temperature, stand-alone air condi
 TV	| Indicates the endpoint is a television.	 
 
 #### Supported Group mapping tags
-* Groups are always tagged in the format "Alexa.Endpoint.{category}", where {category} represents on of the default catagories listed above.
+* Groups are always tagged in the format "Alexa.Endpoint.{category}", where {category} represents on of the default categories listed above.
 * Example ```["Alexa.Endpoint.Thermostat"]```
-* Child item categories are ignored and only the group category is used on items. 
+* Child item categories are ignored and only the group category is used on items.
 * Case is ignored on the category part of the tag and any value will be made all uppercase before its passed to the Alexa API.
 
 
