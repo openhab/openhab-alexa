@@ -10,10 +10,10 @@ Das open Home Automation Bus (openHAB) Projekt stellt eine universale Integratio
 
 /* Example Phrases */
 
-Alexa, schalte Küche ein
+Alexa, schalte das Küchenlicht ein
 
-Alexa, stelle Schlafzimmer auf 50 Prozent
+Alexa, dimme Schlafzimmerlampe auf 50 Prozent
 
-Alexa, reduziere Temperatur um 5 grad
+Alexa, reduziere Temperatur um 5 Grad
 
 
