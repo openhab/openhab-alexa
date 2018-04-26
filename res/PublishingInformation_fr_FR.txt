@@ -1,8 +1,8 @@
 /* One Sentence Description */
 
-Control your openHAB 2 system with Alexa and myopenHAB.org
+Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org
 
-/* Detailed Description */
+/ * Description détaillée * /
 
 The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. 
 
