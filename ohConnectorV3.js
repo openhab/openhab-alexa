@@ -227,7 +227,8 @@ function adjustPercentage() {
 
         //skip this if we don't have a number to start with
         if (isNaN(item.state)) {
-          context.done(null, generateGenericErrorResponse(directive));
+          context.done(null, generateGenericErrorResponse());
+          return;
         }
         var oldState = parseInt(item.state);
         var newState = oldState + parseInt(payloadValue);
@@ -235,7 +236,7 @@ function adjustPercentage() {
         newState = Math.max(0, newState);
         postItemAndReturn(itemName, newState);
       }, function (error) {
-        context.done(null, generateGenericErrorResponse(directive));
+        context.done(null, generateGenericErrorResponse());
       }
     );
   }
@@ -269,35 +270,36 @@ function adjustColorTemperature() {
       } else {
         // Generate error if in color mode (color controller property defined & empty state)
         if (propertyMap.ColorController && !parseInt(item.state)) {
-          context.done(null,
-            generateControlError(directive, {
-              type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
-              message: 'The light is currently set to a color.',
-              currentDeviceMode: 'COLOR'
-            })
-          );
+          context.done(null, generateControlError({
+            type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
+            message: 'The light is currently set to a color.',
+            currentDeviceMode: 'COLOR'
+          }));
           return;
         }
         // Generate error if state not a number
         if (isNaN(item.state)) {
           log.debug('adjustColorTemperature error: Could not get numeric item state');
-          context.done(null,
-            generateGenericErrorResponse(directive)
-          );
+          context.done(null, generateGenericErrorResponse());
           return;
         }
 
         var isIncreaseRequest = directive.header.name === 'IncreaseColorTemperature';
-        var increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment) || 500;
+        var increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment);
 
         switch (item.type) {
           case 'Dimmer':
-            // Send reverse command to OH since cold (0%) and warm (100%)
-            state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
+            // Send reverse command or value to OH since cold (0%) and warm (100%), depending if increment defined
+            if (isNaN(increment)) {
+              state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
+            } else {
+              state = parseInt(item.state) + (isIncreaseRequest ? -1 : 1) * increment;
+              state = state < 0 ? 0 : state < 100 ? state : 100;
+            }
             break;
           case 'Number':
             // Increment current state by defined value as Number item doesn't support IncreaseDecreaseType commands
-            state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * increment;
+            state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * (increment || 500);
             state = utils.normalizeColorTemperature(state, item.type);
             break;
         }
@@ -352,8 +354,7 @@ function setTargetTemperature() {
     context.succeed(result);
   }).catch(function(err){
     log.debug('setTargetTemperature error ' + err);
-    context.done(null,
-      generateGenericErrorResponse(directive));
+    context.done(null, generateGenericErrorResponse());
   });
 
 }
@@ -370,8 +371,7 @@ function adjustTargetTemperature() {
         var state = parseFloat(item.state) + directive.payload.targetSetpointDelta.value;
         postItemAndReturn(itemName, state);
       }, function (error) {
-        context.done(null,
-          generateGenericErrorResponse(directive));
+        context.done(null, generateGenericErrorResponse());
       }
     );
   }
@@ -388,11 +388,10 @@ function setThermostatMode() {
   if (state) {
     postItemAndReturn(itemName, state);
   } else {
-    context.done(null,
-      generateControlError(directive, {
-        type: "UNSUPPORTED_THERMOSTAT_MODE",
-        message: itemName + " doesn't support thermostat mode [" + directive.payload.thermostatMode.value + "]",
-      }));
+    context.done(null, generateControlError({
+      type: "UNSUPPORTED_THERMOSTAT_MODE",
+      message: itemName + " doesn't support thermostat mode [" + directive.payload.thermostatMode.value + "]",
+    }));
   }
 }
 
@@ -429,8 +428,7 @@ function adjustChannel() {
       }
       postItemAndReturn(itemName, state.toString());
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -481,8 +479,7 @@ function setScene() {
       log.debug('setScene done with result' + JSON.stringify(result));
       context.succeed(result);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -505,8 +502,7 @@ function adjustSpeakerVolume() {
       }
       postItemAndReturn(itemName, state);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -544,8 +540,7 @@ function adjustStepSpeakerVolume() {
       }
       postItemAndReturn(itemName, state);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
       }
     );
 }
@@ -585,8 +580,7 @@ function getItemStateAndReturn(itemName) {
       log.debug('postItemAndReturn done with result' + JSON.stringify(result));
       context.succeed(result);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -603,8 +597,7 @@ function postItemAndReturn(itemName, state) {
     itemName, state, function (response) {
       getItemStateAndReturn(itemName);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -628,7 +621,7 @@ function generateResponseHeader(header) {
  * @param {*} directive
  * @param {*} payload
  */
-function generateControlError(directive, payload) {
+function generateControlError(payload) {
     var header = {
         namespace: 'Alexa',
         name: 'ErrorResponse',
@@ -653,8 +646,8 @@ function generateControlError(directive, payload) {
  * V3 Generic Error Response
  * @param {*} directive
  */
-function generateGenericErrorResponse(directive) {
-  return generateControlError(directive, {
+function generateGenericErrorResponse() {
+  return generateControlError({
     type: "ENDPOINT_UNREACHABLE",
     message: "Unable to reach device"
   });
@@ -851,8 +844,7 @@ function discoverDevices() {
     context.succeed(result);
   }, function (error) {
     log.error("discoverDevices failed: " + error.message);
-    context.done(null,
-      generateGenericErrorResponse(directive));
+    context.done(null, generateGenericErrorResponse());
   });
 }
 
