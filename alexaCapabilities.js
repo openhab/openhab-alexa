@@ -36,7 +36,7 @@ AlexaCapabilities.prototype.powerController = function () {
         "retrievable": true
       }
     },
-    catagory: "SWITCH",
+    category: "SWITCH",
   };
 };
 
@@ -55,7 +55,7 @@ AlexaCapabilities.prototype.brightnessController = function () {
         "retrievable": true
       }
     },
-    catagory: "LIGHT"
+    category: "LIGHT"
   };
 };
 
@@ -73,7 +73,7 @@ AlexaCapabilities.prototype.powerLevelController = function () {
         "retrievable": true
       }
     },
-    catagory: "LIGHT"
+    category: "SWITCH"
   };
 };
 
@@ -91,7 +91,7 @@ AlexaCapabilities.prototype.percentageController = function () {
         "retrievable": true
       }
     },
-    catagory: "OTHER"
+    category: "OTHER"
   };
 };
 
@@ -128,7 +128,7 @@ AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upp
         "retrievable": true
       }
     },
-    catagory: "THERMOSTAT"
+    category: "THERMOSTAT"
   };
 };
 
@@ -147,7 +147,7 @@ AlexaCapabilities.prototype.temperatureSensor = function () {
         "retrievable": true
       }
     },
-    catagory: "TEMPERATURE_SENSOR",
+    category: "TEMPERATURE_SENSOR",
   };
 };
 
@@ -165,7 +165,7 @@ AlexaCapabilities.prototype.lockController = function () {
         "retrievable": true
       }
     },
-    catagory: "SMARTLOCK"
+    category: "SMARTLOCK"
   };
 };
 
@@ -183,7 +183,7 @@ AlexaCapabilities.prototype.colorController = function () {
         "retrievable": true
       }
     },
-    catagory: "LIGHT"
+    category: "LIGHT"
   };
 };
 
@@ -201,32 +201,32 @@ AlexaCapabilities.prototype.colorTemperatureController = function () {
         "retrievable": true
       }
     },
-    catagory: "LIGHT"
+    category: "LIGHT"
   };
 };
 
-AlexaCapabilities.prototype.sceneController = function () {
+AlexaCapabilities.prototype.sceneController = function (scene) {
   return {
     capabilities: {
       "type": "AlexaInterface",
       "interface": "Alexa.SceneController",
       "version": "3",
-      "supportsDeactivation": false,
+      "supportsDeactivation": ['0', 'false'].includes(scene.parameters.supportsDeactivation) ? false : true,
       "proactivelyReported": false
     },
-    catagory: "SCENE_TRIGGER"
+    category: "SCENE_TRIGGER"
   };
 
 };
 
 /**
  * Not implemented yet!!!
- * @param {} protocol 
- * @param {*} width 
- * @param {*} height 
- * @param {*} authType 
- * @param {*} videoCodec 
- * @param {*} audioCodec 
+ * @param {} protocol
+ * @param {*} width
+ * @param {*} height
+ * @param {*} authType
+ * @param {*} videoCodec
+ * @param {*} audioCodec
  */
 AlexaCapabilities.prototype.cameraStreamController = function (cameraStreamConfigurations) {
   return {
@@ -253,13 +253,13 @@ AlexaCapabilities.prototype.cameraStreamController = function (cameraStreamConfi
         ]
       }]
     },
-    catagory: "CAMERA"
+    category: "CAMERA"
   };
 };
 
 /**
  * Not implemented yet!
- * @param {*} name 
+ * @param {*} name
  */
 AlexaCapabilities.prototype.channelController = function () {
   return {
@@ -277,7 +277,7 @@ AlexaCapabilities.prototype.channelController = function () {
         "retrievable": true
       }
     },
-    catagory: "TV"
+    category: "TV"
   }
 }
 
@@ -297,20 +297,20 @@ AlexaCapabilities.prototype.inputController = function () {
         "retrievable": true
       }
     },
-    catagory: "ACTIVITY_TRIGGER"
+    category: "TV"
   }
 }
 
-AlexaCapabilities.prototype.speaker = function (volumeName, mutedName) {
+AlexaCapabilities.prototype.speaker = function (volume, muted) {
   var supported = [];
-  if (volumeName) {
+  if (volume) {
     supported.push({
       "name": "volume"
     })
   }
-  if (mutedName) {
+  if (muted) {
     supported.push({
-      "name": "mute"
+      "name": "muted"
     })
   }
   return {
@@ -324,22 +324,11 @@ AlexaCapabilities.prototype.speaker = function (volumeName, mutedName) {
         "retrievable": true
       }
     },
-    catagory: "SPEAKER"
+    category: "SPEAKER"
   };
 };
 
-AlexaCapabilities.prototype.stepSpeaker = function (volumeName, mutedName) {
-  var supported = [];
-  if (volumeName) {
-    supported.push({
-      "name": "volume"
-    })
-  }
-  if (mutedName) {
-    supported.push({
-      "name": "mute"
-    })
-  }
+AlexaCapabilities.prototype.stepSpeaker = function () {
   return {
     capabilities: {
       "type": "AlexaInterface",
@@ -351,7 +340,7 @@ AlexaCapabilities.prototype.stepSpeaker = function (volumeName, mutedName) {
         "retrievable": true
       }
     },
-    catagory: "SPEAKER"
+    category: "SPEAKER"
   };
 };
 
@@ -364,7 +353,7 @@ AlexaCapabilities.prototype.playbackController = function () {
       "proactivelyReported": false,
       "supportedOperations": ["Play", "Pause", "Next", "Previous", "Rewind", "FastForward", "Stop"]
     },
-    catagory: "OTHER"
+    category: "OTHER"
   };
 
 };

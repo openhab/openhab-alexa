@@ -14,8 +14,17 @@ var log = require('./log.js');
 var utils = require('./utils.js');
 var rest = require('./rest.js');
 
-exports.handleRequest = function(event,context){
-    switch (event.header.namespace) {
+var directive;
+var context;
+
+exports.handleRequest = function(_directive, _context) {
+    directive = _directive;
+    context = _context;
+
+    var namespace = directive.header.namespace;
+    var name = directive.header.name;
+
+    switch (namespace) {
         /**
          * The namespace of 'Discovery' indicates a request is being made to the lambda for
          * discovering all appliances associated with the customer's appliance cloud account.
@@ -23,7 +32,7 @@ exports.handleRequest = function(event,context){
          * the customer.
          */
     case 'Alexa.ConnectedHome.Discovery':
-        this.handleDiscovery(event, context);
+        this.handleDiscovery();
         break;
 
         /**
@@ -33,7 +42,7 @@ exports.handleRequest = function(event,context){
          */
     case 'Alexa.ConnectedHome.Control':
     case 'Alexa.ConnectedHome.Query':
-    this.handleControl(event, context);
+    this.handleControl();
         break;
 
         /**
@@ -42,12 +51,12 @@ exports.handleRequest = function(event,context){
          */
     case 'Alexa.ConnectedHome.System':
         // TODO - handle unhealthy device responses
-        if (event.header.name === 'HealthCheckRequest') {
+        if (name === 'HealthCheckRequest') {
             var headers = {
-                messageId: event.header.messageId,
-                name: event.header.name.replace('Request', 'Response'),
-                namespace: event.header.namespace,
-                payloadVersion: event.header.payloadVersion
+                messageId: directive.header.messageId,
+                name: directive.header.name.replace('Request', 'Response'),
+                namespace: directive.header.namespace,
+                payloadVersion: directive.header.payloadVersion
             };
             var payloads = {
                 description: 'The system is currently healthy',
@@ -66,8 +75,9 @@ exports.handleRequest = function(event,context){
          * We received an unexpected message
          */
     default:
-        log.error('namespace not supported: ' + event.header.namespace);
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Something went wrong...'));
+        log.error('namespace not supported: ' + namespace);
+        context.done(null,
+          generateGenericErrorResponse('namespace not supported.'));
         break;
     }
 
@@ -77,15 +87,15 @@ exports.handleRequest = function(event,context){
  * We are expected to respond back with a list of appliances that we have discovered for a given
  * customer.
  */
-exports.handleDiscovery = function (event, context) {
+exports.handleDiscovery = function () {
     /**
      * Crafting the response header
      */
     var header = {
-        messageId: event.header.messageId,
-        name: event.header.name.replace('Request', 'Response'),
-        namespace: event.header.namespace,
-        payloadVersion: event.header.payloadVersion
+        messageId: directive.header.messageId,
+        name: directive.header.name.replace('Request', 'Response'),
+        namespace: directive.header.namespace,
+        payloadVersion: directive.header.payloadVersion
     };
 
     /**
@@ -93,7 +103,7 @@ exports.handleDiscovery = function (event, context) {
      * discoverd appliances.
      */
 
-    discoverDevices(event.payload.accessToken, function (devices) {
+    discoverDevices(directive.payload.accessToken, function (devices) {
         /**
          * Response body will be an array of discovered devices.
          */
@@ -110,15 +120,16 @@ exports.handleDiscovery = function (event, context) {
         },
         function (error) {
             log.error("discoverDevices failed: " + error.message);
-            context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+            context.done(null,
+              generateGenericErrorResponse(error.message));
         });
 };
 
 /**
- * Control events are processed here.
+ * Control messages are processed here.
  * This is called when Alexa requests an action (IE turn off appliance).
  */
-exports.handleControl = function (event, context) {
+exports.handleControl = function () {
     /**
      * Make a remote call to execute the action based on accessToken and the applianceId and the switchControlAction
      * Some other examples of checks:
@@ -126,35 +137,35 @@ exports.handleControl = function (event, context) {
      *	validate the authentication has not expired else return EXPIRED_ACCESS_TOKEN error
      * Please see the technical documentation for detailed list of errors
      */
-    switch (event.header.name) {
+    switch (directive.header.name) {
     case 'TurnOnRequest':
     case 'TurnOffRequest':
-        turnOnOff(context, event);
+        turnOnOff();
         break;
     case 'GetTemperatureReadingRequest':
-        getCurrentTemperature(context, event);
+        getCurrentTemperature();
         break;
     case 'GetTargetTemperatureRequest':
-        getTargetTemperature(context, event);
+        getTargetTemperature();
         break;
     case 'SetTargetTemperatureRequest':
     case 'IncrementTargetTemperatureRequest':
     case 'DecrementTargetTemperatureRequest':
-        adjustTemperature(context, event);
+        adjustTemperature();
         break;
     case 'SetPercentageRequest':
     case 'IncrementPercentageRequest':
     case 'DecrementPercentageRequest':
-        adjustPercentage(context, event);
+        adjustPercentage();
         break;
     case 'SetColorRequest':
-        adjustColor(context, event);
+        adjustColor();
         break;
     case 'GetLockStateRequest':
-        getLockState(context, event);
+        getLockState();
         break;
     case 'SetLockStateRequest':
-        setLockState(context, event);
+        setLockState();
         break;
     }
 };
@@ -162,13 +173,13 @@ exports.handleControl = function (event, context) {
 /**
  * Turns a Switch Item on or off
  */
-function turnOnOff(context, event) {
+function turnOnOff() {
     var success = function (response) {
         var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace('Request', 'Confirmation'),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
+            messageId: directive.header.messageId,
+            name: directive.header.name.replace('Request', 'Confirmation'),
+            namespace: directive.header.namespace,
+            payloadVersion: directive.header.payloadVersion
         };
 
         var payload = {};
@@ -184,21 +195,23 @@ function turnOnOff(context, event) {
     };
 
     var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+        context.done(null,
+          generateGenericErrorResponse(error.message));
     };
 
-    var state = event.header.name === 'TurnOnRequest' ? 'ON' : 'OFF';
+    var state = directive.header.name === 'TurnOnRequest' ? 'ON' : 'OFF';
 
-    rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
+    rest.postItemCommand(directive.payload.accessToken, directive.payload.appliance.applianceId,
+      state, success, failure);
 }
 
 /**
  * Adjust a percentage value on a item
  **/
-function adjustPercentage(context, event) {
+function adjustPercentage() {
 
     //is this a set command, or Inc/Dec command
-    var isSetCommand = event.header.name === 'SetPercentageRequest';
+    var isSetCommand = directive.header.name === 'SetPercentageRequest';
 
     /**
      * Success functon for sending a percentage change command to OH
@@ -206,10 +219,10 @@ function adjustPercentage(context, event) {
     var itemPostSuccess = function (response) {
 
         var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace('Request', 'Confirmation'),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
+            messageId: directive.header.messageId,
+            name: directive.header.name.replace('Request', 'Confirmation'),
+            namespace: directive.header.namespace,
+            payloadVersion: directive.header.payloadVersion
         };
 
         var payload = {};
@@ -229,7 +242,7 @@ function adjustPercentage(context, event) {
     var itemGetSuccess = function (item) {
 
       log.debug('itemGetSuccess: item state ' +
-      item.state + ' delta ' + event.payload.deltaPercentage.value);
+      item.state + ' delta ' + directive.payload.deltaPercentage.value);
 
         //inc/dec command
         //skip this if we don't have a number to start with
@@ -243,52 +256,54 @@ function adjustPercentage(context, event) {
         var state = parseInt(item.state);
 
         var value;
-        if (event.header.name === 'IncrementPercentageRequest') {
-            value = state + parseInt(event.payload.deltaPercentage.value);
+        if (directive.header.name === 'IncrementPercentageRequest') {
+            value = state + parseInt(directive.payload.deltaPercentage.value);
             if (value > 100) {
                 value = 100;
             }
         } else {
-            value = state - parseInt(event.payload.deltaPercentage.value);
+            value = state - parseInt(directive.payload.deltaPercentage.value);
             if (value < 0) {
                 value = 0;
             }
         }
 
-        rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, value.toString(), itemPostSuccess, failure);
+        rest.postItemCommand(directive.payload.accessToken, directive.payload.appliance.applianceId,
+          value.toString(), itemPostSuccess, failure);
     };
 
     /**
      * Failure Function used for both retieveing items and posting item commands.
      */
     var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+        context.done(null,
+          generateGenericErrorResponse(error.message));
     };
 
     if (isSetCommand) {
-        rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, event.payload.percentageState.value.toString(), itemPostSuccess, failure);
-    } else if (event.payload.percentageState) {
-        rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, itemGetSuccess, failure);
+        rest.postItemCommand(directive.payload.accessToken, directive.payload.appliance.applianceId,
+          directive.payload.percentageState.value.toString(), itemPostSuccess, failure);
     } else {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Invalid target percentage.'));
+        rest.getItem(directive.payload.accessToken, directive.payload.appliance.applianceId,
+          itemGetSuccess, failure);
     }
 }
 
 /**
  * Color control
  */
-function adjustColor(context, event) {
+function adjustColor() {
     var success = function (response) {
         var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace('Request', 'Confirmation'),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
+            messageId: directive.header.messageId,
+            name: directive.header.name.replace('Request', 'Confirmation'),
+            namespace: directive.header.namespace,
+            payloadVersion: directive.header.payloadVersion
         };
 
         var payload = {
           achievedState : {
-            color : event.payload.color
+            color : directive.payload.color
           }
         };
 
@@ -301,20 +316,22 @@ function adjustColor(context, event) {
     };
 
     var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+        context.done(null,
+          generateGenericErrorResponse(error.message));
     };
 
-    var h = event.payload.color.hue;
-    var s = Math.round(event.payload.color.saturation * 100);
-    var b = Math.round(event.payload.color.brightness * 100);
+    var h = directive.payload.color.hue;
+    var s = directive.payload.color.saturation * 100.0;
+    var b = directive.payload.color.brightness * 100.0;
     var state = h + ',' + s + ',' + b;
-    rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
+    rest.postItemCommand(directive.payload.accessToken, directive.payload.appliance.applianceId,
+      state, success, failure);
 }
 
 /**
  * Retrives the current temperature of a Thermostat or standalone currentTemperature tagged item
  **/
-function getCurrentTemperature(context, event) {
+function getCurrentTemperature() {
 
     var success = function (item) {
         //if this is a thermostat group, get the currentTemperature item
@@ -324,23 +341,25 @@ function getCurrentTemperature(context, event) {
         }
 
         if(!item || isNaN(item.state)){
-          context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'thermostat missing current temperature'));
+          context.done(null,
+            generateGenericErrorResponse('thermostat missing current temperature'));
           return;
         }
 
-        var isF = utils.isEventFahrenheit(event);
-
         var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace('Request', 'Response'),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
+            messageId: directive.header.messageId,
+            name: directive.header.name.replace('Request', 'Response'),
+            namespace: directive.header.namespace,
+            payloadVersion: directive.header.payloadVersion
         };
 
         var value = parseFloat(item.state);
+        var scale = directive.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit' ?
+          'FAHRENHEIT' : 'CELSIUS';
         var payload = {
           temperatureReading: {
-              value: isF ? utils.toC(value) : value
+              value: value,
+              scale: scale
           },
           applianceResponseTimestamp: new Date().toISOString()
         };
@@ -354,41 +373,46 @@ function getCurrentTemperature(context, event) {
     };
 
     var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+        context.done(null,
+          generateGenericErrorResponse(error.message));
     };
 
-    rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
+    rest.getItem(directive.payload.accessToken, directive.payload.appliance.applianceId,
+      success, failure);
 }
 
 /**
  * Retrives the current target temperature of a Thermostat
  **/
-function getTargetTemperature(context, event) {
+function getTargetTemperature() {
 
     var success = function (thermostatGroup) {
 
         var items = getThermostatItems(thermostatGroup.members);
 
         if(!items.targetTemperature || isNaN(items.targetTemperature.state)){
-          context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'thermostat missing current temperature'));
+          context.done(null,
+            generateGenericErrorResponse('thermostat missing current temperature'));
           return;
         }
 
-        var isF = utils.isEventFahrenheit(event);
-
         var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace('Request', 'Response'),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
+            messageId: directive.header.messageId,
+            name: directive.header.name.replace('Request', 'Response'),
+            namespace: directive.header.namespace,
+            payloadVersion: directive.header.payloadVersion
         };
 
         var value = parseFloat(items.targetTemperature.state);
-        var mode = utils.normalizeThermostatMode(items.heatingCoolingMode ? items.heatingCoolingMode.state : 'Unknown Mode');
+        var scale = directive.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit' ?
+          'FAHRENHEIT' : 'CELSIUS';
+        var mode = items.heatingCoolingMode ?
+          utils.normalizeThermostatMode(items.heatingCoolingMode.state) : 'AUTO';
 
         var payload = {
           targetTemperature: {
-              value: isF ? utils.toC(value) : value
+              value: value,
+              scale: scale
           },
           applianceResponseTimestamp: new Date().toISOString(),
           temperatureMode: {
@@ -405,80 +429,88 @@ function getTargetTemperature(context, event) {
     };
 
     var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+        context.done(null,
+          generateGenericErrorResponse(error.message));
     };
 
-    rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
+    rest.getItem(directive.payload.accessToken, directive.payload.appliance.applianceId,
+      success, failure);
 }
 
 /**
  * Adjust a thermostat's temperature by first reading its current values
  **/
-function adjustTemperature(context, event) {
+function adjustTemperature() {
 
     var success = function (response) {
         var items = getThermostatItems(response.members);
-        adjustTemperatureWithItems(context, event, items.currentTemperature, items.targetTemperature, items.heatingCoolingMode);
+        adjustTemperatureWithItems(items.currentTemperature, items.targetTemperature, items.heatingCoolingMode);
     };
 
     var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+        context.done(null,
+          generateGenericErrorResponse(error.message));
     };
 
-    rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
+    rest.getItem(directive.payload.accessToken, directive.payload.appliance.applianceId,
+      success, failure);
 }
 
 /**
  * Adjust a thermostat's temperature based on its current actual readings.
  **/
-function adjustTemperatureWithItems(context, event, currentTemperature, targetTemperature, heatingCoolingMode) {
+function adjustTemperatureWithItems(currentTemperature, targetTemperature, heatingCoolingMode) {
     if (!targetTemperature) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Missing target temperature!'));
+        context.done(null,
+          generateGenericErrorResponse('Missing target temperature!'));
         return;
     }
 
     var curValue = parseFloat(targetTemperature.state);
+    var scale = directive.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit' ?
+      'FAHRENHEIT' : 'CELSIUS';
 
     /**
      * Alexa needs everything in Celsius, we will need to respect what a user has set
      */
-    var isF = utils.isEventFahrenheit(event);
-
     var setValue;
-    switch (event.header.name) {
+    switch (directive.header.name) {
     case 'SetTargetTemperatureRequest':
-        setValue = isF ? utils.toF(event.payload.targetTemperature.value) : event.payload.targetTemperature.value;
+        setValue = scale === 'FAHRENHEIT' ?
+          directive.payload.targetTemperature.value * 9 / 5 + 32 : directive.payload.targetTemperature.value;
         break;
     case 'IncrementTargetTemperatureRequest':
-        setValue = curValue + event.payload.deltaTemperature.value;
+        setValue = curValue + directive.payload.deltaTemperature.value;
         break;
     case 'DecrementTargetTemperatureRequest':
-        setValue = curValue - event.payload.deltaTemperature.value;
+        setValue = curValue - directive.payload.deltaTemperature.value;
         break;
     }
 
     log.debug('adjustTemperatureWithItems setValue: ' + setValue);
 
-    var curMode = utils.normalizeThermostatMode(heatingCoolingMode ? heatingCoolingMode.state : 'AUTO');
+    var curMode = heatingCoolingMode ? utils.normalizeThermostatMode(heatingCoolingMode.state) : 'AUTO';
 
     var success = function (response) {
         var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace('Request', 'Confirmation'),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
+            messageId: directive.header.messageId,
+            name: directive.header.name.replace('Request', 'Confirmation'),
+            namespace: directive.header.namespace,
+            payloadVersion: directive.header.payloadVersion
         };
 
         var payload = {
             targetTemperature: {
-                value: isF ? utils.toC(setValue) : setValue
+                value: setValue,
+                scale: scale
             },
             temperatureMode: {
                 value: curMode
             },
             previousState: {
                 targetTemperature: {
-                    value: isF ? utils.toC(curValue) : curValue
+                    value: curValue,
+                    scale: scale
                 },
                 mode: {
                     value: curMode
@@ -496,19 +528,21 @@ function adjustTemperatureWithItems(context, event, currentTemperature, targetTe
     };
 
     var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', 'Unable to connect to server'));
+        context.done(null,
+          generateGenericErrorResponse('Unable to connect to server'));
     };
 
-    rest.postItemCommand(event.payload.accessToken, targetTemperature.name, setValue.toString(), success, failure);
+    rest.postItemCommand(directive.payload.accessToken, targetTemperature.name,
+      setValue.toString(), success, failure);
 }
 
-function getLockState(context, event) {
+function getLockState() {
     var success = function (item) {
         var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace('Request', 'Response'),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
+            messageId: directive.header.messageId,
+            name: directive.header.name.replace('Request', 'Response'),
+            namespace: directive.header.namespace,
+            payloadVersion: directive.header.payloadVersion
         };
         var payload = {
             lockState: item.state == 'ON' ? 'LOCKED' : 'UNLOCKED'
@@ -521,22 +555,24 @@ function getLockState(context, event) {
         context.succeed(result);
     };
     var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+        context.done(null,
+          generateGenericErrorResponse(error.message));
     };
-    rest.getItem(event.payload.accessToken, event.payload.appliance.applianceId, success, failure);
+    rest.getItem(directive.payload.accessToken, directive.payload.appliance.applianceId,
+      success, failure);
 }
 
-function setLockState(context, event) {
+function setLockState() {
     var success = function (response) {
         var header = {
-            messageId: event.header.messageId,
-            name: event.header.name.replace('Request', 'Confirmation'),
-            namespace: event.header.namespace,
-            payloadVersion: event.header.payloadVersion
+            messageId: directive.header.messageId,
+            name: directive.header.name.replace('Request', 'Confirmation'),
+            namespace: directive.header.namespace,
+            payloadVersion: directive.header.payloadVersion
         };
 
         var payload = {
-            lockState: event.payload.lockState //signal success
+            lockState: directive.payload.lockState //signal success
         };
 
         var result = {
@@ -549,12 +585,45 @@ function setLockState(context, event) {
     };
 
     var failure = function (error) {
-        context.done(null, utils.generateControlError(event.header.messageId, event.header.name, 'DependentServiceUnavailableError', error.message));
+        context.done(null,
+          generateGenericErrorResponse(error.message));
     };
 
-    var state = event.payload.lockState === 'LOCKED' ? 'ON' : 'OFF';
+    var state = directive.payload.lockState === 'LOCKED' ? 'ON' : 'OFF';
 
-    rest.postItemCommand(event.payload.accessToken, event.payload.appliance.applianceId, state, success, failure);
+    rest.postItemCommand(directive.payload.accessToken, directive.payload.appliance.applianceId,
+      state, success, failure);
+}
+
+/**
+ * Generate Control Error Response
+ * @param {*} name
+ * @param {*} payload
+ */
+function generateControlError(name, payload) {
+    var header = {
+        namespace: directive.header.namespace,
+        name: name,
+        payloadVersion: directive.header.payloadVersion,
+        messageId: directive.header.messageId
+    };
+
+    var result = {
+        header: header,
+        payload: payload
+    };
+
+    return result;
+}
+
+/**
+ * Generate Generic Error Response
+ * @param {*} error
+ */
+function generateGenericErrorResponse(error) {
+  return generateControlError('DependentServiceUnavailableError', {
+    dependentServiceName: error
+  });
 }
 
 /**
@@ -769,4 +838,4 @@ function getThermostatItems(thermoGroup) {
         });
     });
     return values;
-  }
+}

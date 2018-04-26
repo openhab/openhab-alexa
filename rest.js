@@ -7,12 +7,35 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-var https = require('https');
-var http = require('http');
-var config = require('./config');
-var logger = require('./log');
+var log = require('./log.js');
+var config = getConfig();
+var http = require(config.proto === 'http' ? 'http' : 'https');
 
-var http = config.proto && config.proto == 'http' ? http : https;
+/**
+ * Get config
+ */
+function getConfig() {
+    var config ;
+    try {
+        config = require('./config.js');
+    } catch (e) {
+        // default config
+        log.info('getConfig failed to load config.js file, loading default config instead...');
+        config = {
+            user: process.env.OPENHAB_USERNAME || null,
+            pass: process.env.OPENHAB_PASSWORD || null,
+            host: process.env.OPENHAB_HOSTNAME || 'localhost',
+            port: process.env.OPENHAB_PORT || 8443,
+            path: process.env.OPENHAB_PATH || '/rest/items/',
+            proto: process.env.OPENHAB_PROTOCOL || 'https'
+        };
+    }
+    // merge username & password if specified
+    if (config.user && config.pass) {
+      config.userpass = config.user + ":" + config.pass;
+    }
+    return config;
+}
 
 /**
  * Returns all items
@@ -45,8 +68,8 @@ function getItem(token, itemName, success, failure) {
 /**
  * Returns a single item
  */
-function getItemOrItems(token, itemName, paramters, success, failure) {
-    var options = httpItemOptions(token, itemName,'GET', paramters);
+function getItemOrItems(token, itemName, parameters, success, failure) {
+    var options = httpItemOptions(token, itemName, 'GET', parameters);
     http.get(options, function (response) {
             var body = '';
 
@@ -59,7 +82,7 @@ function getItemOrItems(token, itemName, paramters, success, failure) {
                     failure({
                         message: 'Error response ' + response.statusCode
                     });
-                    logger.info('getItem failed for path: ' + options.path +
+                    log.info('getItem failed for path: ' + options.path +
                     ' code: ' + response.statusCode + ' body: ' + body);
                     return;
                 }
@@ -101,11 +124,11 @@ function postItemCommand(token, itemName, value, success, failure) {
 /**
  * Returns a http option object sutiable for item commands
  */
-function httpItemOptions(token, itemname, method, paramters, length) {
+function httpItemOptions(token, itemName, method, parameters, length) {
     var options = {
         hostname: config.host,
         port: config.port,
-        path: config.path + (itemname || '') + (paramters ? '?' + paramters : ''),
+        path: config.path + (itemName || '') + (parameters ? '?' + parameters : ''),
         method: method || 'GET',
         headers: {}
     };

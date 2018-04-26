@@ -10,77 +10,69 @@
 var TAG_PATTERN = /^Alexa\.(\w+)\.(\w+)(?::(\S+))?/;
 
 /**
- * Convert C to F
- */
-function toF(value) {
-  return Math.round(value * 9 / 5 + 32);
-}
-/**
- * Convert F to C
- */
-function toC(value) {
-  return ((value - 32) * 5 / 9).toFixed(2);
-}
-
-function generateControlError(messageId, name, code, description) {
-  var header = {
-    namespace: 'Alexa.ConnectedHome.Control',
-    name: name,
-    payloadVersion: '2',
-    messageId: messageId
-  };
-
-  var payload = {
-    exception: {
-      code: code,
-      description: description
-    }
-  };
-
-  var result = {
-    header: header,
-    payload: payload
-  };
-
-  return result;
-}
-
-/**
-* Normilizes numeric/string thermostat modes to Alexa friendly ones
+* Define thermostat mode mapping based on binding used in OH
 **/
-function normalizeThermostatMode(mode) {
-  //if state returns as a decimal type, convert to string, this is a very common thermo pattern
-  var m = mode;
-  switch (mode) {
-    case '0': //off, not supported! Weird. But nothing else todo.
-      m = 'OFF';
-      break;
-    case '1': //heating
-      m = 'HEAT';
-      break;
-    case '2': //cooling
-      m = 'COOL';
-      break;
-    case 'heat-cool': //nest auto
-    case '3': //auto
-      m = 'AUTO';
-      break;
+var THERMOSTAT_MODE_MAPPING = {
+  ecobee: {AUTO: 'auto', COOL: 'cool', HEAT: 'heat', OFF: 'off'},
+  nest: {AUTO: 'heat-cool', COOL: 'cool', HEAT: 'heat', ECO: 'eco', OFF: 'off'},
+  zwave: {AUTO: '3', COOL: '2', HEAT: '1', OFF: '0'},
+  default: {AUTO: 'auto', COOL: 'cool', HEAT: 'heat', ECO: 'eco', OFF: 'off'}
+};
+
+/**
+* Normilizes thermostat modes based on binding name
+*   Alexa: AUTO, COOL, HEAT, ECO, OFF
+*   OH: depending on thermostat binding or user mappings defined
+**/
+function normalizeThermostatMode(mode, parameters = {}) {
+  var alexaModes = ['AUTO', 'COOL', 'HEAT', 'ECO', 'OFF'];
+  var bindingName = parameters.binding ? parameters.binding.toLowerCase() : 'default';
+  var userMap = Object.keys(parameters).reduce(function(obj, param) {
+    if (alexaModes.includes(param)) obj[param] = parameters[param];
+    return obj;
+  }, {});
+  var thermostatModeMap = Object.keys(userMap).length > 0 ? userMap : THERMOSTAT_MODE_MAPPING[bindingName];
+
+  // Convert Alexa to OH
+  if (alexaModes.includes(mode)) {
+    return thermostatModeMap[mode];
   }
-  return m.toUpperCase();
+  // Convert OH to Alexa
+  else {
+    return Object.keys(thermostatModeMap).reduce(function(result, alexaMode) {
+      if (thermostatModeMap[alexaMode] === mode.toString()) result = alexaMode;
+      return result;
+    }, undefined);
+  }
 }
 
-function isEventFahrenheit(event) {
-  return event.payload.appliance.additionalApplianceDetails.temperatureFormat &&
-    event.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit';
-}
+/**
+* Normilizes color temperature value based on item type
+*   Alexa colorTemperature api property spectrum from 1000K (warmer) to 10000K (colder)
+*
+*   Two item types:
+*     - Dimmer: colder (0%) to warmer (100%) based of Alexa color temperature spectrum [hue and lifx support]
+*     - Number: color temperature value in K [custom integration]
+**/
+function normalizeColorTemperature(value, type) {
+  // Return if value not numeric
+  if (isNaN(value)) {
+    return;
+  }
 
-function generateResponseHeader(header) {
-  return {
-    messageId: header.messageId,
-    name: "Response",
-    namespace: header.namespace,
-    payloadVersion: header.payloadVersion
-  };
+  var minValue = 1000;
+  var maxValue = 10000;
+  switch (type) {
+    case 'Dimmer':
+      if (value > 100) {  // Convert Alexa to OH
+        return (maxValue - value) / (maxValue - minValue) * 100;
+      } else {            // Convert OH to Alexa
+        return maxValue - (value * (maxValue - minValue) / 100);
+      }
+    case 'Number':
+      // No convertion needed between Alexa & OH
+      return value < minValue ? minValue : value < maxValue ? value : maxValue;
+  }
 }
 
 function date() {
@@ -92,17 +84,17 @@ function date() {
  * Creates/Modifies a map structure to assoicate items to an endpoint from tags, will return a new map
  * if propertyMap is omitted or null, otherwise will modify the existing map (and return it as well)
  * eg:
- * 
+ *
  * OH Tags
- * 
+ *
  * Number FooTargetSetPoint "Foo Target SetPoint" ["Alexa.ThermostatController.targetSetpoint:scale=Fahrenheit"]
  * Number FooUpperSetPoint  "Foo Upper SetPoint"  ["Alexa.ThermostatController.upperSetpoint:scale=Fahrenheit"]
  * Number FooLowerSetPoint  "Foo Lower SetPoint"  ["Alexa.ThermostatController.lowerSetpoint:scale=Fahrenheit"]
  * String FooMode           "Foo Mode"            ["Alexa.ThermostatController.thermostatMode:OFF=0,HEAT=1,COOL=2,AUTO=3"
  * Switch FooSwitch         "FooSwitch"           ["Alexa.PowerController.powerState"]
- * 
+ *
  * returns
- * 
+ *
   * propertyMap:
   *  {
   *    ThermostatController : {
@@ -135,17 +127,14 @@ function date() {
   *      }
   *    },
   *    PowerController : {
-  *      powerState : { 
-  *         itemName: "FooSwitch" 
+  *      powerState : {
+  *         itemName: "FooSwitch"
   *       }
   *    }
- * @param {String} item 
- * @param {object} propertyMap 
+ * @param {String} item
+ * @param {object} propertyMap
  */
-function tagsToPropertyMap(item, propertyMap) {
-  if (!propertyMap) {
-    propertyMap = {}
-  }
+function tagsToPropertyMap(item, propertyMap = {}) {
   item.tags.forEach(function (tag) {
     var matches;
     if ((matches = TAG_PATTERN.exec(tag)) !== null) {
@@ -181,10 +170,7 @@ function tagsToPropertyMap(item, propertyMap) {
   return propertyMap;
 }
 
-module.exports.toF = toF;
-module.exports.toC = toC;
-module.exports.generateControlError = generateControlError;
 module.exports.normalizeThermostatMode = normalizeThermostatMode;
-module.exports.isEventFahrenheit = isEventFahrenheit;
+module.exports.normalizeColorTemperature = normalizeColorTemperature;
 module.exports.date = date;
 module.exports.tagsToPropertyMap = tagsToPropertyMap;
