@@ -1,0 +1,3 @@
+files:
+  - source: /res/*.txt
+    translation: /res/%file_name%_%locale_with_underscore%.txt
