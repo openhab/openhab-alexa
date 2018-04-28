@@ -2,18 +2,18 @@
 
 Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org
 
-/ * Description détaillée * /
+/* Detailed Description */
 
-The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. 
+L’openHAB Alexa Smart Home Skill permet vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système d’openHAB 2 via le service de cloud myopenHAB.org. 
 
-The open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/
+L’open project Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, astérisque, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/
 
 /* Example Phrases */
 
-Alexa, turn on Kitchen
+Alexa, allume les lumières de cuisine
 
-Alexa, set Bedroom to 50 percent
+Alexa, mettre Chambre à 50 pour cent
 
-Alexa, decrease Temperature by 5 degrees
+Alexa, diminuer la température de 5 degrés
 
 
