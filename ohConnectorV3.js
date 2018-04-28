@@ -227,7 +227,8 @@ function adjustPercentage() {
 
         //skip this if we don't have a number to start with
         if (isNaN(item.state)) {
-          context.done(null, generateGenericErrorResponse(directive));
+          context.done(null, generateGenericErrorResponse());
+          return;
         }
         var oldState = parseInt(item.state);
         var newState = oldState + parseInt(payloadValue);
@@ -235,7 +236,7 @@ function adjustPercentage() {
         newState = Math.max(0, newState);
         postItemAndReturn(itemName, newState);
       }, function (error) {
-        context.done(null, generateGenericErrorResponse(directive));
+        context.done(null, generateGenericErrorResponse());
       }
     );
   }
@@ -269,35 +270,36 @@ function adjustColorTemperature() {
       } else {
         // Generate error if in color mode (color controller property defined & empty state)
         if (propertyMap.ColorController && !parseInt(item.state)) {
-          context.done(null,
-            generateControlError(directive, {
-              type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
-              message: 'The light is currently set to a color.',
-              currentDeviceMode: 'COLOR'
-            })
-          );
+          context.done(null, generateControlError({
+            type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
+            message: 'The light is currently set to a color.',
+            currentDeviceMode: 'COLOR'
+          }));
           return;
         }
         // Generate error if state not a number
         if (isNaN(item.state)) {
           log.debug('adjustColorTemperature error: Could not get numeric item state');
-          context.done(null,
-            generateGenericErrorResponse(directive)
-          );
+          context.done(null, generateGenericErrorResponse());
           return;
         }
 
         var isIncreaseRequest = directive.header.name === 'IncreaseColorTemperature';
-        var increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment) || 500;
+        var increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment);
 
         switch (item.type) {
           case 'Dimmer':
-            // Send reverse command to OH since cold (0%) and warm (100%)
-            state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
+            // Send reverse command or value to OH since cold (0%) and warm (100%), depending if increment defined
+            if (isNaN(increment)) {
+              state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
+            } else {
+              state = parseInt(item.state) + (isIncreaseRequest ? -1 : 1) * increment;
+              state = state < 0 ? 0 : state < 100 ? state : 100;
+            }
             break;
           case 'Number':
             // Increment current state by defined value as Number item doesn't support IncreaseDecreaseType commands
-            state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * increment;
+            state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * (increment || 500);
             state = utils.normalizeColorTemperature(state, item.type);
             break;
         }
@@ -352,8 +354,7 @@ function setTargetTemperature() {
     context.succeed(result);
   }).catch(function(err){
     log.debug('setTargetTemperature error ' + err);
-    context.done(null,
-      generateGenericErrorResponse(directive));
+    context.done(null, generateGenericErrorResponse());
   });
 
 }
@@ -370,8 +371,7 @@ function adjustTargetTemperature() {
         var state = parseFloat(item.state) + directive.payload.targetSetpointDelta.value;
         postItemAndReturn(itemName, state);
       }, function (error) {
-        context.done(null,
-          generateGenericErrorResponse(directive));
+        context.done(null, generateGenericErrorResponse());
       }
     );
   }
@@ -388,11 +388,10 @@ function setThermostatMode() {
   if (state) {
     postItemAndReturn(itemName, state);
   } else {
-    context.done(null,
-      generateControlError(directive, {
-        type: "UNSUPPORTED_THERMOSTAT_MODE",
-        message: itemName + " doesn't support thermostat mode [" + directive.payload.thermostatMode.value + "]",
-      }));
+    context.done(null, generateControlError({
+      type: "UNSUPPORTED_THERMOSTAT_MODE",
+      message: itemName + " doesn't support thermostat mode [" + directive.payload.thermostatMode.value + "]",
+    }));
   }
 }
 
@@ -429,8 +428,7 @@ function adjustChannel() {
       }
       postItemAndReturn(itemName, state.toString());
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -481,8 +479,7 @@ function setScene() {
       log.debug('setScene done with result' + JSON.stringify(result));
       context.succeed(result);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -505,8 +502,7 @@ function adjustSpeakerVolume() {
       }
       postItemAndReturn(itemName, state);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -544,8 +540,7 @@ function adjustStepSpeakerVolume() {
       }
       postItemAndReturn(itemName, state);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
       }
     );
 }
@@ -585,8 +580,7 @@ function getItemStateAndReturn(itemName) {
       log.debug('postItemAndReturn done with result' + JSON.stringify(result));
       context.succeed(result);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -603,8 +597,7 @@ function postItemAndReturn(itemName, state) {
     itemName, state, function (response) {
       getItemStateAndReturn(itemName);
     }, function (error) {
-      context.done(null,
-        generateGenericErrorResponse(directive));
+      context.done(null, generateGenericErrorResponse());
     }
   );
 }
@@ -628,7 +621,7 @@ function generateResponseHeader(header) {
  * @param {*} directive
  * @param {*} payload
  */
-function generateControlError(directive, payload) {
+function generateControlError(payload) {
     var header = {
         namespace: 'Alexa',
         name: 'ErrorResponse',
@@ -653,8 +646,8 @@ function generateControlError(directive, payload) {
  * V3 Generic Error Response
  * @param {*} directive
  */
-function generateGenericErrorResponse(directive) {
-  return generateControlError(directive, {
+function generateGenericErrorResponse() {
+  return generateControlError({
     type: "ENDPOINT_UNREACHABLE",
     message: "Unable to reach device"
   });
@@ -675,6 +668,8 @@ function discoverDevices() {
 
     //log.debug("GET ITEMS: " + JSON.stringify(items));
 
+    //convert alexa metadata to tags
+    convertMetadataItems(items);
     //convert v2 style tags to v3
     convertV2Items(items);
     log.debug("Items: " + JSON.stringify(items));
@@ -688,6 +683,7 @@ function discoverDevices() {
 
       var displayCategories = [];
       function addDisplayCategory(category){
+        category = utils.supportedDisplayCategory(category) ? category : 'OTHER';
         if(!displayCategories.includes(category)){
           displayCategories.push(category);
         }
@@ -710,7 +706,7 @@ function discoverDevices() {
               propertyMap = utils.tagsToPropertyMap(member, propertyMap);
             });
             //set dispay category for group
-            displayCategories.push(groupMatch[1].toUpperCase());
+            addDisplayCategory(groupMatch[1].toUpperCase());
             return; //returns forEach
           }
         });
@@ -785,23 +781,16 @@ function discoverDevices() {
         if (capability) {
           //log.debug("interfaceName: " + interfaceName + " capability: " + JSON.stringify(capability));
           capabilities.push(capability.capabilities);
-          if(properties.categories && properties.categories.length > 0 ){
-            properties.categories.forEach(function(category){
-              addDisplayCategory(category);
-            });
-          } else {
-            addDisplayCategory(capability.category);
+          // add properties or capability categories if not endpoint group item
+          if (!isEndpointGroup) {
+            if(properties.categories && properties.categories.length > 0 ){
+              properties.categories.forEach(function(category){
+                addDisplayCategory(category);
+              });
+            } else {
+              addDisplayCategory(capability.category);
+            }
           }
-
-          // //we have not yet set any catgories for this endpoint yet
-          // if(!displayCategories){
-          //   //if the user has supplied categoires in the tag use that, otherwise use defaults.
-          //   if(properties.categories && properties.categories.length > 0 ){
-          //     displayCategories = properties.categories;
-          //   } else {
-          //     displayCategories = [capability.category];
-          //   }
-          // }
         }
       });
 
@@ -851,8 +840,32 @@ function discoverDevices() {
     context.succeed(result);
   }, function (error) {
     log.error("discoverDevices failed: " + error.message);
-    context.done(null,
-      generateGenericErrorResponse(directive));
+    context.done(null, generateGenericErrorResponse());
+  });
+}
+
+/**
+ * Convert alexa metadata to tags
+ * @param {*} items
+ */
+function convertMetadataItems(items) {
+  items.forEach(function (item) {
+    if (item.metadata && item.metadata.alexa) {
+      item.metadata.alexa.value.split(',').forEach(function(value) {
+        var capability = value.split('.').length == 2 ? 'Alexa.' + value : value;
+        var parameters = Object.keys(item.metadata.alexa.config || {}).reduce(function(parameters, key, index) {
+          parameters += `${index > 0 ? ',' : ':'}${key}=${item.metadata.alexa.config[key]}`;
+          return parameters;
+        }, '');
+        // merge capability into item tags
+        var index = item.tags.findIndex(tag => tag.startsWith(capability));
+        item.tags[index > -1 ? index : item.tags.length] = capability + parameters;
+        // convert group members items
+        if (item.type === 'Group') {
+          convertMetadataItems(item.members);
+        }
+      });
+    }
   });
 }
 
@@ -869,8 +882,9 @@ function convertV2Items(items) {
 /**
  * Convert v2 tag on a single item to V3
  * @param {*} item
+ * @param {*} properties  [upstream properties such as group-based] (optional)
  */
-function convertV2Item(item) {
+function convertV2Item(item, properties = {}) {
 
   function v2Tempformat(item){
     if (item.tags.indexOf('Fahrenheit') > -1 || item.tags.indexOf('fahrenheit') > -1) {
@@ -881,37 +895,136 @@ function convertV2Item(item) {
   };
 
   item.tags.forEach(function (tag) {
-    switch (tag) {
-      case 'Lighting':
-      case 'Switchable':
-        item.tags = item.tags.concat(getV2SwitchableCapabilities(item));
-        break;
-      case 'Thermostat':
-        if (item.type === 'Group') {
-          item.tags.push('Alexa.Endpoint.Thermostat');
-          item.members.forEach(function(member){
-            //if they tagged the group with a scale, add it to each member
-            var scale = v2Tempformat(item);
-            member.tags.push(scale);
-            convertV2Item(member);
-          });
+    tag = tag.split(':').reduce(function(tag, value, index) {
+      // skip if first index value is 'homekit' (e.g. homekit:HeatingCoolingMode)
+      if (index > 0 || value !== 'homekit') {
+        if (!tag.hasOwnProperty('name')) {
+          tag.name = value;
+        } else if (!tag.hasOwnProperty('parameters')) {
+          tag.parameters = value.split(',');
         }
-        break;
-      case 'Lock':
-        item.tags.push('Alexa.LockController.lockState');
-        break;
-      case 'CurrentTemperature':
-        var scale = v2Tempformat(item);
-        item.tags.push('Alexa.TemperatureSensor.temperature:scale=' + scale);
-        break;
-      case 'TargetTemperature':
-        var scale = v2Tempformat(item);
-        item.tags.push('Alexa.ThermostatController.targetSetpoint:scale=' + scale);
-        break;
-      case 'homekit:HeatingCoolingMode':
-        item.tags.push('Alexa.ThermostatController.thermostatMode:OFF=0,HEAT=1,COOL=2,AUTO=3');
-        break;
+      }
+      return tag;
+    }, {});
+
+    var capabilities = [];
+    var parameters = [];
+
+    // define endpoint tag for group item with no group type
+    if (item.type === 'Group' && !item.groupType) {
+      var groupProperties = (tag.parameters || []).reduce(function(parameters, parameter) {
+        var keyValue = parameter.split('=', 2);
+        if (keyValue.length == 2) parameters[keyValue[0]] = keyValue[1];
+        return parameters;
+      }, {});
+
+      var category;
+
+      switch (tag.name) {
+        case 'Lighting':
+          category = 'Light';
+          break;
+        case 'Switchable':
+          category = 'Switch';
+          break;
+        case 'Thermostat':
+          category = 'Thermostat';
+          // add v2 tag scale parameter if group parameter not defined
+          if (!groupProperties.scale) {
+            groupProperties.scale = v2Tempformat(item);
+          }
+          break;
+        default:
+          if (utils.supportedDisplayCategory(tag.name)) {
+            category = tag.name;
+          }
+      }
+      if (category) {
+        capabilities = ['Alexa.Endpoint.' + category];
+        item.members.forEach(member => convertV2Item(member, groupProperties));
+      }
+    } else {
+      switch (tag.name) {
+        case 'Light':
+        case 'Lighting':
+        case 'Switch':
+        case 'Switchable':
+          var category = tag.name.startsWith('Light') ? 'LIGHT' : 'SWITCH';
+          capabilities = getV2SwitchableCapabilities(item);
+          parameters = ['category=' + category];
+          break;
+        case 'Outlet':
+          capabilities = ['Alexa.PowerController.powerState'];
+          parameters = ['category=SMARTPLUG'];
+          break;
+        case 'Lock':
+          capabilities = ['Alexa.LockController.lockState'];
+          break;
+        case 'CurrentTemperature':
+          var scale = properties.scale || v2Tempformat(item);
+          capabilities = ['Alexa.TemperatureSensor.temperature'];
+          parameters = ['scale=' + scale];
+          break;
+        case 'TargetTemperature':
+          var scale = properties.scale || v2Tempformat(item);
+          capabilities = ['Alexa.ThermostatController.targetSetpoint'];
+          parameters = ['scale=' + scale];
+          break;
+        case 'LowerTemperature':
+          var scale = properties.scale || v2Tempformat(item);
+          capabilities = ['Alexa.ThermostatController.lowerSetpoint'];
+          parameters = ['scale=' + scale];
+          break;
+        case 'UpperTemperature':
+          var scale = properties.scale || v2Tempformat(item);
+          capabilities = ['Alexa.ThermostatController.upperSetpoint'];
+          parameters = ['scale=' + scale];
+          break;
+        case 'HeatingCoolingMode':
+        case 'ThermostatMode':
+          var binding = properties.binding || 'default';
+          capabilities = ['Alexa.ThermostatController.thermostatMode'];
+          parameters = ['binding=' + binding];
+          break;
+        case 'ColorTemperature':
+          capabilities = ['Alexa.ColorTemperatureController.colorTemperatureInKelvin'];
+          break;
+        case 'Activity':
+        case 'Scene':
+          var category = tag.name === 'Activity' ? 'ACTIVITY_TRIGGER' : 'SCENE_TRIGGER';
+          capabilities = ['Alexa.SceneController.scene'];
+          parameters = ['category=' + category];
+          break;
+        case 'Channel':
+          capabilities = ['Alexa.ChannelController.channel'];
+          break;
+        case 'Input':
+          capabilities = ['Alexa.InputController.input'];
+          break;
+        case 'Mute':
+          capabilities = ['Alexa.Speaker.muted'];
+          break;
+        case 'Volume':
+          capabilities = ['Alexa.Speaker.volume'];
+          break;
+      }
     }
+
+    // merge tag parameters if defined
+    if (tag.parameters) {
+      tag.parameters.forEach(function(parameter) {
+        var key = parameter.split('=').shift();
+        var index = parameters.findIndex(parameter => parameter.startsWith(key + '='));
+        parameters[index > -1 ? index : parameters.length] = parameter;
+      });
+    }
+
+    // push all capabilities to item tags if not already included
+    capabilities.forEach(function(capability) {
+      if (!item.tags.find(tag => tag.startsWith(capability))) {
+        item.tags.push(capability + (parameters.length ? ':' + parameters.join(',') : ''));
+      }
+    });
   });
 }
 
@@ -920,19 +1033,28 @@ function convertV2Item(item) {
  * @param {*} item
  */
 function getV2SwitchableCapabilities(item) {
-  if (item.type === 'Switch' ||
-    (item.type === 'Group' && item.groupType && item.groupType === 'Switch')) {
-    return ["Alexa.PowerController.powerState"];
-  } else if (item.type === 'Dimmer' ||
-    (item.type === 'Group' && item.groupType && item.groupType === 'Dimmer')) {
-    return ["Alexa.PowerController.powerState", "Alexa.BrightnessController.brightness"]
-  } else if (item.type === 'Color' ||
-    (item.type === 'Group' && item.groupType && item.groupType === 'Color')) {
-    return ["Alexa.PowerController.powerState", "Alexa.BrightnessController.brightness", "Alexa.ColorController.color"]
-  } else if (item.type === 'Rollershutter' ||
-    (item.type === 'Group' && item.groupType && item.groupType === 'Rollershutter')) {
-    return ["Alexa.PowerController.powerState", "Alexa.PercentageController.percentage:category=OTHER"]
-  } else {
-    return [];
+  switch (item.type === 'Group' ? item.groupType : item.type) {
+    case 'Switch':
+      return [
+        "Alexa.PowerController.powerState"
+      ];
+    case 'Dimmer':
+      return [
+        "Alexa.PowerController.powerState",
+        "Alexa.BrightnessController.brightness"
+      ];
+    case 'Color':
+      return [
+        "Alexa.PowerController.powerState",
+        "Alexa.BrightnessController.brightness",
+        "Alexa.ColorController.color"
+      ];
+    case 'Rollershutter':
+      return [
+        "Alexa.PowerController.powerState",
+        "Alexa.PercentageController.percentage"
+      ];
+    default:
+      return [];
   }
 }

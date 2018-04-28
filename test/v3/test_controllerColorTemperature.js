@@ -43,7 +43,7 @@ module.exports = [
     }
   },
   {
-    description: "increase color temperature dimmer item",
+    description: "increase color temperature dimmer item no increment parameter",
     directive: {
       "header": {
         "namespace": "Alexa.ColorTemperatureController",
@@ -53,7 +53,7 @@ module.exports = [
         "endpointId": "gColorLight",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ColorTemperatureController": {"colorTemperatureInKelvin": {"parameters": {"increment": 900}, "itemName": "colorTemperature"}}
+            "ColorTemperatureController": {"colorTemperatureInKelvin": {"parameters": {}, "itemName": "colorTemperature"}}
           })
         }
       }
@@ -83,6 +83,50 @@ module.exports = [
       },
       openhab: [
         {"name": "colorTemperature", "value": "DECREASE"}
+      ]
+    }
+  },
+  {
+    description: "decrease color temperature dimmer item with increment parameter",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ColorTemperatureController",
+        "name": "DecreaseColorTemperature"
+      },
+      "endpoint": {
+        "endpointId": "gColorLight",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ColorTemperatureController": {"colorTemperatureInKelvin": {"parameters": {"increment": 10}, "itemName": "colorTemperature"}}
+          })
+        }
+      }
+    },
+    mocked: {
+      openhab: [
+        {"name": "colorTemperature", "state": "40", "type": "Dimmer"},
+        {"name": "colorTemperature", "state": "50", "type": "Dimmer"}
+      ],
+      staged: true
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.ColorTemperatureController",
+            "name": "colorTemperatureInKelvin",
+            "value": 5500
+          }]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
+          },
+        }
+      },
+      openhab: [
+        {"name": "colorTemperature", "value": 50}
       ]
     }
   },
