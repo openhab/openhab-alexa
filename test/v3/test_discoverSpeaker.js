@@ -49,7 +49,7 @@ module.exports = {
         "Alexa.Speaker.muted",
         "Alexa.PlaybackController"
       ],
-      "displayCategories": ["SPEAKER", "OTHER"],
+      "displayCategories": ["SPEAKER"],
       "friendlyName": "Speaker"
     }
   }

@@ -56,7 +56,7 @@ module.exports = {
         "Alexa.PowerController.powerState",
         "Alexa.BrightnessController.brightness"
       ],
-      "displayCategories": ["LIGHT", "SWITCH"],
+      "displayCategories": ["LIGHT"],
       "friendlyName": "Dimmer Light"
     },
     "light2": {
@@ -66,7 +66,7 @@ module.exports = {
         "Alexa.BrightnessController.brightness",
         "Alexa.ColorController.color"
       ],
-      "displayCategories": ["LIGHT", "SWITCH"],
+      "displayCategories": ["LIGHT"],
       "friendlyName": "Color Light"
     },
     "lightGroup": {
@@ -74,7 +74,7 @@ module.exports = {
         "Alexa",
         "Alexa.PowerController.powerState"
       ],
-      "displayCategories": ["SWITCH"],
+      "displayCategories": ["LIGHT"],
       "friendlyName": "Light Group"
     }
   }

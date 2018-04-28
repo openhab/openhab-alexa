@@ -7,6 +7,17 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
+ /**
+ * Define alexa supported display categories
+ **/
+ var DISPLAY_CATEGORIES = [
+   'ACTIVITY_TRIGGER', 'CAMERA', 'DOOR', 'LIGHT', 'MICROWAVE', 'OTHER', 'SCENE_TRIGGER',
+   'SMARTLOCK', 'SMARTPLUG', 'SPEAKER', 'SWITCH', 'TEMPERATURE_SENSOR', 'THERMOSTAT', 'TV'
+ ];
+
+ /**
+ * Define alexa property format tag pattern
+ **/
 var TAG_PATTERN = /^Alexa\.(\w+)\.(\w+)(?::(\S+))?/;
 
 /**
@@ -78,6 +89,13 @@ function normalizeColorTemperature(value, type) {
 function date() {
   var d = new Date();
   return d.toISOString();
+}
+
+/**
+* Determines if display category is supported by alexa api
+*/
+function supportedDisplayCategory(category) {
+  return DISPLAY_CATEGORIES.includes(category.toUpperCase());
 }
 
 /**
@@ -155,10 +173,13 @@ function tagsToPropertyMap(item, propertyMap = {}) {
           if (keyValue.length == 2) {
             //if a tag has a category parameter add this to the interface instead of the property
             if(keyValue[0] == 'category'){
+              var category = keyValue[1].toUpperCase();
               if(!propertyMap[interfaceName].categories){
                 propertyMap[interfaceName].categories = [];
               }
-              propertyMap[interfaceName].categories.push(keyValue[1].toUpperCase());
+              if (!propertyMap[interfaceName].categories.includes(category) && supportedDisplayCategory(category)) {
+                propertyMap[interfaceName].categories.push(category);
+              }
             } else {
               propertyMap[interfaceName][property].parameters[keyValue[0]] = keyValue[1];
             }
@@ -173,4 +194,5 @@ function tagsToPropertyMap(item, propertyMap = {}) {
 module.exports.normalizeThermostatMode = normalizeThermostatMode;
 module.exports.normalizeColorTemperature = normalizeColorTemperature;
 module.exports.date = date;
+module.exports.supportedDisplayCategory = supportedDisplayCategory;
 module.exports.tagsToPropertyMap = tagsToPropertyMap;

@@ -55,14 +55,14 @@ function getItemStates(token, success, failure) {
  * Returns all items
  */
 function getItemsRecursively(token, success, failure) {
-    return getItemOrItems(token, null, 'recursive=true', success, failure);
+    return getItemOrItems(token, null, 'metadata=alexa&recursive=true', success, failure);
 }
 
 /**
  * Returns a single item
  */
 function getItem(token, itemName, success, failure) {
-    return getItemOrItems(token, itemName, null, success, failure);
+    return getItemOrItems(token, itemName, 'metadata=alexa', success, failure);
 }
 
 /**
