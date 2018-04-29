@@ -242,12 +242,7 @@ AlexaContextProperties.prototype.propertiesResponseForItems = function (items, p
   var properties = [];
 
   function itemByName(itemName) {
-    if (!itemName) {
-      return null;
-    }
-    return items.find(function (i) {
-      return i.name == itemName;
-    });
+    return items.find(item => item.name === itemName);
   }
 
   Object.keys(propertyMap).forEach(function (groupName) {

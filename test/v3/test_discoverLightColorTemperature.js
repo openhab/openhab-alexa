@@ -7,20 +7,24 @@ module.exports = {
           "link": "https://myopenhab.org/rest/items/colorLight",
           "type": "Color",
           "name": "colorLight",
-          "tags": [
-            "Alexa.PowerController.powerState:category=LIGHT",
-            "Alexa.BrightnessController.brightness",
-            "Alexa.ColorController.color"
-          ],
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "PowerController.powerState,BrightnessController.brightness,ColorController.color"
+            }
+          },
           "groupNames": ["gColorLight"]
         },
         {
           "link": "https://myopenhab.org/rest/items/colorTemperature",
           "type": "Dimmer",
           "name": "colorTemperature",
-          "tags": [
-            "Alexa.ColorTemperatureController.colorTemperatureInKelvin"
-          ],
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "ColorTemperatureController.colorTemperatureInKelvin"
+            }
+          },
           "groupNames": ["gColorLight"]
         }
       ],
@@ -28,9 +32,12 @@ module.exports = {
       "type": "Group",
       "name": "gColorLight",
       "label": "Color Light",
-      "tags": [
-        "Alexa.Endpoint.Light"
-      ],
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "Endpoint.Light"
+        }
+      },
       "groupNames": []
     }
   ],

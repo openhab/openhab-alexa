@@ -18,7 +18,7 @@ module.exports = {
       "tags": [],
       "metadata": {
         "alexa": {
-          "value": "Light"
+          "value": "Lighting"
         }
       }
     },

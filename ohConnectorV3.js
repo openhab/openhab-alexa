@@ -17,7 +17,7 @@ var rest = require('./rest.js');
 var alexaCapabilities = require('./alexaCapabilities.js');
 var contextProperties = require('./alexaContextProperties.js');
 
-var GROUP_TAG_PATTERN = /^Alexa\.Endpoint\.(\w+)/;
+var ENDPOINT_PATTERN = /^(?:Alexa\.)?Endpoint\.(\w+)$/;
 
 var directive;
 var context;
@@ -668,9 +668,7 @@ function discoverDevices() {
 
     //log.debug("GET ITEMS: " + JSON.stringify(items));
 
-    //convert alexa metadata to tags
-    convertMetadataItems(items);
-    //convert v2 style tags to v3
+    //convert v2 style label/tag to v3
     convertV2Items(items);
     log.debug("Items: " + JSON.stringify(items));
     items.forEach(function (item) {
@@ -694,18 +692,18 @@ function discoverDevices() {
 
       //OH Goups can act as a single Endpoint using its children for capabilities
       if (item.type === 'Group') {
-        item.tags.forEach(function(tag){
-          //found matching Endpoint tag
+        item.metadata.alexa.value.split(',').forEach(function(capability){
+          //found matching Endpoint capability
           var groupMatch;
-          if(groupMatch = tag.match(GROUP_TAG_PATTERN)){
+          if(groupMatch = capability.match(ENDPOINT_PATTERN)){
             log.debug("found group " + groupMatch[0] + " for item " + item.name);
             isEndpointGroup = true;
             item.members.forEach(function (member) {
               log.debug("adding  " + member.name + " to group " + item.name);
               groupItems.push(member.name);
-              propertyMap = utils.tagsToPropertyMap(member, propertyMap);
+              propertyMap = utils.metadataToPropertyMap(member, propertyMap);
             });
-            //set dispay category for group
+            //set display category for group
             addDisplayCategory(groupMatch[1].toUpperCase());
             return; //returns forEach
           }
@@ -713,13 +711,13 @@ function discoverDevices() {
       }
 
       if(!isEndpointGroup) {
-        propertyMap = utils.tagsToPropertyMap(item);
+        propertyMap = utils.metadataToPropertyMap(item);
       }
 
       if (propertyMap && Object.keys(propertyMap).length) {
         log.debug("Property Map: " + JSON.stringify(propertyMap));
       } else {
-        //no tags found
+        //no capability found
         return;  //just returns forEach function
       }
 
@@ -751,7 +749,8 @@ function discoverDevices() {
             capability = alexaCapabilities.temperatureSensor();
             break;
           case "ThermostatController":
-            capability = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
+            capability = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint,
+              properties.lowerSetpoint, properties.thermostatMode);
             break;
           case "Speaker":
             capability = alexaCapabilities.speaker(properties.volume, properties.muted);
@@ -845,32 +844,7 @@ function discoverDevices() {
 }
 
 /**
- * Convert alexa metadata to tags
- * @param {*} items
- */
-function convertMetadataItems(items) {
-  items.forEach(function (item) {
-    if (item.metadata && item.metadata.alexa) {
-      item.metadata.alexa.value.split(',').forEach(function(value) {
-        var capability = value.split('.').length == 2 ? 'Alexa.' + value : value;
-        var parameters = Object.keys(item.metadata.alexa.config || {}).reduce(function(parameters, key, index) {
-          parameters += `${index > 0 ? ',' : ':'}${key}=${item.metadata.alexa.config[key]}`;
-          return parameters;
-        }, '');
-        // merge capability into item tags
-        var index = item.tags.findIndex(tag => tag.startsWith(capability));
-        item.tags[index > -1 ? index : item.tags.length] = capability + parameters;
-        // convert group members items
-        if (item.type === 'Group') {
-          convertMetadataItems(item.members);
-        }
-      });
-    }
-  });
-}
-
-/**
- * Convert v2 tag on items to V3
+ * Convert v2 style label/tag on items to V3
  * @param {*} items
  */
 function convertV2Items(items) {
@@ -880,11 +854,11 @@ function convertV2Items(items) {
 }
 
 /**
- * Convert v2 tag on a single item to V3
+ * Convert v2 style label/tag on a single item to V3
  * @param {*} item
- * @param {*} properties  [upstream properties such as group-based] (optional)
+ * @param {*} group  [group level config parameters] (optional)
  */
-function convertV2Item(item, properties = {}) {
+function convertV2Item(item, group = {}) {
 
   function v2Tempformat(item){
     if (item.tags.indexOf('Fahrenheit') > -1 || item.tags.indexOf('fahrenheit') > -1) {
@@ -894,33 +868,28 @@ function convertV2Item(item, properties = {}) {
     }
   };
 
-  item.tags.forEach(function (tag) {
-    tag = tag.split(':').reduce(function(tag, value, index) {
-      // skip if first index value is 'homekit' (e.g. homekit:HeatingCoolingMode)
-      if (index > 0 || value !== 'homekit') {
-        if (!tag.hasOwnProperty('name')) {
-          tag.name = value;
-        } else if (!tag.hasOwnProperty('parameters')) {
-          tag.parameters = value.split(',');
-        }
-      }
-      return tag;
-    }, {});
+  // Initialize alexa metadata item object if not defined
+  if (!item.metadata || !item.metadata.alexa) {
+    item.metadata = Object.assign({alexa: {value: '', config: {}}}, item.metadata);
+  }
+  // Metadata information:
+  //  values: fallback to tags if no metadata value defined
+  //  config: metadata config parameters
+  var metadata = {
+    values: item.metadata.alexa.value ? item.metadata.alexa.value.split(',') : item.tags,
+    config: item.metadata.alexa.config || {}
+  };
 
+  // Convert metadata v2 style label values to capabilities
+  metadata.values.forEach(function(label) {
     var capabilities = [];
-    var parameters = [];
+    var parameters = {}
 
     // define endpoint tag for group item with no group type
     if (item.type === 'Group' && !item.groupType) {
-      var groupProperties = (tag.parameters || []).reduce(function(parameters, parameter) {
-        var keyValue = parameter.split('=', 2);
-        if (keyValue.length == 2) parameters[keyValue[0]] = keyValue[1];
-        return parameters;
-      }, {});
-
       var category;
 
-      switch (tag.name) {
+      switch (label) {
         case 'Lighting':
           category = 'Light';
           break;
@@ -929,102 +898,99 @@ function convertV2Item(item, properties = {}) {
           break;
         case 'Thermostat':
           category = 'Thermostat';
-          // add v2 tag scale parameter if group parameter not defined
-          if (!groupProperties.scale) {
-            groupProperties.scale = v2Tempformat(item);
+          // add v2 tag scale parameter if group metadata config not defined
+          if (!metadata.config.scale) {
+            metadata.config.scale = v2Tempformat(item);
           }
           break;
         default:
-          if (utils.supportedDisplayCategory(tag.name)) {
-            category = tag.name;
+          if (utils.supportedDisplayCategory(label)) {
+            category = label;
           }
       }
       if (category) {
-        capabilities = ['Alexa.Endpoint.' + category];
-        item.members.forEach(member => convertV2Item(member, groupProperties));
+        capabilities = ['Endpoint.' + category];
+        item.members.forEach(member => convertV2Item(member, metadata.config));
       }
     } else {
-      switch (tag.name) {
-        case 'Light':
+      switch (label) {
         case 'Lighting':
-        case 'Switch':
         case 'Switchable':
-          var category = tag.name.startsWith('Light') ? 'LIGHT' : 'SWITCH';
+          var category = label === 'Lighting' ? 'LIGHT' : 'SWITCH';
           capabilities = getV2SwitchableCapabilities(item);
-          parameters = ['category=' + category];
-          break;
-        case 'Outlet':
-          capabilities = ['Alexa.PowerController.powerState'];
-          parameters = ['category=SMARTPLUG'];
+          parameters = {category: category};
           break;
         case 'Lock':
-          capabilities = ['Alexa.LockController.lockState'];
+          capabilities = ['LockController.lockState'];
           break;
         case 'CurrentTemperature':
-          var scale = properties.scale || v2Tempformat(item);
-          capabilities = ['Alexa.TemperatureSensor.temperature'];
-          parameters = ['scale=' + scale];
+          var scale = group.scale || v2Tempformat(item);
+          capabilities = ['TemperatureSensor.temperature'];
+          parameters = {scale: scale};
           break;
         case 'TargetTemperature':
-          var scale = properties.scale || v2Tempformat(item);
-          capabilities = ['Alexa.ThermostatController.targetSetpoint'];
-          parameters = ['scale=' + scale];
+          var scale = group.scale || v2Tempformat(item);
+          capabilities = ['ThermostatController.targetSetpoint'];
+          parameters = {scale: scale};
           break;
         case 'LowerTemperature':
-          var scale = properties.scale || v2Tempformat(item);
-          capabilities = ['Alexa.ThermostatController.lowerSetpoint'];
-          parameters = ['scale=' + scale];
+          var scale = group.scale || v2Tempformat(item);
+          capabilities = ['ThermostatController.lowerSetpoint'];
+          parameters = {scale: scale};
           break;
         case 'UpperTemperature':
-          var scale = properties.scale || v2Tempformat(item);
-          capabilities = ['Alexa.ThermostatController.upperSetpoint'];
-          parameters = ['scale=' + scale];
+          var scale = group.scale || v2Tempformat(item);
+          capabilities = ['ThermostatController.upperSetpoint'];
+          parameters = {scale: scale};
           break;
         case 'HeatingCoolingMode':
-        case 'ThermostatMode':
-          var binding = properties.binding || 'default';
-          capabilities = ['Alexa.ThermostatController.thermostatMode'];
-          parameters = ['binding=' + binding];
+        case 'homekit:HeatingCoolingMode':
+          var binding = group.binding || 'default';
+          capabilities = ['ThermostatController.thermostatMode'];
+          parameters = {binding: binding}
           break;
         case 'ColorTemperature':
-          capabilities = ['Alexa.ColorTemperatureController.colorTemperatureInKelvin'];
+          capabilities = ['ColorTemperatureController.colorTemperatureInKelvin'];
           break;
         case 'Activity':
         case 'Scene':
-          var category = tag.name === 'Activity' ? 'ACTIVITY_TRIGGER' : 'SCENE_TRIGGER';
-          capabilities = ['Alexa.SceneController.scene'];
-          parameters = ['category=' + category];
+          var category = label === 'Activity' ? 'ACTIVITY_TRIGGER' : 'SCENE_TRIGGER';
+          capabilities = ['SceneController.scene'];
+          parameters = {category: category};
           break;
-        case 'Channel':
-          capabilities = ['Alexa.ChannelController.channel'];
+        case 'EntertainmentChannel':
+          capabilities = ['ChannelController.channel'];
           break;
-        case 'Input':
-          capabilities = ['Alexa.InputController.input'];
+        case 'EntertainmentInput':
+          capabilities = ['InputController.input'];
           break;
-        case 'Mute':
-          capabilities = ['Alexa.Speaker.muted'];
+        case 'MediaPlayer':
+          capabilities = ['PlaybackController.playback'];
           break;
-        case 'Volume':
-          capabilities = ['Alexa.Speaker.volume'];
+        case 'SpeakerMute':
+          capabilities = ['Speaker.muted'];
+          break;
+        case 'SpeakerVolume':
+          capabilities = ['Speaker.volume'];
           break;
       }
     }
 
-    // merge tag parameters if defined
-    if (tag.parameters) {
-      tag.parameters.forEach(function(parameter) {
-        var key = parameter.split('=').shift();
-        var index = parameters.findIndex(parameter => parameter.startsWith(key + '='));
-        parameters[index > -1 ? index : parameters.length] = parameter;
-      });
-    }
-
-    // push all capabilities to item tags if not already included
+    // Push all capabilities to metadata values if not already included and merge parameters into metadata config
     capabilities.forEach(function(capability) {
-      if (!item.tags.find(tag => tag.startsWith(capability))) {
-        item.tags.push(capability + (parameters.length ? ':' + parameters.join(',') : ''));
+      if (!metadata.values.find(value => value === capability)) {
+        metadata.values.push(capability);
+        metadata.config = Object.assign(parameters, metadata.config);
       }
     });
+  });
+
+  // Update item alexa metadata information
+  item.metadata = Object.assign(item.metadata, {
+    alexa: {
+      value: metadata.values.join(','),
+      config: metadata.config
+    }
   });
 }
 
@@ -1036,23 +1002,23 @@ function getV2SwitchableCapabilities(item) {
   switch (item.type === 'Group' ? item.groupType : item.type) {
     case 'Switch':
       return [
-        "Alexa.PowerController.powerState"
+        "PowerController.powerState"
       ];
     case 'Dimmer':
       return [
-        "Alexa.PowerController.powerState",
-        "Alexa.BrightnessController.brightness"
+        "PowerController.powerState",
+        "BrightnessController.brightness"
       ];
     case 'Color':
       return [
-        "Alexa.PowerController.powerState",
-        "Alexa.BrightnessController.brightness",
-        "Alexa.ColorController.color"
+        "PowerController.powerState",
+        "BrightnessController.brightness",
+        "ColorController.color"
       ];
     case 'Rollershutter':
       return [
-        "Alexa.PowerController.powerState",
-        "Alexa.PercentageController.percentage"
+        "PowerController.powerState",
+        "PercentageController.percentage"
       ];
     default:
       return [];

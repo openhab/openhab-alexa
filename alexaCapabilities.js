@@ -211,7 +211,7 @@ AlexaCapabilities.prototype.sceneController = function (scene) {
       "type": "AlexaInterface",
       "interface": "Alexa.SceneController",
       "version": "3",
-      "supportsDeactivation": ['0', 'false'].includes(scene.parameters.supportsDeactivation) ? false : true,
+      "supportsDeactivation": [0, false, 'no'].includes(scene.parameters.supportsDeactivation) ? false : true,
       "proactivelyReported": false
     },
     category: "SCENE_TRIGGER"
