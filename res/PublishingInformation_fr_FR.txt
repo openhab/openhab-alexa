@@ -12,7 +12,7 @@ L’open project Home Automation Bus (openHAB) vise à fournir une plate-forme d
 
 Alexa, allume les lumières de cuisine
 
-Alexa, mettre Chambre à 50 pour cent
+Alexa, règle la luminosité de la chambre à 50
 
 Alexa, diminuer la température de 5 degrés
 
