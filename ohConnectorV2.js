@@ -717,23 +717,24 @@ function discoverDevices(token, success, failure) {
                       applianceTypes = ['SMARTPLUG'];
                       break;
                   case 'Lighting':
-                      applianceTypes = ['LIGHT'];
                       actions = getSwitchableActions(item);
+                      applianceTypes = ['LIGHT'];
                       break;
                   case 'Switchable':
-                      applianceTypes = ['SWITCH'];
                       actions = getSwitchableActions(item);
+                      applianceTypes = ['SWITCH'];
                       break;
                   case 'CurrentTemperature':
-                    //if this is not part of a thermostatGroup then add it
-                    //standalone otherwise it will be available as a thermostat
-                    if(!matchesGroup(thermostatGroups, item.groupNames)){
-                      actions = [
-                          'getTemperatureReading'
-                      ];
-                      setTempFormat(item,additionalApplianceDetails);
-                    }
-                    break;
+                      //if this is not part of a thermostatGroup then add it
+                      //standalone otherwise it will be available as a thermostat
+                      if(!matchesGroup(thermostatGroups, item.groupNames)){
+                          actions = [
+                              'getTemperatureReading'
+                          ];
+                          setTempFormat(item,additionalApplianceDetails);
+                          applianceTypes = ['TEMPERATURE_SENSOR'];
+                      }
+                      break;
                   case 'Thermostat':
                       //only group items are allowed to have a Temperature tag
                       if (item.type === 'Group') {
