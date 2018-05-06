@@ -8,6 +8,11 @@
  */
 
  /**
+ * Define alexa capability namespace format pattern
+ **/
+ var CAPABILITY_PATTERN = /^(?:Alexa\.)?(\w+)\.(\w+)$/;
+
+ /**
  * Define alexa supported display categories
  **/
  var DISPLAY_CATEGORIES = [
@@ -15,13 +20,8 @@
    'SMARTLOCK', 'SMARTPLUG', 'SPEAKER', 'SWITCH', 'TEMPERATURE_SENSOR', 'THERMOSTAT', 'TV'
  ];
 
- /**
- * Define alexa property format tag pattern
- **/
-var TAG_PATTERN = /^Alexa\.(\w+)\.(\w+)(?::(\S+))?/;
-
 /**
-* Define thermostat mode mapping based on binding used in OH
+* Define alexa thermostat mode mapping based on binding used in OH
 **/
 var THERMOSTAT_MODE_MAPPING = {
   ecobee: {AUTO: 'auto', COOL: 'cool', HEAT: 'heat', OFF: 'off'},
@@ -36,11 +36,11 @@ var THERMOSTAT_MODE_MAPPING = {
 *   OH: depending on thermostat binding or user mappings defined
 **/
 function normalizeThermostatMode(mode, parameters = {}) {
-  var alexaModes = ['AUTO', 'COOL', 'HEAT', 'ECO', 'OFF'];
+  var alexaModes = Object.keys(THERMOSTAT_MODE_MAPPING.default);
   var bindingName = parameters.binding ? parameters.binding.toLowerCase() : 'default';
-  var userMap = Object.keys(parameters).reduce(function(obj, param) {
-    if (alexaModes.includes(param)) obj[param] = parameters[param];
-    return obj;
+  var userMap = Object.keys(parameters).reduce(function(map, param) {
+    if (alexaModes.includes(param)) map[param] = parameters[param];
+    return map;
   }, {});
   var thermostatModeMap = Object.keys(userMap).length > 0 ? userMap : THERMOSTAT_MODE_MAPPING[bindingName];
 
@@ -86,6 +86,9 @@ function normalizeColorTemperature(value, type) {
   }
 }
 
+/**
+* Returns date in iso string format
+*/
 function date() {
   var d = new Date();
   return d.toISOString();
@@ -99,100 +102,100 @@ function supportedDisplayCategory(category) {
 }
 
 /**
- * Creates/Modifies a map structure to assoicate items to an endpoint from tags, will return a new map
+ * Creates/Modifies a map structure to assoicate items to an endpoint from metadata, will return a new map
  * if propertyMap is omitted or null, otherwise will modify the existing map (and return it as well)
  * eg:
  *
- * OH Tags
+ * OH Metadata
  *
- * Number FooTargetSetPoint "Foo Target SetPoint" ["Alexa.ThermostatController.targetSetpoint:scale=Fahrenheit"]
- * Number FooUpperSetPoint  "Foo Upper SetPoint"  ["Alexa.ThermostatController.upperSetpoint:scale=Fahrenheit"]
- * Number FooLowerSetPoint  "Foo Lower SetPoint"  ["Alexa.ThermostatController.lowerSetpoint:scale=Fahrenheit"]
- * String FooMode           "Foo Mode"            ["Alexa.ThermostatController.thermostatMode:OFF=0,HEAT=1,COOL=2,AUTO=3"
- * Switch FooSwitch         "FooSwitch"           ["Alexa.PowerController.powerState"]
+ * Number FooTargetSetPoint "Foo Target SetPoint" {alexa="ThermostatController.targetSetpoint" [scale="Fahrenheit"]}
+ * Number FooUpperSetPoint  "Foo Upper SetPoint"  {alexa="ThermostatController.upperSetpoint" [scale="Fahrenheit"]}
+ * Number FooLowerSetPoint  "Foo Lower SetPoint"  {alexa="ThermostatController.lowerSetpoint" [scale="Fahrenheit"]}
+ * String FooMode           "Foo Mode"            {alexa="ThermostatController.thermostatMode" [OFF=0,HEAT=1,COOL=2,AUTO=3]}
+ * Switch FooSwitch         "FooSwitch"           {alexa="PowerController.powerState"}
  *
  * returns
  *
   * propertyMap:
   *  {
-  *    ThermostatController : {
-  *      targetSetpoint : {
+  *    ThermostatController: {
+  *      targetSetpoint: {
   *          itemName: "FooTargetSetPoint",
   *          parameters: {
-  *            scale : "Fahrenheit",
+  *            scale: "Fahrenheit",
   *         }
   *      },
-  *      upperSetpoint : {
+  *      upperSetpoint: {
   *          itemName: "FooTargetSetPoint",
   *          parameters: {
-  *            scale : "Fahrenheit",
+  *            scale: "Fahrenheit",
   *         }
   *      },
-  *      lowerSetpoint : {
+  *      lowerSetpoint: {
   *          itemName: "FooTargetSetPoint",
   *          parameters: {
-  *            scale : "Fahrenheit",
+  *            scale: "Fahrenheit",
   *         }
   *      },
-  *      thermostatMode : {
+  *      thermostatMode: {
   *          itemName: "FooMode",
   *          parameters: {
-  *            OFF : "0",
-  *            HEAT : "1",
-  *            COOL : "2",
-  *            AUTO : "3"
+  *            OFF: 0,
+  *            HEAT: 1,
+  *            COOL: 2,
+  *            AUTO: 3
   *         }
   *      }
   *    },
-  *    PowerController : {
-  *      powerState : {
+  *    PowerController: {
+  *      powerState: {
   *         itemName: "FooSwitch"
   *       }
   *    }
- * @param {String} item
+ * @param {object} item
  * @param {object} propertyMap
  */
-function tagsToPropertyMap(item, propertyMap = {}) {
-  item.tags.forEach(function (tag) {
+function metadataToPropertyMap(item, propertyMap = {}) {
+  item.metadata.alexa.value.split(',').forEach(function(capability) {
     var matches;
-    if ((matches = TAG_PATTERN.exec(tag)) !== null) {
+    if (matches = capability.match(CAPABILITY_PATTERN)) {
       var interfaceName = matches[1];
-      var property = matches[2];
-      var parameters = matches[3];
+      var propertyName = matches[2];
+      var properties = propertyMap[interfaceName] || {};
+      var config = item.metadata.alexa.config || {};
+      var categories = properties.categories || [];
 
-      if (!propertyMap[interfaceName]) {
-        propertyMap[interfaceName] = {};
-      }
-      propertyMap[interfaceName][property] = {};
-      propertyMap[interfaceName][property].parameters = {};
-      propertyMap[interfaceName][property].itemName = item.name;
-      if (parameters) {
-        var params = parameters.split(",");
-        params.forEach(function (param) {
-          var keyValue = param.split("=");
-          if (keyValue.length == 2) {
-            //if a tag has a category parameter add this to the interface instead of the property
-            if(keyValue[0] == 'category'){
-              var category = keyValue[1].toUpperCase();
-              if(!propertyMap[interfaceName].categories){
-                propertyMap[interfaceName].categories = [];
-              }
-              if (!propertyMap[interfaceName].categories.includes(category) && supportedDisplayCategory(category)) {
-                propertyMap[interfaceName].categories.push(category);
-              }
-            } else {
-              propertyMap[interfaceName][property].parameters[keyValue[0]] = keyValue[1];
-            }
+      // Extract category from metadata config and store remaining parameters
+      var parameters = Object.keys(config).reduce(function(parameters, key) {
+        if (key === 'category') {
+          var category = config.category.toUpperCase();
+          if (!categories.includes(category) && supportedDisplayCategory(category)) {
+            categories.push(category);
           }
-        });
+        } else {
+          parameters[key] = config[key];
+        }
+        return parameters;
+      }, {});
+
+      // Add property to map object
+      propertyMap[interfaceName] = Object.assign(properties, {
+        [propertyName]: {
+          parameters: parameters,
+          itemName: item.name
+        }
+      });
+      // Update interface categories if not empty
+      if (categories.length) {
+        propertyMap[interfaceName].categories = categories;
       }
     }
   });
   return propertyMap;
 }
 
-module.exports.normalizeThermostatMode = normalizeThermostatMode;
-module.exports.normalizeColorTemperature = normalizeColorTemperature;
 module.exports.date = date;
+module.exports.metadataToPropertyMap = metadataToPropertyMap;
+module.exports.normalizeColorTemperature = normalizeColorTemperature;
+module.exports.normalizeThermostatMode = normalizeThermostatMode;
 module.exports.supportedDisplayCategory = supportedDisplayCategory;
-module.exports.tagsToPropertyMap = tagsToPropertyMap;

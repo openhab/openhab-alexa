@@ -52,6 +52,7 @@ describe('ohConnectorV2 Tests', function () {
         it(test.description, function () {
           response = {"openhab": test.mocked};
           ohv2.handleRequest(directive, context);
+          // console.log("Appliances: " + JSON.stringify(capture.result.payload.discoveredAppliances, null, 2));
           assert.discoveredAppliances(capture.result.payload.discoveredAppliances, test.expected);
         });
       });

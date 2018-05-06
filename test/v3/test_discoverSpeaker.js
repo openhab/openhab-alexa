@@ -7,27 +7,36 @@ module.exports = {
           "link": "https://myopenhab.org/rest/items/speakerMute",
           "type": "Switch",
           "name": "speakerMute",
-          "tags": [
-            "Alexa.Speaker.muted"
-          ],
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "Speaker.muted"
+            }
+          },
           "groupNames": ["gSpeaker"]
         },
         {
           "link": "https://myopenhab.org/rest/items/speakerVolume",
           "type": "Dimmer",
           "name": "speakerVolume",
-          "tags": [
-            "Alexa.Speaker.volume"
-          ],
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "Speaker.volume"
+            }
+          },
           "groupNames": ["gSpeaker"]
         },
         {
           "link": "https://myopenhab.org/rest/items/speakerPlayer",
           "type": "Player",
           "name": "speakerPlayer",
-          "tags": [
-            "Alexa.PlaybackController.playback"
-          ],
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "PlaybackController.playback"
+            }
+          },
           "groupNames": ["gSpeaker"]
         }
       ],
@@ -35,9 +44,12 @@ module.exports = {
       "type": "Group",
       "name": "gSpeaker",
       "label": "Speaker",
-      "tags": [
-        "Alexa.Endpoint.Speaker"
-      ],
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "Endpoint.Speaker"
+        }
+      },
       "groupNames": []
     }
   ],

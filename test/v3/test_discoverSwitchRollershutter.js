@@ -7,7 +7,7 @@ module.exports = {
       "name": "switch1",
       "label": "Roller Shutter 1",
       "category": "rollershutter",
-      "tags": ["Switchable:category=OTHER"]
+      "tags": ["Switchable"]
     },
     {
       "link": "https://localhost:8443/rest/items/switch2",
@@ -18,7 +18,7 @@ module.exports = {
       "tags": [],
       "metadata": {
         "alexa": {
-          "value": "Switch",
+          "value": "Switchable",
           "config": {
             "category": "other"
           }
@@ -33,7 +33,7 @@ module.exports = {
         "Alexa.PowerController.powerState",
         "Alexa.PercentageController.percentage"
       ],
-      "displayCategories": ["OTHER"],
+      "displayCategories": ["SWITCH"],
       "friendlyName": "Roller Shutter 1"
     },
     "switch2": {

@@ -54,6 +54,7 @@ describe('ohConnectorV3 Tests', function () {
         it(test.description, function () {
           response = {"openhab": test.mocked};
           ohv3.handleRequest(directive, context);
+          // console.log("Endpoints: " + JSON.stringify(capture.result.event.payload.endpoints, null, 2));
           assert.discoveredEndpoints(capture.result.event.payload.endpoints, test.expected);
         });
       });

@@ -7,18 +7,24 @@ module.exports = {
           "link": "https://myopenhab.org/rest/items/stepSpeakerMute",
           "type": "Switch",
           "name": "stepSpeakerMute",
-          "tags": [
-            "Alexa.StepSpeaker.muted"
-          ],
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "StepSpeaker.muted"
+            }
+          },
           "groupNames": ["gStepSpeaker"]
         },
         {
           "link": "https://myopenhab.org/rest/items/stepSpeakerVolume",
           "type": "Dimmer",
           "name": "stepSpeakerVolume",
-          "tags": [
-            "Alexa.StepSpeaker.volume"
-          ],
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "StepSpeaker.volume"
+            }
+          },
           "groupNames": ["gStepSpeaker"]
         }
       ],
@@ -26,9 +32,12 @@ module.exports = {
       "type": "Group",
       "name": "gStepSpeaker",
       "label": "Speaker",
-      "tags": [
-        "Alexa.Endpoint.Speaker"
-      ],
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "Endpoint.Speaker"
+        }
+      },
       "groupNames": []
     }
   ],

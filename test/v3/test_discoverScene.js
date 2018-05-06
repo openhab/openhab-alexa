@@ -6,21 +6,34 @@ module.exports = {
       "type": "Switch",
       "name": "scene1",
       "label": "Scene 1",
-      "tags": ["Alexa.SceneController.scene"]
+      "tags": ["Scene"]
     },
     {
       "link": "https://localhost:8443/rest/items/scene2",
       "type": "Switch",
       "name": "scene2",
       "label": "Scene 2",
-      "tags": ["Alexa.SceneController.scene:supportsDeactivation=false"]
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "SceneController.scene",
+          "config": {
+            "supportsDeactivation": false
+          }
+        }
+      }
     },
     {
       "link": "https://localhost:8443/rest/items/activity1",
       "type": "Switch",
       "name": "activity1",
       "label": "Activity 1",
-      "tags": ["Alexa.SceneController.scene:category=ACTIVITY_TRIGGER"]
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "Activity"
+        }
+      }
     }
   ],
   expected: {

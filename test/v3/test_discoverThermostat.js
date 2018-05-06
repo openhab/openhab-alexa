@@ -7,45 +7,35 @@ module.exports = {
           "link": "https://myopenhab.org/rest/items/currentTemperature1",
           "type": "Number",
           "name": "currentTemperature1",
-          "tags": [
-            "Alexa.TemperatureSensor.temperature:scale=Fahrenheit"
-          ],
+          "tags": ["CurrentTemperature"],
           "groupNames": ["gThermostat1"]
         },
         {
           "link": "https://myopenhab.org/rest/items/targetTemperature1",
           "type": "Number",
           "name": "targetTemperature1",
-          "tags": [
-            "Alexa.ThermostatController.targetSetpoint:scale=Fahrenheit"
-          ],
+          "tags": ["TargetTemperature"],
           "groupNames": ["gThermostat1"]
         },
         {
           "link": "https://myopenhab.org/rest/items/highTargetTemperature1",
           "type": "Number",
           "name": "highTargetTemperature1",
-          "tags": [
-            "Alexa.ThermostatController.upperSetpoint:scale=Fahrenheit"
-          ],
+          "tags": ["UpperTemperature"],
           "groupNames": ["gThermostat1"]
         },
         {
           "link": "https://myopenhab.org/rest/items/lowTargetTemperature1",
           "type": "Number",
           "name": "lowTargetTemperature1",
-          "tags": [
-            "Alexa.ThermostatController.lowerSetpoint:scale=Fahrenheit"
-          ],
+          "tags": ["LowerTemperature"],
           "groupNames": ["gThermostat1"]
         },
         {
           "link": "https://myopenhab.org/rest/items/thermostatMode1",
           "type": "String",
           "name": "thermostatMode1",
-          "tags": [
-            "Alexa.ThermostatController.thermostatMode"
-          ],
+          "tags": ["homekit:HeatingCoolingMode"],
           "groupNames": ["gThermostat1"]
         }
       ],
@@ -53,9 +43,7 @@ module.exports = {
       "type": "Group",
       "name": "gThermostat1",
       "label": "Thermostat 1",
-      "tags": [
-        "Alexa.Endpoint.Thermostat"
-      ],
+      "tags": ["Thermostat", "Fahrenheit"],
       "groupNames": []
     },
     {
@@ -67,7 +55,10 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "CurrentTemperature"
+              "value": "TemperatureSensor.temperature",
+              "config": {
+                "scale": "Fahrenheit"
+              }
             }
           },
           "groupNames": ["gThermostat2"]
@@ -79,7 +70,10 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "TargetTemperature"
+              "value": "ThermostatController.targetSetpoint",
+              "config": {
+                "scale": "Fahrenheit"
+              }
             }
           },
           "groupNames": ["gThermostat2"]
@@ -91,7 +85,10 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "UpperTemperature"
+              "value": "ThermostatController.upperSetpoint",
+              "config": {
+                "scale": "Fahrenheit"
+              }
             }
           },
           "groupNames": ["gThermostat2"]
@@ -103,7 +100,10 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "LowerTemperature"
+              "value": "ThermostatController.lowerSetpoint",
+              "config": {
+                "scale": "Fahrenheit"
+              }
             }
           },
           "groupNames": ["gThermostat2"]
@@ -115,7 +115,10 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "homekit:HeatingCoolingMode"
+              "value": "ThermostatController.thermostatMode",
+              "config": {
+                "binding": "foobar"
+              }
             }
           },
           "groupNames": ["gThermostat2"]
@@ -128,11 +131,7 @@ module.exports = {
       "tags": [],
       "metadata": {
         "alexa": {
-          "value": "Thermostat",
-          "config": {
-            "binding": "foobar",
-            "scale": "Fahrenheit"
-          }
+          "value": "Endpoint.Thermostat"
         }
       },
       "groupNames": []
@@ -158,7 +157,7 @@ module.exports = {
           "targetSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "targetTemperature1"},
           "upperSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "highTargetTemperature1"},
           "lowerSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "lowTargetTemperature1"},
-          "thermostatMode": { "parameters": {}, "itemName": "thermostatMode1" }
+          "thermostatMode": { "parameters": {"binding": "default"}, "itemName": "thermostatMode1" }
         }
       }
     },

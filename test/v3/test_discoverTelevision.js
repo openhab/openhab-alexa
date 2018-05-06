@@ -7,18 +7,24 @@ module.exports = {
           "link": "https://myopenhab.org/rest/items/televisionChannel",
           "type": "Number",
           "name": "televisionChannel",
-          "tags": [
-            "Alexa.ChannelController.channel"
-          ],
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "ChannelController.channel"
+            }
+          },
           "groupNames": ["gTelevision"]
         },
         {
           "link": "https://myopenhab.org/rest/items/televisionSource",
           "type": "String",
           "name": "televisionSource",
-          "tags": [
-            "Alexa.InputController.input"
-          ],
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "InputController.input"
+            }
+          },
           "groupNames": ["gTelevision"]
         }
       ],
@@ -26,9 +32,12 @@ module.exports = {
       "type": "Group",
       "name": "gTelevision",
       "label": "Television",
-      "tags": [
-        "Alexa.Endpoint.TV"
-      ],
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "Endpoint.TV"
+        }
+      },
       "groupNames": []
     }
   ],
