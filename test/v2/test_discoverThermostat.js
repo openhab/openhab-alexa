@@ -31,6 +31,14 @@ module.exports = {
       "label": "Thermostat",
       "tags": ["Thermostat", "Fahrenheit"],
       "groupNames": []
+    },
+    {
+      "link": "https://myopenhab.org/rest/items/temperature",
+      "type": "Group",
+      "name": "temperature",
+      "label": "Temperature",
+      "tags": ["CurrentTemperature", "Fahrenheit"],
+      "groupNames": []
     }
   ],
   expected: {
@@ -47,6 +55,16 @@ module.exports = {
       },
       "applianceTypes": ["THERMOSTAT"],
       "friendlyName": "Thermostat"
+    },
+    "temperature": {
+      "actions": [
+        "getTemperatureReading"
+      ],
+      "additionalApplianceDetails": {
+        "temperatureFormat": "fahrenheit"
+      },
+      "applianceTypes": ["TEMPERATURE_SENSOR"],
+      "friendlyName": "Temperature"
     }
   }
 };

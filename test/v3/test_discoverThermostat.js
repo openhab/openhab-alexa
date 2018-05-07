@@ -135,6 +135,22 @@ module.exports = {
         }
       },
       "groupNames": []
+    },
+    {
+      "link": "https://myopenhab.org/rest/items/temperature1",
+      "type": "Group",
+      "name": "temperature1",
+      "label": "Temperature 1",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "TemperatureSensor.temperature",
+          "config": {
+            "scale": "Fahrenheit"
+          }
+        }
+      },
+      "groupNames": []
     }
   ],
   expected: {
@@ -181,6 +197,19 @@ module.exports = {
           "upperSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "highTargetTemperature2"},
           "lowerSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "lowTargetTemperature2"},
           "thermostatMode": { "parameters": {"binding": "foobar"}, "itemName": "thermostatMode2" }
+        }
+      }
+    },
+    "temperature1": {
+      "capabilities": [
+        "Alexa",
+        "Alexa.TemperatureSensor.temperature"
+      ],
+      "displayCategories": ["TEMPERATURE_SENSOR"],
+      "friendlyName": "Temperature 1",
+      "propertyMap": {
+        "TemperatureSensor": {
+          "temperature": {"parameters": {"scale": "Fahrenheit"}, "itemName": "temperature1"}
         }
       }
     }
