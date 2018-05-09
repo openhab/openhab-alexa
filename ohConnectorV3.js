@@ -46,6 +46,9 @@ exports.handleRequest = function (_directive, _context) {
           reportState();
       }
       break;
+    case "Alexa.Authorization":
+      handleAuthorization();
+      break;
     case "Alexa.Discovery":
       discoverDevices();
       break;
@@ -126,6 +129,25 @@ exports.handleRequest = function (_directive, _context) {
     default:
   }
 };
+
+/**
+ * Handle Authorization
+ */
+function handleAuthorization() {
+  var result = {
+    event: {
+      header: {
+        messageId: uuid(),
+        name: "AcceptGrant.Response",
+        namespace: "Alexa.Authorization",
+        payloadVersion: directive.header.payloadVersion,
+        correlationToken: directive.header.correlationToken
+      },
+      payload: {}
+    }
+  };
+  context.succeed(result);
+}
 
 /**
  * Answers a "ReportState" request.  Returns the state(s) of an endpoint
