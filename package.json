@@ -8,7 +8,7 @@
     "url": "https://github.com/openhab/openhab-alexa.git"
   },
   "author": "openHAB",
-  "license": "EPLv1",
+  "license": "EPL-1.0",
   "bugs": {
     "url": "https://github.com/openhab/openhab-alexa/issues"
   },
@@ -23,6 +23,8 @@
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --reporter spec test/*.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.242.1",
+    "eventsource": "^1.0.5",
     "uuid": "^3.2.1"
   },
   "devDependencies": {

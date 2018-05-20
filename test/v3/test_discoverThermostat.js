@@ -138,7 +138,7 @@ module.exports = {
     },
     {
       "link": "https://myopenhab.org/rest/items/temperature1",
-      "type": "Group",
+      "type": "Number",
       "name": "temperature1",
       "label": "Temperature 1",
       "tags": [],
@@ -167,13 +167,18 @@ module.exports = {
       "friendlyName": "Thermostat 1",
       "propertyMap": {
         "TemperatureSensor": {
-          "temperature": {"parameters": {"scale": "Fahrenheit"}, "itemName": "currentTemperature1"}
+          "temperature": {
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "currentTemperature1", "type": "Number"}}
         },
         "ThermostatController": {
-          "targetSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "targetTemperature1"},
-          "upperSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "highTargetTemperature1"},
-          "lowerSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "lowTargetTemperature1"},
-          "thermostatMode": { "parameters": {"binding": "default"}, "itemName": "thermostatMode1" }
+          "targetSetpoint": {
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "targetTemperature1", "type": "Number"}},
+          "upperSetpoint": {
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "highTargetTemperature1", "type": "Number"}},
+          "lowerSetpoint": {
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "lowTargetTemperature1", "type": "Number"}},
+          "thermostatMode": {
+            "parameters": {"binding": "default"}, "item": {"name": "thermostatMode1", "type": "String"}}
         }
       }
     },
@@ -190,13 +195,18 @@ module.exports = {
       "friendlyName": "Thermostat 2",
       "propertyMap": {
         "TemperatureSensor": {
-          "temperature": {"parameters": {"scale": "Fahrenheit"}, "itemName": "currentTemperature2"}
+          "temperature": {
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "currentTemperature2", "type": "Number"}}
         },
         "ThermostatController": {
-          "targetSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "targetTemperature2"},
-          "upperSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "highTargetTemperature2"},
-          "lowerSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "lowTargetTemperature2"},
-          "thermostatMode": { "parameters": {"binding": "foobar"}, "itemName": "thermostatMode2" }
+          "targetSetpoint": {
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "targetTemperature2", "type": "Number"}},
+          "upperSetpoint": {
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "highTargetTemperature2", "type": "Number"}},
+          "lowerSetpoint": {
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "lowTargetTemperature2", "type": "Number"}},
+          "thermostatMode": {
+            "parameters": {"binding": "foobar"}, "item": {"name": "thermostatMode2", "type": "String"}}
         }
       }
     },
@@ -209,7 +219,8 @@ module.exports = {
       "friendlyName": "Temperature 1",
       "propertyMap": {
         "TemperatureSensor": {
-          "temperature": {"parameters": {"scale": "Fahrenheit"}, "itemName": "temperature1"}
+          "temperature": {
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "temperature1", "type": "Number"}}
         }
       }
     }

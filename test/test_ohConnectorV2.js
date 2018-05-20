@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2014-2018 by the respective copyright holders.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
 var common = require('./common.js');
 var ohv2 = require('../ohConnectorV2.js');
 var rest = require('../rest.js');
@@ -22,7 +30,7 @@ describe('ohConnectorV2 Tests', function () {
       success({"statusCode": 200});
     };
 
-    // mock aws lamnda context calls
+    // mock aws lambda context calls
     context = {
       "succeed": function(result) { capture.result = result; },
       "done": function(error, result) { capture.result = result; }
@@ -32,7 +40,7 @@ describe('ohConnectorV2 Tests', function () {
   beforeEach(function () {
     // reset mock variables
     response = {};
-    capture = {"calls": [], "result" : null};
+    capture = {"calls": [], "result": null};
   });
 
   // Discovery Tests

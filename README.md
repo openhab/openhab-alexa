@@ -11,6 +11,7 @@ This is designed to use the Homekit style tags in openHAB 2 to bind a user's dev
 * Amazon AWS account with Alexa and Lambda access
 * OAUTH2 Provider (Like Amazon Login)
 * A openHAB server that a AWS service endpoint can access
+* [AWS Command Line Interface](https://aws.amazon.com/cli/)
 
 ## Skill Configuration
 
@@ -18,7 +19,7 @@ Deployment requires two configuration files, config.js for the application confi
 
 ### config.js
 
-The app can access a openHAB installation using two different types of authorization, basic auth ("user@password") or with bearer auth (OAUTH2 token).  Uncomment the "userpass" property for basic auth, otherwise a bearer token will be used.
+The app can access a openHAB installation using two different types of authorization, basic auth ("user@password") or with bearer auth (OAuth2 token).  Uncomment the "userpass" property for basic auth, otherwise a bearer token will be used.
 
 ### .env
 
@@ -29,28 +30,48 @@ AWS_SECRET_ACCESS_KEY, and AWS_ROLE_ARN.  Other access methods may work as well 
 
 ### Create Smart Home Skill
 
-Use the following guide to setup amazon, note that the node deployment script publishes to "{AWS_FUNCTION_NAME}-{AWS_ENVIRONMENT}", so you might want to call yours "openhab-development" if your AWS_FUNCTION_NAME = "openhab".  Also choose "nodejs" as the lambda runtime type.  
+* In your [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask), create a smart home modeled skill.
+* Select the default language, if non-US region, and name the skill (e.g. "openHAB Development")
+* Once the skill is created, make sure to select v3 payload version.
+* In the Smart Home service endpoint section, take note of the _Skill ID_ and leave default endpoint empty for now.
+* Setup account linking OAuth2 information from one of the following options:
+  * Your OAuth server (Make sure you are using a valid SSL certificate! Use Let's Encrypt if necessary)
+  * Amazon Login service (See [this post](https://developer.amazon.com/public/community/post/Tx3CX1ETRZZ2NPC/Alexa-Account-Linking-5-Steps-to-Seamlessly-Link-Your-Alexa-Skill-with-Login-wit) for step-by-step instructions for _Login with Amazon_)
+* In the permissions section, enable the "Send Alexa Events" capability.
+* Take note of the Skill Messaging _Client ID and Secret_ information.
+* For more in-depth guides on deploying Smart Home Skills and multi-languages support see:
+  * https://developer.amazon.com/docs/smarthome/steps-to-build-a-smart-home-skill.html
+  * https://developer.amazon.com/docs/smarthome/develop-smart-home-skills-in-multiple-languages.html
+  * https://github.com/alexa/alexa-smarthome/wiki/Build-a-Working-Smart-Home-Skill-in-15-Minutes
 
-For more in-depth guides on deploying Smart Home Skills see:
+### Setup Lambda function AWS resources
 
-https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/steps-to-create-a-smart-home-skill
+* Using the AWS CLI, create the DynmoDB table:
+```
+aws dynamodb create-table --cli-input-json file://deploy/aws_dynamodb_table.json
+```
+* Create IAM Lambda function role:
+```
+aws iam create-role --role-name AlexaOpenHABLambdaFunctionRole --assume-role-policy-document file://deploy/aws_iam_role_policy.json
+aws iam put-role-policy --role-name AlexaOpenHABLambdaFunctionRole --policy-name AlexaOpenHABLambdaFunctionPolicy --policy-document file://deploy/aws_iam_policy.json
+```
+* Take note of the _Role ARN_ information displayed from the create-role command
 
-https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your-First-Alexa-Smart-Home-Skill
+### Create and Deploy Lambda function
 
-### Create and Deploy Lambda app
-
-* run `npm install` to install the nodejs dependencies
-* copy config_sample.js to config.js
-* copy env_sample to .env
-* change config files to match your environment.
-* run "node-lambda deploy"
-* login to the amazon lambda console and select the newly created project,
-* Under "Event Sources"  add a "smart home skill" event source, for Application Id, add the Application Id from the Alexa developer portal
-* copy the ARN value from the very top of the screen.
-* login back to the Alexa console and select "configuration"
-* Paste the ARN value from your Lambda into the "Lambda ARN" Field
-* Fill out OAUTH2 information (from your oauth server or the Amazon Login service. See [this post](https://developer.amazon.com/public/community/post/Tx3CX1ETRZZ2NPC/Alexa-Account-Linking-5-Steps-to-Seamlessly-Link-Your-Alexa-Skill-with-Login-wit) for step-by-step instructions for _Login with Amazon_.)
-* MAKE SURE YOU HAVE VALID SSL CERTS AND CERT CHAINS!!!! I highly recommend using Lets Encrypt.   
+* Run `npm install` to install the nodejs dependencies
+* Copy config_sample.js to config.js
+* Copy env_sample to .env
+* Add _Role ARN_ from previous section to .env
+* Change config files to match your environment including the Alexa gateway host based on your region location
+* Add skill _Client ID and Secret_ from previous section to config.js
+* Run `node-lambda deploy`
+* Login to the [Amazon Lambda console](https://console.aws.amazon.com/lambda/home) and select the newly created project
+* Under "Event Sources", add a "Smart Home Skill" event source, add the _Skill ID_ from previous section.
+* Don't forget to save the changes!
+* Copy the ARN value from the very top of the screen.
+* Go back to the Alexa Developer Portal and add the ARN value in the skill AWS Lambda ARN Default endpoint field.
+* Enable the skill under your Alexa account and you should be all set.
 
 ## Item configuration
 
@@ -127,23 +148,33 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
 * The following are a list of supported metadata.
   * `PowerController.powerState`
     * Items that turn on or off such as light switches, power states, etc..
-    * ON, OFF
+    * Supported item type:
+      * Color
+      * Dimmer
+      * Rollershutter
+      * Switch
     * Default category: SWITCH
   * `BrightnessController.brightness`
     * Items which response to percentage level and brightness commands (dim, brighten, percent), typically lights.
-    * Numbers
+    * Supported item type:
+      * Color
+      * Dimmer
     * Default category: LIGHT
   * `PowerLevelController.powerLevel`
     * Items which respond to a specific number setting
-    * Numbers
+    * Supported item type:
+      * Dimmer
     * Default category: SWITCH
   * `PercentageController.percentage`
     * Items which respond to percentage commands such as roller shutters.
-    * Numbers
+    * Supported item type:
+      * Dimmer
+      * Rollershutter
     * Default category: OTHER
   * `ThermostatController.targetSetpoint`
     * Items that represent a target set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (default to Celsius).
-    * Number or Float values
+    * Supported item type:
+      * Number(:Temperature)
     * Default category: THERMOSTAT
     * supports additional properties:
       * scale=Fahrenheit
@@ -151,7 +182,8 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
       * defaults to scale=Celsius if omitted.
   * `ThermostatController.upperSetpoint`
     * Items that represent a upper or HEAT set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (default to Celsius).
-    * Number or Float values
+    * Supported item type:
+      * Number(:Temperature)
     * Default category: THERMOSTAT
     * supports additional properties:
       * scale=Fahrenheit
@@ -159,14 +191,17 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
       * defaults to scale=Celsius if omitted.
   * `ThermostatController.lowerSetpoint`
     * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted).
-    * Number or Float values
+    * Supported item type:
+      * Number(:Temperature)
     * Default category: THERMOSTAT
     * supports additional properties:
       * scale=...
       * defaults to scale=Celsius if omitted.
   * `ThermostatController.thermostatMode`
     * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=...)
-    * String or Number
+    * Supported item type:
+      * Number
+      * String
     * Default category: THERMOSTAT
     * supports additional properties:
       * OFF=...
@@ -174,28 +209,42 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
       * COOL=...
       * ECO=...
       * AUTO=...
-      * binding=ecobee [OFF=off, HEAT=heat, COOL=cool, AUTO=auto]
-      * binding=nest [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=heat-cool]
-      * binding=zwave [OFF=0, HEAT=1, COOL=2, AUTO=3]
+      * binding=ecobee1 [OFF=off, HEAT=heat, COOL=cool, AUTO=auto]
+      * binding=nest [OFF=OFF, HEAT=HEAT, COOL=COOL, ECO=ECO, AUTO=HEAT_COOL]
+      * binding=nest1 [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=heat-cool]
+      * binding=zwave1 [OFF=0, HEAT=1, COOL=2, AUTO=3]
       * defaults to binding=default [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=auto] if omitted
   * `TemperatureSensor.temperature`
     * Items that represent the current temperature, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted).
-    * Number or Float values
+    * Supported item type:
+      * Number(:Temperature)
     * Default category: TEMPERATURE_SENSOR
     * supports additional properties:
       * scale=...
       * defaults to scale=Celsius if omitted.
   * `LockController.lockState`
-      * Items that represent the state of a lock (ON locked, OFF unlocked)
-      * ON, OFF
+      * Items that represent the state of a lock (ON lock, OFF unlock). When associated to an item sensor, the lock property state from OH can be mapped in the metadata parameters. Multiple properties to one state can be mapped (e.g. for a zwave lock: [1=LOCKED,2=UNLOCKED,3=LOCKED,4=UNLOCKED,11=JAMMED])
+      * Supported item type:
+        * Switch
+      * Supported sensor type:
+        * Contact
+        * Number
+        * String
+        * Switch
       * Default category: SMARTLOCK
+      * supports additional properties:
+        * ...=LOCKED
+        * ...=UNLOCKED
+        * ...=JAMMED
+        * defaults based on item sensor type if omitted
   * `ColorController.color`
       * Items that represent a color
-      * H,S,B
+      * Supported item type:
+        * Color
       * Default category: LIGHT
   * `ColorTemperatureController.colorTemperatureInKelvin`
       * Items that represents a color temperature, default increment value may be specified in metadata parameters. For dimmer typed items adjustments, INCREASE/DECREASE commands will be sent instead if increment value not defined, while number typed items will default to 500K increments.
-      * Two item types supported:
+      * Supported item type:
         * Dimmer: colder (0%) to warmer (100%) based of Alexa color temperature spectrum [Hue and LIFX support]
         * Number: color temperature value in K [custom integration]
       * Default category: LIGHT
@@ -204,7 +253,8 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
         * defaults to increment=INCREASE/DECREASE (Dimmer) or increment=500 (Number) if omitted
   * `SceneController.scene`
       * Items that represent a scene or an activity depending on defined category and may be set not to support deactivation requests based on metadata parameters.
-      * String
+      * Supported item type:
+        * Switch
       * Default category: SCENE_TRIGGER
       * supports additional properties:
         * supportsDeactivation=false
@@ -212,38 +262,65 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
         * defaults to supportsDeactivation=true if omitted
   * `ChannelController.channel`
       * Items that represent a channel
-      * String
+      * Supported item type:
+        * Number
+        * String
       * Default category: TV
   * `InputController.input`
       * Items that represent a source input (ex, "HDMI 1", or "MUSIC" on a stereo)
-      * String
+      * Supported item type:
+        * String
       * Default category: TV
   * `Speaker.volume`
       * Items that represent a volume level, default increment may be specified in metadata parameters
-      * Number
+      * Supported item type:
+        * Dimmer
+        * Number
       * Default category: SPEAKER
       * supports additional properties:
         * increment=N
         * defaults to increment=10 (standard value provided by Alexa) if omitted.
   * `Speaker.muted`
       * Items that represent a muted state (ON muted, OFF unmuted)
-      * ON, OFF
+      * Supported item type:
+        * Switch
       * Default category: SPEAKER
   * `StepSpeaker.volume`
       * Items that represent a volume level controlled in steps only (for example IR controlled, ex: +1, -1)
-      * String
+      * Supported item type:
+        * Dimmer
+        * Number
       * Default category: SPEAKER
   * `StepSpeaker.muted`
       * Items that represent a muted state (ON muted, OFF unmuted)
-      * ON, OFF
+      * Supported item type:
+        * Switch
       * Default category: SPEAKER
   * `PlaybackController.playback`
       * Items that represent the playback of a AV device (mostly compatible with Player Items)
-      * "PLAY", "PAUSE", "NEXT", "PREVIOUS", "REWIND", "FASTFORWARD", "STOP"
+      * Supported item type:
+        * Player
       * Default category: OTHER
+* Deferred Properties Response
+    * Certain devices such as locks may need extra time to complete requested command and report its status.
+    * You can configure an item with that feature by adding the `deferredResponse=<timeInSeconds>` metadata parameter.
+    ```
+    Contact doorLockStatus "Front Door Status"
+    Switch doorLock "Front Door" {alexa="LockController.lockState" [deferredResponse=20,itemSensor="doorLockStatus"]}
+    ```
+    * Delays Alexa response by specified time in seconds. Max time of 30 seconds for LockController and 8 seconds for all other capabilities.
+    * Recommended for use in combination with an item sensor.
+* Item Sensor
+    * When available, use a specific item (called "sensor") for property state reporting over the actionable item state.
+    * Design to bridge channel status items to provide improved reporting state accuracy.
+    * Configured by adding the `itemSensor=<itemName>` metadata parameter.
+    * Sensor items need to be the same type than their parent item, except for LockController capable items.
 * Item Categories
     * Alexa has certain categories that effect how voice control and their mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and associate a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHT" to send the command to.  
-    * You can override this default value on items by adding it as a parameter to the metadata, ex: `Switch LightSwitch "Light Switch" {alexa="PowerController.powerState" [category="OTHER"]}`
+    * You can override this default value on items by adding it as a parameter to the metadata.
+    ```
+    Switch LightSwitch "Light Switch" {alexa="PowerController.powerState" [category="OTHER"]}
+    ```
     * List of Alexa categories currently supported from Alexa Skill API docs:
 
 Category	| Description	| Notes

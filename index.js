@@ -15,19 +15,19 @@ var ohv3 = require('./ohConnectorV3.js');
  * Main entry point.
  * Incoming events from Alexa Lighting APIs are processed via this method.
  */
-exports.handler = function (event, context) {
+exports.handler = function (event, context, callback) {
   log.debug('Input: ' + JSON.stringify(event));
   var version = parseInt(event.directive ? event.directive.header.payloadVersion : event.header.payloadVersion);
   switch (version) {
     case 3:
-      ohv3.handleRequest(event.directive, context);
+      ohv3.handleRequest(event.directive, callback);
       break;
     case 2:
       ohv2.handleRequest(event, context);
       break;
     default:
       log.error('No supported payloadVersion: ' + event.header.payloadVersion);
-      context.fail('No supported payloadVersion.');
+      callback('No supported payloadVersion.');
       break;
   }
 };

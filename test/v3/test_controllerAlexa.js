@@ -10,17 +10,15 @@ module.exports = [
         "endpointId": "light1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PowerController": {"powerState": {"parameters": {}, "itemName": "light1"}},
-            "BrightnessController": {"brightness": {"parameters": {}, "itemName": "light1"}},
-            "ColorController": {"color": {"parameters": {}, "itemName": "light1"}}
+            "PowerController": {"powerState": {"parameters": {}, "item": {"name": "light1"}}},
+            "BrightnessController": {"brightness": {"parameters": {}, "item": {"name": "light1"}}},
+            "ColorController": {"color": {"parameters": {}, "item": {"name": "light1"}}}
           })
         }
       }
     },
     mocked: {
-      openhab: [
-        {"name": "light1", "state": "0,0,42", "type": "Color"}
-      ]
+      openhab: {"name": "light1", "state": "0,0,42", "type": "Color"}
     },
     expected: {
       alexa: {
@@ -52,6 +50,41 @@ module.exports = [
             "namespace": "Alexa",
             "name": "StateReport"
           },
+        }
+      },
+      openhab: []
+    }
+  },
+  {
+    description: "report state unreachable error",
+    directive: {
+      "header": {
+        "namespace": "Alexa",
+        "name": "ReportState"
+      },
+      "endpoint": {
+        "endpointId": "switch1",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "PowerController": {"powerState": {"parameters": {}, "item": {"name": "switch1"}}},
+          })
+        }
+      }
+    },
+    mocked: {
+      openhab: {"name": "switch1", "state": "NULL", "type": "Switch"}
+    },
+    expected: {
+      alexa: {
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "ErrorResponse"
+          },
+          "payload": {
+            type: "ENDPOINT_UNREACHABLE",
+            message: "Unable to reach device"
+          }
         }
       },
       openhab: []

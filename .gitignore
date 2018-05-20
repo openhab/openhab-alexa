@@ -1,4 +1,5 @@
 .env
+.lambda/
 config.js
 /nbproject/
 .vscode
@@ -50,4 +51,3 @@ jspm_packages
 
 # Yarn Integrity file
 .yarn-integrity
-

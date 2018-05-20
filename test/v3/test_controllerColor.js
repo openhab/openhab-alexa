@@ -10,7 +10,7 @@ module.exports = [
         "endpointId": "light1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ColorController": {"color": {"parameters": {}, "itemName": "light1"}}
+            "ColorController": {"color": {"parameters": {}, "item": {"name": "light1"}}}
           })
         }
       },

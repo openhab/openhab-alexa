@@ -10,7 +10,7 @@ module.exports = [
         "endpointId": "device1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PercentageController": {"percentage": {"parameters": {}, "itemName": "device1"}}
+            "PercentageController": {"percentage": {"parameters": {}, "item": {"name": "device1"}}}
           })
         }
       },
@@ -53,7 +53,7 @@ module.exports = [
         "endpointId": "device1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PercentageController": {"percentage": {"parameters": {}, "itemName": "device1"}}
+            "PercentageController": {"percentage": {"parameters": {}, "item": {"name": "device1"}}}
           })
         }
       },

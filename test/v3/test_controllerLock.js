@@ -10,7 +10,7 @@ module.exports = [
         "endpointId": "doorLock",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "LockController": {"lockState": {"parameters": {}, "itemName": "doorLock"}}
+            "LockController": {"lockState": {"parameters": {}, "item": {"name": "doorLock", "type": "Switch"}}}
           })
         }
       }
@@ -50,7 +50,7 @@ module.exports = [
         "endpointId": "doorLock",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "LockController": {"lockState": {"parameters": {}, "itemName": "doorLock"}}
+            "LockController": {"lockState": {"parameters": {}, "item": {"name": "doorLock", "type": "Switch"}}}
           })
         }
       }
@@ -80,7 +80,7 @@ module.exports = [
     }
   },
   {
-    description: "lock jammed state",
+    description: "lock jammed sensor state map parameters",
     directive: {
       "header": {
         "namespace": "Alexa.LockController",
@@ -90,13 +90,15 @@ module.exports = [
         "endpointId": "doorLock",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "LockController": {"lockState": {"parameters": {}, "itemName": "doorLock"}}
+            "LockController": {"lockState": {
+              "parameters": {1: "LOCKED", 2: "UNLOCKED", 42: "JAMMED"},
+              "item": {"name": "doorLock", "sensor": "doorLockSensor", "type": "Number"}}}
           })
         }
       }
     },
     mocked: {
-      openhab: {"name": "doorLock", "state": "NULL", "type": "Switch"}
+      openhab: {"name": "doorLockSensor", "state": "42", "type": "Number"}
   },
     expected: {
       alexa: {
@@ -114,6 +116,61 @@ module.exports = [
           },
         }
       },
+      openhab: [
+        {"name": "doorLock", "value": "ON"}
+      ]
+    }
+  },
+  {
+    description: "lock deferred response request with sensor item",
+    directive: {
+      "header": {
+        "namespace": "Alexa.LockController",
+        "name": "Lock"
+      },
+      "endpoint": {
+        "endpointId": "doorLock",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "LockController": {"lockState": {
+                "parameters": {"deferredResponse": 3},
+                "item": {"name": "doorLock", "sensor": "doorLockSensor", "type": "Switch"}}}
+          })
+        }
+      }
+    },
+    mocked: {
+      openhab: {"name": "doorLockSensor", "state": "CLOSED", "type": "Contact"}
+    },
+    expected: {
+      alexa: [
+        {
+          "event": {
+            "header": {
+              "namespace": "Alexa",
+              "name": "DeferredResponse"
+            },
+            "payload": {
+              "estimatedDeferralInSeconds": 3
+            }
+          }
+        },
+        {
+          "context": {
+            "properties": [{
+              "namespace": "Alexa.LockController",
+              "name": "lockState",
+              "value": "LOCKED"
+            }]
+          },
+          "event": {
+            "header": {
+              "namespace": "Alexa",
+              "name": "Response"
+            }
+          }
+        }
+      ],
       openhab: [
         {"name": "doorLock", "value": "ON"}
       ]
