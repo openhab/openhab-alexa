@@ -54,6 +54,9 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
 
 ## Item configuration
 
+```
+ Switch Item_Name(Required) "Item Label"(Required) <Icon Name>(optional) [Tag](Required) {channel="..."}(optional)
+ ```
 * openHAB 2
   * Items are exposed via Homekit tags, the following is taken from the homekit binding in openHAB2:
 
