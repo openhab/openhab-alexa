@@ -30,6 +30,7 @@ See the [Hue Emulation](https://www.openhab.org/addons/integrations/hueemulation
   Some examples of tagged items are:
   
   ```java
+  Switch Item_Name(Required) "Item Label"(Required) <Icon Name>(optional) [Tag](Required) {channel="..."}(optional)
   Switch Kitchen_Light "Kitchen Light" <light> (gKitchen) ["Lighting"] {channel="..."}
   Dimmer Bedroom_Light "Bedroom Light" <light> (gBedroom) ["Lighting"] {channel="..."}
   Number Bedroom_Temperature "Bedroom Temperature" (gBedroom) ["CurrentTemperature"] {channel="..."}
