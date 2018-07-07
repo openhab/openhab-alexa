@@ -45,9 +45,9 @@ See the [Hue Emulation](https://www.openhab.org/addons/integrations/hueemulation
     * The interactive REST API interface available through the openHAB 2 dashboard
     * PaperUI does not yet allow manipulation of tags
 
-#### Item Label Recommendation
+#### Item Label Recommendation and Requirement
 
-Matching of voice commands to Items happens based on the Item label (e.g. "Kitchen Light").
+Matching of voice commands to Items happens based on the Item label (e.g. "Kitchen Light").  (Note: Although, it is valid syntax to not have an item label, the string in quotes following the name.  For this skill to function properly a label is required.)
 It is therefore advisable, to choose labels that can be used to form natural commands.
 As an example, compare "Alexa, turn on the *Kitchen Light*" vs. "Alexa, turn on the *Ground Floor LEDs Kitchen*".
 
