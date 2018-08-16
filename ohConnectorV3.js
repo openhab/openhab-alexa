@@ -322,7 +322,18 @@ function setTargetTemperature() {
   Object.keys(properties).forEach(function (propertyName) {
     if (directive.payload[propertyName]) {
       var state = directive.payload[propertyName].value;
+      var scale = directive.payload[propertyName].scale;
       var itemName = properties[propertyName].itemName;
+      var itemScale = properties[propertyName].parameters.scale;
+      // Convert between Celsius and Fahrenheit as needed
+      switch (scale + itemScale) {
+	case "CELSIUSFahrenheit":
+	  state = state * 9 / 5 + 32;
+	  break;
+	case "FAHRENHEITCelsius":
+	  state = (state - 32) * 5 / 9;
+	  break;
+      }
       log.debug("Setting " + itemName + " to " + state);
       promises.push(new Promise(function(resolve, reject) {
         log.debug("PROMISE Setting " + itemName + " to " + state);
@@ -366,9 +377,21 @@ function adjustTargetTemperature() {
   var properties = propertyMap.ThermostatController;
   if (properties.targetSetpoint) {
     var itemName = properties.targetSetpoint.itemName;
+    var itemScale = properties.targetSetpoint.parameters.scale;
     rest.getItem(directive.endpoint.scope.token,
       itemName, function (item) {
-        var state = parseFloat(item.state) + directive.payload.targetSetpointDelta.value;
+        var delta = directive.payload.targetSetpointDelta.value;
+        var scale = directive.payload.targetSetpointDelta.scale;
+        // Convert between Celsius and Fahrenheit delta as needed
+        switch (scale + itemScale) {
+	  case "CELSIUSFahrenheit":
+	    delta = delta * 9 / 5;
+	    break;
+	  case "FAHRENHEITCelsius":
+	    delta = delta * 5 / 9;
+	    break;
+        }
+        var state = parseFloat(item.state) + delta;
         postItemAndReturn(itemName, state);
       }, function (error) {
         context.done(null, generateGenericErrorResponse());
