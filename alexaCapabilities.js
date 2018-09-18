@@ -328,7 +328,18 @@ AlexaCapabilities.prototype.speaker = function (volume, muted) {
   };
 };
 
-AlexaCapabilities.prototype.stepSpeaker = function () {
+AlexaCapabilities.prototype.stepSpeaker = function (volume, muted) {
+  var supported = [];
+  if (volume) {
+    supported.push({
+      "name": "volume"
+    })
+  }
+  if (muted) {
+    supported.push({
+      "name": "muted"
+    })
+  }
   return {
     capabilities: {
       "type": "AlexaInterface",

@@ -206,6 +206,23 @@ AlexaContextProperties.prototype.speakerVolumeStateProperty = function (state) {
 }
 
 /**
+ * Returns a property response for step speaker muted endpoints
+ * @param {string} state
+ */
+AlexaContextProperties.prototype.stepSpeakerMutedStateProperty = function (state) {
+  var muted = state === "ON" ? true : false;
+  return this.generateProperty('Alexa.StepSpeaker', 'muted', muted);
+}
+
+/**
+ * Returns a property response for step speaker volume endpoints
+ * @param {integer} state
+ */
+AlexaContextProperties.prototype.stepSpeakerVolumeStateProperty = function (state) {
+  return this.generateProperty('Alexa.StepSpeaker', 'volume', parseInt(state));
+}
+
+/**
  * Returns a property response for health endpoints
  */
 AlexaContextProperties.prototype.endpointHealthProperty = function () {
@@ -362,7 +379,19 @@ AlexaContextProperties.prototype.propertiesResponseForItems = function (items, p
           }
         }
         break;
-      case "StepSpeaker": //Group ? (steup string, mute, not really sure) [Alexa@StepSpeaker]
+      case "StepSpeaker": //Group ? (volume dimmer, mute switch) [Alexa@StepSpeaker]
+      if (group.muted) {
+        item = itemByName(group.muted.itemName);
+        if(item){
+          properties.push(self.stepSpeakerMutedStateProperty(item.state));
+        }
+      }
+      if (group.volume) {
+        item = itemByName(group.volume.itemName);
+        if(item){
+          properties.push(self.stepSpeakerVolumeStateProperty(item.state));
+        }
+      }
         break;
       case "CameraStreamController":  //not supported.
         break;
