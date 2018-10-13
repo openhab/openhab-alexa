@@ -1,19 +1,19 @@
 /* One Sentence Description */
 
-Control your openHAB 2 system with Alexa and myopenHAB.org
+Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org
 
 /* Detailed Description */
 
-The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. 
+La skill maison connectée openHAB vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système openHAB 2 via le service de cloud myopenHAB.org. 
 
-The open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/
+Le projet ouvert Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, astérisque, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/
 
 /* Example Phrases */
 
-Alexa, turn on Kitchen
+Alexa, allume la cuisine
 
-Alexa, set Bedroom to 50 percent
+Alexa, règle la luminosité de la chambre à 50
 
-Alexa, decrease Temperature by 5 degrees
+Alexa, règle la température de la chambre a 25 degrés
 
 
