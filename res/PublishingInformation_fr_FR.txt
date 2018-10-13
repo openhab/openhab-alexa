@@ -1,19 +1,19 @@
-/* Description */
+/* One Sentence Description */
 
-Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org
+Control your openHAB 2 system with Alexa and myopenHAB.org
 
-/* Description détaillée */
+/* Detailed Description */
 
-openHAB Alexa Smart Home Skill vous permet de contrôler les lumières, les thermostats et les autres éléments connectés à un système openHAB 2 via le cloud myopenHAB.org. 
+The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. 
 
-Open project Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de domotique. Il est conçu pour être totalement neutre et indépendant du matériel/protocole. openHAB regroupe ensemble différents systèmes de bus, de périphériques matériels et protocoles d’interface. Les technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, des équipements série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/
+The open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/
 
-/* Exemples de phrases */
+/* Example Phrases */
 
-Alexa, allume les lumières de la cuisine
+Alexa, turn on Kitchen
 
-Alexa, règle la luminosité de la chambre à 50
+Alexa, set Bedroom to 50 percent
 
-Alexa, diminue la température de 5 degrés
+Alexa, decrease Temperature by 5 degrees
 
 
