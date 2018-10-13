@@ -1,19 +1,19 @@
 /* One Sentence Description */
 
-Steuern Sie Ihr openHAB 2 System mit Alexa und myopenHAB.org
+Control your openHAB 2 system with Alexa and myopenHAB.org
 
 /* Detailed Description */
 
-Der openHAB Alexa Smart Home Skill ermöglicht Ihnen die Steuerung von Lampen, Thermostaten und weiteren vernetzten Geräten des openHAB 2 Systems durch den Internetdienst myopenHAB.org. 
+The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. 
 
-Das open Home Automation Bus (openHAB) Projekt stellt eine universale Integrationsplattform für alle Dinge rund um Heimautomatisierung dar. Dabei verfolgt es die Idee der absoluten Herstellerunabhängigkeit, sowie eine strikte Trennung von funktionalen Belangen und Hardware/Protokoll-Spezifika. openHAB bringt zahlreiche Bussysteme, Geräte und Protokolle zusammen. Unterstützte Technologien sind KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, allgemeine serielle Geräte und viele andere. HABDroid unterstützt alle openHAB Features sowie NFC-Tag-basierte Navigation und Kommandoausführung, automatisches Discovery der openHAB-Instanz und Remote-Zugriffe auf openHAB über das Internet. Weitere Informationen zu openHAB gibt es unter http://www.openhab.org/
+The open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/
 
 /* Example Phrases */
 
-Alexa, schalte das Küchenlicht ein
+Alexa, turn on Kitchen
 
-Alexa, dimme Schlafzimmerlampe auf 50 Prozent
+Alexa, set Bedroom to 50 percent
 
-Alexa, reduziere Temperatur um 5 Grad
+Alexa, decrease Temperature by 5 degrees
 
 
