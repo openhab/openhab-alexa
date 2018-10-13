@@ -1,0 +1,19 @@
+/* One Sentence Description */
+
+Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org
+
+/* Detailed Description */
+
+L’openHAB Alexa Smart Home Skill permet vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système d’openHAB 2 via le service de cloud myopenHAB.org. 
+
+L’open project Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, astérisque, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/
+
+/* Example Phrases */
+
+Alexa, allume les lumières de cuisine
+
+Alexa, mettre Chambre à 50 pour cent
+
+Alexa, diminuer la température de 5 degrés
+
+
