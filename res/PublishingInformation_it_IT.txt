@@ -1,12 +1,12 @@
-/* One Sentence Description */
+/* Descrizione in una frase */
 
-Control your openHAB 2 system with Alexa and myopenHAB.org
+Controlla il tuo sistema OpenHAB 2 con Alexa e myopenHAB.org
 
-/* Detailed Description */
+Descrizione dettagliata
 
-The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. 
+La skill openHAB Alexa Smart Home ti permette di controllare luci, termostati e altri oggetti connessi ad openHAB 2 attraverso il servizio cloud myopenHAB.org. 
 
-The open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/
+Il progetto open Home Automation Bus (openHAB) ha l'obiettivo di fornire una piattaforma universale di integrazione per qualunque oggetto dedicato alla domotica. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/
 
 /* Example Phrases */
 
