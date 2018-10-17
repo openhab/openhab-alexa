@@ -10,7 +10,7 @@ Il progetto open Home Automation Bus (openHAB) ha l'obiettivo di fornire una pia
 
 /* Frasi di esempio */
 
-Alexa, turn on Kitchen
+Alexa, accendi la luce in cucina
 
 Alexa, set Bedroom to 50 percent
 
