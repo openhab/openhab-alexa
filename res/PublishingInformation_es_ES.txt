@@ -1,19 +1,19 @@
-/* One Sentence Description */
+/* Descripción simplificada */
 
-Control your openHAB 2 system with Alexa and myopenHAB.org
+Controle su sistema openHAB 2 mediante Alexa y myopenHAB.org
 
-/* Detailed Description */
+/* Descripción detallada */
 
-The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. 
+El skill para hogar digital de Alexa y openHAB, le permite controlar sus luces, termostatos o cualquier otro dispositivo conectado a un sistema openHAB 2 a través del servicio en la nube myopenHAB.org. 
 
-The open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/
+El proyecto de código abierto openHAB (Home Automation Bus), tiene como objetivo la integración universal entre las diferentes plataformas de objetos conectados para la automatización del hogar. Está diseñado para ser totalmente independiente de cualquier fabricante, hardware o protocolo. openHAB une en un sólo entoro diferentes sistemas, dispositivos y protocolos de comunicación. Algunas tecnologías soportadas son KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, puerto serie genérico y muchas otras. Puede encontrar más información de openHAB en https://www.openhab.org
 
-/* Example Phrases */
+/* Comandos de ejemplo */
 
-Alexa, turn on Kitchen
+Alexa, enciende la Cocina
 
-Alexa, set Bedroom to 50 percent
+Alexa, pon el Dormitorio al 50 por ciento
 
-Alexa, decrease Temperature by 5 degrees
+Alexa, baja la Temperatura en 5 grados
 
 
