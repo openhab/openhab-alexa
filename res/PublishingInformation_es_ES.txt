@@ -1,6 +1,6 @@
 /* One Sentence Description */
 
-Control your openHAB 2 system with Alexa and myopenHAB.org
+Controla tu sistema openHAB 2 con Alexa y myopenHAB.org
 
 /* Detailed Description */
 
