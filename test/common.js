@@ -57,7 +57,8 @@ function generateDirectiveRequest(request) {
  */
 function getCapabilitiesNamespaces(capabilities) {
   return capabilities.reduce(function(result, capability) {
-    if (capability.properties && capability.properties.supported) {
+    if (capability.properties && capability.properties.supported && 
+      capability.properties.supported.length) {
       capability.properties.supported.forEach(function(property) {
         result.push(capability.interface + '.' + property.name);
       });

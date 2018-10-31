@@ -44,7 +44,8 @@ module.exports = {
   expected: {
     "gStepSpeaker": {
       "capabilities": [
-        "Alexa"
+        "Alexa",
+        "Alexa.StepSpeaker"
       ],
       "displayCategories": ["SPEAKER"],
       "friendlyName": "Speaker"
