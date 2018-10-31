@@ -755,6 +755,9 @@ function discoverDevices() {
           case "Speaker":
             capability = alexaCapabilities.speaker(properties.volume, properties.muted);
             break;
+          case "StepSpeaker":
+            capability = alexaCapabilities.stepSpeaker();
+            break;
           case "LockController":
             capability = alexaCapabilities.lockController();
             break;
