@@ -8,9 +8,9 @@ La skill openHAB Alexa Smart Home ti permette di controllare luci, termostati e 
 
 Il progetto open Home Automation Bus (openHAB) ha l'obiettivo di fornire una piattaforma universale di integrazione per qualunque oggetto dedicato alla domotica. E' progettato per essere assolutamente indipendente da vendor di prodotti, hardware o protocolli. openHAB integra sistemi bus, dispositivi hardware e protocolli di interfaccia differenti. Le tecnologie supportate includono KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, dispositivi seriali generici e molto altro ancora. Puoi trovare ulteriori informazioni su openHAB qui: http://www.openhab.org/
 
-GETTING STARTED
+PER COMINCIARE
 
-First make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. 
+Come prima cosa, assicurati di aver configurato il tuo sistema openHAB e di averlo connesso al servizio cloud openHAB.  Gli account openHAB Cloud sono gratuiti. Visita https://myopenhab.org per maggiori informazioni. 
 
 In your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. 
 
