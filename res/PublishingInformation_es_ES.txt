@@ -8,12 +8,31 @@ El skill para hogar digital de Alexa y openHAB, le permite controlar sus luces, 
 
 El proyecto de código abierto openHAB (Home Automation Bus), tiene como objetivo la integración universal entre las diferentes plataformas de objetos conectados para la automatización del hogar. Está diseñado para ser totalmente independiente de cualquier fabricante, hardware o protocolo. openHAB une en un sólo entorno diferentes sistemas, dispositivos y protocolos de comunicación. Algunas tecnologías soportadas son KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, puerto serie genérico y muchas otras. Puede encontrar más información de openHAB en https://www.openhab.org
 
+GETTING STARTED
+
+First make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. 
+
+In your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. 
+
+Finally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. 
+
+Once linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to "Discover Devices" to add them to your Alexa account.
+
+You can control items in your openHAB system directly, for example:
+ - Alexa, turn on Kitchen
+
+You can also add your items to Alexa groups to control multiple items at once, for example:
+ -Alexa, set Bedroom to 50 percent
+
+Scenes and Routines can also be used to control multiple openHAB items, for example:
+ - Alexa, turn on Bed Time.
+ 
 /* Comandos de ejemplo */
 
 Alexa, enciende la Cocina
 
 Alexa, pon el Dormitorio al 50 por ciento
 
-Alexa, baja la Temperatura en 5 grados
+Alexa, baja la Temperatura 5 grados
 
 
