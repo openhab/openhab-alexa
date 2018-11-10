@@ -10,9 +10,9 @@ Il progetto open Home Automation Bus (openHAB) ha l'obiettivo di fornire una pia
 
 PER COMINCIARE
 
-Come prima cosa, assicurati di aver configurato il tuo sistema openHAB e di averlo connesso al servizio cloud openHAB.  Gli account openHAB Cloud sono gratuiti. Visita https://myopenhab.org per maggiori informazioni. 
+Come prima cosa, assicurati di aver configurato il tuo sistema openHAB e di averlo connesso al servizio openHAB Cloud.  Gli account openHAB Cloud sono gratuiti. Visita https://myopenhab.org per maggiori informazioni. 
 
-In your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. 
+In secondo luogo, nella tua configurazione di openHAB, aggiungi tags vocali per tutti i dispositivi che vuoi gestire tramite Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. 
 
 Finally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. 
 
