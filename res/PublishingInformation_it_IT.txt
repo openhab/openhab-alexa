@@ -4,10 +4,29 @@ Controlla il tuo sistema OpenHAB 2 con Alexa e myopenHAB.org
 
 Descrizione dettagliata
 
-La skill openHAB Alexa Smart Home ti permette di controllare luci, termostati e altri oggetti connessi ad un sistema openHAB 2 attraverso il servizio cloud myopenHAB.org. 
+La skill openHAB Alexa Smart Home ti permette di controllare luci, termostati e altri oggetti connessi ad openHAB 2 attraverso il servizio cloud myopenHAB.org. 
 
 Il progetto open Home Automation Bus (openHAB) ha l'obiettivo di fornire una piattaforma universale di integrazione per qualunque oggetto dedicato alla domotica. E' progettato per essere assolutamente indipendente da vendor di prodotti, hardware o protocolli. openHAB integra sistemi bus, dispositivi hardware e protocolli di interfaccia differenti. Le tecnologie supportate includono KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, dispositivi seriali generici e molto altro ancora. Puoi trovare ulteriori informazioni su openHAB qui: http://www.openhab.org/
 
+GETTING STARTED
+
+First make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. 
+
+In your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. 
+
+Finally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. 
+
+Once linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to "Discover Devices" to add them to your Alexa account.
+
+You can control items in your openHAB system directly, for example:
+ - Alexa, turn on Kitchen
+
+You can also add your items to Alexa groups to control multiple items at once, for example:
+ -Alexa, set Bedroom to 50 percent
+
+Scenes and Routines can also be used to control multiple openHAB items, for example:
+ - Alexa, turn on Bed Time.
+ 
 /* Frasi di esempio */
 
 Alexa, accendi la luce in cucina
