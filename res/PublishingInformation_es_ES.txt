@@ -10,16 +10,16 @@ El proyecto de código abierto openHAB (Home Automation Bus), tiene como objetiv
 
 GETTING STARTED
 
-First make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. 
+En primer lugar, asegúrese de tener el sistema openHAB configurado y conectado  al servicio openHAB Cloud.  Puede crear una cuenta gratuita en https://myopenhab.org. En esta página obtendrá más información. 
 
-In your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. 
+En la configuración de openHAB, añada etiquetas (tags) de voz para los items que desee controlar con Alexa. Se puede controlar cualquier elemento númerico, regulador (dimmer), conmutador o termostato, independientemente de si es numérico o de texto. 
 
-Finally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. 
+Por último active el skill de openHAB para Alexa.  Cuando se le solicite, use los credenciales de su cuenta de openHAB Cloud para vincular su sismtea a Alexa. 
 
-Once linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to "Discover Devices" to add them to your Alexa account.
+Una vez vinculado, cualquier elemento que haya configurado con etiquetas (tags) de voz, sera añadido y automáticamente disponible para Alexa.  Si añade elementos adiciones después de vinchular, simplemente preguntele a Alexa "Descubre Dispositivos" para añadirlos a su cuenta de Alexa.
 
-You can control items in your openHAB system directly, for example:
- - Alexa, turn on Kitchen
+Puede controlar elementos en openHAB directamente, por ejemplo:
+ -Alexa enciende la Cocina
 
 You can also add your items to Alexa groups to control multiple items at once, for example:
  -Alexa, set Bedroom to 50 percent
