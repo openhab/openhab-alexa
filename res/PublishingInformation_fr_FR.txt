@@ -2,7 +2,7 @@
 
 Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org
 
-/* Detailed Description */
+/* Description détaillée */
 
 La skill maison connectée openHAB vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système openHAB 2 via le service de cloud myopenHAB.org. 
 
