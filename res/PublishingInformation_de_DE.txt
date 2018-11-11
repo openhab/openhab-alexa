@@ -8,7 +8,7 @@ Der openHAB Alexa Smart Home Skill ermöglicht Ihnen die Steuerung von Lampen, T
 
 Das open Home Automation Bus (openHAB) Projekt stellt eine universale Integrationsplattform für alle Dinge rund um Heimautomatisierung dar. Dabei verfolgt es die Idee der absoluten Herstellerunabhängigkeit, sowie eine strikte Trennung von funktionalen Belangen und Hardware/Protokoll-Spezifika. openHAB bringt zahlreiche Bussysteme, Geräte und Protokolle zusammen. Unterstützte Technologien sind KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, allgemeine serielle Geräte und viele andere. HABDroid unterstützt alle openHAB Features sowie NFC-Tag-basierte Navigation und Kommandoausführung, automatisches Discovery der openHAB-Instanz und Remote-Zugriffe auf openHAB über das Internet. openHAB ist damit DIE Integrations- und Steuerungszentrale für ein Smart Home. Weitere Informationen zu openHAB gibt es unter http://www.openhab.org/
 
-GETTING STARTED
+ERSTE SCHRITTE
 
 First make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. 
 
