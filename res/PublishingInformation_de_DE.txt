@@ -1,8 +1,8 @@
-/* One Sentence Description */
+Beschreibung ausführlicher, ein Satz
 
 Steuern Sie Ihr openHAB 2 System mit Alexa und myopenHAB.org
 
-/* Detailed Description */
+Ausführliche Beschreibung
 
 Der openHAB Alexa Smart Home Skill ermöglicht Ihnen die Steuerung von Lampen, Thermostaten und weiteren vernetzten Geräten des openHAB 2 Systems durch den Internetdienst myopenHAB.org. 
 
