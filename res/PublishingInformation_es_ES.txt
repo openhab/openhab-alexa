@@ -8,24 +8,24 @@ El skill para hogar digital de Alexa y openHAB, le permite controlar sus luces, 
 
 El proyecto de código abierto openHAB (Home Automation Bus), tiene como objetivo la integración universal entre las diferentes plataformas de objetos conectados para la automatización del hogar. Está diseñado para ser totalmente independiente de cualquier fabricante, hardware o protocolo. openHAB une en un sólo entorno diferentes sistemas, dispositivos y protocolos de comunicación. Algunas tecnologías soportadas son KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, puerto serie genérico y muchas otras. Puede encontrar más información de openHAB en https://www.openhab.org
 
-GETTING STARTED
+CÓMO EMPEZAR
 
-En primer lugar, asegúrese de tener el sistema openHAB configurado y conectado  al servicio openHAB Cloud.  Puede crear una cuenta gratuita en https://myopenhab.org. En esta página obtendrá más información. 
+En primer lugar, asegúrese de tener el sistema openHAB configurado y conectado  al servicio openHAB Cloud.  Puede crear una cuenta gratuita en https://myopenhab.org. En esa página obtendrá más información. 
 
-En la configuración de openHAB, añada etiquetas (tags) de voz para los items que desee controlar con Alexa. Se puede controlar cualquier elemento númerico, regulador (dimmer), conmutador o termostato, independientemente de si es numérico o de texto. 
+En la configuración de openHAB, añada etiquetas (tags) de voz para los items que desee controlar con Alexa. Se puede controlar cualquier elemento númerico, regulador (dimmer), conmutador o termostato, independientemente de si es de tipo numérico o de texto. 
 
 Por último active el skill de openHAB para Alexa.  Cuando se le solicite, use los credenciales de su cuenta de openHAB Cloud para vincular su sismtea a Alexa. 
 
-Una vez vinculado, cualquier elemento que haya configurado con etiquetas (tags) de voz, sera añadido y automáticamente disponible para Alexa.  Si añade elementos adiciones después de vinchular, simplemente preguntele a Alexa "Descubre Dispositivos" para añadirlos a su cuenta de Alexa.
+Una vez vinculado, cualquier elemento que haya configurado con etiquetas (tags) de voz, será añadido y estará automática disponible para que Alexa lo descubra.  Si añade elementos adiciones después de vincular el skill, simplemente dígale a Alexa "Descubre Dispositivos" para añadirlos a su cuenta de Alexa.
 
 Puede controlar elementos en openHAB directamente, por ejemplo:
  -Alexa enciende la Cocina
 
-You can also add your items to Alexa groups to control multiple items at once, for example:
- -Alexa, set Bedroom to 50 percent
+Igualmente puede añadir elementos a grupos para que Alexa controle múltiples componentes a la vez. Por ejemplo:
+ -Alexa, pon el dormitorio al cincuenta por ciento
 
-Scenes and Routines can also be used to control multiple openHAB items, for example:
- - Alexa, turn on Bed Time.
+Es posible también emplear escenas y rutinas para controlar múltiples elementos en openHAB. Por ejemplo:
+ -Alexa, activa la Hora de Dormir
  
 /* Comandos de ejemplo */
 
