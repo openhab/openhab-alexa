@@ -19,12 +19,12 @@ Aktiviere den openHAB Alexa Skill.  Nach der Aufforderung geben Sie Benutzername
 Nachdem das System erfolgreich verbunden ist stehen alle Items die mit Tags versehen sind zur Erkennung zur Verfügung und können mit Alexa genutzt werden.  Wenn Sie nachträglich zusätzliche Items ergänzen möchten, starten Sie erneut die Suche nach Geräten um diese Ihrem Alexa Konto hinzuzufügen.
 
 Items in Ihrem openHAB System können direkt kontrolliert werden, zum Beispiel:
- - Alexa, turn on Kitchen
+ - Alexa, schalte die Küche ein
 
-You can also add your items to Alexa groups to control multiple items at once, for example:
- -Alexa, set Bedroom to 50 percent
+Sie können Ihre Items auch zu Alexa Gruppen hinzufügen um mehrere Items auf einmal zu kontrollieren, z. B:
+ - Alexa, setzte Schlafzimmer auf 50 Prozent
 
-Scenes and Routines can also be used to control multiple openHAB items, for example:
+Szenen und Routinen können ebenfalls genutzt werden um mehrere openHAB Items zu kontrollieren, z. B.:
  - Alexa, turn on Bed Time.
  
 /* Example Phrases */
