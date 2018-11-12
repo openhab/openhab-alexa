@@ -14,9 +14,9 @@ Assurez-vous d’abord que vous avez votre système openHAB configuré et connec
 
 Dans la configuration de votre openHAB, ajouter un tag vocale pour les éléments que vous souhaitez exposer à Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. 
 
-Finally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. 
+Pour terminer, activer la skill openHAB pour Alexa.  À l'invite, saisir vos identifiants de openHAB Cloud pour associer votre système à Alexa. 
 
-Once linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to "Discover Devices" to add them to your Alexa account.
+Une fois associé, les « items » configurés avec des tags vocaux seront découverts automatiquement et disponibles pour Alexa.  IF you add additional items after linking, just ask Alexa to "Discover Devices" to add them to your Alexa account.
 
 You can control items in your openHAB system directly, for example:
  - Alexa, turn on Kitchen
