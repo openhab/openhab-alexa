@@ -1,4 +1,4 @@
-/* One Sentence Description */
+/* Description en une phrase */
 
 Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org
 
@@ -16,22 +16,22 @@ Dans la configuration de votre openHAB, ajouter un tag vocal pour les éléments
 
 Pour terminer, activer la skill openHAB pour Alexa.  À l'invite, saisir vos identifiants de openHAB Cloud pour associer votre système à Alexa. 
 
-Une fois associé, les « items » configurés avec des tags vocaux seront découverts automatiquement et disponibles pour Alexa.  Si des « items » supplémentaires sont ajoutés après l'association, il suffit de demander à Alexa de « découvrir les dispositifs » pour qu'ils soient ajoutés à votre compte Alexa.
+Une fois associés, les « items » configurés avec des tags vocaux seront découverts automatiquement et disponibles pour Alexa.  Si des « items » supplémentaires sont ajoutés après l'association, il suffit de demander à Alexa de « découvrir les dispositifs » pour qu'ils soient ajoutés à votre compte Alexa.
 
 Il est possible de controller directement des « items » de votre système openHAB, par exemple :
  - Alexa, allume la Cuisine
 
-Vous pouvez aussi ajouter vos « items » a des groupes Alexa afin de contrôler plusieurs « items » à la fois, par exemple :
- - Alexa, règle la Chambre à Coucher à 50 pourcent
+Vous pouvez aussi ajouter vos « items » à des groupes Alexa afin de contrôler plusieurs « items » à la fois, par exemple :
+ - Alexa, règle la luminosité de la Chambre à Coucher à 50 pourcent
 
 Les Scènes et Routines peuvent également être utilisées afin de contrôler plusieurs « items » openHAB, par exemple :
- - Alexa, turn on Bed Time.
+ - Alexa, active le mode nocturne.
  
-/* Example Phrases */
+/* Exemples de phrases */
 
-Alexa, allume la cuisine
+Alexa, allume la Cuisine
 
-Alexa, règle la luminosité de la chambre à 50
+Alexa, règle la luminosité de la chambre à 50 pourcent
 
 Alexa, règle la température de la chambre a 25 degrés
 
