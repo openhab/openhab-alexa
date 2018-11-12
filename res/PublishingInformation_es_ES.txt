@@ -14,18 +14,18 @@ En primer lugar, asegúrese de tener el sistema openHAB configurado y conectado 
 
 En la configuración de openHAB, añada etiquetas (tags) de voz para los items que desee controlar con Alexa. Se puede controlar cualquier elemento númerico, regulador (dimmer), conmutador o termostato, independientemente de si es de tipo numérico o de texto. 
 
-Por último active el skill de openHAB para Alexa.  Cuando se le solicite, use los credenciales de su cuenta de openHAB Cloud para vincular su sismtea a Alexa. 
+Por último active el skill de openHAB para Alexa.  Cuando se le solicite, use los credenciales de su cuenta de openHAB Cloud para vincular su sistema a Alexa. 
 
-Una vez vinculado, cualquier elemento que haya configurado con etiquetas (tags) de voz, será añadido y estará automática disponible para que Alexa lo descubra.  Si añade elementos adiciones después de vincular el skill, simplemente dígale a Alexa "Descubre Dispositivos" para añadirlos a su cuenta de Alexa.
+Una vez vinculado, cualquier elemento que haya configurado con etiquetas (tags) de voz, será añadido y estará automáticamente disponible para que Alexa lo descubra.  Si añade elementos adicionales después de vincular el skill, simplemente dígale a Alexa "Descubre Dispositivos" para añadirlos a su cuenta de Alexa.
 
 Puede controlar elementos en openHAB directamente, por ejemplo:
- -Alexa enciende la Cocina
+ - Alexa enciende la Cocina
 
 Igualmente puede añadir elementos a grupos para que Alexa controle múltiples componentes a la vez. Por ejemplo:
- -Alexa, pon el dormitorio al cincuenta por ciento
+ - Alexa, pon el dormitorio al cincuenta por ciento
 
 Es posible también emplear escenas y rutinas para controlar múltiples elementos en openHAB. Por ejemplo:
- -Alexa, activa la Hora de Dormir
+ - Alexa, activa la Hora de Dormir.
  
 /* Comandos de ejemplo */
 
