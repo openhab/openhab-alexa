@@ -6,7 +6,7 @@ Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org
 
 La skill maison connectée openHAB vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système openHAB 2 via le service de cloud myopenHAB.org. 
 
-Le projet ouvert Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, astérisque, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/
+Le projet ouvert Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de la domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Les technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, astérisque, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/
 
 GUIDE DE DÉMARRAGE
 
@@ -22,7 +22,7 @@ Il est possible de controller directement des « items » de votre système open
  - Alexa, allume la Cuisine
 
 Vous pouvez aussi ajouter vos « items » à des groupes Alexa afin de contrôler plusieurs « items » à la fois, par exemple :
- - Alexa, règle la luminosité de la Chambre à Coucher à 50 pourcent
+ - Alexa, règle la luminosité du salon à 50 pourcent
 
 Les Scènes et Routines peuvent également être utilisées afin de contrôler plusieurs « items » openHAB, par exemple :
  - Alexa, active le mode nocturne.
@@ -31,8 +31,8 @@ Les Scènes et Routines peuvent également être utilisées afin de contrôler p
 
 Alexa, allume la Cuisine
 
-Alexa, règle la luminosité de la chambre à 50 pourcent
+Alexa, règle la luminosité du salon à 50 pourcent
 
-Alexa, règle la température de la chambre a 25 degrés
+Alexa, règle la température de la chambre à 25 degrés
 
 
