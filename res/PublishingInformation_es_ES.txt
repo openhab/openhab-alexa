@@ -22,7 +22,7 @@ Puede controlar elementos en openHAB directamente, por ejemplo:
  - Alexa enciende la Cocina
 
 Igualmente puede añadir elementos a grupos para que Alexa controle múltiples componentes a la vez. Por ejemplo:
- - Alexa, pon el dormitorio al cincuenta por ciento
+ - Alexa, pon el Dormitorio al 50 por ciento
 
 Es posible también emplear escenas y rutinas para controlar múltiples elementos en openHAB. Por ejemplo:
  - Alexa, activa la Hora de Dormir.
