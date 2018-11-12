@@ -12,19 +12,19 @@ GUIDE DE DÉMARRAGE
 
 Assurez-vous d’abord que vous avez votre système openHAB configuré et connecté à l’openHAB Cloud service.  openHAB Cloud comptes sont gratuits, visitez https://myopenhab.org pour plus d’informations. 
 
-Dans la configuration de votre openHAB, ajouter un tag vocale pour les éléments que vous souhaitez exposer à Alexa. Les éléments de type « Number »,  « Dimmer »,  « Switch » ou  « Thermostat » (de type string ou number), sont supportés. 
+Dans la configuration de votre openHAB, ajouter un tag vocal pour les éléments que vous souhaitez exposer à Alexa. Les éléments de type « Number »,  « Dimmer »,  « Switch » ou  « Thermostat » (de type string ou number), sont supportés. 
 
 Pour terminer, activer la skill openHAB pour Alexa.  À l'invite, saisir vos identifiants de openHAB Cloud pour associer votre système à Alexa. 
 
-Une fois associé, les « items » configurés avec des tags vocaux seront découverts automatiquement et disponibles pour Alexa.  IF you add additional items after linking, just ask Alexa to "Discover Devices" to add them to your Alexa account.
+Une fois associé, les « items » configurés avec des tags vocaux seront découverts automatiquement et disponibles pour Alexa.  Si des « items » supplémentaires sont ajoutés après l'association, il suffit de demander à Alexa de « découvrir les dispositifs » pour qu'ils soient ajoutés à votre compte Alexa.
 
-You can control items in your openHAB system directly, for example:
- - Alexa, turn on Kitchen
+Il est possible de controller directement des « items » de votre système openHAB, par exemple :
+ - Alexa, allume la Cuisine
 
-You can also add your items to Alexa groups to control multiple items at once, for example:
- -Alexa, set Bedroom to 50 percent
+Vous pouvez aussi ajouter vos « items » a des groupes Alexa afin de contrôler plusieurs « items » à la fois, par exemple :
+ - Alexa, règle la Chambre à Coucher à 50 pourcent
 
-Scenes and Routines can also be used to control multiple openHAB items, for example:
+Les Scènes et Routines peuvent également être utilisées afin de contrôler plusieurs « items » openHAB, par exemple :
  - Alexa, turn on Bed Time.
  
 /* Example Phrases */
