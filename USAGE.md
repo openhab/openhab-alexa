@@ -1,6 +1,16 @@
+# Amazon Alexa / Amazon Echo
+
+An intelligent voice guided personal assistant. Amazon Alexa became famous by the Amazon Echo speaker but is also available through independent solutions.
+
+The Alexa (Echo) devices can be integrated in two ways in openHAB:
+
+* Control Items defined in openHAB with your voice through Alexa (e.g. switch on a light defined in openHAB). For this direction, you have to use the Amazon Alexa Skill. See installation instruction below for more information.
+
+* Control Amazon Echo devices from your openHAB (e.g. start/pause Alexa music player, use the Echo device as a Text-To-Speech output device) installation. For this way, install the [Amazon Echo Control Binding](https://www.openhab.org/addons/bindings/amazonechocontrol/).
+
 # Amazon Alexa Skill
 
-An intelligent voice guided personal assistant. Amazon Alexa became famous by the Amazon Echo speaker but is also available through independent solutions. The certified openHAB Alexa skill allows to naturally control the openHAB smart home by voiced commands.  
+The certified openHAB Alexa skill allows to naturally control the openHAB smart home by voiced commands.  
 
 This page describes how to use the [openHAB Alexa Smart Home Skill](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L).
 The skill connects your openHAB setup through the [myopenHAB.org](http://myopenHAB.org) cloud service to Amazon Alexa.
