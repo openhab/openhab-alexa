@@ -29,7 +29,7 @@ AWS_SECRET_ACCESS_KEY, and AWS_ROLE_ARN.  Other access methods may work as well 
 
 ### Create Smart Home Skill
 
-Use the following guide to setup amazon, note that the node deployment script publishes to "{AWS_FUNCTION_NAME}-{AWS_ENVIRONMENT}", so you might want to call yours "openhab-development" if your AWS_FUNCTION_NAME = "openhab".  Also choose "nodejs" as the lambda runtime type.  
+Use the following guide to setup amazon, note that the node deployment script publishes to "{AWS_FUNCTION_NAME}-{AWS_ENVIRONMENT}", so you might want to call yours "openhab-development" if your AWS_FUNCTION_NAME = "openhab".  Also choose "nodejs" as the lambda runtime type. Select `v2` as `Payload version` in the `Build` tab of the skill configuration.
 
 For more in-depth guides on deploying Smart Home Skills see:
 
