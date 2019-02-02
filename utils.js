@@ -51,7 +51,7 @@ function normalizeThermostatMode(mode, parameters = {}) {
   // Convert OH to Alexa
   else {
     return Object.keys(thermostatModeMap).reduce(function(result, alexaMode) {
-      if (thermostatModeMap[alexaMode] === mode.toString()) result = alexaMode;
+      if (thermostatModeMap[alexaMode] !== null && thermostatModeMap[alexaMode].toString() === mode.toString()) result = alexaMode;
       return result;
     }, undefined);
   }
