@@ -51,6 +51,57 @@ module.exports = [
     }
   },
   {
+    description: "set thermostat mode to OFF with user map parameters with numeric values",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ThermostatController",
+        "name": "SetThermostatMode"
+      },
+      "endpoint": {
+        "endpointId": "gThermostat",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ThermostatController": {
+              "thermostatMode": {
+                "parameters": {"OFF": 0, "HEAT": 1, "COOL": 2, "AUTO":3}, "itemName": "thermostatMode"
+              }
+            }
+          })
+        }
+      },
+      "payload": {
+        "thermostatMode": {
+          "value": "OFF",
+        }
+      }
+    },
+    mocked: {
+      openhab: {"name": "thermostatMode", "state": "0", "type": "String"}
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.ThermostatController",
+            "name": "thermostatMode",
+            "value": {
+              "value": "OFF",
+            }
+          }]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
+          }
+        }
+      },
+      openhab: [
+        {"name": "thermostatMode", "value": 0}
+      ]
+    }
+  },
+  {
     description: "set thermostat mode binding parameter",
     directive: {
       "header": {
