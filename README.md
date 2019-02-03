@@ -117,7 +117,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
 ```
 Group Stereo    "Stereo"            {alexa="Endpoint.Speaker"}
 Number Volume   "Volume"  (Stereo)  {alexa="Speaker.volume"}
-Switch Mute     "Mute"    (Stereo)  {alexa="Speaker.mute"}
+Switch Mute     "Mute"    (Stereo)  {alexa="Speaker.muted"}
 Switch Power    "Power"   (Stereo)  {alexa="PowerController.powerState"}
 String Input    "Input"   (Stereo)  {alexa="InputController.input"}
 String Channel  "Channel" (Stereo)  {alexa="ChannelController.channel"}
