@@ -364,7 +364,7 @@ function setTargetTemperature() {
  */
 function adjustTargetTemperature() {
   var properties = propertyMap.ThermostatController;
-  if (properties.targetSetpoint !== null) {
+  if (typeof(properties.targetSetpoint) !== 'undefined') {
     var itemName = properties.targetSetpoint.itemName;
     rest.getItem(directive.endpoint.scope.token,
       itemName, function (item) {
@@ -385,7 +385,7 @@ function setThermostatMode() {
     propertyMap.ThermostatController.thermostatMode.parameters);
   var itemName = propertyMap.ThermostatController.thermostatMode.itemName;
 
-  if (state !== null) {
+  if (typeof(state) !== 'undefined') {
     postItemAndReturn(itemName, state);
   } else {
     context.done(null, generateControlError({
