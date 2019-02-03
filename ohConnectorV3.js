@@ -520,7 +520,7 @@ function setSpeakerVolume() {
  * Sets a switch item to muted (ON), or unmuted (OFF)
  */
 function setSpeakerMute() {
-  var itemName = propertyMap.Speaker.mute.itemName;
+  var itemName = propertyMap.Speaker.muted.itemName;
   var state = directive.payload.mute ? "ON" : "OFF";
   postItemAndReturn(itemName, state);
 }
