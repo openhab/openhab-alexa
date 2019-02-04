@@ -364,7 +364,7 @@ function setTargetTemperature() {
  */
 function adjustTargetTemperature() {
   var properties = propertyMap.ThermostatController;
-  if (properties.targetSetpoint) {
+  if (typeof(properties.targetSetpoint) !== 'undefined') {
     var itemName = properties.targetSetpoint.itemName;
     rest.getItem(directive.endpoint.scope.token,
       itemName, function (item) {
@@ -385,7 +385,7 @@ function setThermostatMode() {
     propertyMap.ThermostatController.thermostatMode.parameters);
   var itemName = propertyMap.ThermostatController.thermostatMode.itemName;
 
-  if (state) {
+  if (typeof(state) !== 'undefined') {
     postItemAndReturn(itemName, state);
   } else {
     context.done(null, generateControlError({
@@ -699,9 +699,12 @@ function discoverDevices() {
             log.debug("found group " + groupMatch[0] + " for item " + item.name);
             isEndpointGroup = true;
             item.members.forEach(function (member) {
-              log.debug("adding  " + member.name + " to group " + item.name);
-              groupItems.push(member.name);
-              propertyMap = utils.metadataToPropertyMap(member, propertyMap);
+              //not all items in the group may have Alexa metadata
+              if(typeof(member.metadata) !== 'undefined') {
+                log.debug("adding  " + member.name + " to group " + item.name);
+                groupItems.push(member.name);
+                propertyMap = utils.metadataToPropertyMap(member, propertyMap);
+              }
             });
             //set display category for group
             addDisplayCategory(groupMatch[1].toUpperCase());
