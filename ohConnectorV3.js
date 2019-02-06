@@ -313,15 +313,15 @@ function adjustColorTemperature() {
 
 /**
  * Sets the taget temperature, this can include upper, lower and target setpoints
- * in the same request.
+ * in the same request. 
  */
 function setTargetTemperature() {
   var properties = propertyMap.ThermostatController;
   var promises = [];
 
   /**
-   * Support Comfort Ranges if only a target setpoint is sent, but a user does not define one.
-   * Only works if the user has no defined targetSetpoint, but does define a upper and lower
+   * Support Comfort Ranges if only a target setpoint is sent by Alexa, but a user does not define one.
+   * Only works if the user has no defined targetSetpoint, but does define a upper and lower (dual mode)
    */
   if (directive.payload.targetSetpoint && !directive.payload.upperSetpoint && !directive.payload.lowerSetpoint &&
     !properties.targetSetpoint && properties.upperSetpoint && properties.lowerSetpoint) {
@@ -405,10 +405,10 @@ function adjustTargetTemperature() {
   } else if (typeof (properties.upperSetpoint) !== 'undefined' &&
     typeof (properties.lowerSetpoint) !== 'undefined') {
     /**
-     * user does not have target temerpature defined, but does have upper and lower
+     * user does not have target temerpature defined, but does have upper and lower (dual mode)
      */
     var promises = [];
-    for (var itemName of [properties.lowerSetpoint.itemName, properties.upperSetpoint.itemName]) {
+    [properties.lowerSetpoint.itemName, properties.upperSetpoint.itemName].forEach(function(itemName) {
       promises.push(new Promise(function (resolve, reject) {
         rest.getItem(directive.endpoint.scope.token,
           itemName, function (item) {
@@ -421,7 +421,8 @@ function adjustTargetTemperature() {
               });
           });
       }));
-    }
+    });
+    
     Promise.all(promises).then(function (values) {
       log.debug(`Promise items ${JSON.stringify(values)}`);
       var result = {
