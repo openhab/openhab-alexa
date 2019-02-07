@@ -154,16 +154,20 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
     * Number or Float values
     * Default category: THERMOSTAT
     * supports additional properties:
-      * scale=Fahrenheit
-      * scale=Celsius
-      * defaults to scale=Celsius if omitted.
+      * scale=... 
+        * Defaults to scale=Celsius if omitted.
+      * comfort_range=... 
+        * When dual setpoints (upper,lower) are used this is the amount over the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfort_range=1 if using Fahrenheit and comfort_range=.5 if using Celsius. Ignored if a targetSetpoint is included in the thermostat group.
   * `ThermostatController.lowerSetpoint`
-    * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted).
+    * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted). 
     * Number or Float values
     * Default category: THERMOSTAT
     * supports additional properties:
       * scale=...
-      * defaults to scale=Celsius if omitted.
+        * defaults to scale=Celsius if omitted.
+      * comfort_range=... 
+        * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfort_range=1 if using Fahrenheit and comfort_range=.5 if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
+      
   * `ThermostatController.thermostatMode`
     * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=...)
     * String or Number
