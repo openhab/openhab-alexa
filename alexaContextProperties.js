@@ -143,9 +143,7 @@ AlexaContextProperties.prototype.upperSetpointStateProperty = function (state, s
  * @param {string} state
  */
 AlexaContextProperties.prototype.thermostatModeStateProperty = function (state) {
-  return this.generateProperty('Alexa.ThermostatController', 'thermostatMode', {
-    value: state
-  });
+  return this.generateProperty('Alexa.ThermostatController', 'thermostatMode', state);
 }
 
 /**
