@@ -33,9 +33,7 @@ module.exports = [
           "properties": [{
             "namespace": "Alexa.ThermostatController",
             "name": "thermostatMode",
-            "value": {
-              "value": "COOL",
-            }
+            "value": "COOL"
           }]
         },
         "event": {
@@ -84,9 +82,7 @@ module.exports = [
           "properties": [{
             "namespace": "Alexa.ThermostatController",
             "name": "thermostatMode",
-            "value": {
-              "value": "OFF",
-            }
+            "value": "OFF"
           }]
         },
         "event": {
@@ -133,9 +129,7 @@ module.exports = [
           "properties": [{
             "namespace": "Alexa.ThermostatController",
             "name": "thermostatMode",
-            "value": {
-              "value": "AUTO",
-            }
+            "value": "AUTO"
           }]
         },
         "event": {
