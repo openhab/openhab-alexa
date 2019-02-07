@@ -32,7 +32,7 @@ exports.handleRequest = function (_directive, _context) {
   directive = _directive;
   context = _context;
   //if we have a JSON cookie, parse it and set on endpoint
-  if(directive.endpoint && directive.endpoint.cookie && directive.endpoint.cookie.propertyMap){
+  if (directive.endpoint && directive.endpoint.cookie && directive.endpoint.cookie.propertyMap) {
     propertyMap = JSON.parse(directive.endpoint.cookie.propertyMap)
   }
 
@@ -147,8 +147,8 @@ function reportState() {
             correlationToken: directive.header.correlationToken
           },
           endpoint: {
-            scope : directive.endpoint.scope,
-            endpointId : directive.endpoint.endpointId
+            scope: directive.endpoint.scope,
+            endpointId: directive.endpoint.endpointId
           },
           payload: {}
         }
@@ -163,7 +163,7 @@ function reportState() {
 /**
  * Turns a Switch ON or OFF
  */
-function  setPowerState() {
+function setPowerState() {
   var state = directive.header.name === 'TurnOn' ? 'ON' : 'OFF';
   var itemName = propertyMap.PowerController.powerState.itemName;
   postItemAndReturn(itemName, state);
@@ -313,37 +313,62 @@ function adjustColorTemperature() {
 
 /**
  * Sets the taget temperature, this can include upper, lower and target setpoints
- * in the same request.
+ * in the same request. 
  */
 function setTargetTemperature() {
   var properties = propertyMap.ThermostatController;
   var promises = [];
-  var items = [];
+
+  /**
+   * Support Comfort Ranges if only a target setpoint is sent by Alexa, but a user does not define one.
+   * Only works if the user has no defined targetSetpoint, but does define a upper and lower (dual mode)
+   */
+  if (directive.payload.targetSetpoint && !directive.payload.upperSetpoint && !directive.payload.lowerSetpoint &&
+    !properties.targetSetpoint && properties.upperSetpoint && properties.lowerSetpoint) {
+    //default range if not set
+    var upperRange = lowerRange = directive.payload.targetSetpoint.scale == 'FAHRENHEIT' ? 1 : .5;
+    //use user defined comfort range if set
+    if (properties.upperSetpoint.parameters && typeof (properties.upperSetpoint.parameters.comfort_range) !== 'undefined') {
+      upperRange = parseFloat(properties.upperSetpoint.parameters.comfort_range);
+    }
+    if (properties.lowerSetpoint.parameters && typeof (properties.lowerSetpoint.parameters.comfort_range) !== 'undefined') {
+      lowerRange = parseFloat(properties.lowerSetpoint.parameters.comfort_range);
+    }
+    //add these to the original alexa request
+    directive.payload.upperSetpoint = {
+      value: directive.payload.targetSetpoint.value + upperRange,
+      scale: directive.payload.targetSetpoint.scale
+    }
+    directive.payload.lowerSetpoint = {
+      value: directive.payload.targetSetpoint.value - lowerRange,
+      scale: directive.payload.targetSetpoint.scale
+    }
+  }
+
   Object.keys(properties).forEach(function (propertyName) {
     if (directive.payload[propertyName]) {
       var state = directive.payload[propertyName].value;
       var itemName = properties[propertyName].itemName;
       log.debug("Setting " + itemName + " to " + state);
-      promises.push(new Promise(function(resolve, reject) {
+      promises.push(new Promise(function (resolve, reject) {
         log.debug("PROMISE Setting " + itemName + " to " + state);
         rest.postItemCommand(directive.endpoint.scope.token,
           itemName, state, function (response) {
             log.debug("setTargetTemperature POST response to " + itemName + " : " + response);
-            items.push({name:itemName,state:state});
-            resolve(response);
-          }, function (error){
+            resolve({ name: itemName, state: state });
+          }, function (error) {
             log.debug("setTargetTemperature POST ERROR to " + itemName + " : " + error);
             reject(error);
           });
       }));
     }
   });
-  Promise.all(promises).then(function(values) {
-    log.debug("Promise ALL done");
-    log.debug("Promise items " + JSON.stringify(items));
+
+  Promise.all(promises).then(function (values) {
+    log.debug("Promise items " + JSON.stringify(values));
     var result = {
       context: {
-        properties: contextProperties.propertiesResponseForItems(items, propertyMap)
+        properties: contextProperties.propertiesResponseForItems(values, propertyMap)
       },
       event: {
         header: generateResponseHeader(directive.header),
@@ -352,7 +377,7 @@ function setTargetTemperature() {
     };
     log.debug('setTargetTemperature done with result' + JSON.stringify(result));
     context.succeed(result);
-  }).catch(function(err){
+  }).catch(function (err) {
     log.debug('setTargetTemperature error ' + err);
     context.done(null, generateGenericErrorResponse());
   });
@@ -364,7 +389,10 @@ function setTargetTemperature() {
  */
 function adjustTargetTemperature() {
   var properties = propertyMap.ThermostatController;
-  if (typeof(properties.targetSetpoint) !== 'undefined') {
+  /**
+   * User has a target temperature defined
+   */
+  if (typeof (properties.targetSetpoint) !== 'undefined') {
     var itemName = properties.targetSetpoint.itemName;
     rest.getItem(directive.endpoint.scope.token,
       itemName, function (item) {
@@ -374,6 +402,44 @@ function adjustTargetTemperature() {
         context.done(null, generateGenericErrorResponse());
       }
     );
+  } else if (typeof (properties.upperSetpoint) !== 'undefined' &&
+    typeof (properties.lowerSetpoint) !== 'undefined') {
+    /**
+     * user does not have target temerpature defined, but does have upper and lower (dual mode)
+     */
+    var promises = [];
+    [properties.lowerSetpoint.itemName, properties.upperSetpoint.itemName].forEach(function(itemName) {
+      promises.push(new Promise(function (resolve, reject) {
+        rest.getItem(directive.endpoint.scope.token,
+          itemName, function (item) {
+            var state = parseFloat(item.state) + directive.payload.targetSetpointDelta.value;
+            rest.postItemCommand(directive.endpoint.scope.token,
+              itemName, state, function (response) {
+                resolve({ name: itemName, state: state });
+              }, function (error) {
+                reject(error);
+              });
+          });
+      }));
+    });
+    
+    Promise.all(promises).then(function (values) {
+      log.debug(`Promise items ${JSON.stringify(values)}`);
+      var result = {
+        context: {
+          properties: contextProperties.propertiesResponseForItems(values, propertyMap)
+        },
+        event: {
+          header: generateResponseHeader(directive.header),
+          payload: {}
+        }
+      };
+      log.debug('setTargetTemperature done with result' + JSON.stringify(result));
+      context.succeed(result);
+    }).catch(function (err) {
+      log.debug('setTargetTemperature error ' + err);
+      context.done(null, generateGenericErrorResponse());
+    });
   }
 }
 
@@ -385,7 +451,7 @@ function setThermostatMode() {
     propertyMap.ThermostatController.thermostatMode.parameters);
   var itemName = propertyMap.ThermostatController.thermostatMode.itemName;
 
-  if (typeof(state) !== 'undefined') {
+  if (typeof (state) !== 'undefined') {
     postItemAndReturn(itemName, state);
   } else {
     context.done(null, generateControlError({
@@ -421,7 +487,7 @@ function adjustChannel() {
   rest.getItem(directive.endpoint.scope.token,
     itemName, function (item) {
       var state = parseInt(item.state);
-      if(isNaN(state)){
+      if (isNaN(state)) {
         state = Math.abs(directive.payload.channelCount);
       } else {
         state += directive.payload.channelCount;
@@ -495,7 +561,7 @@ function adjustSpeakerVolume() {
   rest.getItem(directive.endpoint.scope.token,
     itemName, function (item) {
       var state = parseInt(item.state);
-      if(isNaN(state)){
+      if (isNaN(state)) {
         state = Math.abs(volumeIncrement);
       } else {
         state += volumeIncrement;
@@ -533,7 +599,7 @@ function adjustStepSpeakerVolume() {
   rest.getItem(directive.endpoint.scope.token,
     itemName, function (item) {
       var state = parseInt(item.state);
-      if(isNaN(state)){
+      if (isNaN(state)) {
         state = Math.abs(directive.payload.volumeSteps);
       } else {
         state += directive.payload.volumeSteps;
@@ -541,8 +607,8 @@ function adjustStepSpeakerVolume() {
       postItemAndReturn(itemName, state);
     }, function (error) {
       context.done(null, generateGenericErrorResponse());
-      }
-    );
+    }
+  );
 }
 
 /**
@@ -571,13 +637,13 @@ function getItemStateAndReturn(itemName) {
         event: {
           header: generateResponseHeader(directive.header),
           endpoint: {
-            scope : directive.endpoint.scope,
-            endpointId : directive.endpoint.endpointId
+            scope: directive.endpoint.scope,
+            endpointId: directive.endpoint.endpointId
           },
           payload: {}
         }
       };
-      log.debug('postItemAndReturn done with result' + JSON.stringify(result));
+      log.debug('getItemStateAndReturn done with result' + JSON.stringify(result));
       context.succeed(result);
     }, function (error) {
       context.done(null, generateGenericErrorResponse());
@@ -622,24 +688,24 @@ function generateResponseHeader(header) {
  * @param {*} payload
  */
 function generateControlError(payload) {
-    var header = {
-        namespace: 'Alexa',
-        name: 'ErrorResponse',
-        messageId: directive.header.messageId,
-        correlationToken: directive.header.correlationToken,
-        payloadVersion: directive.header.payloadVersion
-    };
+  var header = {
+    namespace: 'Alexa',
+    name: 'ErrorResponse',
+    messageId: directive.header.messageId,
+    correlationToken: directive.header.correlationToken,
+    payloadVersion: directive.header.payloadVersion
+  };
 
-    var result = {
-        event: {
-            header: header,
-            endpoint: directive.endpoint,
-            payload: payload
-        }
-    };
+  var result = {
+    event: {
+      header: header,
+      endpoint: directive.endpoint,
+      payload: payload
+    }
+  };
 
-    log.debug('generateControlError done with result' + JSON.stringify(result));
-    return result;
+  log.debug('generateControlError done with result' + JSON.stringify(result));
+  return result;
 }
 
 /**
@@ -670,7 +736,7 @@ function discoverDevices() {
 
     //convert v2 style label/tag to v3
     convertV2Items(items);
-    log.debug("Items: " + JSON.stringify(items));
+    //log.debug("Items: " + JSON.stringify(items));
     items.forEach(function (item) {
       //this item is already part of a group
       if (groupItems.includes(item.name)) {
@@ -680,9 +746,9 @@ function discoverDevices() {
       var capabilities = [];
 
       var displayCategories = [];
-      function addDisplayCategory(category){
+      function addDisplayCategory(category) {
         category = utils.supportedDisplayCategory(category) ? category : 'OTHER';
-        if(!displayCategories.includes(category)){
+        if (!displayCategories.includes(category)) {
           displayCategories.push(category);
         }
       }
@@ -692,15 +758,15 @@ function discoverDevices() {
 
       //OH Goups can act as a single Endpoint using its children for capabilities
       if (item.type === 'Group') {
-        item.metadata.alexa.value.split(',').forEach(function(capability){
+        item.metadata.alexa.value.split(',').forEach(function (capability) {
           //found matching Endpoint capability
           var groupMatch;
-          if(groupMatch = capability.match(ENDPOINT_PATTERN)){
+          if (groupMatch = capability.match(ENDPOINT_PATTERN)) {
             log.debug("found group " + groupMatch[0] + " for item " + item.name);
             isEndpointGroup = true;
             item.members.forEach(function (member) {
               //not all items in the group may have Alexa metadata
-              if(typeof(member.metadata) !== 'undefined') {
+              if (typeof (member.metadata) !== 'undefined') {
                 log.debug("adding  " + member.name + " to group " + item.name);
                 groupItems.push(member.name);
                 propertyMap = utils.metadataToPropertyMap(member, propertyMap);
@@ -713,7 +779,7 @@ function discoverDevices() {
         });
       }
 
-      if(!isEndpointGroup) {
+      if (!isEndpointGroup) {
         propertyMap = utils.metadataToPropertyMap(item);
       }
 
@@ -785,8 +851,8 @@ function discoverDevices() {
           capabilities.push(capability.capabilities);
           // add properties or capability categories if not endpoint group item
           if (!isEndpointGroup) {
-            if(properties.categories && properties.categories.length > 0 ){
-              properties.categories.forEach(function(category){
+            if (properties.categories && properties.categories.length > 0) {
+              properties.categories.forEach(function (category) {
                 addDisplayCategory(category);
               });
             } else {
@@ -803,7 +869,7 @@ function discoverDevices() {
         description: item.type + ' ' + item.name + ' via openHAB',
         displayCategories: displayCategories,
         cookie: {
-          propertyMap : JSON.stringify(propertyMap)
+          propertyMap: JSON.stringify(propertyMap)
         },
         capabilities: capabilities
       };
@@ -863,17 +929,17 @@ function convertV2Items(items) {
  */
 function convertV2Item(item, group = {}) {
 
-  function v2Tempformat(item){
+  function v2Tempformat(item) {
     if (item.tags.indexOf('Fahrenheit') > -1 || item.tags.indexOf('fahrenheit') > -1) {
-        return 'Fahrenheit';
+      return 'Fahrenheit';
     } else {
-        return 'Celsius';
+      return 'Celsius';
     }
   };
 
   // Initialize alexa metadata item object if not defined
   if (!item.metadata || !item.metadata.alexa) {
-    item.metadata = Object.assign({alexa: {value: '', config: {}}}, item.metadata);
+    item.metadata = Object.assign({ alexa: { value: '', config: {} } }, item.metadata);
   }
   // Metadata information:
   //  values: fallback to tags if no metadata value defined
@@ -884,7 +950,7 @@ function convertV2Item(item, group = {}) {
   };
 
   // Convert metadata v2 style label values to capabilities
-  metadata.values.forEach(function(label) {
+  metadata.values.forEach(function (label) {
     var capabilities = [];
     var parameters = {}
 
@@ -921,7 +987,7 @@ function convertV2Item(item, group = {}) {
         case 'Switchable':
           var category = label === 'Lighting' ? 'LIGHT' : 'SWITCH';
           capabilities = getV2SwitchableCapabilities(item);
-          parameters = {category: category};
+          parameters = { category: category };
           break;
         case 'Lock':
           capabilities = ['LockController.lockState'];
@@ -929,28 +995,28 @@ function convertV2Item(item, group = {}) {
         case 'CurrentTemperature':
           var scale = group.scale || v2Tempformat(item);
           capabilities = ['TemperatureSensor.temperature'];
-          parameters = {scale: scale};
+          parameters = { scale: scale };
           break;
         case 'TargetTemperature':
           var scale = group.scale || v2Tempformat(item);
           capabilities = ['ThermostatController.targetSetpoint'];
-          parameters = {scale: scale};
+          parameters = { scale: scale };
           break;
         case 'LowerTemperature':
           var scale = group.scale || v2Tempformat(item);
           capabilities = ['ThermostatController.lowerSetpoint'];
-          parameters = {scale: scale};
+          parameters = { scale: scale };
           break;
         case 'UpperTemperature':
           var scale = group.scale || v2Tempformat(item);
           capabilities = ['ThermostatController.upperSetpoint'];
-          parameters = {scale: scale};
+          parameters = { scale: scale };
           break;
         case 'HeatingCoolingMode':
         case 'homekit:HeatingCoolingMode':
           var binding = group.binding || 'default';
           capabilities = ['ThermostatController.thermostatMode'];
-          parameters = {binding: binding}
+          parameters = { binding: binding }
           break;
         case 'ColorTemperature':
           capabilities = ['ColorTemperatureController.colorTemperatureInKelvin'];
@@ -959,7 +1025,7 @@ function convertV2Item(item, group = {}) {
         case 'Scene':
           var category = label === 'Activity' ? 'ACTIVITY_TRIGGER' : 'SCENE_TRIGGER';
           capabilities = ['SceneController.scene'];
-          parameters = {category: category};
+          parameters = { category: category };
           break;
         case 'EntertainmentChannel':
           capabilities = ['ChannelController.channel'];
@@ -980,7 +1046,7 @@ function convertV2Item(item, group = {}) {
     }
 
     // Push all capabilities to metadata values if not already included and merge parameters into metadata config
-    capabilities.forEach(function(capability) {
+    capabilities.forEach(function (capability) {
       if (!metadata.values.find(value => value === capability)) {
         metadata.values.push(capability);
         metadata.config = Object.assign(parameters, metadata.config);
