@@ -333,12 +333,7 @@ AlexaCapabilities.prototype.stepSpeaker = function () {
     capabilities: {
       "type": "AlexaInterface",
       "interface": "Alexa.StepSpeaker",
-      "version": "3",
-      "properties": {
-        "supported": supported,
-        "proactivelyReported": false,
-        "retrievable": true
-      }
+      "version": "3"
     },
     category: "SPEAKER"
   };
