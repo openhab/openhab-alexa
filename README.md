@@ -73,14 +73,14 @@ In the Alexa skill a light switch endpoint implements the "PowerController" inte
 ```
 Switch LightSwitch "Light Switch" {alexa="PowerController.powerState"}
 ```
-Setting this on a single item will create an Alexa endpoint with the spoken addressable name "Light Switch" and map the powerState property to our item. You can ask Alexa to turn "Light Switch" on or off as well as ask for its current state.
+Setting this on a single item will create an Alexa endpoint with the spoken addressable name "Light Switch" and map the powerState property to our item. You can ask Alexa to turn "Light Switch" on or off.
 
 A slightly more complex example would be a Light Dimmer.  In openHAB a dimmer object responds to both percentage and ON / OFF commands.  In Alexa this is two different interfaces.  To support both types of commands, we need to add both to the item metadata:
 ```
 Dimmer LightSwitch "Light Switch" {alexa="PowerController.powerState,BrightnessController.brightness"}
 ```
 
-You can ask Alexa to "Turn Light Switch .." on or off, "Set Light Switch to .." a certain percentage as well as ask for its current state.
+You can ask Alexa to "Turn Light Switch .." on or off as well as "Set Light Switch to .." a certain percentage.
 
 NOTE: the Alexa skill has 3 different percentage interfaces, BrightnessController, PowerLevelController and PercentageController.  Your item should only be using one of these that best describes the type of device.  So for lights this would be the BrightnessController, for roller shades this would be PercentageController.   The skill will not prevent adding more then one, but voice control may suffer for that device.
 
