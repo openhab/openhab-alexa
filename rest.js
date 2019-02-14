@@ -48,7 +48,7 @@ function getItems(token, success, failure) {
  * Returns all items as just Name and State
  */
 function getItemStates(token, success, failure) {
-    return getItemOrItems(token, null, 'fields=name,state', success, failure);
+    return getItemOrItems(token, null, 'fields=name,state,editable', success, failure);
 }
 
 /**
