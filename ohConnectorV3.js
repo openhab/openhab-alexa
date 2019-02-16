@@ -818,8 +818,10 @@ function discoverDevices() {
             capability = alexaCapabilities.temperatureSensor();
             break;
           case "ThermostatController":
+            // Default Alexa supported modes ["AUTO","COOL","HEAT","ECO","OFF"] if null 
+            var supportedModes = properties.thermostatMode &&  properties.thermostatMode.parameters ? properties.thermostatMode.parameters.supportedModes : null;
             capability = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint,
-              properties.lowerSetpoint, properties.thermostatMode);
+              properties.lowerSetpoint, properties.thermostatMode, supportedModes);
             break;
           case "Speaker":
             capability = alexaCapabilities.speaker(properties.volume, properties.muted);

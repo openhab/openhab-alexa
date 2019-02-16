@@ -95,7 +95,7 @@ AlexaCapabilities.prototype.percentageController = function () {
   };
 };
 
-AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upperSetpoint, lowerSetpoint, thermostatMode) {
+AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upperSetpoint, lowerSetpoint, thermostatMode, supportedModes) {
   var supported = [];
   if (targetSetpoint) {
     supported.push({
@@ -117,7 +117,7 @@ AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upp
       "name": "thermostatMode"
     })
   }
-  return {
+  var  controller = {
     capabilities: {
       "type": "AlexaInterface",
       "interface": "Alexa.ThermostatController",
@@ -126,10 +126,16 @@ AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upp
         "supported": supported,
         "proactivelyReported": false,
         "retrievable": true
+      },
+      configuration: {
       }
     },
     category: "THERMOSTAT"
   };
+  if(supportedModes){
+    controller.capabilities.configuration.supportedModes = supportedModes;
+  }
+  return controller;
 };
 
 
