@@ -1,5 +1,5 @@
 # Amazon Alexa Smart Home Skill
-Alexa in a intelligent personal assistant developed by Amazon and designed to run on smart speakers and devices such as the Amazon Echo and Dot. This certified Amazon Smart Home Skill allows users to naturally control their openHAB powered smart home with natural voice commands.  
+Alexa is an intelligent personal assistant developed by Amazon and designed to run on smart speakers and devices such as the Amazon Echo and Dot. This certified Amazon Smart Home Skill allows users to naturally control their openHAB powered smart home with natural voice commands.  
 
 This page describes how to use the [openHAB Alexa Smart Home Skill](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L).
 The skill connects your openHAB setup through the [myopenHAB.org](http://myopenHAB.org) cloud service to Amazon Alexa.
