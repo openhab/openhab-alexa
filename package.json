@@ -8,7 +8,7 @@
     "url": "https://github.com/openhab/openhab-alexa.git"
   },
   "author": "openHAB",
-  "license": "EPLv1",
+  "license": "EPL-1.0",
   "bugs": {
     "url": "https://github.com/openhab/openhab-alexa/issues"
   },

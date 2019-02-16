@@ -10,7 +10,7 @@ module.exports = [
         "endpointId": "gTelevision",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ChannelController": {"channel": {"parameters": {}, "itemName": "gTelevision"}}
+            "ChannelController": {"channel": {"parameters": {}, "item": {"name": "gTelevision"}}}
           })
         }
       },
@@ -64,7 +64,7 @@ module.exports = [
         "endpointId": "gTelevision",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ChannelController": {"channel": {"parameters": {}, "itemName": "gTelevision"}}
+            "ChannelController": {"channel": {"parameters": {}, "item": {"name": "gTelevision"}}}
           })
         }
       },

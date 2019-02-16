@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2016 by the respective copyright holders.
+ * Copyright (c) 2014-2019 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -16,24 +16,27 @@ var utils = require('./utils.js');
 var rest = require('./rest.js');
 var alexaCapabilities = require('./alexaCapabilities.js');
 var contextProperties = require('./alexaContextProperties.js');
+var PropertyMap = require('./alexaPropertyMap.js');
 
+// Define group endpoint format pattern
 var ENDPOINT_PATTERN = /^(?:Alexa\.)?Endpoint\.(\w+)$/;
 
 var directive;
-var context;
+var callback;
 var propertyMap;
 
 /**
  * Main entry point for all requests
- * @param {*} directive
- * @param {*} context
+ * @param {Object}   directive
+ * @param {Object}   callback
  */
-exports.handleRequest = function (_directive, _context) {
+exports.handleRequest = function (_directive, _callback) {
   directive = _directive;
-  context = _context;
-  //if we have a JSON cookie, parse it and set on endpoint
+  callback = _callback;
+  propertyMap = new PropertyMap();
+  // if we have a JSON cookie, parse it and set on endpoint
   if (directive.endpoint && directive.endpoint.cookie && directive.endpoint.cookie.propertyMap) {
-    propertyMap = JSON.parse(directive.endpoint.cookie.propertyMap)
+    propertyMap.load(directive.endpoint.cookie.propertyMap);
   }
 
   var namespace = directive.header.namespace; //ex: Alexa.BrightnessController
@@ -61,7 +64,15 @@ exports.handleRequest = function (_directive, _context) {
       setColor();
       break;
     case "Alexa.ColorTemperatureController":
-      adjustColorTemperature();
+      switch(name) {
+        case "SetColorTemperature":
+          setColorTemperature();
+          break;
+        case "DecreaseColorTemperature":
+        case "IncreaseColorTemperature":
+          adjustColorTemperature();
+          break;
+      }
       break;
     case "Alexa.ThermostatController":
       switch (name) {
@@ -131,42 +142,19 @@ exports.handleRequest = function (_directive, _context) {
  * Answers a "ReportState" request.  Returns the state(s) of an endpoint
  */
 function reportState() {
-  rest.getItemStates(directive.endpoint.scope.token,
-    function (items) {
-      var properties = contextProperties.propertiesResponseForItems(items, propertyMap);
-      var result = {
-        context: {
-          properties: properties
-        },
-        event: {
-          header: {
-            messageId: uuid(),
-            name: "StateReport",
-            namespace: "Alexa",
-            payloadVersion: directive.header.payloadVersion,
-            correlationToken: directive.header.correlationToken
-          },
-          endpoint: {
-            scope: directive.endpoint.scope,
-            endpointId: directive.endpoint.endpointId
-          },
-          payload: {}
-        }
-      };
-      log.debug('report done with result' + JSON.stringify(result));
-      context.succeed(result);
-    }, function (error) {
-      log.error("Could not report on item: " + JSON.stringify(error));
-    });
+  // Generate properties response based on property map received
+  //  and return as state report
+  getPropertiesResponseAndReturn();
 }
 
 /**
  * Turns a Switch ON or OFF
  */
 function setPowerState() {
-  var state = directive.header.name === 'TurnOn' ? 'ON' : 'OFF';
-  var itemName = propertyMap.PowerController.powerState.itemName;
-  postItemAndReturn(itemName, state);
+  var postItem = Object.assign(propertyMap.PowerController.powerState.item, {
+    state: directive.header.name === 'TurnOn' ? 'ON' : 'OFF'
+  });
+  postItemsAndReturn([postItem], 'PowerController');
 }
 
 /**
@@ -211,32 +199,31 @@ function adjustPercentage() {
       break;
   }
   //remove 'Alexa.' from namespace
-  var namespace = directive.header.namespace.split('Alexa.')[1];
-  var itemName = propertyMap[namespace][propertyName].itemName;
-  log.debug('Turning ' + itemName + ' to ' + payloadValue);
+  var interfaceName = directive.header.namespace.split('Alexa.')[1];
+  var postItem = propertyMap[interfaceName][propertyName].item;
+  log.debug('Turning ' + postItem.name + ' to ' + payloadValue);
 
   //if this is a set command then just post it, otherwise we need to first retrieve the value of the item
   // so we can adjust it and then post it.
   if (isSetCommand) {
-    postItemAndReturn(itemName, payloadValue);
+    postItem.state = payloadValue;
+    postItemsAndReturn([postItem], interfaceName);
   } else {
     rest.getItem(directive.endpoint.scope.token,
-      itemName, function (item) {
-        log.debug('itemGetSuccess: item state ' +
+      postItem.name, function (item) {
+        log.debug('adjustPercentage: item state ' +
           item.state + ' delta ' + payloadValue);
 
         //skip this if we don't have a number to start with
         if (isNaN(item.state)) {
-          context.done(null, generateGenericErrorResponse());
+          returnAlexaResponse(generateGenericErrorResponse());
           return;
         }
-        var oldState = parseInt(item.state);
-        var newState = oldState + parseInt(payloadValue);
-        newState = Math.min(100, newState);
-        newState = Math.max(0, newState);
-        postItemAndReturn(itemName, newState);
+        var state = parseInt(item.state) + parseInt(payloadValue);
+        postItem.state = state < 0 ? 0 : state < 100 ? state : 100;
+        postItemsAndReturn([postItem], interfaceName);
       }, function (error) {
-        context.done(null, generateGenericErrorResponse());
+        returnAlexaResponse(generateGenericErrorResponse());
       }
     );
   }
@@ -249,139 +236,119 @@ function setColor() {
   var h = directive.payload.color.hue;
   var s = directive.payload.color.saturation * 100.0;
   var b = directive.payload.color.brightness * 100.0;
-  var state = h + ',' + s + ',' + b;
-  var itemName = propertyMap.ColorController.color.itemName;
-  postItemAndReturn(itemName, state);
+  var postItem = Object.assign(propertyMap.ColorController.color.item, {
+    state: h + ',' + s + ',' + b
+  });
+  postItemsAndReturn([postItem], 'ColorController');
 }
 
 /**
- * Set the color of a color item
+ * Set the color temperature
+ */
+function setColorTemperature() {
+  var properties = propertyMap.ColorTemperatureController;
+  var postItem = Object.assign(properties.colorTemperatureInKelvin.item, {
+    state: utils.normalizeColorTemperature(directive.payload.colorTemperatureInKelvin,
+      properties.colorTemperatureInKelvin.item.type)
+  });
+  postItemsAndReturn([postItem], 'ColorTemperatureController');
+}
+
+/**
+ * Adjust the color temperature
  */
 function adjustColorTemperature() {
   var properties = propertyMap.ColorTemperatureController;
-  var itemName = properties.colorTemperatureInKelvin.itemName;
+  var postItem = properties.colorTemperatureInKelvin.item;
 
   rest.getItem(directive.endpoint.scope.token,
-    itemName, function (item) {
-      var state;
-
-      if (directive.header.name === 'SetColorTemperature') {
-        state = utils.normalizeColorTemperature(directive.payload.colorTemperatureInKelvin, item.type);
-      } else {
-        // Generate error if in color mode (color controller property defined & empty state)
-        if (propertyMap.ColorController && !parseInt(item.state)) {
-          context.done(null, generateControlError({
-            type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
-            message: 'The light is currently set to a color.',
-            currentDeviceMode: 'COLOR'
-          }));
-          return;
-        }
-        // Generate error if state not a number
-        if (isNaN(item.state)) {
-          log.debug('adjustColorTemperature error: Could not get numeric item state');
-          context.done(null, generateGenericErrorResponse());
-          return;
-        }
-
-        var isIncreaseRequest = directive.header.name === 'IncreaseColorTemperature';
-        var increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment);
-
-        switch (item.type) {
-          case 'Dimmer':
-            // Send reverse command or value to OH since cold (0%) and warm (100%), depending if increment defined
-            if (isNaN(increment)) {
-              state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
-            } else {
-              state = parseInt(item.state) + (isIncreaseRequest ? -1 : 1) * increment;
-              state = state < 0 ? 0 : state < 100 ? state : 100;
-            }
-            break;
-          case 'Number':
-            // Increment current state by defined value as Number item doesn't support IncreaseDecreaseType commands
-            state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * (increment || 500);
-            state = utils.normalizeColorTemperature(state, item.type);
-            break;
-        }
+    postItem.name, function (item) {
+      // Generate error if in color mode (color controller property defined & empty state)
+      if (propertyMap.ColorController && !parseInt(item.state)) {
+        returnAlexaResponse(generateControlError({
+          type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
+          message: 'The light is currently set to a color.',
+          currentDeviceMode: 'COLOR'
+        }));
+        return;
+      }
+      // Generate error if state not a number
+      if (isNaN(item.state)) {
+        log.debug('adjustColorTemperature error: Could not get numeric item state');
+        returnAlexaResponse(generateGenericErrorResponse());
+        return;
       }
 
-      log.debug('adjustColorTemperature to value: ' + state);
-      postItemAndReturn(itemName, state);
+      var isIncreaseRequest = directive.header.name === 'IncreaseColorTemperature';
+      var increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment);
+      var state;
+
+      switch (item.type) {
+        case 'Dimmer':
+          // Send reverse command/value to OH since cold (0%) and warm (100%), depending if increment defined
+          if (isNaN(increment)) {
+            state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
+          } else {
+            state = parseInt(item.state) + (isIncreaseRequest ? -1 : 1) * increment;
+            state = state < 0 ? 0 : state < 100 ? state : 100;
+          }
+          break;
+        case 'Number':
+          // Increment current state by defined value as Number doesn't support IncreaseDecreaseType commands
+          state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * (increment || 500);
+          state = utils.normalizeColorTemperature(state, item.type);
+          break;
+      }
+
+      postItem.state = state;
+      log.debug('adjustColorTemperature to value: ' + postItem.state);
+      postItemsAndReturn([postItem], 'ColorTemperatureController');
     }
   );
 }
 
 /**
  * Sets the taget temperature, this can include upper, lower and target setpoints
- * in the same request. 
+ * in the same request.
  */
 function setTargetTemperature() {
   var properties = propertyMap.ThermostatController;
-  var promises = [];
-
-  /**
-   * Support Comfort Ranges if only a target setpoint is sent by Alexa, but a user does not define one.
-   * Only works if the user has no defined targetSetpoint, but does define a upper and lower (dual mode)
-   */
-  if (directive.payload.targetSetpoint && !directive.payload.upperSetpoint && !directive.payload.lowerSetpoint &&
-    !properties.targetSetpoint && properties.upperSetpoint && properties.lowerSetpoint) {
-    //default range if not set
-    var upperRange = lowerRange = directive.payload.targetSetpoint.scale == 'FAHRENHEIT' ? 1 : .5;
-    //use user defined comfort range if set
-    if (properties.upperSetpoint.parameters && typeof (properties.upperSetpoint.parameters.comfort_range) !== 'undefined') {
-      upperRange = parseFloat(properties.upperSetpoint.parameters.comfort_range);
-    }
-    if (properties.lowerSetpoint.parameters && typeof (properties.lowerSetpoint.parameters.comfort_range) !== 'undefined') {
-      lowerRange = parseFloat(properties.lowerSetpoint.parameters.comfort_range);
-    }
-    //add these to the original alexa request
-    directive.payload.upperSetpoint = {
-      value: directive.payload.targetSetpoint.value + upperRange,
-      scale: directive.payload.targetSetpoint.scale
-    }
-    directive.payload.lowerSetpoint = {
-      value: directive.payload.targetSetpoint.value - lowerRange,
-      scale: directive.payload.targetSetpoint.scale
-    }
-  }
-
-  Object.keys(properties).forEach(function (propertyName) {
+  // Add requested properties to be updated that are part of the controller properties
+  var postItems = Object.keys(properties).reduce(function (items, propertyName) {
     if (directive.payload[propertyName]) {
-      var state = directive.payload[propertyName].value;
-      var itemName = properties[propertyName].itemName;
-      log.debug("Setting " + itemName + " to " + state);
-      promises.push(new Promise(function (resolve, reject) {
-        log.debug("PROMISE Setting " + itemName + " to " + state);
-        rest.postItemCommand(directive.endpoint.scope.token,
-          itemName, state, function (response) {
-            log.debug("setTargetTemperature POST response to " + itemName + " : " + response);
-            resolve({ name: itemName, state: state });
-          }, function (error) {
-            log.debug("setTargetTemperature POST ERROR to " + itemName + " : " + error);
-            reject(error);
-          });
+      items.push(Object.assign(properties[propertyName].item, {
+        state: directive.payload[propertyName].value
       }));
     }
-  });
+    return items;
+  }, []);
 
-  Promise.all(promises).then(function (values) {
-    log.debug("Promise items " + JSON.stringify(values));
-    var result = {
-      context: {
-        properties: contextProperties.propertiesResponseForItems(values, propertyMap)
-      },
-      event: {
-        header: generateResponseHeader(directive.header),
-        payload: {}
-      }
-    };
-    log.debug('setTargetTemperature done with result' + JSON.stringify(result));
-    context.succeed(result);
-  }).catch(function (err) {
-    log.debug('setTargetTemperature error ' + err);
-    context.done(null, generateGenericErrorResponse());
-  });
+  // Support Comfort Ranges if only a target setpoint is sent by Alexa, but a user does not define one.
+  // Only works if the user has no defined targetSetpoint, but does define a upper and lower (dual mode)
+  if (directive.payload.targetSetpoint && !directive.payload.upperSetpoint && !directive.payload.lowerSetpoint &&
+    !properties.targetSetpoint && properties.upperSetpoint && properties.lowerSetpoint) {
+    // default range if not set
+    var upperRange = lowerRange = directive.payload.targetSetpoint.scale == 'FAHRENHEIT' ? 1 : .5;
+    // use user defined comfort range if set
+    if (typeof properties.upperSetpoint.parameters.comfort_range !== 'undefined') {
+      upperRange = parseFloat(properties.upperSetpoint.parameters.comfort_range);
+    }
+    if (typeof properties.lowerSetpoint.parameters.comfort_range !== 'undefined') {
+      lowerRange = parseFloat(properties.lowerSetpoint.parameters.comfort_range);
+    }
+    // set dual setpoints
+    postItems.push(
+      Object.assign(properties.upperSetpoint.item, {
+        state: directive.payload.targetSetpoint.value + upperRange
+      }),
+      Object.assign(properties.lowerSetpoint.item, {
+        state: directive.payload.targetSetpoint.value - lowerRange
+      })
+    )
+  }
 
+  log.debug('setTargetTemperature to values: ', JSON.stringify(postItems));
+  postItemsAndReturn(postItems, 'ThermostatController');
 }
 
 /**
@@ -389,74 +356,53 @@ function setTargetTemperature() {
  */
 function adjustTargetTemperature() {
   var properties = propertyMap.ThermostatController;
-  /**
-   * User has a target temperature defined
-   */
-  if (typeof (properties.targetSetpoint) !== 'undefined') {
-    var itemName = properties.targetSetpoint.itemName;
-    rest.getItem(directive.endpoint.scope.token,
-      itemName, function (item) {
-        var state = parseFloat(item.state) + directive.payload.targetSetpointDelta.value;
-        postItemAndReturn(itemName, state);
-      }, function (error) {
-        context.done(null, generateGenericErrorResponse());
-      }
-    );
-  } else if (typeof (properties.upperSetpoint) !== 'undefined' &&
-    typeof (properties.lowerSetpoint) !== 'undefined') {
-    /**
-     * user does not have target temerpature defined, but does have upper and lower (dual mode)
-     */
-    var promises = [];
-    [properties.lowerSetpoint.itemName, properties.upperSetpoint.itemName].forEach(function(itemName) {
-      promises.push(new Promise(function (resolve, reject) {
-        rest.getItem(directive.endpoint.scope.token,
-          itemName, function (item) {
-            var state = parseFloat(item.state) + directive.payload.targetSetpointDelta.value;
-            rest.postItemCommand(directive.endpoint.scope.token,
-              itemName, state, function (response) {
-                resolve({ name: itemName, state: state });
-              }, function (error) {
-                reject(error);
-              });
-          });
-      }));
-    });
-    
-    Promise.all(promises).then(function (values) {
-      log.debug(`Promise items ${JSON.stringify(values)}`);
-      var result = {
-        context: {
-          properties: contextProperties.propertiesResponseForItems(values, propertyMap)
-        },
-        event: {
-          header: generateResponseHeader(directive.header),
-          payload: {}
-        }
-      };
-      log.debug('setTargetTemperature done with result' + JSON.stringify(result));
-      context.succeed(result);
-    }).catch(function (err) {
-      log.debug('setTargetTemperature error ' + err);
-      context.done(null, generateGenericErrorResponse());
-    });
+  var propertyNames = [];
+  var promises = [];
+
+  // adjust target setpoint if defined otherwise upper/lower setpoints if in dual mode
+  if (properties.targetSetpoint) {
+    propertyNames.push("targetSetpoint");
+  } else if (properties.upperSetpoint && properties.lowerSetpoint) {
+    propertyNames.push("upperSetpoint", "lowerSetpoint");
   }
+  propertyNames.forEach(function (propertyName) {
+    promises.push(new Promise(function (resolve, reject) {
+      rest.getItem(directive.endpoint.scope.token,
+        properties[propertyName].item.name, function (item) {
+          resolve(Object.assign(properties[propertyName].item, {
+            state: parseFloat(item.state) + directive.payload.targetSetpointDelta.value
+          }));
+        }, function (error) {
+          reject(error);
+        });
+    }));
+  })
+  Promise.all(promises).then(function (postItems) {
+    log.debug('adjustTargetTemperature to values: ', JSON.stringify(postItems));
+    postItemsAndReturn(postItems, 'ThermostatController');
+  }).catch(function (error) {
+    log.debug('adjustTargetTemperature failed with error: ' + JSON.stringify(error));
+    returnAlexaResponse(generateGenericErrorResponse());
+  });
 }
 
 /**
  * Sets the mode of the thermostat
  */
 function setThermostatMode() {
-  var state = utils.normalizeThermostatMode(directive.payload.thermostatMode.value,
-    propertyMap.ThermostatController.thermostatMode.parameters);
-  var itemName = propertyMap.ThermostatController.thermostatMode.itemName;
+  var properties = propertyMap.ThermostatController;
+  var postItem = Object.assign(properties.thermostatMode.item, {
+    state: utils.normalizeThermostatMode(directive.payload.thermostatMode.value,
+      properties.thermostatMode.parameters)
+  });
 
-  if (typeof (state) !== 'undefined') {
-    postItemAndReturn(itemName, state);
+  if (typeof postItem.state !== 'undefined') {
+    postItemsAndReturn([postItem], 'ThermostatController');
   } else {
-    context.done(null, generateControlError({
+    returnAlexaResponse(generateControlError({
       type: "UNSUPPORTED_THERMOSTAT_MODE",
-      message: itemName + " doesn't support thermostat mode [" + directive.payload.thermostatMode.value + "]",
+      message: postItem.name + " doesn't support thermostat mode [" +
+        directive.payload.thermostatMode.value + "]",
     }));
   }
 }
@@ -465,36 +411,41 @@ function setThermostatMode() {
  * Locks (ON) or unlocks (OFF) a item
  */
 function setLockState() {
-  var state = directive.header.name.toUpperCase() === 'LOCK' ? 'ON' : 'OFF';
-  var itemName = propertyMap.LockController.lockState.itemName;
-  postItemAndReturn(itemName, state);
+  var properties = propertyMap.LockController;
+  var postItem = Object.assign(properties.lockState.item, {
+    state: directive.header.name.toUpperCase() === 'LOCK' ? 'ON' : 'OFF'
+  });
+  postItemsAndReturn([postItem], 'LockController');
 }
 
 /**
  * Sends the channel value to a string or number item
  */
 function setChannel() {
-  var itemName = propertyMap.ChannelController.channel.itemName;
-  var state = directive.payload.channel.number;
-  postItemAndReturn(itemName, state);
+  var postItem = Object.assign(propertyMap.ChannelController.channel.item, {
+    state: directive.payload.channel.number
+  });
+  postItemsAndReturn([postItem], 'ChannelController');
 }
 
 /**
  * Adjusts the channel value to a number item
  */
 function adjustChannel() {
-  var itemName = propertyMap.ChannelController.channel.itemName;
+  var postItem = propertyMap.ChannelController.channel.item;
   rest.getItem(directive.endpoint.scope.token,
-    itemName, function (item) {
+    postItem.name, function (item) {
       var state = parseInt(item.state);
       if (isNaN(state)) {
         state = Math.abs(directive.payload.channelCount);
       } else {
         state += directive.payload.channelCount;
       }
-      postItemAndReturn(itemName, state.toString());
+      // Value defined as a string in alexa api
+      postItem.state = state.toString();
+      postItemsAndReturn([postItem], 'ChannelController');
     }, function (error) {
-      context.done(null, generateGenericErrorResponse());
+      returnAlexaResponse(generateGenericErrorResponse());
     }
   );
 }
@@ -503,72 +454,66 @@ function adjustChannel() {
  * Sends the input value (HDMI1, Music, etc..) to a string item
  */
 function setInput() {
-  var itemName = propertyMap.InputController.input.itemName;
-  var state = directive.payload.input.replace(/\s/g, '').toUpperCase();
-  postItemAndReturn(itemName, state);
+  var postItem = Object.assign(propertyMap.InputController.input.item, {
+    state: directive.payload.input.replace(/\s/g, '').toUpperCase()
+  });
+  postItemsAndReturn([postItem], 'InputController');
 }
+
 /**
  * Sends a playback command (PLAY, PASUE, REWIND, etc..) to a string or player item
  */
 function setPlayback() {
-  var itemName = propertyMap.PlaybackController.playback.itemName;
-  var state = directive.header.name.toUpperCase();
-  postItemAndReturn(itemName, state);
+  var postItem = Object.assign(propertyMap.PlaybackController.playback.item, {
+    state: directive.header.name.toUpperCase()
+  });
+  postItemsAndReturn([postItem], 'PlaybackController');
 }
 
 /**
  * Sends a send name to a string item
  */
 function setScene() {
-  var itemName = propertyMap.SceneController.scene.itemName;
-  var state = directive.header.name === 'Activate' ? "ON" : "OFF";
-  rest.postItemCommand(directive.endpoint.scope.token,
-    itemName, state, function (response) {
-      var result = {
-        context: {},
-        event: {
-          header: {
-            messageId: uuid(),
-            name: directive.header.name === 'Activate' ? 'ActivationStarted' : 'DeactivationStarted',
-            namespace: directive.header.namespace,
-            payloadVersion: directive.header.payloadVersion,
-            correlationToken: directive.header.correlationToken
-          },
-          payload: {
-            cause: {
-              type: 'VOICE_INTERACTION'
-            },
-            timestamp: utils.date()
-          }
-        }
-      };
-      log.debug('setScene done with result' + JSON.stringify(result));
-      context.succeed(result);
-    }, function (error) {
-      context.done(null, generateGenericErrorResponse());
+  var postItem = Object.assign(propertyMap.SceneController.scene.item, {
+    state: directive.header.name === 'Activate' ? 'ON' : 'OFF'
+  });
+  var response = {
+    context: {},
+    event: {
+      header: generateResponseHeader(
+        directive.header.name === 'Activate' ? 'ActivationStarted' : 'DeactivationStarted',
+        'Alexa.SceneController'),
+      payload: {
+        cause: {
+          type: 'VOICE_INTERACTION'
+        },
+        timestamp: utils.date()
+      }
     }
-  );
+  };
+  postItemsAndReturn([postItem], 'SceneController', response);
 }
 
 /**
  * Adjusts a number + or - the volume payload
  */
 function adjustSpeakerVolume() {
-  var itemName = propertyMap.Speaker.volume.itemName;
+  var postItem = propertyMap.Speaker.volume.item;
   var defaultIncrement = parseInt(propertyMap.Speaker.volume.parameters.increment);
   var volumeIncrement = directive.payload.volumeDefault && defaultIncrement > 0 ?
     (directive.payload.volume >= 0 ? 1 : -1) * defaultIncrement : directive.payload.volume;
   rest.getItem(directive.endpoint.scope.token,
-    itemName, function (item) {
+    postItem.name, function (item) {
       var state = parseInt(item.state);
       if (isNaN(state)) {
         state = Math.abs(volumeIncrement);
       } else {
         state += volumeIncrement;
       }
-      postItemAndReturn(itemName, state);
+      postItem.state = state;
+      postItemsAndReturn([postItem], 'Speaker');
     }, function (error) {
-      context.done(null, generateGenericErrorResponse());
+      returnAlexaResponse(generateGenericErrorResponse());
     }
   );
 }
@@ -577,36 +522,39 @@ function adjustSpeakerVolume() {
  * Sets a number item to the volume payload
  */
 function setSpeakerVolume() {
-  var itemName = propertyMap.Speaker.volume.itemName;
-  var state = directive.payload.volume;
-  postItemAndReturn(itemName, state);
+  var postItem = Object.assign(propertyMap.Speaker.volume.item, {
+    state: directive.payload.volume
+  });
+  postItemsAndReturn([postItem], 'Speaker');
 }
 
 /**
  * Sets a switch item to muted (ON), or unmuted (OFF)
  */
 function setSpeakerMute() {
-  var itemName = propertyMap.Speaker.muted.itemName;
-  var state = directive.payload.mute ? "ON" : "OFF";
-  postItemAndReturn(itemName, state);
+  var postItem = Object.assign(propertyMap.Speaker.muted.item, {
+    state: directive.payload.mute ? 'ON' : 'OFF'
+  });
+  postItemsAndReturn([postItem], 'Speaker');
 }
 
 /**
  * Sends a volume step (+1, -1) to a item
  */
 function adjustStepSpeakerVolume() {
-  var itemName = propertyMap.StepSpeaker.volume.itemName;
+  var postItem = propertyMap.StepSpeaker.volume.item;
   rest.getItem(directive.endpoint.scope.token,
-    itemName, function (item) {
+    postItem.name, function (item) {
       var state = parseInt(item.state);
       if (isNaN(state)) {
         state = Math.abs(directive.payload.volumeSteps);
       } else {
         state += directive.payload.volumeSteps;
       }
-      postItemAndReturn(itemName, state);
+      postItem.state = state;
+      postItemsAndReturn([postItem], 'StepSpeaker');
     }, function (error) {
-      context.done(null, generateGenericErrorResponse());
+      returnAlexaResponse(generateGenericErrorResponse());
     }
   );
 }
@@ -615,102 +563,159 @@ function adjustStepSpeakerVolume() {
  * Sets a switch item to muted (ON), or unmuted (OFF)
  */
 function setStepSpeakerMute() {
-  var itemName = propertyMap.StepSpeaker.muted.itemName;
-  var state = directive.payload.mute ? "ON" : "OFF";
-  postItemAndReturn(itemName, state);
+  var postItem = Object.assign(propertyMap.StepSpeaker.muted.item, {
+    state: directive.payload.mute ? "ON" : "OFF"
+  });
+  postItemsAndReturn([postItem], 'StepSpeaker');
 }
 
 /**
+ * Generic method to post list of items to OH
+ *  and then return a formatted response to the Alexa request
  *
- * Generic method to get the latest state of an item in OH and then return a formatted result to the Alexa request
- * @param {*} itemName
+ * @param {Array}  items
+ * @param {String} interfaceName
+ * @param {Object} response         Return response object directly if provided (optional)
  */
-function getItemStateAndReturn(itemName) {
-  log.debug('getItemStateAndReturn Getting ' + itemName + ' latest state');
-  rest.getItem(directive.endpoint.scope.token,
-    itemName, function (item) {
-      var result = {
-        context: {
-          properties: contextProperties.propertiesResponseForItems(
-            [{ name: item.name, state: item.state, type: item.type }], propertyMap)
+function postItemsAndReturn(items, interfaceName, response) {
+  var promises = [];
+  items.forEach(function (item) {
+    promises.push(new Promise(function (resolve, reject) {
+      log.debug('postItemsAndReturn Setting ' + item.name + ' to ' + item.state);
+      rest.postItemCommand(directive.endpoint.scope.token,
+        item.name, item.state, function (result) {
+          resolve(result);
+        }, function (error) {
+          reject(error);
+        });
+    }));
+  });
+  Promise.all(promises).then(function () {
+    if (typeof response === 'object') {
+      log.debug('postItemsAndReturn done with response: ' + JSON.stringify(response));
+      returnAlexaResponse(response);
+    } else {
+      getPropertiesResponseAndReturn(interfaceName);
+    }
+  }).catch(function (error) {
+    log.debug('postItemsAndReturn failed with error: ' + JSON.stringify(error));
+    returnAlexaResponse(generateGenericErrorResponse());
+  });
+}
+
+/**
+ * Generic method to generate properties response
+ *  based of interface-specific properties latest item state from OH
+ *  and then return a formatted response to the Alexa request
+ *
+ * @param {String} interfaceName
+ */
+function getPropertiesResponseAndReturn(interfaceName) {
+  // Use the property map defined interface names if interfaceName not defined (e.g. reportState)
+  var interfaceNames = interfaceName ? [interfaceName] : Object.keys(propertyMap);
+  // Get list of all unique item objects part of interfaces
+  var interfaceItems = propertyMap.getItemsByInterfaces(interfaceNames);
+  var promises = [];
+
+  interfaceItems.forEach(function (item) {
+    promises.push(new Promise(function (resolve, reject) {
+      // Use item sensor name over standard item name, if defined, to get the accurate current state
+      var itemName = item.sensor || item.name;
+
+      log.debug('getPropertiesResponseAndReturn Getting ' + itemName + ' latest state');
+      rest.getItem(directive.endpoint.scope.token,
+        itemName, function (result) {
+          // Update item information in propertyMap object for each item capabilities
+          item.capabilities.forEach(function (capability) {
+            propertyMap[capability.interface][capability.property].item = result;
+          });
+          resolve(result);
+      }, function (error) {
+        reject(error);
+      });
+    }));
+  });
+  Promise.all(promises).then(function (items) {
+    // Throw error if one of the state item is set to 'NULL'
+    if (items.find(item => item.state === 'NULL')) {
+      throw {message: 'Invalid item state returned by openHAB', items: items};
+    }
+    // Generate properties response
+    var response = {
+      context: {
+        properties: contextProperties.propertiesResponseForInterfaces(interfaceNames, propertyMap)
+      },
+      event: {
+        header: generateResponseHeader(interfaceName ? 'Response' : 'StateReport'),
+        endpoint: {
+          scope: directive.endpoint.scope,
+          endpointId: directive.endpoint.endpointId
         },
-        event: {
-          header: generateResponseHeader(directive.header),
-          endpoint: {
-            scope: directive.endpoint.scope,
-            endpointId: directive.endpoint.endpointId
-          },
-          payload: {}
-        }
-      };
-      log.debug('getItemStateAndReturn done with result' + JSON.stringify(result));
-      context.succeed(result);
-    }, function (error) {
-      context.done(null, generateGenericErrorResponse());
-    }
-  );
+        payload: {}
+      }
+    };
+    log.debug('getPropertiesResponseAndReturn done with response: ' + JSON.stringify(response));
+    returnAlexaResponse(response);
+
+  }).catch(function (error) {
+    log.debug('getPropertiesResponseAndReturn failed with error: ' + JSON.stringify(error));
+    returnAlexaResponse(generateGenericErrorResponse());
+  });
 }
 
 /**
- *
- * Generic method to post an item to OH and then return a formatted result to the Alexa request
- * @param {*} itemName
- * @param {*} state
+ * Returns Alexa response
+ * @param  {Object} response
  */
-function postItemAndReturn(itemName, state) {
-  log.debug('postItemAndReturn Setting ' + itemName + ' to ' + state);
-  rest.postItemCommand(directive.endpoint.scope.token,
-    itemName, state, function (response) {
-      getItemStateAndReturn(itemName);
-    }, function (error) {
-      context.done(null, generateGenericErrorResponse());
-    }
-  );
-}
+function returnAlexaResponse(response) {
+  callback(null, response);
+};
 
 /**
  * V3 response header
- * @param {*} header
+ * @param  {String} name
+ * @param  {String} namespace (optional)
+ * @return {Object}
  */
-function generateResponseHeader(header) {
-  return {
+function generateResponseHeader(name, namespace) {
+  var header = {
+    namespace: namespace || 'Alexa',
+    name: name,
     messageId: uuid(),
-    name: "Response",
-    namespace: "Alexa",
-    payloadVersion: header.payloadVersion,
-    correlationToken: header.correlationToken
+    payloadVersion: directive.header.payloadVersion
   };
+  // Include correlationToken if provided in directive header request
+  if (directive.header.correlationToken) {
+    header.correlationToken = directive.header.correlationToken;
+  }
+  return header;
 }
 
 /**
  * V3 Control Error Response
- * @param {*} directive
- * @param {*} payload
+ * @param  {Object} payload
+ * @param  {Object} namespace (optional)
+ * @return {Object}
  */
-function generateControlError(payload) {
-  var header = {
-    namespace: 'Alexa',
-    name: 'ErrorResponse',
-    messageId: directive.header.messageId,
-    correlationToken: directive.header.correlationToken,
-    payloadVersion: directive.header.payloadVersion
-  };
-
-  var result = {
+function generateControlError(payload, namespace) {
+  var response = {
     event: {
-      header: header,
-      endpoint: directive.endpoint,
+      header: generateResponseHeader('ErrorResponse', namespace),
       payload: payload
     }
   };
+  // Include endpoint if provided in directive request
+  if (directive.endpoint) {
+    response.event.endpoint = directive.endpoint;
+  }
 
-  log.debug('generateControlError done with result' + JSON.stringify(result));
-  return result;
+  log.debug('generateControlError done with response' + JSON.stringify(response));
+  return response;
 }
 
 /**
  * V3 Generic Error Response
- * @param {*} directive
+ * @return {Object}
  */
 function generateGenericErrorResponse() {
   return generateControlError({
@@ -721,8 +726,6 @@ function generateGenericErrorResponse() {
 
 /**
  * Device discovery
- * @param {*} directive
- * @param {*} context
  */
 function discoverDevices() {
   //request all items with groups
@@ -753,7 +756,7 @@ function discoverDevices() {
         }
       }
 
-      var propertyMap;
+      var propertyMap = new PropertyMap();
       var isEndpointGroup = false;
 
       //OH Goups can act as a single Endpoint using its children for capabilities
@@ -765,12 +768,9 @@ function discoverDevices() {
             log.debug("found group " + groupMatch[0] + " for item " + item.name);
             isEndpointGroup = true;
             item.members.forEach(function (member) {
-              //not all items in the group may have Alexa metadata
-              if (typeof (member.metadata) !== 'undefined') {
-                log.debug("adding  " + member.name + " to group " + item.name);
-                groupItems.push(member.name);
-                propertyMap = utils.metadataToPropertyMap(member, propertyMap);
-              }
+              log.debug("adding  " + member.name + " to group " + item.name);
+              groupItems.push(member.name);
+              propertyMap.addItem(member);
             });
             //set display category for group
             addDisplayCategory(groupMatch[1].toUpperCase());
@@ -780,15 +780,15 @@ function discoverDevices() {
       }
 
       if (!isEndpointGroup) {
-        propertyMap = utils.metadataToPropertyMap(item);
+        propertyMap.addItem(item);
       }
 
-      if (propertyMap && Object.keys(propertyMap).length) {
-        log.debug("Property Map: " + JSON.stringify(propertyMap));
-      } else {
-        //no capability found
+      //no capability found
+      if (Object.keys(propertyMap).length == 0) {
         return;  //just returns forEach function
       }
+
+      log.debug("Property Map: " + JSON.stringify(propertyMap));
 
       capabilities.push(alexaCapabilities.alexa());
 
@@ -818,10 +818,8 @@ function discoverDevices() {
             capability = alexaCapabilities.temperatureSensor();
             break;
           case "ThermostatController":
-            // Default Alexa supported modes ["AUTO","COOL","HEAT","ECO","OFF"] if null 
-            var supportedModes = properties.thermostatMode &&  properties.thermostatMode.parameters ? properties.thermostatMode.parameters.supportedModes : null;
-            capability = alexaCapabilities.thermostatController(properties.targetSetpoint, properties.upperSetpoint,
-              properties.lowerSetpoint, properties.thermostatMode, supportedModes);
+            capability = alexaCapabilities.thermostatController(properties.targetSetpoint,
+              properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
             break;
           case "Speaker":
             capability = alexaCapabilities.speaker(properties.volume, properties.muted);
@@ -856,10 +854,9 @@ function discoverDevices() {
           capabilities.push(capability.capabilities);
           // add properties or capability categories if not endpoint group item
           if (!isEndpointGroup) {
-            if (properties.categories && properties.categories.length > 0) {
-              properties.categories.forEach(function (category) {
-                addDisplayCategory(category);
-              });
+            var categories = propertyMap.getCategories(interfaceName);
+            if (categories.length) {
+              categories.forEach(category => addDisplayCategory(category));
             } else {
               addDisplayCategory(capability.category);
             }
@@ -874,7 +871,7 @@ function discoverDevices() {
         description: item.type + ' ' + item.name + ' via openHAB',
         displayCategories: displayCategories,
         cookie: {
-          propertyMap: JSON.stringify(propertyMap)
+          propertyMap: propertyMap.dump()
         },
         capabilities: capabilities
       };
@@ -902,24 +899,24 @@ function discoverDevices() {
     var payload = {
       endpoints: discoverdDevices
     };
-    var result = {
+    var response = {
       event: {
         header: header,
         payload: payload
       }
     };
 
-    log.debug('Discovery: ' + JSON.stringify(result));
-    context.succeed(result);
+    log.debug('Discovery: ' + JSON.stringify(response));
+    returnAlexaResponse(response);
   }, function (error) {
     log.error("discoverDevices failed: " + error.message);
-    context.done(null, generateGenericErrorResponse());
+    returnAlexaResponse(generateGenericErrorResponse());
   });
 }
 
 /**
  * Convert v2 style label/tag on items to V3
- * @param {*} items
+ * @param {Object} items
  */
 function convertV2Items(items) {
   items.forEach(function (item) {
@@ -929,8 +926,8 @@ function convertV2Items(items) {
 
 /**
  * Convert v2 style label/tag on a single item to V3
- * @param {*} item
- * @param {*} group  [group level config parameters] (optional)
+ * @param {Object} item
+ * @param {Object} group  [group level config parameters] (optional)
  */
 function convertV2Item(item, group = {}) {
 
@@ -1044,7 +1041,13 @@ function convertV2Item(item, group = {}) {
       }
     }
 
-    // Push all capabilities to metadata values if not already included and merge parameters into metadata config
+    // Update recursively members of group item with endpoint capability
+    if (item.type === 'Group' && metadata.values.find(value => value.match(ENDPOINT_PATTERN))) {
+      item.members.forEach(member => convertV2Item(member, metadata.config));
+    }
+
+    // Push all capabilities to metadata values if not already included
+    //  and merge parameters into metadata config
     capabilities.forEach(function (capability) {
       if (!metadata.values.find(value => value === capability)) {
         metadata.values.push(capability);
@@ -1069,7 +1072,7 @@ function convertV2Item(item, group = {}) {
 
 /**
  * V2 style tags, given an item, returns an array of action that are supported.
- * @param {*} item
+ * @param {Object} item
  */
 function getV2SwitchableCapabilities(item) {
   switch (item.type === 'Group' ? item.groupType : item.type) {

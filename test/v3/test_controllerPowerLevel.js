@@ -10,7 +10,7 @@ module.exports = [
         "endpointId": "device1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PowerLevelController": {"powerLevel": {"parameters": {}, "itemName": "device1"}}
+            "PowerLevelController": {"powerLevel": {"parameters": {}, "item": {"name": "device1"}}}
           })
         }
       },
@@ -53,7 +53,7 @@ module.exports = [
         "endpointId": "device1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PowerLevelController": {"powerLevel": {"parameters": {}, "itemName": "device1"}}
+            "PowerLevelController": {"powerLevel": {"parameters": {}, "item": {"name": "device1"}}}
           })
         }
       },

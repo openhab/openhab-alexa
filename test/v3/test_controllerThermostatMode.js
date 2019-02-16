@@ -12,7 +12,7 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "ThermostatController": {
               "thermostatMode": {
-                "parameters": {"OFF": "0", "HEAT": "1", "COOL": "2","AUTO":"3"}, "itemName": "thermostatMode"
+                "parameters": {"OFF": "0", "HEAT": "1", "COOL": "2", "AUTO":"3"}, "item": {"name": "thermostatMode"}
               }
             }
           })
@@ -61,7 +61,7 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "ThermostatController": {
               "thermostatMode": {
-                "parameters": {"OFF": 0, "HEAT": 1, "COOL": 2, "AUTO":3}, "itemName": "thermostatMode"
+                "parameters": {"OFF": 0, "HEAT": 1, "COOL": 2, "AUTO": 3}, "item": {"name": "thermostatMode"}
               }
             }
           })
@@ -109,7 +109,7 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "thermostatMode": {"parameters": {"binding": "nest"}, "itemName": "thermostatMode"}
+              "thermostatMode": {"parameters": {"binding": "nest"}, "item": {"name": "thermostatMode"}}
             }
           })
         }
@@ -121,7 +121,7 @@ module.exports = [
       }
     },
     mocked: {
-      openhab: {"name": "thermostatMode", "state": "heat-cool", "type": "String"}
+      openhab: {"name": "thermostatMode", "state": "HEAT_COOL", "type": "String"}
     },
     expected: {
       alexa: {
@@ -140,7 +140,7 @@ module.exports = [
         }
       },
       openhab: [
-        {"name": "thermostatMode", "value": "heat-cool"}
+        {"name": "thermostatMode", "value": "HEAT_COOL"}
       ]
     }
   },
@@ -157,7 +157,7 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "ThermostatController": {
               "thermostatMode": {
-                "parameters": {"OFF": "0", "HEAT": "1", "COOL": "2","AUTO":"3"}, "itemName": "thermostatMode"
+                "parameters": {"OFF": "0", "HEAT": "1", "COOL": "2", "AUTO":"3"}, "item": {"name": "thermostatMode"}
               }
             }
           })

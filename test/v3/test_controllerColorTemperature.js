@@ -10,7 +10,8 @@ module.exports = [
         "endpointId": "gColorLight",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ColorTemperatureController": {"colorTemperatureInKelvin": {"parameters": {}, "itemName": "colorTemperature"}}
+            "ColorTemperatureController": {
+              "colorTemperatureInKelvin": {"parameters": {}, "item": {"name": "colorTemperature", "type": "Dimmer"}}}
           })
         }
       },
@@ -53,7 +54,8 @@ module.exports = [
         "endpointId": "gColorLight",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ColorTemperatureController": {"colorTemperatureInKelvin": {"parameters": {}, "itemName": "colorTemperature"}}
+            "ColorTemperatureController": {
+              "colorTemperatureInKelvin": {"parameters": {}, "item": {"name": "colorTemperature", "type": "Dimmer"}}}
           })
         }
       }
@@ -97,7 +99,8 @@ module.exports = [
         "endpointId": "gColorLight",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ColorTemperatureController": {"colorTemperatureInKelvin": {"parameters": {"increment": 10}, "itemName": "colorTemperature"}}
+            "ColorTemperatureController": {
+              "colorTemperatureInKelvin": {"parameters": {"increment": 10}, "item": {"name": "colorTemperature", "type": "Dimmer"}}}
           })
         }
       }
@@ -141,7 +144,8 @@ module.exports = [
         "endpointId": "gColorLight",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ColorTemperatureController": {"colorTemperatureInKelvin": {"parameters": {"increment": 900}, "itemName": "colorTemperature"}}
+            "ColorTemperatureController": {
+              "colorTemperatureInKelvin": {"parameters": {"increment": 900}, "item": {"name": "colorTemperature", "type": "Number"}}}
           })
         }
       }
@@ -185,8 +189,9 @@ module.exports = [
         "endpointId": "gColorLight",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ColorController": {"color": {"parameters": {}, "itemName": "colorLight"}},
-            "ColorTemperatureController": {"colorTemperatureInKelvin": {"parameters": {"increment": 900}, "itemName": "colorTemperature"}}
+            "ColorController": {"color": {"parameters": {}, "item": {"name": "colorLight"}}},
+            "ColorTemperatureController": {
+              "colorTemperatureInKelvin": {"parameters": {"increment": 900}, "item": {"name": "colorTemperature", "type": "Number"}}}
           })
         }
       }

@@ -10,7 +10,7 @@ module.exports = [
         "endpointId": "gSpeaker",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "Speaker": {"volume": {"parameters": {}, "itemName": "speakerVolume"}}
+            "Speaker": {"volume": {"parameters": {}, "item": {"name": "speakerVolume"}}}
           })
         }
       },
@@ -53,7 +53,7 @@ module.exports = [
         "endpointId": "gSpeaker",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "Speaker": {"volume": {"parameters": {"increment": 5}, "itemName": "speakerVolume"}}
+            "Speaker": {"volume": {"parameters": {"increment": 5}, "item": {"name": "speakerVolume"}}}
           })
         }
       },
@@ -101,7 +101,7 @@ module.exports = [
         "endpointId": "gSpeaker",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "Speaker": {"muted": {"parameters": {}, "itemName": "speakerMute"}}
+            "Speaker": {"muted": {"parameters": {}, "item": {"name": "speakerMute"}}}
           })
         }
       },
