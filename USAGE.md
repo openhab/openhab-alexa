@@ -9,13 +9,14 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
 
 * [openHAB Cloud Connector](http://docs.openhab.org/addons/ios/openhabcloud/readme.html) configured using myopenHAB.org
 * Amazon account
-* Amazon Echo, Amazon Echo Dot or compatible Alexa speaker or solution 
+* Amazon Echo, Amazon Echo Dot or compatible Alexa device
 
-## Item configuration
+## Setup
 
 * NEW Alexa Version 3 API syntax (v3)
   * Version 3 of the Alex Skill API introduces a more rich and complex set of features that required a change in how items are configured by using the new metadata feature introduced in openaHAB 2.3 (Currently only available via nightly build).
   * Version 2 tags are still supported and are converted internally to V3 metadata
+  * See [Labels Support](#Labels-Support) for using Labels instead of meta data
 
 ### Item Label Recommendation
 
@@ -240,7 +241,7 @@ TV	| Indicates the endpoint is a television.
 * Case is ignored on the category part of the metadata and any value will be made all uppercase before its passed to the Alexa API.
 
 #### Labels Support
-Metadata labels translate to a set of capabilities and can be usesd as a convience to using the longer meta data format configuration.  These are the same as v2 tags but add additional functions and provide the ability to add customization through additional properties which take precedence over the default ones. Here are some examples:
+Item and metadata labels translate to a set of capabilities and can be usesd as a convenience to using the longer meta data format configuration.  These are the same as v2 tags but add additional functions and provide the ability to add customization through additional properties which take precedence over the default ones. Here are some examples:
 ```
 Switch OutletPlug "Outlet Plug" {alexa="Switchable" [category="SMARTPLUG"]}
 Switch TelevisionPower "Television Power" {alexa="Switchable" [category="TV"]}
@@ -248,9 +249,7 @@ Switch TelevisionPower "Television Power" {alexa="Switchable" [category="TV"]}
 Color LightColor "Light Color" {alexa="Lighting"}
 ```
 
-Here are the labels currently supported and what they translate to.  
-
-Each example shows using the item label, meta data label and the full translated metadata.
+Here are the labels currently supported and what they translate to. Each example shows using the item label, meta data label and the full translated metadata.
 
 * Switchable (capabilities depending on item type)
 ```
