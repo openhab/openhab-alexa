@@ -54,4 +54,4 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
 
 ### Item Configuation
 
-See the [Usage](https://github.com/openhab/openhab-alexa/blob/master/USAGE.md)  page for examples and instructions on configuring items for Alexa.
+See the [Usage](USAGE.md)  page for examples and instructions on configuring items for Alexa.
