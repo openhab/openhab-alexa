@@ -961,17 +961,15 @@ function convertV2Item(item, group = {}) {
 
     // define endpoint tag for group item with no group type
     if (item.type === 'Group' && !item.groupType) {
-      var category;
-
       switch (label) {
         case 'Lighting':
-          category = 'Light';
+          capabilities = ['Endpoint.Light'];
           break;
         case 'Switchable':
-          category = 'Switch';
+          capabilities = ['Endpoint.Switch'];
           break;
         case 'Thermostat':
-          category = 'Thermostat';
+          capabilities = ['Endpoint.Thermostat'];
           // add v2 tag scale parameter if group metadata config not defined
           if (!metadata.config.scale) {
             metadata.config.scale = v2Tempformat(item);
@@ -979,12 +977,8 @@ function convertV2Item(item, group = {}) {
           break;
         default:
           if (utils.supportedDisplayCategory(label)) {
-            category = label;
+            capabilities = ['Endpoint.' + label];
           }
-      }
-      if (category) {
-        capabilities = ['Endpoint.' + category];
-        item.members.forEach(member => convertV2Item(member, metadata.config));
       }
     } else {
       switch (label) {
@@ -1058,6 +1052,11 @@ function convertV2Item(item, group = {}) {
       }
     });
   });
+
+  // Update recursively members of group item with endpoint capability
+  if (item.type === 'Group' && metadata.values.find(value => value.match(ENDPOINT_PATTERN))) {
+    item.members.forEach(member => convertV2Item(member, metadata.config));
+  }
 
   // Update item alexa metadata information
   item.metadata = Object.assign(item.metadata, {

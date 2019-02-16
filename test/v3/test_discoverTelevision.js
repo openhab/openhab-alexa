@@ -26,6 +26,13 @@ module.exports = {
             }
           },
           "groupNames": ["gTelevision"]
+        },
+        {
+          "link": "https://myopenhab.org/rest/items/televisionLabel",
+          "type": "String",
+          "name": "televisionLabel",
+          "tags": [],
+          "groupNames": ["gTelevision"]
         }
       ],
       "link": "https://myopenhab.org/rest/items/gTelevision",
