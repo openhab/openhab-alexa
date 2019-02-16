@@ -16,7 +16,7 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
 * NEW Alexa Version 3 API syntax (v3)
   * Version 3 of the Alex Skill API introduces a more rich and complex set of features that required a change in how items are configured by using the new metadata feature introduced in openaHAB 2.3
   * Version 2 tags are still supported and are converted internally to V3 metadata
-  * See [Labels Support](#Labels-Support) for using Labels instead of meta data
+  * See [Label Support](#Label-Support) for using labels in item tags and metavdata. 
 
 ### Item Label Recommendation
 
@@ -240,8 +240,8 @@ TV	| Indicates the endpoint is a television.
 * Child item categories are ignored and only the group category is used on items.
 * Case is ignored on the category part of the metadata and any value will be made all uppercase before its passed to the Alexa API.
 
-#### Labels Support
-Item and metadata labels translate to a set of capabilities and can be usesd as a convenience to using the longer meta data format configuration.  These are the same as v2 tags but add additional functions and provide the ability to add customization through additional properties which take precedence over the default ones. Here are some examples:
+#### Label Support
+Item tags and metadata labels translate to a set of capabilities and can be usesd as a convenience to using the longer meta data format configuration.  These are the same as v2 tags but add additional functions and provide the ability to add customization through additional properties which take precedence over the default ones. Here are some examples:
 ```
 Switch OutletPlug "Outlet Plug" {alexa="Switchable" [category="SMARTPLUG"]}
 Switch TelevisionPower "Television Power" {alexa="Switchable" [category="TV"]}
