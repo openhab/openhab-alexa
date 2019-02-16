@@ -126,14 +126,14 @@ AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upp
         "supported": supported,
         "proactivelyReported": false,
         "retrievable": true
-      },
-      configuration: {
       }
     },
     category: "THERMOSTAT"
   };
   if(supportedModes){
-    controller.capabilities.configuration.supportedModes = supportedModes;
+    controller.capabilities.configuration = { 
+      supportedModes : supportedModes
+    };
   }
   return controller;
 };
