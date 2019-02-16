@@ -14,7 +14,7 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
 ## Setup
 
 * NEW Alexa Version 3 API syntax (v3)
-  * Version 3 of the Alex Skill API introduces a more rich and complex set of features that required a change in how items are configured by using the new metadata feature introduced in openaHAB 2.3 (Currently only available via nightly build).
+  * Version 3 of the Alex Skill API introduces a more rich and complex set of features that required a change in how items are configured by using the new metadata feature introduced in openaHAB 2.3
   * Version 2 tags are still supported and are converted internally to V3 metadata
   * See [Labels Support](#Labels-Support) for using Labels instead of meta data
 
