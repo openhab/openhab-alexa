@@ -132,7 +132,7 @@ AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upp
   };
   if(supportedModes){
     controller.capabilities.configuration = { 
-      supportedModes : supportedModes
+      supportedModes : supportedModes.split(',').map(mode => mode.trim())
     };
   }
   return controller;
