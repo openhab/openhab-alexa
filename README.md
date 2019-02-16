@@ -169,10 +169,11 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
         * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfort_range=1 if using Fahrenheit and comfort_range=.5 if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
       
   * `ThermostatController.thermostatMode`
-    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=...)
+    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=...).  For thermostats that only support a subset of the standards modes, an array of the Alexa modes that the thermostat supports can be set using the supportedMode property.
     * String or Number
     * Default category: THERMOSTAT
-    * supports additional properties:
+    * supports additional optional properties:
+      * supportedModes= ... defaults to ["AUTO","COOL","HEAT","ECO","OFF"] if omitted
       * OFF=...
       * HEAT=...
       * COOL=...
