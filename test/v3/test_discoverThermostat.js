@@ -208,7 +208,7 @@ module.exports = {
               "value": "ThermostatController.thermostatMode",
               "config": {
                 "binding": "foobar",
-                "supportedModes" : ["AUTO"]
+                "supportedModes" : "AUTO,OFF"
               }
             }
           },
@@ -310,7 +310,7 @@ module.exports = {
           "targetSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "targetTemperature3"},
           "upperSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "highTargetTemperature3"},
           "lowerSetpoint": {"parameters": {"scale": "Fahrenheit"}, "itemName": "lowTargetTemperature3"},
-          "thermostatMode": { "parameters": {"binding": "foobar", "supportedModes": ["AUTO"]}, "itemName": "thermostatMode3" }
+          "thermostatMode": { "parameters": {"binding": "foobar", "supportedModes": "AUTO,OFF"}, "itemName": "thermostatMode3" }
         }
       }
     },

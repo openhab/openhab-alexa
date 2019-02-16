@@ -133,11 +133,11 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
         * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfort_range=1 if using Fahrenheit and comfort_range=.5 if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
       
   * `ThermostatController.thermostatMode`
-    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=...).  For thermostats that only support a subset of the standards modes, an array of the Alexa modes that the thermostat supports can be set using the supportedMode property.
+    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=...).  For thermostats that only support a subset of the standards modes, a comma delimited array of the Alexa modes that the thermostat supports can be set using the supportedMode property.
     * String or Number
     * Default category: THERMOSTAT
     * supports additional optional properties:
-      * supportedModes= ... defaults to ["AUTO","COOL","HEAT","ECO","OFF"] if omitted
+      * supportedModes= ... defaults to "AUTO,COOL,HEAT,ECO,OFF" if omitted
       * OFF=...
       * HEAT=...
       * COOL=...
@@ -147,6 +147,7 @@ Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
       * binding=nest [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=heat-cool]
       * binding=zwave [OFF=0, HEAT=1, COOL=2, AUTO=3]
       * defaults to binding=default [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=auto] if omitted
+      
   * `TemperatureSensor.temperature`
     * Items that represent the current temperature, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted).
     * Number or Float values
