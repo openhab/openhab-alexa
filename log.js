@@ -1,7 +1,6 @@
-let winston = require('winston');
+const winston = require('winston');
 
-// define the custom settings for each transport (file, console)
-let setLevel = process.env.LOG_LEVEL !== null ? process.env.LOG_LEVEL.toLowerCase() : "debug";
+let setLevel = typeof (process.env.LOG_LEVE) !== 'undefined' ? process.env.LOG_LEVEL.toLowerCase() : "debug";
 
 const logger = winston.createLogger({
     level: setLevel,
