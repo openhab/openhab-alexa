@@ -23,7 +23,8 @@
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --reporter spec test/*.js"
   },
   "dependencies": {
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
