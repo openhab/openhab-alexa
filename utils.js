@@ -53,7 +53,7 @@ function normalizeThermostatMode(mode, parameters = {}) {
     return Object.keys(thermostatModeMap).reduce(function(result, alexaMode) {
       if (typeof(thermostatModeMap[alexaMode]) !== 'undefined' && thermostatModeMap[alexaMode].toString() === mode.toString()) result = alexaMode;
       return result;
-    }, undefined);
+    }, mode);
   }
 }
 
