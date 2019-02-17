@@ -19,15 +19,15 @@ describe('ohConnectorV3 Tests', function () {
 
   before(function () {
     // mock rest external calls
-    rest.getItem = function(token, itemName, success, failure) {
-      success(Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
+    rest.getItem = function(token, itemName) {
+      return Promise.resolve(Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.getItemsRecursively = function(token, success, failure) {
-      success(Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
+    rest.getItemsRecursively = function(token) {
+      return Promise.resolve(Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.postItemCommand = function(token, itemName, value, success) {
+    rest.postItemCommand = function(token, itemName, value) {
       capture.calls.push({"name": itemName, "value": value});
-      success({"statusCode": 200});
+      return Promise.resolve({"statusCode": 200});
     };
 
     // mock aws lambda callback calls
@@ -55,11 +55,14 @@ describe('ohConnectorV3 Tests', function () {
       settings.testCasesV3.discovery[name].forEach(function(path) {
         var test = require(path);
 
-        it(test.description, function () {
+        it(test.description, function (done) {
           response = {"openhab": test.mocked};
           ohv3.handleRequest(directive, callback);
-          // console.log("Endpoints: " + JSON.stringify(capture.result.event.payload.endpoints, null, 2));
-          assert.discoveredEndpoints(capture.result.event.payload.endpoints, test.expected);
+          //wait for async responses
+          setTimeout(function() {
+            assert.discoveredEndpoints(capture.result.event.payload.endpoints, test.expected);
+            done();
+          }, 1);
         });
       });
     });
