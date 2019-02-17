@@ -22,7 +22,7 @@ function getConfig() {
   // Default configuration
   var defaults = {
     openhab: {
-      baseURL: process.env.OPENHAB_BASE_URL|| 'htts://localhost:8443/rest',
+      baseURL: process.env.OPENHAB_BASE_URL|| 'https://localhost:8443/rest',
       user: process.env.OPENHAB_USERNAME || null,
       pass: process.env.OPENHAB_PASSWORD || null
     }
