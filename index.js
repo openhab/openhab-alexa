@@ -8,7 +8,6 @@
  */
 
 var log = require('./log.js');
-var ohv2 = require('./ohConnectorV2.js');
 var ohv3 = require('./ohConnectorV3.js');
 
 /**
@@ -21,9 +20,6 @@ exports.handler = function (event, context, callback) {
   switch (version) {
     case 3:
       ohv3.handleRequest(event.directive, callback);
-      break;
-    case 2:
-      ohv2.handleRequest(event, context);
       break;
     default:
       log.error('No supported payloadVersion: ' + event.header.payloadVersion);
