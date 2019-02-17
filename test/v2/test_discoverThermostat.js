@@ -34,7 +34,7 @@ module.exports = {
     },
     {
       "link": "https://myopenhab.org/rest/items/temperature",
-      "type": "Group",
+      "type": "Number",
       "name": "temperature",
       "label": "Temperature",
       "tags": ["CurrentTemperature", "Fahrenheit"],

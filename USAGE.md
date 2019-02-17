@@ -16,7 +16,7 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
 * NEW Alexa Version 3 API syntax (v3)
   * Version 3 of the Alex Skill API introduces a more rich and complex set of features that required a change in how items are configured by using the new metadata feature introduced in openaHAB 2.3
   * Version 2 tags are still supported and are converted internally to V3 meta data
-  * See [Label Support](#Label-Support) for using labels in item tags and meta data. 
+  * See [Label Support](#Label-Support) for using labels in item tags and meta data.
 
 ### Item Label Recommendation
 
@@ -79,144 +79,194 @@ In openHAB a thermostat is modeled as many different items, typically there are 
   A Stereo is another example of a single endpoint that needs many items to function properly.  Power, volume, input, speakers and player controllers are all typical use cases for a stereo that a user may wish to control.
 
 ```
-Group Stereo    "Stereo"            {alexa="Endpoint.Speaker"}
-Number Volume   "Volume"  (Stereo)  {alexa="Speaker.volume"}
-Switch Mute     "Mute"    (Stereo)  {alexa="Speaker.muted"}
-Switch Power    "Power"   (Stereo)  {alexa="PowerController.powerState"}
-String Input    "Input"   (Stereo)  {alexa="InputController.input"}
-String Channel  "Channel" (Stereo)  {alexa="ChannelController.channel"}
-Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
-```
+  Group Stereo    "Stereo"            {alexa="Endpoint.Speaker"}
+  Number Volume   "Volume"  (Stereo)  {alexa="Speaker.volume"}
+  Switch Mute     "Mute"    (Stereo)  {alexa="Speaker.muted"}
+  Switch Power    "Power"   (Stereo)  {alexa="PowerController.powerState"}
+  String Input    "Input"   (Stereo)  {alexa="InputController.input"}
+  String Channel  "Channel" (Stereo)  {alexa="ChannelController.channel"}
+  Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
+  ```
+
 #### Supported item mapping metadata
 * The following are a list of supported metadata.
   * `PowerController.powerState`
     * Items that turn on or off such as light switches, power states, etc..
-    * ON, OFF
+    * Supported item type:
+      * Color
+      * Dimmer
+      * Rollershutter
+      * Switch
     * Default category: SWITCH
   * `BrightnessController.brightness`
     * Items which response to percentage level and brightness commands (dim, brighten, percent), typically lights.
-    * Numbers
+    * Supported item type:
+      * Color
+      * Dimmer
     * Default category: LIGHT
   * `PowerLevelController.powerLevel`
     * Items which respond to a specific number setting
-    * Numbers
+    * Supported item type:
+      * Dimmer
     * Default category: SWITCH
   * `PercentageController.percentage`
     * Items which respond to percentage commands such as roller shutters.
-    * Numbers
+    * Supported item type:
+      * Dimmer
+      * Rollershutter
     * Default category: OTHER
   * `ThermostatController.targetSetpoint`
     * Items that represent a target set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (default to Celsius).
-    * Number or Float values
+    * Supported item type:
+      * Number(:Temperature)
     * Default category: THERMOSTAT
     * supports additional properties:
-      * scale=Fahrenheit
-      * scale=Celsius
+      * scale=<value>
+        * Celsius (default if omitted)
+        * Fahrenheit
       * defaults to scale=Celsius if omitted.
   * `ThermostatController.upperSetpoint`
     * Items that represent a upper or HEAT set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (default to Celsius).
-    * Number or Float values
+    * Supported item type:
+      * Number(:Temperature)
     * Default category: THERMOSTAT
     * supports additional properties:
-      * scale=... 
-        * Defaults to scale=Celsius if omitted.
-      * comfort_range=... 
+      * scale=<value>
+        * Celsius (default if omitted)
+        * Fahrenheit
+      * comfort_range=<number>
         * When dual setpoints (upper,lower) are used this is the amount over the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfort_range=1 if using Fahrenheit and comfort_range=.5 if using Celsius. Ignored if a targetSetpoint is included in the thermostat group.
   * `ThermostatController.lowerSetpoint`
-    * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted). 
-    * Number or Float values
+    * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted).
+    * Supported item type:
+      * Number(:Temperature)
     * Default category: THERMOSTAT
     * supports additional properties:
-      * scale=...
-        * defaults to scale=Celsius if omitted.
-      * comfort_range=... 
+      * scale=<value>
+        * Celsius (default if omitted)
+        * Fahrenheit
+      * comfort_range=<number>
         * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfort_range=1 if using Fahrenheit and comfort_range=.5 if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
-      
   * `ThermostatController.thermostatMode`
-    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=...).  For thermostats that only support a subset of the standards modes, a comma delimited array of the Alexa modes that the thermostat supports can be set using the supportedMode property.
-    * String or Number
+    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=<value>).  For thermostats that only support a subset of the standards modes, a comma delimited of the Alexa modes that the thermostat supports can be set using the supportedMode property.
+    * Supported item type:
+      * Number
+      * String
     * Default category: THERMOSTAT
     * supports additional optional properties:
-      * supportedModes= ... defaults to "AUTO,COOL,HEAT,ECO,OFF" if omitted
-      * OFF=...
-      * HEAT=...
-      * COOL=...
-      * ECO=...
-      * AUTO=...
-      * binding=ecobee [OFF=off, HEAT=heat, COOL=cool, AUTO=auto]
-      * binding=nest [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=heat-cool]
-      * binding=zwave [OFF=0, HEAT=1, COOL=2, AUTO=3]
-      * defaults to binding=default [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=auto] if omitted
-      
+      * OFF=<state>
+      * HEAT=<state>
+      * COOL=<state>
+      * ECO=<state>
+      * AUTO=<state>
+      * binding=<value>
+        * ecobee1 [OFF=off, HEAT=heat, COOL=cool, AUTO=auto]
+        * nest [OFF=OFF, HEAT=HEAT, COOL=COOL, ECO=ECO, AUTO=HEAT_COOL]
+        * nest1 [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=heat-cool]
+        * zwave1 [OFF=0, HEAT=1, COOL=2, AUTO=3]
+        * defaults to [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=auto] if omitted
+      * supportedModes=<value>
+        * defaults to "AUTO,COOL,HEAT,ECO,OFF" if omitted
   * `TemperatureSensor.temperature`
     * Items that represent the current temperature, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted).
-    * Number or Float values
+    * Supported item type:
+      * Number(:Temperature)
     * Default category: TEMPERATURE_SENSOR
     * supports additional properties:
-      * scale=...
-      * defaults to scale=Celsius if omitted.
+      * scale=<value>
+        * Celsius (default if omitted)
+        * Fahrenheit
   * `LockController.lockState`
-      * Items that represent the state of a lock (ON locked, OFF unlocked)
-      * ON, OFF
-      * Default category: SMARTLOCK
+    * Items that represent the state of a lock (ON lock, OFF unlock). When associated to an item sensor, the state of that item will be returned instead of the original actionable item. Additionally, when linking to such item, multiple properties to one state can be mapped (e.g. for a zwave lock: [1=LOCKED,2=UNLOCKED,3=LOCKED,4=UNLOCKED,11=JAMMED]).
+    * Supported item type:
+      * Switch
+    * Supported sensor type:
+      * Contact [CLOSED=LOCKED, OPEN=UNLOCKED]
+      * Number [1=LOCKED, 2=UNLOCKED, 3=JAMMED]
+      * String [locked=LOCKED, unlocked=UNLOCKED, jammed=JAMMED]
+      * Switch [ON=LOCKED, OFF=UNLOCKED]
+    * Default category: SMARTLOCK
+    * supports additional properties:
+      * <state>=LOCKED
+      * <state>=UNLOCKED
+      * <state>=JAMMED
+      * defaults based on item sensor type if omitted
   * `ColorController.color`
-      * Items that represent a color
-      * H,S,B
-      * Default category: LIGHT
+    * Items that represent a color
+    * Supported item type:
+      * Color
+    * Default category: LIGHT
   * `ColorTemperatureController.colorTemperatureInKelvin`
-      * Items that represents a color temperature, default increment value may be specified in metadata parameters. For dimmer typed items adjustments, INCREASE/DECREASE commands will be sent instead if increment value not defined, while number typed items will default to 500K increments.
-      * Two item types supported:
-        * Dimmer: colder (0%) to warmer (100%) based of Alexa color temperature spectrum [Hue and LIFX support]
-        * Number: color temperature value in K [custom integration]
-      * Default category: LIGHT
-      * supports additional properties:
-        * increment=N (in % for dimmer/in K for number)
+    * Items that represents a color temperature, default increment value may be specified in metadata parameters. For dimmer typed items adjustments, INCREASE/DECREASE commands will be sent instead if increment value not defined, while number typed items will default to 500K increments.
+    * Supported item type:
+      * Dimmer: colder (0%) to warmer (100%) based of Alexa color temperature spectrum [Hue and LIFX support]
+      * Number: color temperature value in Kelvin [custom integration]
+    * Default category: LIGHT
+    * supports additional properties:
+      * increment=<number>
+        * value in % for dimmer item/in Kelvin for number item
         * defaults to increment=INCREASE/DECREASE (Dimmer) or increment=500 (Number) if omitted
   * `SceneController.scene`
-      * Items that represent a scene or an activity depending on defined category and may be set not to support deactivation requests based on metadata parameters.
-      * String
-      * Default category: SCENE_TRIGGER
-      * supports additional properties:
-        * supportsDeactivation=false
-        * supportsDeactivation=true
-        * defaults to supportsDeactivation=true if omitted
+    * Items that represent a scene or an activity depending on defined category and may be set not to support deactivation requests based on metadata parameters.
+    * Supported item type:
+      * Switch
+    * Default category: SCENE_TRIGGER
+    * supports additional properties:
+      * supportsDeactivation=<value>
+        * true (default if omitted)
+        * false
   * `ChannelController.channel`
-      * Items that represent a channel
-      * String
-      * Default category: TV
-  * `InputController.input`
-      * Items that represent a source input (ex, "HDMI 1", or "MUSIC" on a stereo)
-      * String
-      * Default category: TV
-  * `Speaker.volume`
-      * Items that represent a volume level, default increment may be specified in metadata parameters
+    * Items that represent a channel
+    * Supported item type:
       * Number
-      * Default category: SPEAKER
-      * supports additional properties:
-        * increment=N
+      * String
+    * Default category: TV
+  * `InputController.input`
+    * Items that represent a source input (ex, "HDMI 1", or "MUSIC" on a stereo)
+    * Supported item type:
+      * String
+    * Default category: TV
+  * `Speaker.volume`
+    * Items that represent a volume level, default increment may be specified in metadata parameters
+    * Supported item type:
+      * Dimmer
+      * Number
+    * Default category: SPEAKER
+    * supports additional properties:
+      * increment=<number>
         * defaults to increment=10 (standard value provided by Alexa) if omitted.
   * `Speaker.muted`
-      * Items that represent a muted state (ON muted, OFF unmuted)
-      * ON, OFF
-      * Default category: SPEAKER
+    * Items that represent a muted state (ON muted, OFF unmuted)
+    * Supported item type:
+      * Switch
+    * Default category: SPEAKER
   * `StepSpeaker.volume`
-      * Items that represent a volume level controlled in steps only (for example IR controlled, ex: +1, -1)
-      * String
-      * Default category: SPEAKER
+    * Items that represent a volume level controlled in steps only (for example IR controlled, ex: +1, -1)
+    * Supported item type:
+      * Dimmer
+      * Number
+    * Default category: SPEAKER
   * `StepSpeaker.muted`
-      * Items that represent a muted state (ON muted, OFF unmuted)
-      * ON, OFF
-      * Default category: SPEAKER
+    * Items that represent a muted state (ON muted, OFF unmuted)
+    * Supported item type:
+      * Switch
+    * Default category: SPEAKER
   * `PlaybackController.playback`
-      * Items that represent the playback of a AV device (mostly compatible with Player Items)
-      * "PLAY", "PAUSE", "NEXT", "PREVIOUS", "REWIND", "FASTFORWARD", "STOP"
-      * Default category: OTHER
+    * Items that represent the playback of a AV device (mostly compatible with Player Items)
+    * Supported item type:
+      * Player
+    * Default category: OTHER
+* Item Sensor
+  * When available, use a specific item (called "sensor") for property state reporting over the actionable item state.
+  * Design to bridge channel status items to provide improved reporting state accuracy.
+  * Configured by adding the `itemSensor=<itemName>` metadata parameter.
+  * Sensor items need to be the same type than their parent item, except for LockController capable items.
 * Item Categories
-    * Alexa has certain categories that effect how voice control and their mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and associate a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHT" to send the command to.  
-    * You can override this default value on items by adding it as a parameter to the metadata, ex: 
-    
-    `Switch LightSwitch "Light Switch" {alexa="PowerController.powerState" [category="OTHER"]}`
-    * List of Alexa categories currently supported from Alexa Skill API docs:
+  * Alexa has certain categories that effect how voice control and their mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and associate a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHT" to send the command to.  
+  * You can override this default value on items by adding it as a parameter to the metadata, ex:
+
+  `Switch LightSwitch "Light Switch" {alexa="PowerController.powerState" [category="OTHER"]}`
+  * List of Alexa categories currently supported from Alexa Skill API docs:
 
 Category	| Description	| Notes
 ---------|-------------|-------

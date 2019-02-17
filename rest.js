@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2016 by the respective copyright holders.
+ * Copyright (c) 2014-2019 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,147 +7,182 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
+var qs = require('querystring');
+
 var log = require('./log.js');
+var utils = require('./utils.js');
 var config = getConfig();
-var http = require(config.proto === 'http' ? 'http' : 'https');
 
 /**
  * Get config
  */
 function getConfig() {
-    var config ;
-    try {
-        config = require('./config.js');
-    } catch (e) {
-        // default config
-        log.info('getConfig failed to load config.js file, loading default config instead...');
-        config = {
-            user: process.env.OPENHAB_USERNAME || null,
-            pass: process.env.OPENHAB_PASSWORD || null,
-            host: process.env.OPENHAB_HOSTNAME || 'localhost',
-            port: process.env.OPENHAB_PORT || 8443,
-            path: process.env.OPENHAB_PATH || '/rest/items/',
-            proto: process.env.OPENHAB_PROTOCOL || 'https'
-        };
+  // Default configuration
+  var defaults = {
+    openhab: {
+      host: process.env.OPENHAB_HOST || 'localhost',
+      port: process.env.OPENHAB_PORT || 8443,
+      path: process.env.OPENHAB_PATH || '/rest',
+      user: process.env.OPENHAB_USERNAME || null,
+      pass: process.env.OPENHAB_PASSWORD || null,
+      proto: process.env.OPENHAB_PROTOCOL || 'https'
     }
-    // merge username & password if specified
-    if (config.user && config.pass) {
-      config.userpass = config.user + ":" + config.pass;
-    }
-    return config;
+  };
+  // Merge file config settings, if exists, with default ones
+  var config = Object.assign(defaults,
+    fs.existsSync('./config.js') ? require('./config.js') : {}
+  );
+  // Merge username & password if specified
+  if (config.openhab.user && config.openhab.pass) {
+    config.openhab.userpass = config.openhab.user + ":" + config.openhab.pass;
+  }
+  return config;
 }
 
 /**
- * Returns all items
+ * Returns openHAB authorization header value
+ * @param  {String} token
  */
-function getItems(token, success, failure) {
-    return getItemOrItems(token, null, null, success, failure);
-}
-
-/**
- * Returns all items as just Name and State
- */
-function getItemStates(token, success, failure) {
-    return getItemOrItems(token, null, 'fields=name,state,editable', success, failure);
-}
-
-/**
- * Returns all items
- */
-function getItemsRecursively(token, success, failure) {
-    return getItemOrItems(token, null, 'metadata=alexa&recursive=true', success, failure);
+function ohAuthorizationHeader(token) {
+  if (config.openhab.userpass) {
+    // Basic Authentication
+    return 'Basic ' + new Buffer(config.openhab.userpass).toString('base64');
+  } else {
+    // OAuth2 Authentication
+    return 'Bearer ' + token;
+  }
 }
 
 /**
  * Returns a single item
+ * @param  {String}   token
+ * @param  {String}   itemName
+ * @param  {Function} success
+ * @param  {Function} failure
  */
 function getItem(token, itemName, success, failure) {
-    return getItemOrItems(token, itemName, 'metadata=alexa', success, failure);
+  getItemOrItems(token, itemName, null, success, failure);
 }
 
 /**
- * Returns a single item
+ * Returns all items (v2)
+ * @param  {String}   token
+ * @param  {Function} success
+ * @param  {Function} failure
+ */
+function getItems(token, success, failure) {
+  getItemOrItems(token, null, null, success, failure);
+}
+
+/**
+ * Returns all items recursively with alexa metadata (v3)
+ * @param  {String}   token
+ * @param  {Function} success
+ * @param  {Function} failure
+ */
+function getItemsRecursively(token, success, failure) {
+  getItemOrItems(token, null, {'metadata': 'alexa', 'recursive': true}, success, failure);
+}
+
+/**
+ * Returns get item(s) result
+ * @param  {String}   token
+ * @param  {String}   itemName
+ * @param  {Object}   parameters
+ * @param  {Function} success
+ * @param  {Function} failure
  */
 function getItemOrItems(token, itemName, parameters, success, failure) {
-    var options = httpItemOptions(token, itemName, 'GET', parameters);
-    http.get(options, function (response) {
-            var body = '';
+  var options = {
+    hostname: config.openhab.host,
+    port: config.openhab.port,
+    path: config.openhab.path + '/items' + (itemName ? '/' + itemName : '') +
+      (parameters ? '?' + qs.stringify(parameters) : ''),
+    method: 'GET',
+    headers: {
+      'Authorization': ohAuthorizationHeader(token),
+      'Content-Type': 'text/plain'
+    }
+  };
 
-            response.on('data', function (data) {
-                body += data.toString('utf-8');
-            });
-
-            response.on('end', function () {
-                if (response.statusCode != 200) {
-                    failure({
-                        message: 'Error response ' + response.statusCode
-                    });
-                    log.info('getItem failed for path: ' + options.path +
-                    ' code: ' + response.statusCode + ' body: ' + body);
-                    return;
-                }
-                var resp = JSON.parse(body);
-                success(resp);
-            });
-
-            response.on('error', function (e) {
-                failure(e);
-            });
-        })
-        .end();
+  httpRequest(options, null, config.openhab.proto, success, failure);
 }
 
 /**
  * POST a command to a item
+ * @param  {String}   token
+ * @param  {String}   itemName
+ * @param  {String}   value
+ * @param  {Function} success
+ * @param  {Function} failure
  **/
 function postItemCommand(token, itemName, value, success, failure) {
-    var data = value.toString();
-    var options = httpItemOptions(token, itemName, 'POST', null, data.length);
-    var req = http.request(options, function (response) {
-        var body = '';
-        if (response.statusCode == 200 || response.statusCode == 201) {
-            success(response);
-        } else {
-            failure({
-                message: 'Error response ' + response.statusCode
-            });
-        }
-        response.on('error', function (e) {
-            failure(e);
-        });
-    });
+  var data = value.toString();
+  var options = {
+    hostname: config.openhab.host,
+    port: config.openhab.port,
+    path: config.openhab.path + '/items/' + itemName,
+    method: 'POST',
+    headers: {
+      'Authorization': ohAuthorizationHeader(token),
+      'Content-Type': 'text/plain',
+      'Content-Length': data.length
+    }
+  };
 
-    req.write(data);
-    req.end();
+  if (itemName) {
+    httpRequest(options, data, config.openhab.proto, success, failure);
+  } else {
+    failure({
+      message: 'No item name provided'
+    });
+  }
 }
 
 /**
- * Returns a http option object sutiable for item commands
+ * Handles HTTP request
+ * @param  {Object}   options
+ * @param  {String}   data
+ * @param  {String}   protocol
+ * @param  {Function} success
+ * @param  {Function} failure
  */
-function httpItemOptions(token, itemName, method, parameters, length) {
-    var options = {
-        hostname: config.host,
-        port: config.port,
-        path: config.path + (itemName || '') + (parameters ? '?' + parameters : ''),
-        method: method || 'GET',
-        headers: {}
-    };
+function httpRequest(options, data, protocol, success, failure) {
+  // log.debug('http request: ' + JSON.stringify({options: options, data: data, protocol: protocol}));
+  var proto = protocol === 'http' ? http : https;
+  var req = proto.request(options, function(response) {
+    var body = '';
 
-    if (config.userpass) {
-        options.auth = config.userpass;
-    } else {
-        options.headers['Authorization'] = 'Bearer ' + token;
-    }
+    response.on('data', function(chunk) {
+      body += chunk.toString('utf-8');
+    });
 
-    if (method === 'POST' || method === 'PUT') {
-        options.headers['Content-Type'] = 'text/plain';
-        options.headers['Content-Length'] = length;
-    }
-    return options;
+    response.on('end', function() {
+      var successStatusCodes = [200, 201, 202];
+      var result = utils.parseJSON(body);
+      if (successStatusCodes.includes(response.statusCode)) {
+        success(result);
+      } else {
+        failure({
+          message: 'Failed http request: ' + response.statusMessage + ' (' + response.statusCode + ')',
+          result: result
+        });
+      }
+    });
+
+    response.on('error', function(error) {
+      failure(error);
+    });
+  });
+
+  req.write(data || '');
+  req.end();
 }
 
-module.exports.getItems = getItems;
 module.exports.getItem = getItem;
+module.exports.getItems = getItems;
 module.exports.getItemsRecursively = getItemsRecursively;
-module.exports.getItemStates = getItemStates;
 module.exports.postItemCommand = postItemCommand;

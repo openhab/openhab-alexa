@@ -11,9 +11,9 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "itemName": "targetTemperature"},
-              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "itemName": "highTargetTemperature"},
-              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "itemName": "lowTargetTemperature"}
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "targetTemperature"}},
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "highTargetTemperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "lowTargetTemperature"}}
             }
           })
         }
@@ -33,7 +33,14 @@ module.exports = [
         }
       }
     },
-    mocked: {},
+    mocked: {
+      openhab: [
+        {"name": "targetTemperature", "state": "73", "type": "Number"},
+        {"name": "highTargetTemperature", "state": "78", "type": "Number"},
+        {"name": "lowTargetTemperature", "state": "68", "type": "Number"}
+      ],
+      staged: true
+    },
     expected: {
       alexa: {
         "context": {
@@ -90,8 +97,8 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "itemName": "highTargetTemperature"},
-              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "itemName": "lowTargetTemperature"}
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "highTargetTemperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "lowTargetTemperature"}}
             }
           })
         }
@@ -103,7 +110,13 @@ module.exports = [
         }
       }
     },
-    mocked: {},
+    mocked: {
+      openhab: [
+        {"name": "highTargetTemperature", "state": "74", "type": "Number"},
+        {"name": "lowTargetTemperature", "state": "72", "type": "Number"}
+      ],
+      staged: true
+    },
     expected: {
       alexa: {
         "context": {
@@ -151,9 +164,8 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT", "comfort_range": 5}, "itemName": "highTargetTemperature"},
-              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT", "comfort_range": 5}, "itemName": "lowTargetTemperature"},
-              "COMFORT_MODE" : 5
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT", "comfort_range": 5}, "item": {"name": "highTargetTemperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT", "comfort_range": 5}, "item": {"name": "lowTargetTemperature"}},
             }
           })
         }
@@ -165,7 +177,13 @@ module.exports = [
         }
       }
     },
-    mocked: {},
+    mocked: {
+      openhab: [
+        {"name": "highTargetTemperature", "state": "78", "type": "Number"},
+        {"name": "lowTargetTemperature", "state": "68", "type": "Number"}
+      ],
+      staged: true
+    },
     expected: {
       alexa: {
         "context": {
@@ -213,7 +231,7 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "itemName": "targetTemperature"}
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "targetTemperature"}}
             }
           })
         }
@@ -270,8 +288,8 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "itemName": "highTargetTemperature"},
-              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "itemName": "lowTargetTemperature"}
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "highTargetTemperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "lowTargetTemperature"}}
             }
           })
         }
@@ -285,8 +303,11 @@ module.exports = [
     },
     mocked: {
       openhab: [
+        {"name": "highTargetTemperature", "state": "75", "type": "Number"},
         {"name": "lowTargetTemperature", "state": "73", "type": "Number"},
-        {"name": "highTargetTemperature", "state": "75", "type": "Number"}
+        {"name": "highTargetTemperature", "state": "77", "type": "Number"},
+        {"name": "lowTargetTemperature", "state": "75", "type": "Number"}
+
       ],
       staged: true
     },
@@ -318,7 +339,11 @@ module.exports = [
             "name": "Response"
           }
         }
-      }
+      },
+      openhab: [
+        {"name": "highTargetTemperature", "value": 77},
+        {"name": "lowTargetTemperature", "value": 75}
+      ]
     }
   }
 ];

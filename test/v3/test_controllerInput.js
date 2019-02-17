@@ -10,7 +10,7 @@ module.exports = [
         "endpointId": "tvSource",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "InputController": {"input": {"parameters": {}, "itemName": "tvSource"}}
+            "InputController": {"input": {"parameters": {}, "item": {"name": "tvSource"}}}
           })
         }
       },

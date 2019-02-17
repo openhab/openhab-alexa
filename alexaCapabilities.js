@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2016 by the respective copyright holders.
+ * Copyright (c) 2014-2019 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -95,29 +95,33 @@ AlexaCapabilities.prototype.percentageController = function () {
   };
 };
 
-AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upperSetpoint, lowerSetpoint, thermostatMode, supportedModes) {
+AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upperSetpoint, lowerSetpoint, thermostatMode) {
+  var configuration = {};
   var supported = [];
   if (targetSetpoint) {
     supported.push({
       "name": "targetSetpoint"
-    })
+    });
   }
   if (upperSetpoint) {
     supported.push({
       "name": "upperSetpoint"
-    })
+    });
   }
   if (lowerSetpoint) {
     supported.push({
       "name": "lowerSetpoint"
-    })
+    });
   }
   if (thermostatMode) {
+    if (typeof thermostatMode.parameters.supportedModes === 'string') {
+      configuration.supportedModes = thermostatMode.parameters.supportedModes.split(',').map(mode => mode.trim());
+    }
     supported.push({
       "name": "thermostatMode"
-    })
+    });
   }
-  var  controller = {
+  return {
     capabilities: {
       "type": "AlexaInterface",
       "interface": "Alexa.ThermostatController",
@@ -126,18 +130,12 @@ AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upp
         "supported": supported,
         "proactivelyReported": false,
         "retrievable": true
-      }
+      },
+      "configuration": configuration
     },
     category: "THERMOSTAT"
   };
-  if(supportedModes){
-    controller.capabilities.configuration = { 
-      supportedModes : supportedModes.split(',').map(mode => mode.trim())
-    };
-  }
-  return controller;
 };
-
 
 AlexaCapabilities.prototype.temperatureSensor = function () {
   return {
