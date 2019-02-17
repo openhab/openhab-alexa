@@ -319,7 +319,8 @@ function setTargetTemperature() {
   var postItems = Object.keys(properties).reduce(function (items, propertyName) {
     if (directive.payload[propertyName]) {
       items.push(Object.assign(properties[propertyName].item, {
-        state: directive.payload[propertyName].value
+        state: utils.normalizeTemperatureScale(directive.payload[propertyName],
+          properties[propertyName].parameters.scale)
       }));
     }
     return items;
@@ -330,7 +331,8 @@ function setTargetTemperature() {
   if (directive.payload.targetSetpoint && !directive.payload.upperSetpoint && !directive.payload.lowerSetpoint &&
     !properties.targetSetpoint && properties.upperSetpoint && properties.lowerSetpoint) {
     // default range if not set
-    var upperRange = lowerRange = directive.payload.targetSetpoint.scale == 'FAHRENHEIT' ? 1 : .5;
+    var upperRange = properties.upperSetpoint.parameters.scale == 'FAHRENHEIT' ? 1 : .5;
+    var lowerRange = properties.lowerSetpoint.parameters.scale == 'FAHRENHEIT' ? 1 : .5;
     // use user defined comfort range if set
     if (typeof properties.upperSetpoint.parameters.comfort_range !== 'undefined') {
       upperRange = parseFloat(properties.upperSetpoint.parameters.comfort_range);
@@ -341,12 +343,14 @@ function setTargetTemperature() {
     // set dual setpoints
     postItems.push(
       Object.assign(properties.upperSetpoint.item, {
-        state: directive.payload.targetSetpoint.value + upperRange
+        state: utils.normalizeTemperatureScale(directive.payload.targetSetpoint,
+          properties.upperSetpoint.parameters.scale) + upperRange
       }),
       Object.assign(properties.lowerSetpoint.item, {
-        state: directive.payload.targetSetpoint.value - lowerRange
+        state: utils.normalizeTemperatureScale(directive.payload.targetSetpoint,
+          properties.lowerSetpoint.parameters.scale) - lowerRange
       })
-    )
+    );
   }
 
   log.debug('setTargetTemperature to values: ', JSON.stringify(postItems));
@@ -372,7 +376,8 @@ function adjustTargetTemperature() {
       rest.getItem(directive.endpoint.scope.token,
         properties[propertyName].item.name).then(function(item) {
           resolve(Object.assign(properties[propertyName].item, {
-            state: parseFloat(item.state) + directive.payload.targetSetpointDelta.value
+            state: parseFloat(item.state) + utils.normalizeTemperatureScale(
+              directive.payload.targetSetpointDelta, properties[propertyName].parameters.scale, true)
           }));
         }).catch(function (error) {
           reject(error);
@@ -963,7 +968,7 @@ function convertV2Item(item, group = {}) {
           capabilities = ['Endpoint.Thermostat'];
           // add v2 tag scale parameter if group metadata config not defined
           if (!metadata.config.scale) {
-            metadata.config.scale = v2Tempformat(item); 
+            metadata.config.scale = v2Tempformat(item);
           }
           break;
         default:

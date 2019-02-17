@@ -84,6 +84,29 @@ function normalizeThermostatMode(mode, parameters = {}) {
 }
 
 /**
+ * Normalizes temperature scale between Alexa value and OH expected scale
+ *    Temperature e.g. {value: 21.5, scale: "CELSIUS"}
+ *
+ * @param  {Object}  temperature
+ * @param  {String}  scale
+ * @param  {Boolean} delta
+ * @return {Float}
+ */
+function normalizeTemperatureScale(temperature, scale = 'CELSIUS', delta = false) {
+  var conversion = temperature.scale.charAt(0) + '->' + scale.charAt(0);
+  var value = parseFloat(temperature.value);
+
+  switch (conversion.toUpperCase()) {
+    case 'F->C':
+      return (value - (!delta ? 32 : 0)) * 5 / 9;
+    case 'C->F':
+      return value * 9 / 5 + (!delta ? 32 : 0);
+    default:
+      return value;
+  }
+}
+
+/**
  * Normalizes lock property state when using an item sensor (Contact, Number, Switch or String Item)
  *    User mapping e.g. [1=LOCKED,2=UNLOCKED,3=LOCKED,4=UNLOCKED,11=JAMMED] (Zwave)
  *
@@ -233,6 +256,7 @@ module.exports.timeInSeconds = timeInSeconds;
 module.exports.normalizeColorTemperature = normalizeColorTemperature;
 module.exports.normalizeItemState = normalizeItemState;
 module.exports.normalizeLockState = normalizeLockState;
+module.exports.normalizeTemperatureScale = normalizeTemperatureScale;
 module.exports.normalizeThermostatMode = normalizeThermostatMode;
 module.exports.supportedDisplayCategory = supportedDisplayCategory;
 module.exports.supportedItemTypeCapability = supportedItemTypeCapability;
