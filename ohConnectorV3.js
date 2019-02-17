@@ -618,6 +618,8 @@ function getPropertiesResponseAndReturn(interfaceName) {
       var itemName = item.sensor || item.name;
       rest.getItem(directive.endpoint.scope.token,
         itemName).then(function (result) {
+          // Normalize item state
+          result.state = utils.normalizeItemState(result);
           // Update item information in propertyMap object for each item capabilities
           item.capabilities.forEach(function (capability) {
             propertyMap[capability.interface][capability.property].item = result;

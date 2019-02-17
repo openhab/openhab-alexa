@@ -7,6 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
+var sprintf = require('sprintf-js').sprintf;
+
 /**
  * Define alexa supported display categories
  */
@@ -51,7 +53,7 @@ var THERMOSTAT_MODE_MAPPING = {
 };
 
 /**
- * Normilizes thermostat modes based on binding name
+ * Normalizes thermostat modes based on binding name
  *   Alexa: AUTO, COOL, HEAT, ECO, OFF
  *   OH: depending on thermostat binding or user mappings defined
  *
@@ -82,7 +84,7 @@ function normalizeThermostatMode(mode, parameters = {}) {
 }
 
 /**
- * Normilizes lock property state when using an item sensor (Contact, Number, Switch or String Item)
+ * Normalizes lock property state when using an item sensor (Contact, Number, Switch or String Item)
  *    User mapping e.g. [1=LOCKED,2=UNLOCKED,3=LOCKED,4=UNLOCKED,11=JAMMED] (Zwave)
  *
  * @param  {String} state
@@ -116,7 +118,7 @@ function normalizeLockState(state, type, parameters = {}) {
 }
 
 /**
- * Normilizes color temperature value based on item type
+ * Normalizes color temperature value based on item type
  *   Alexa colorTemperature api property spectrum from 1000K (warmer) to 10000K (colder)
  *
  *   Two item types:
@@ -145,6 +147,29 @@ function normalizeColorTemperature(value, type) {
     case 'Number':
       // No convertion needed between Alexa & OH
       return value < minValue ? minValue : value < maxValue ? value : maxValue;
+  }
+}
+
+/**
+ * Normalizes OH item state based on state description pattern
+ *
+ * @param  {Object} item
+ * @return {String}
+ */
+function normalizeItemState(item) {
+  var pattern = item.stateDescription && item.stateDescription.pattern ? item.stateDescription.pattern : "%s";
+  var state = item.state;
+  var type = item.type.split(':')[0];
+
+  switch (type) {
+    case 'Dimmer':
+    case 'Number':
+    case 'Rollershutter':
+      return sprintf(pattern, state != 'NULL' ? parseFloat(state) : state);
+    case 'String':
+      return sprintf(pattern, state);
+    default:
+      return state;
   }
 }
 
@@ -206,6 +231,7 @@ module.exports.parseJSON = parseJSON;
 module.exports.timeInSeconds = timeInSeconds;
 
 module.exports.normalizeColorTemperature = normalizeColorTemperature;
+module.exports.normalizeItemState = normalizeItemState;
 module.exports.normalizeLockState = normalizeLockState;
 module.exports.normalizeThermostatMode = normalizeThermostatMode;
 module.exports.supportedDisplayCategory = supportedDisplayCategory;
