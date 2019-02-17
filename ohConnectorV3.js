@@ -625,6 +625,8 @@ function getPropertiesResponseAndReturn(interfaceName) {
       log.debug('getPropertiesResponseAndReturn Getting ' + itemName + ' latest state');
       rest.getItem(directive.endpoint.scope.token,
         itemName, function (result) {
+          // Normalize item state
+          result.state = utils.normalizeItemState(result);
           // Update item information in propertyMap object for each item capabilities
           item.capabilities.forEach(function (capability) {
             propertyMap[capability.interface][capability.property].item = result;

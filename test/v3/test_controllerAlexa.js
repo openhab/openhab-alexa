@@ -56,6 +56,52 @@ module.exports = [
     }
   },
   {
+    description: "report state number temperature item",
+    directive: {
+      "header": {
+        "namespace": "Alexa",
+        "name": "ReportState"
+      },
+      "endpoint": {
+        "endpointId": "temperature1",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "TemperatureSensor": {
+              "temperature": {
+                "parameters": {"scale": "Fahrenheit"}, "item": {"name": "temperature1", "type": "Number:Temperature"}}}
+          })
+        }
+      }
+    },
+    mocked: {
+      openhab: {"name": "temperature1", "state": "68.0123456789 °F", "type": "Number:Temperature",
+        "stateDescription": {"pattern": "%.1f °F"}}
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [
+            {
+              "namespace": "Alexa.TemperatureSensor",
+              "name": "temperature",
+              "value": {
+                "value": 68.0,
+                "scale": "FAHRENHEIT"
+              }
+            }
+          ]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "StateReport"
+          },
+        }
+      },
+      openhab: []
+    }
+  },
+  {
     description: "report state unreachable error",
     directive: {
       "header": {
