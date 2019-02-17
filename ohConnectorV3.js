@@ -210,7 +210,7 @@ function adjustPercentage() {
     postItemsAndReturn([postItem], interfaceName);
   } else {
     rest.getItem(directive.endpoint.scope.token,
-      postItem.name, function (item) {
+      postItem.name).then(function (item) {
         log.debug('adjustPercentage: item state ' +
           item.state + ' delta ' + payloadValue);
 
@@ -222,7 +222,7 @@ function adjustPercentage() {
         var state = parseInt(item.state) + parseInt(payloadValue);
         postItem.state = state < 0 ? 0 : state < 100 ? state : 100;
         postItemsAndReturn([postItem], interfaceName);
-      }, function (error) {
+      }).catch(function (error) {
         returnAlexaResponse(generateGenericErrorResponse());
       }
     );
@@ -262,7 +262,7 @@ function adjustColorTemperature() {
   var postItem = properties.colorTemperatureInKelvin.item;
 
   rest.getItem(directive.endpoint.scope.token,
-    postItem.name, function (item) {
+    postItem.name).then(function (item) {
       // Generate error if in color mode (color controller property defined & empty state)
       if (propertyMap.ColorController && !parseInt(item.state)) {
         returnAlexaResponse(generateControlError({
@@ -304,7 +304,9 @@ function adjustColorTemperature() {
       log.debug('adjustColorTemperature to value: ' + postItem.state);
       postItemsAndReturn([postItem], 'ColorTemperatureController');
     }
-  );
+  ).catch(function (error) {
+    log.error(`Could not get item: ${error}`);
+  })
 }
 
 /**
@@ -368,11 +370,11 @@ function adjustTargetTemperature() {
   propertyNames.forEach(function (propertyName) {
     promises.push(new Promise(function (resolve, reject) {
       rest.getItem(directive.endpoint.scope.token,
-        properties[propertyName].item.name, function (item) {
+        properties[propertyName].item.name).then(function(item) {
           resolve(Object.assign(properties[propertyName].item, {
             state: parseFloat(item.state) + directive.payload.targetSetpointDelta.value
           }));
-        }, function (error) {
+        }).catch(function (error) {
           reject(error);
         });
     }));
@@ -434,7 +436,7 @@ function setChannel() {
 function adjustChannel() {
   var postItem = propertyMap.ChannelController.channel.item;
   rest.getItem(directive.endpoint.scope.token,
-    postItem.name, function (item) {
+    postItem.name).then(function (item) {
       var state = parseInt(item.state);
       if (isNaN(state)) {
         state = Math.abs(directive.payload.channelCount);
@@ -444,7 +446,7 @@ function adjustChannel() {
       // Value defined as a string in alexa api
       postItem.state = state.toString();
       postItemsAndReturn([postItem], 'ChannelController');
-    }, function (error) {
+    }).catch(function (error) {
       returnAlexaResponse(generateGenericErrorResponse());
     }
   );
@@ -503,7 +505,7 @@ function adjustSpeakerVolume() {
   var volumeIncrement = directive.payload.volumeDefault && defaultIncrement > 0 ?
     (directive.payload.volume >= 0 ? 1 : -1) * defaultIncrement : directive.payload.volume;
   rest.getItem(directive.endpoint.scope.token,
-    postItem.name, function (item) {
+    postItem.name).then(function (item) {
       var state = parseInt(item.state);
       if (isNaN(state)) {
         state = Math.abs(volumeIncrement);
@@ -512,7 +514,7 @@ function adjustSpeakerVolume() {
       }
       postItem.state = state;
       postItemsAndReturn([postItem], 'Speaker');
-    }, function (error) {
+    }).catch(function (error) {
       returnAlexaResponse(generateGenericErrorResponse());
     }
   );
@@ -544,7 +546,7 @@ function setSpeakerMute() {
 function adjustStepSpeakerVolume() {
   var postItem = propertyMap.StepSpeaker.volume.item;
   rest.getItem(directive.endpoint.scope.token,
-    postItem.name, function (item) {
+    postItem.name).then(function (item) {
       var state = parseInt(item.state);
       if (isNaN(state)) {
         state = Math.abs(directive.payload.volumeSteps);
@@ -553,7 +555,7 @@ function adjustStepSpeakerVolume() {
       }
       postItem.state = state;
       postItemsAndReturn([postItem], 'StepSpeaker');
-    }, function (error) {
+    }).catch(function (error) {
       returnAlexaResponse(generateGenericErrorResponse());
     }
   );
@@ -580,15 +582,8 @@ function setStepSpeakerMute() {
 function postItemsAndReturn(items, interfaceName, response) {
   var promises = [];
   items.forEach(function (item) {
-    promises.push(new Promise(function (resolve, reject) {
-      log.debug('postItemsAndReturn Setting ' + item.name + ' to ' + item.state);
-      rest.postItemCommand(directive.endpoint.scope.token,
-        item.name, item.state, function (result) {
-          resolve(result);
-        }, function (error) {
-          reject(error);
-        });
-    }));
+    promises.push( rest.postItemCommand(directive.endpoint.scope.token,
+      item.name, item.state));
   });
   Promise.all(promises).then(function () {
     if (typeof response === 'object') {
@@ -621,10 +616,8 @@ function getPropertiesResponseAndReturn(interfaceName) {
     promises.push(new Promise(function (resolve, reject) {
       // Use item sensor name over standard item name, if defined, to get the accurate current state
       var itemName = item.sensor || item.name;
-
-      log.debug('getPropertiesResponseAndReturn Getting ' + itemName + ' latest state');
       rest.getItem(directive.endpoint.scope.token,
-        itemName, function (result) {
+        itemName).then(function (result) {
           // Normalize item state
           result.state = utils.normalizeItemState(result);
           // Update item information in propertyMap object for each item capabilities
@@ -632,7 +625,7 @@ function getPropertiesResponseAndReturn(interfaceName) {
             propertyMap[capability.interface][capability.property].item = result;
           });
           resolve(result);
-      }, function (error) {
+      }).catch(function (error) {
         reject(error);
       });
     }));
@@ -731,8 +724,7 @@ function generateGenericErrorResponse() {
  */
 function discoverDevices() {
   //request all items with groups
-  rest.getItemsRecursively(directive.payload.scope.token, function (items) {
-
+  rest.getItemsRecursively(directive.payload.scope.token).then(function (items) {
     var discoverdDevices = [];
     //items here are part of a group and should not be added individually
     var groupItems = [];
@@ -910,7 +902,7 @@ function discoverDevices() {
 
     log.debug('Discovery: ' + JSON.stringify(response));
     returnAlexaResponse(response);
-  }, function (error) {
+  }).catch(function (error) {
     log.error("discoverDevices failed: " + error.message);
     returnAlexaResponse(generateGenericErrorResponse());
   });
@@ -971,7 +963,7 @@ function convertV2Item(item, group = {}) {
           capabilities = ['Endpoint.Thermostat'];
           // add v2 tag scale parameter if group metadata config not defined
           if (!metadata.config.scale) {
-            metadata.config.scale = v2Tempformat(item);
+            metadata.config.scale = v2Tempformat(item); 
           }
           break;
         default:

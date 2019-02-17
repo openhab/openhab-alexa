@@ -7,13 +7,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-var fs = require('fs');
-var http = require('http');
-var https = require('https');
-var qs = require('querystring');
+const fs = require('fs');
+const request = require('request-promise-native');
+const qs = require('querystring');
 
-var log = require('./log.js');
-var utils = require('./utils.js');
+const log = require('./log.js');
+const utils = require('./utils.js');
 var config = getConfig();
 
 /**
@@ -23,12 +22,9 @@ function getConfig() {
   // Default configuration
   var defaults = {
     openhab: {
-      host: process.env.OPENHAB_HOST || 'localhost',
-      port: process.env.OPENHAB_PORT || 8443,
-      path: process.env.OPENHAB_PATH || '/rest',
+      baseURL: process.env.OPENHAB_BASE_URL|| 'https://localhost:8443/rest',
       user: process.env.OPENHAB_USERNAME || null,
-      pass: process.env.OPENHAB_PASSWORD || null,
-      proto: process.env.OPENHAB_PROTOCOL || 'https'
+      pass: process.env.OPENHAB_PASSWORD || null
     }
   };
   // Merge file config settings, if exists, with default ones
@@ -63,8 +59,8 @@ function ohAuthorizationHeader(token) {
  * @param  {Function} success
  * @param  {Function} failure
  */
-function getItem(token, itemName, success, failure) {
-  getItemOrItems(token, itemName, null, success, failure);
+function getItem(token, itemName) {
+  return getItemOrItems(token, itemName, null);
 }
 
 /**
@@ -73,8 +69,8 @@ function getItem(token, itemName, success, failure) {
  * @param  {Function} success
  * @param  {Function} failure
  */
-function getItemsRecursively(token, success, failure) {
-  getItemOrItems(token, null, {'metadata': 'alexa', 'recursive': true}, success, failure);
+function getItemsRecursively(token) {
+  return getItemOrItems(token, null, {'metadata': 'alexa', 'recursive': true});
 }
 
 /**
@@ -85,20 +81,17 @@ function getItemsRecursively(token, success, failure) {
  * @param  {Function} success
  * @param  {Function} failure
  */
-function getItemOrItems(token, itemName, parameters, success, failure) {
+function getItemOrItems(token, itemName, parameters) {
   var options = {
-    hostname: config.openhab.host,
-    port: config.openhab.port,
-    path: config.openhab.path + '/items' + (itemName ? '/' + itemName : '') +
-      (parameters ? '?' + qs.stringify(parameters) : ''),
-    method: 'GET',
+    method: "GET",
+    uri: `${config.openhab.baseURL}/items${itemName ? '/' + itemName : ''}${parameters ? '?' + qs.stringify(parameters) : ''}`,
     headers: {
       'Authorization': ohAuthorizationHeader(token),
       'Content-Type': 'text/plain'
-    }
-  };
-
-  httpRequest(options, null, config.openhab.proto, success, failure);
+    },
+    json: true
+  }
+  return request(options);
 }
 
 /**
@@ -109,69 +102,23 @@ function getItemOrItems(token, itemName, parameters, success, failure) {
  * @param  {Function} success
  * @param  {Function} failure
  **/
-function postItemCommand(token, itemName, value, success, failure) {
+function postItemCommand(token, itemName, value) {
   var data = value.toString();
   var options = {
-    hostname: config.openhab.host,
-    port: config.openhab.port,
-    path: config.openhab.path + '/items/' + itemName,
-    method: 'POST',
+    method: "POST",
+    uri: `${config.openhab.baseURL}/items/${itemName}`,
     headers: {
       'Authorization': ohAuthorizationHeader(token),
-      'Content-Type': 'text/plain',
-      'Content-Length': data.length
-    }
-  };
-
+      'Content-Type': 'text/plain'
+    },
+    body: data
+  }
   if (itemName) {
-    httpRequest(options, data, config.openhab.proto, success, failure);
+    return request(options);
   } else {
-    failure({
-      message: 'No item name provided'
-    });
+    return Promise.reject("No item name provided");
   }
 }
-
-/**
- * Handles HTTP request
- * @param  {Object}   options
- * @param  {String}   data
- * @param  {String}   protocol
- * @param  {Function} success
- * @param  {Function} failure
- */
-function httpRequest(options, data, protocol, success, failure) {
-  // log.debug('http request: ' + JSON.stringify({options: options, data: data, protocol: protocol}));
-  var proto = protocol === 'http' ? http : https;
-  var req = proto.request(options, function(response) {
-    var body = '';
-
-    response.on('data', function(chunk) {
-      body += chunk.toString('utf-8');
-    });
-
-    response.on('end', function() {
-      var successStatusCodes = [200, 201, 202];
-      var result = utils.parseJSON(body);
-      if (successStatusCodes.includes(response.statusCode)) {
-        success(result);
-      } else {
-        failure({
-          message: 'Failed http request: ' + response.statusMessage + ' (' + response.statusCode + ')',
-          result: result
-        });
-      }
-    });
-
-    response.on('error', function(error) {
-      failure(error);
-    });
-  });
-
-  req.write(data || '');
-  req.end();
-}
-
 module.exports.getItem = getItem;
 module.exports.getItemsRecursively = getItemsRecursively;
 module.exports.postItemCommand = postItemCommand;
