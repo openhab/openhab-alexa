@@ -64,17 +64,7 @@ function getItem(token, itemName) {
 }
 
 /**
- * Returns all items (v2)
- * @param  {String}   token
- * @param  {Function} success
- * @param  {Function} failure
- */
-function getItems(token) {
-  return getItemOrItems(token, null, null);
-}
-
-/**
- * Returns all items recursively with alexa metadata (v3)
+ * Returns all items recursively with alexa metadata
  * @param  {String}   token
  * @param  {Function} success
  * @param  {Function} failure
@@ -130,6 +120,5 @@ function postItemCommand(token, itemName, value) {
   }
 }
 module.exports.getItem = getItem;
-module.exports.getItems = getItems;
 module.exports.getItemsRecursively = getItemsRecursively;
 module.exports.postItemCommand = postItemCommand;

@@ -37,12 +37,6 @@ function generateDirectiveRequest(request) {
     "endpoint": Object.assign(template.endpoint, request.endpoint),
     "payload": Object.assign(template.payload, request.payload)
   };
-  // update directive if payloadVersion set to 2
-  if (directive.header.payloadVersion === "2") {
-    directive.payload.accessToken = directive.endpoint.scope.token;
-    delete directive.header.correlationToken;
-    delete directive.endpoint.scope;
-  }
   // remove endpoint if no id defined
   if (directive.endpoint.endpointId === null) {
     // move endpoint scope to payload if defined
@@ -113,34 +107,6 @@ assert.capturedResult = function(result, expected) {
       }
     });
   }
-};
-
-/**
- * Assert discovered appliances (v2)
- * @param {*} appliances
- * @param {*} results
- */
-assert.discoveredAppliances = function(appliances, results) {
-  assert.equal(appliances.length, Object.keys(results).length);
-
-  appliances.forEach(function(appliance) {
-    var expected = results[appliance.applianceId];
-    assert.isDefined(expected);
-
-    Object.keys(expected).forEach(function(key) {
-      switch (key) {
-        case 'actions':
-        case 'applianceTypes':
-          assert.sameMembers(appliance[key], expected[key]);
-          break;
-        case 'additionalApplianceDetails':
-          assert.include(appliance[key], expected[key]);
-          break;
-        default:
-          assert.equal(appliance[key], expected[key]);
-      }
-    });
-  });
 };
 
 /**
