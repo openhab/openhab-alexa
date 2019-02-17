@@ -24,7 +24,11 @@ Matching of voice commands to Items happens based on the Item label (e.g. "Kitch
 
 ### Item Configuration
 
-The Alexa skill API uses the concept of "endpoints".  Endpoints are addressable entities that expose functionality in the form of capability interfaces.  An example endpoint may be a light switch, which has a single capability called power state (ON/OFF).  A more complex endpoint may be a thermostat which has many capabilites to control and report temperature, setpoints, modes, etc..
+The Alexa skill API uses the concept of "endpoints".  Endpoints are addressable entities that expose functionality in the form of capability interfaces.  An example endpoint may be a light switch, which has a single capability called power state (ON/OFF).  A more complex endpoint may be a thermostat which has many capabilities to control and report temperature, setpoints, modes, etc..
+
+### Item State
+
+Item states, reported back to Alexa, are formatted based on their [item state presentation](https://www.openhab.org/docs/configuration/items.html#state-presentation) definition if configured. This means you can control the precision of number values (e.g. `%.1f °C` will limit reported temperature value to one decimal point).
 
 #### Single items
 Single items in openHAB can be mapped to single endpoint in Alex through the use of the Alexa metadata.
