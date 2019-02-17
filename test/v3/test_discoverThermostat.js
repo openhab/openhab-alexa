@@ -139,66 +139,6 @@ module.exports = {
     {
       "members": [
         {
-          "link": "https://myopenhab.org/rest/items/currentTemperature3",
-          "type": "Number",
-          "name": "currentTemperature3",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "TemperatureSensor.temperature",
-              "config": {
-                "scale": "Fahrenheit"
-              }
-            }
-          },
-          "groupNames": ["gThermostat3"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/targetTemperature3",
-          "type": "Number",
-          "name": "targetTemperature3",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.targetSetpoint",
-              "config": {
-                "scale": "Fahrenheit"
-              }
-            }
-          },
-          "groupNames": ["gThermostat3"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/highTargetTemperature3",
-          "type": "Number",
-          "name": "highTargetTemperature3",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.upperSetpoint",
-              "config": {
-                "scale": "Fahrenheit"
-              }
-            }
-          },
-          "groupNames": ["gThermostat3"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/lowTargetTemperature3",
-          "type": "Number",
-          "name": "lowTargetTemperature3",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.lowerSetpoint",
-              "config": {
-                "scale": "Fahrenheit"
-              }
-            }
-          },
-          "groupNames": ["gThermostat3"]
-        },
-        {
           "link": "https://myopenhab.org/rest/items/thermostatMode3",
           "type": "String",
           "name": "thermostatMode3",
@@ -219,6 +159,36 @@ module.exports = {
       "type": "Group",
       "name": "gThermostat3",
       "label": "Thermostat 3",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "Endpoint.Thermostat"
+        }
+      },
+      "groupNames": []
+    },
+    {
+      "members": [
+        {
+          "link": "https://myopenhab.org/rest/items/targetTemperature4",
+          "type": "Number",
+          "name": "targetTemperature4",
+          "tags": [],
+          "metadata": {
+            "alexa": {
+              "value": "ThermostatController.targetSetpoint",
+              "config": {
+                "scale": "Fahrenheit"
+              }
+            }
+          },
+          "groupNames": ["gThermostat4"]
+        },
+      ],
+      "link": "https://myopenhab.org/rest/items/gThermostat4",
+      "type": "Group",
+      "name": "gThermostat4",
+      "label": "Thermostat 4",
       "tags": [],
       "metadata": {
         "alexa": {
@@ -304,28 +274,29 @@ module.exports = {
     "gThermostat3": {
       "capabilities": [
         "Alexa",
-        "Alexa.TemperatureSensor.temperature",
-        "Alexa.ThermostatController.targetSetpoint",
-        "Alexa.ThermostatController.upperSetpoint",
-        "Alexa.ThermostatController.lowerSetpoint",
         "Alexa.ThermostatController.thermostatMode"
       ],
       "displayCategories": ["THERMOSTAT"],
       "friendlyName": "Thermostat 3",
       "propertyMap": {
-        "TemperatureSensor": {
-          "temperature": {
-            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "currentTemperature3", "type": "Number"}}
-        },
+        "ThermostatController": {
+          "thermostatMode": {
+            "parameters": {"binding": "foobar", "supportedModes": "AUTO,OFF"},
+            "item": {"name": "thermostatMode3", "type": "String"}}
+        }
+      }
+    },
+    "gThermostat4": {
+      "capabilities": [
+        "Alexa",
+        "Alexa.ThermostatController.targetSetpoint"
+      ],
+      "displayCategories": ["THERMOSTAT"],
+      "friendlyName": "Thermostat 4",
+      "propertyMap": {
         "ThermostatController": {
           "targetSetpoint": {
-            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "targetTemperature3", "type": "Number"}},
-          "upperSetpoint": {
-            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "highTargetTemperature3", "type": "Number"}},
-          "lowerSetpoint": {
-            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "lowTargetTemperature3", "type": "Number"}},
-          "thermostatMode": {
-            "parameters": {"binding": "foobar", "supportedModes": "AUTO,OFF"}, "item": {"name": "thermostatMode3", "type": "String"}}
+            "parameters": {"scale": "Fahrenheit"}, "item": {"name": "targetTemperature4", "type": "Number"}}
         }
       }
     },

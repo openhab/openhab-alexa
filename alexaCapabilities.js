@@ -96,6 +96,7 @@ AlexaCapabilities.prototype.percentageController = function () {
 };
 
 AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upperSetpoint, lowerSetpoint, thermostatMode) {
+  var configuration = {};
   var supported = [];
   if (targetSetpoint) {
     supported.push({
@@ -113,13 +114,12 @@ AlexaCapabilities.prototype.thermostatController = function (targetSetpoint, upp
     });
   }
   if (thermostatMode) {
+    if (typeof thermostatMode.parameters.supportedModes === 'string') {
+      configuration.supportedModes = thermostatMode.parameters.supportedModes.split(',').map(mode => mode.trim());
+    }
     supported.push({
       "name": "thermostatMode"
     });
-  }
-  var configuration = {};
-  if (typeof thermostatMode.parameters.supportedModes === 'string') {
-    configuration.supportedModes = thermostatMode.parameters.supportedModes.split(',').map(mode => mode.trim());
   }
   return {
     capabilities: {
