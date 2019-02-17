@@ -56,8 +56,6 @@ function ohAuthorizationHeader(token) {
  * Returns a single item
  * @param  {String}   token
  * @param  {String}   itemName
- * @param  {Function} success
- * @param  {Function} failure
  */
 function getItem(token, itemName) {
   return getItemOrItems(token, itemName, null);
@@ -66,8 +64,6 @@ function getItem(token, itemName) {
 /**
  * Returns all items recursively with alexa metadata
  * @param  {String}   token
- * @param  {Function} success
- * @param  {Function} failure
  */
 function getItemsRecursively(token) {
   return getItemOrItems(token, null, {'metadata': 'alexa', 'recursive': true});
@@ -78,8 +74,6 @@ function getItemsRecursively(token) {
  * @param  {String}   token
  * @param  {String}   itemName
  * @param  {Object}   parameters
- * @param  {Function} success
- * @param  {Function} failure
  */
 function getItemOrItems(token, itemName, parameters) {
   var options = {
@@ -99,8 +93,6 @@ function getItemOrItems(token, itemName, parameters) {
  * @param  {String}   token
  * @param  {String}   itemName
  * @param  {String}   value
- * @param  {Function} success
- * @param  {Function} failure
  **/
 function postItemCommand(token, itemName, value) {
   var data = value.toString();
@@ -119,6 +111,24 @@ function postItemCommand(token, itemName, value) {
     return Promise.reject("No item name provided");
   }
 }
+
+/**
+ * Returns regional configurations settings from an OH instance
+ * @param  {String}   token
+ */
+function getLocationConfiguration(token) {
+  var options = {
+    method: "GET",
+    uri: `${config.openhab.baseURL}/services/org.eclipse.smarthome.core.i18nprovider/config`,
+    headers: {
+      'Authorization': ohAuthorizationHeader(token),
+      'Content-Type': 'text/plain'
+    },
+    json: true
+  }
+  return request(options);
+}
 module.exports.getItem = getItem;
 module.exports.getItemsRecursively = getItemsRecursively;
 module.exports.postItemCommand = postItemCommand;
+module.exports.getLocationConfiguration = getLocationConfiguration

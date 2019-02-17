@@ -19,19 +19,27 @@ describe('ohConnectorV3 Tests', function () {
 
   before(function () {
     // mock rest external calls
-    rest.getItem = function(token, itemName) {
+    rest.getItem = function (token, itemName) {
       return Promise.resolve(Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.getItemsRecursively = function(token) {
+    rest.getItemsRecursively = function (token) {
       return Promise.resolve(Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.postItemCommand = function(token, itemName, value) {
-      capture.calls.push({"name": itemName, "value": value});
-      return Promise.resolve({"statusCode": 200});
+    rest.postItemCommand = function (token, itemName, value) {
+      capture.calls.push({ "name": itemName, "value": value });
+      return Promise.resolve({ "statusCode": 200 });
+    };
+    rest.getLocationConfiguration = function (token) {
+      return Promise.resolve(typeof response.locationConfig == "undefined" ? {
+        "location": "0.00000, 0.00000",
+        "measurementSystem": "SI",
+        "region": "US",
+        "timezone": "America/Los_Angeles"
+      } : response.locationConfig);
     };
 
     // mock aws lambda callback calls
-    callback = function(error, result) {
+    callback = function (error, result) {
       capture.result = capture.result ? [].concat(capture.result, result) : result;
     };
   });
@@ -39,7 +47,7 @@ describe('ohConnectorV3 Tests', function () {
   beforeEach(function () {
     // reset mock variables
     response = {};
-    capture = {"calls": [], "result": null};
+    capture = { "calls": [], "result": null };
   });
 
   // Discovery Tests
@@ -51,15 +59,17 @@ describe('ohConnectorV3 Tests', function () {
       }
     });
 
-    Object.keys(settings.testCasesV3.discovery).forEach(function(name) {
-      settings.testCasesV3.discovery[name].forEach(function(path) {
+    Object.keys(settings.testCasesV3.discovery).forEach(function (name) {
+      settings.testCasesV3.discovery[name].forEach(function (path) {
         var test = require(path);
-
         it(test.description, function (done) {
-          response = {"openhab": test.mocked};
+          response = {
+            "openhab": test.mocked,
+            "locationConfig": test.locationConfig
+          };
           ohv3.handleRequest(directive, callback);
           //wait for async responses
-          setTimeout(function() {
+          setTimeout(function () {
             assert.discoveredEndpoints(capture.result.event.payload.endpoints, test.expected);
             done();
           }, 1);
@@ -69,17 +79,16 @@ describe('ohConnectorV3 Tests', function () {
   });
 
   // Controller Tests
-  Object.keys(settings.testCasesV3.controllers).forEach(function(name){
+  Object.keys(settings.testCasesV3.controllers).forEach(function (name) {
     describe(name + ' Interface', function () {
-      settings.testCasesV3.controllers[name].forEach(function(path){
+      settings.testCasesV3.controllers[name].forEach(function (path) {
         var tests = require(path);
-
-        tests.forEach(function(test) {
-          it(test.description, function(done) {
+        tests.forEach(function (test) {
+          it(test.description, function (done) {
             response = test.mocked;
             ohv3.handleRequest(utils.generateDirectiveRequest(test.directive), callback);
             // Wait for async functions
-            setTimeout(function() {
+            setTimeout(function () {
               // console.log("Capture: " + JSON.stringify(capture, null, 2));
               assert.capturedCalls(capture.calls, test.expected.openhab);
               assert.capturedResult(capture.result, test.expected.alexa);

@@ -64,7 +64,7 @@ exports.handleRequest = function (_directive, _callback) {
       setColor();
       break;
     case "Alexa.ColorTemperatureController":
-      switch(name) {
+      switch (name) {
         case "SetColorTemperature":
           setColorTemperature();
           break;
@@ -225,7 +225,7 @@ function adjustPercentage() {
       }).catch(function (error) {
         returnAlexaResponse(generateGenericErrorResponse());
       }
-    );
+      );
   }
 }
 
@@ -304,9 +304,9 @@ function adjustColorTemperature() {
       log.debug('adjustColorTemperature to value: ' + postItem.state);
       postItemsAndReturn([postItem], 'ColorTemperatureController');
     }
-  ).catch(function (error) {
-    log.error(`Could not get item: ${error}`);
-  })
+    ).catch(function (error) {
+      log.error(`Could not get item: ${error}`);
+    })
 }
 
 /**
@@ -370,7 +370,7 @@ function adjustTargetTemperature() {
   propertyNames.forEach(function (propertyName) {
     promises.push(new Promise(function (resolve, reject) {
       rest.getItem(directive.endpoint.scope.token,
-        properties[propertyName].item.name).then(function(item) {
+        properties[propertyName].item.name).then(function (item) {
           resolve(Object.assign(properties[propertyName].item, {
             state: parseFloat(item.state) + directive.payload.targetSetpointDelta.value
           }));
@@ -449,7 +449,7 @@ function adjustChannel() {
     }).catch(function (error) {
       returnAlexaResponse(generateGenericErrorResponse());
     }
-  );
+    );
 }
 
 /**
@@ -517,7 +517,7 @@ function adjustSpeakerVolume() {
     }).catch(function (error) {
       returnAlexaResponse(generateGenericErrorResponse());
     }
-  );
+    );
 }
 
 /**
@@ -558,7 +558,7 @@ function adjustStepSpeakerVolume() {
     }).catch(function (error) {
       returnAlexaResponse(generateGenericErrorResponse());
     }
-  );
+    );
 }
 
 /**
@@ -582,7 +582,7 @@ function setStepSpeakerMute() {
 function postItemsAndReturn(items, interfaceName, response) {
   var promises = [];
   items.forEach(function (item) {
-    promises.push( rest.postItemCommand(directive.endpoint.scope.token,
+    promises.push(rest.postItemCommand(directive.endpoint.scope.token,
       item.name, item.state));
   });
   Promise.all(promises).then(function () {
@@ -625,15 +625,15 @@ function getPropertiesResponseAndReturn(interfaceName) {
             propertyMap[capability.interface][capability.property].item = result;
           });
           resolve(result);
-      }).catch(function (error) {
-        reject(error);
-      });
+        }).catch(function (error) {
+          reject(error);
+        });
     }));
   });
   Promise.all(promises).then(function (items) {
     // Throw error if one of the state item is set to 'NULL'
     if (items.find(item => item.state === 'NULL')) {
-      throw {message: 'Invalid item state returned by openHAB', items: items};
+      throw { message: 'Invalid item state returned by openHAB', items: items };
     }
     // Generate properties response
     var response = {
@@ -723,13 +723,19 @@ function generateGenericErrorResponse() {
  * Device discovery
  */
 function discoverDevices() {
-  //request all items with groups
-  rest.getItemsRecursively(directive.payload.scope.token).then(function (items) {
+  var systemScale = "CELSIUS";
+  //Get system defaults
+  rest.getLocationConfiguration(directive.payload.scope.token).then(function (response) {
+    if (typeof response.measurementSystem === 'string') {
+      systemScale = response.measurementSystem === "US" ? "FAHRENHEIT" : "CELSIUS"
+      log.debug(`Default scale ${systemScale}`);
+    }
+    //request all items with groups
+    return rest.getItemsRecursively(directive.payload.scope.token);
+  }).then(function (items) {
     var discoverdDevices = [];
     //items here are part of a group and should not be added individually
     var groupItems = [];
-
-    //log.debug("GET ITEMS: " + JSON.stringify(items));
 
     //convert v2 style label/tag to v3
     convertV2Items(items);
@@ -784,6 +790,19 @@ function discoverDevices() {
 
       log.debug("Property Map: " + JSON.stringify(propertyMap));
 
+       /**
+       * Sets the default scale if not set for the given capabilties.
+       * @param  {...any} capabiliies 
+       */
+      function setScaleParameters(...capabiliies) {
+        capabiliies.forEach(capability => {
+          if (typeof capability !== 'undefined' &&
+            typeof capability.parameters.scale === 'undefined') {
+            capability.parameters.scale = systemScale;
+          }
+        })
+      }
+      
       capabilities.push(alexaCapabilities.alexa());
 
       Object.keys(propertyMap).forEach(function (interfaceName) {
@@ -809,9 +828,12 @@ function discoverDevices() {
             capability = alexaCapabilities.colorTemperatureController();
             break;
           case "TemperatureSensor":
+            setScaleParameters(properties.temperature)
             capability = alexaCapabilities.temperatureSensor();
             break;
           case "ThermostatController":
+            setScaleParameters(properties.targetSetpoint,
+              properties.upperSetpoint, properties.lowerSetpoint);
             capability = alexaCapabilities.thermostatController(properties.targetSetpoint,
               properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
             break;
@@ -963,7 +985,7 @@ function convertV2Item(item, group = {}) {
           capabilities = ['Endpoint.Thermostat'];
           // add v2 tag scale parameter if group metadata config not defined
           if (!metadata.config.scale) {
-            metadata.config.scale = v2Tempformat(item); 
+            metadata.config.scale = v2Tempformat(item);
           }
           break;
         default:

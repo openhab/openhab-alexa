@@ -1,5 +1,11 @@
 module.exports = {
   description: "thermostat enabled group",
+  locationConfig: {
+    "location": "0.00000, 0.00000",
+    "measurementSystem": "SI",
+    "region": "US",
+    "timezone": "America/Los_Angeles"
+},
   mocked: [
     {
       "members": [
