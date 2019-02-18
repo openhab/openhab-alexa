@@ -201,6 +201,22 @@ AlexaContextProperties.prototype.speakerVolumeStateProperty = function (state) {
 }
 
 /**
+ * Returns a property response for contact sensor endpoints
+ * @param {string} state
+ */
+AlexaContextProperties.prototype.contactSensorStateProperty = function (state) {
+  return this.generateProperty('Alexa.ContactSensor', 'detectionState', state);
+}
+
+/**
+ * Returns a property response for motion sensor endpoints
+ * @param {string} state
+ */
+AlexaContextProperties.prototype.motionSensorStateProperty = function (state) {
+  return this.generateProperty('Alexa.MotionSensor', 'detectionState', state);
+}
+
+/**
  * Returns a property response for health endpoints
  */
 AlexaContextProperties.prototype.endpointHealthProperty = function () {
@@ -295,8 +311,7 @@ AlexaContextProperties.prototype.propertiesResponseForInterfaces = function (int
         response.push(self.temperatureSensorStateProperty(item.state, scale));
         break;
       case "LockController": //Switch [Lock]
-        var item = properties.lockState.item;
-        var state = utils.normalizeLockState(item.state, item.type, properties.lockState.parameters);
+        var state = utils.normalizePropertyState('lockState', properties.lockState);
         response.push(self.lockStateProperty(state));
         break;
       case "ChannelController": //Number [Alexa@Channel]
@@ -324,6 +339,14 @@ AlexaContextProperties.prototype.propertiesResponseForInterfaces = function (int
       case "StepSpeaker": //Group ? (steup string, mute, not really sure) [Alexa@StepSpeaker]
         break;
       case "CameraStreamController":  //not supported.
+        break;
+      case "ContactSensor":
+        var state = utils.normalizePropertyState('detectionState', properties.detectionState);
+        response.push(self.contactSensorStateProperty(state));
+        break;
+      case "MotionSensor":
+        var state = utils.normalizePropertyState('detectionState', properties.detectionState);
+        response.push(self.motionSensorStateProperty(state));
         break;
       default:
     }

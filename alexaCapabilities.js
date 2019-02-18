@@ -357,6 +357,46 @@ AlexaCapabilities.prototype.playbackController = function () {
 
 };
 
+AlexaCapabilities.prototype.contactSensor = function () {
+  return {
+    capabilities: {
+      "type": "AlexaInterface",
+      "interface": "Alexa.ContactSensor",
+      "version": "3",
+      "properties": {
+        "supported": [
+          {
+            "name": "detectionState"
+          }
+        ],
+        "proactivelyReported": false,
+        "retrievable": true
+      },
+    },
+    category: "CONTACT_SENSOR"
+  };
+}
+
+AlexaCapabilities.prototype.motionSensor = function () {
+  return {
+    capabilities: {
+      "type": "AlexaInterface",
+      "interface": "Alexa.MotionSensor",
+      "version": "3",
+      "properties": {
+        "supported": [
+          {
+            "name": "detectionState"
+          }
+        ],
+        "proactivelyReported": false,
+        "retrievable": true
+      },
+    },
+    category: "MOTION_SENSOR"
+  };
+}
+
 AlexaCapabilities.prototype.endpointHealth = function () {
   return {
     "type": "AlexaInterface",
