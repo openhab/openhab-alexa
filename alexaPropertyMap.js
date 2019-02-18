@@ -16,6 +16,11 @@ var utils = require('./utils.js');
 var CAPABILITY_PATTERN = /^(?:Alexa\.)?(\w+)\.(\w+)$/;
 // Define item property metadata parameter format pattern
 var ITEM_PARAM_PATTERN = /^item(\w)(\w+)$/;
+ // Define unit of measurement scale mapping
+var UNIT_MEASUREMENT_SCALE_MAPPING = {
+  '°C': 'CELSIUS',
+  '°F': 'FAHRENHEIT'
+};
 
  /**
  * Defines property map object to assoicate items to an endpoint from metadata, per the description below:
@@ -144,6 +149,12 @@ AlexaPropertyMap.prototype.addItem = function(item) {
           delete property.parameters[parameter];
         }
       });
+
+      // Set scale parameter based on unit of measurement number item type if not already defined
+      if (item.type.startsWith('Number:') && !property.parameters.scale) {
+        var unit = item.state.split(' ').pop();
+        property.parameters.scale = UNIT_MEASUREMENT_SCALE_MAPPING[unit];
+      }
 
        // Add property to map object
       propertyMap[interfaceName] = Object.assign(properties, {[propertyName]: property});

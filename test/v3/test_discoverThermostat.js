@@ -212,6 +212,20 @@ module.exports = {
         }
       },
       "groupNames": []
+    },
+    {
+      "link": "https://myopenhab.org/rest/items/temperature2",
+      "state": "70 °F",
+      "type": "Number:Temperature",
+      "name": "temperature2",
+      "label": "Temperature 2",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "TemperatureSensor.temperature"
+        }
+      },
+      "groupNames": []
     }
   ],
   expected: {
@@ -311,6 +325,20 @@ module.exports = {
         "TemperatureSensor": {
           "temperature": {
             "parameters": {"scale": "Fahrenheit"}, "item": {"name": "temperature1", "type": "Number"}}
+        }
+      }
+    },
+    "temperature2": {
+      "capabilities": [
+        "Alexa",
+        "Alexa.TemperatureSensor.temperature"
+      ],
+      "displayCategories": ["TEMPERATURE_SENSOR"],
+      "friendlyName": "Temperature 2",
+      "propertyMap": {
+        "TemperatureSensor": {
+          "temperature": {
+            "parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "temperature2", "type": "Number:Temperature"}}
         }
       }
     }

@@ -260,6 +260,12 @@ In openHAB a thermostat is modeled as many different items, typically there are 
     * Supported item type:
       * Player
     * Default category: OTHER
+* Item Scale
+  * With the introduction of the [unit of measurement](https://www.openhab.org/docs/concepts/units-of-measurement.html) concept, the item scale can be automatically determined for thermostat and temperature using that feature, removing the need of having to set a metadata scale parameter for each of the relevant items or groups.
+  * Below are two examples; the scale on the first will be set to Fahrenheit based on how it is defined in the item state presentation pattern and the second one will be set based on your openHAB system regional settings (US=Fahrenheit; SI=Celsius).
+
+  `Number:Temperature Temperature1 "Temperature [%.1f °F]" {alexa="TemperatureSensor.temperature"}`
+  `Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSensor.temperature"}`
 * Item Sensor
   * When available, use a specific item (called "sensor") for property state reporting over the actionable item state.
   * Design to bridge channel status items to provide improved reporting state accuracy.
