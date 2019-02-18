@@ -180,20 +180,21 @@ function normalizeColorTemperature(value, type) {
  * @return {String}
  */
 function normalizeItemState(item) {
-  var pattern = item.stateDescription && item.stateDescription.pattern ? item.stateDescription.pattern : "%s";
+  var pattern = item.stateDescription ? item.stateDescription.pattern : undefined;
   var state = item.state;
   var type = item.type.split(':')[0];
 
-  switch (type) {
-    case 'Dimmer':
-    case 'Number':
-    case 'Rollershutter':
-      return sprintf(pattern, state != 'NULL' ? parseFloat(state) : state);
-    case 'String':
-      return sprintf(pattern, state);
-    default:
-      return state;
+  if (pattern) {
+    switch (type) {
+      case 'Dimmer':
+      case 'Number':
+      case 'Rollershutter':
+        return sprintf(pattern, state != 'NULL' ? parseFloat(state) : state);
+      case 'String':
+        return sprintf(pattern, state);
+    }
   }
+  return state;
 }
 
 /**
