@@ -220,6 +220,62 @@ module.exports = [
     }
   },
   {
+    description: "set target temperature single mode with conversion",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ThermostatController",
+        "name": "SetTargetTemperature"
+      },
+      "endpoint": {
+        "endpointId": "gThermostat",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ThermostatController": {
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "targetTemperature"}}
+            }
+          })
+        }
+      },
+      "payload": {
+        "targetSetpoint": {
+          "value": 22.5,
+          "scale": "CELSIUS"
+        },
+      }
+    },
+    mocked: {
+      openhab: [
+        {"name": "targetTemperature", "state": "72.5", "type": "Number"}
+      ],
+      staged: true
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [
+            {
+              "namespace": "Alexa.ThermostatController",
+              "name": "targetSetpoint",
+              "value": {
+                "value": 72.5,
+                "scale": "FAHRENHEIT"
+              }
+            }
+          ]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
+          },
+        }
+      },
+      openhab: [
+        {"name": "targetTemperature", "value": 72.5}
+      ]
+    }
+  },
+  {
     description: "adjust target temperature",
     directive: {
       "header": {
@@ -343,6 +399,63 @@ module.exports = [
       openhab: [
         {"name": "highTargetTemperature", "value": 77},
         {"name": "lowTargetTemperature", "value": 75}
+      ]
+    }
+  },
+  {
+    description: "adjust target temperature with conversion",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ThermostatController",
+        "name": "AdjustTargetTemperature"
+      },
+      "endpoint": {
+        "endpointId": "gThermostat",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ThermostatController": {
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "targetTemperature"}}
+            }
+          })
+        }
+      },
+      "payload": {
+        "targetSetpointDelta": {
+          "value": 2.0,
+          "scale": "CELSIUS"
+        }
+      }
+    },
+    mocked: {
+      openhab: [
+        {"name": "targetTemperature", "state": "72", "type": "Number"},
+        {"name": "targetTemperature", "state": "75.6", "type": "Number"}
+      ],
+      staged: true
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [
+            {
+              "namespace": "Alexa.ThermostatController",
+              "name": "targetSetpoint",
+              "value": {
+                "value": 75.6,
+                "scale": "FAHRENHEIT"
+              }
+            }
+          ]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
+          }
+        }
+      },
+      openhab: [
+        {"name": "targetTemperature", "value": 75.6}
       ]
     }
   }
