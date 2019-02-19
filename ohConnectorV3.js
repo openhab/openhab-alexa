@@ -844,6 +844,12 @@ function discoverDevices() {
           case "PlaybackController":
             capability = alexaCapabilities.playbackController();
             break;
+          case "ContactSensor":
+            capability = alexaCapabilities.contactSensor();
+            break;
+          case "MotionSensor":
+            capability = alexaCapabilities.motionSensor();
+            break;
           default:
             break;
         }
@@ -1036,6 +1042,12 @@ function convertV2Item(item, group = {}) {
           break;
         case 'SpeakerVolume':
           capabilities = ['Speaker.volume'];
+          break;
+        case 'ContactSensor':
+          capabilities = ['ContactSensor.detectionState'];
+          break;
+        case 'MotionSensor':
+          capabilities = ['MotionSensor.detectionState'];
           break;
       }
     }

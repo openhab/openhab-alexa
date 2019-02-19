@@ -12,6 +12,9 @@ var settings = {
       "Scene": [
         "./v3/test_discoverScene.js"
       ],
+      "Sensor": [
+        "./v3/test_discoverSensor.js"
+      ],
       "Speaker": [
         "./v3/test_discoverSpeaker.js",
         "./v3/test_discoverStepSpeaker.js"
@@ -42,11 +45,17 @@ var settings = {
       "ColorTemperatureController": [
         "./v3/test_controllerColorTemperature.js"
       ],
+      "ContactSensor": [
+        "./v3/test_controllerContactSensor.js"
+      ],
       "InputController": [
         "./v3/test_controllerInput.js"
       ],
       "LockController": [
         "./v3/test_controllerLock.js"
+      ],
+      "MotionSensor": [
+        "./v3/test_controllerMotionSensor.js"
       ],
       "PercentageController": [
         "./v3/test_controllerPercentage.js"

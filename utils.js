@@ -13,20 +13,23 @@ var sprintf = require('sprintf-js').sprintf;
  * Define alexa supported display categories
  */
 var DISPLAY_CATEGORIES = [
-  'ACTIVITY_TRIGGER', 'CAMERA', 'DOOR', 'LIGHT', 'MICROWAVE', 'OTHER', 'SCENE_TRIGGER',
-  'SMARTLOCK', 'SMARTPLUG', 'SPEAKER', 'SWITCH', 'TEMPERATURE_SENSOR', 'THERMOSTAT', 'TV'
+  'ACTIVITY_TRIGGER', 'CAMERA', 'CONTACT_SENSOR', 'DOOR', 'DOORBELL', 'LIGHT', 'MICROWAVE',
+  'MOTION_SENSOR', 'OTHER', 'SCENE_TRIGGER', 'SMARTLOCK', 'SMARTPLUG', 'SPEAKER', 'SWITCH',
+  'TEMPERATURE_SENSOR', 'THERMOSTAT', 'TV'
 ];
 
 /**
-  * Define openHAB item type supported capabilities
-  */
+ * Define openHAB item type supported capabilities
+ */
 var ITEM_TYPE_CAPABILITIES = {
   'BrightnessController':       {'brightness': ['Color', 'Dimmer']},
   'ChannelController':          {'channel': ['Number', 'String']},
   'ColorController':            {'color': ['Color']},
   'ColorTemperatureController': {'colorTemperatureInKelvin': ['Dimmer', 'Number']},
+  'ContactSensor':              {'detectionState': ['Contact', 'Switch']},
   'InputController':            {'input': ['Number', 'String']},
   'LockController':             {'lockState': ['Switch']},
+  'MotionSensor':              {'detectionState': ['Contact', 'Switch']},
   'PercentageController':       {'percentage': ['Dimmer', 'Rollershutter']},
   'PlaybackController':         {'playback': ['Player']},
   'PowerController':            {'powerState': ['Color', 'Dimmer', 'Rollershutter', 'Switch']},
@@ -39,6 +42,22 @@ var ITEM_TYPE_CAPABILITIES = {
                                  'lowerSetpoint': ['Number', 'Number:Temperature'],
                                  'upperSetpoint': ['Number', 'Number:Temperature'],
                                  'thermostatMode': ['Number', 'String']},
+};
+
+/**
+ * Define alexa property state mapping based on OH item type
+ */
+ITEM_TYPE_PROPERTY_STATE_MAPPING = {
+  'detectionState': {
+    'Contact': {CLOSED: 'NOT_DETECTED', OPEN: 'DETECTED'},
+    'Switch':  {OFF: 'NOT_DETECTED', ON: 'DETECTED'}
+  },
+  'lockState': {
+    'Contact': {CLOSED: 'LOCKED', OPEN: 'UNLOCKED'},
+    'Number':  {1: 'LOCKED', 2: 'UNLOCKED', 3: 'JAMMED'},
+    'String':  {LOCKED: 'LOCKED', UNLOCKED: 'UNLOCKED', JAMMED: 'JAMMED'},
+    'Switch':  {ON: 'LOCKED', OFF: 'UNLOCKED'}
+  }
 };
 
 /**
@@ -107,40 +126,6 @@ function normalizeTemperatureScale(temperature, scale = 'CELSIUS', delta = false
 }
 
 /**
- * Normalizes lock property state when using an item sensor (Contact, Number, Switch or String Item)
- *    User mapping e.g. [1=LOCKED,2=UNLOCKED,3=LOCKED,4=UNLOCKED,11=JAMMED] (Zwave)
- *
- * @param  {String} state
- * @param  {String} type
- * @param  {Object} parameters
- * @return {String}
- */
-function normalizeLockState(state, type, parameters = {}) {
-  var alexaStates = ['LOCKED', 'UNLOCKED', 'JAMMED'];
-  var userMap = Object.keys(parameters).reduce(function(map, param) {
-    return Object.assign(map, alexaStates.includes(parameters[param]) ? {[param]: parameters[param]} : {});
-  }, {});
-
-  // Convert OH to Alexa using user map, if defined, otherwise fallback to item type default
-  if (userMap[state]) {
-    return userMap[state];
-  } else {
-    switch(type) {
-      case 'Contact':
-        return state === 'CLOSED' ? 'LOCKED' : state === 'OPEN' ? 'UNLOCKED' : undefined;
-      case 'Number':
-        return parseInt(state) === 1 ? 'LOCKED' : parseInt(state) === 2 ? 'UNLOCKED' :
-          parseInt(state) === 3 ? 'JAMMED' : undefined;
-      case 'String':
-        return state.toLowerCase() === 'locked' ? 'LOCKED' : state.toLowerCase() === 'unlocked' ? 'UNLOCKED' :
-          state.toLowerCase() === 'jammed' ? 'JAMMED' : undefined;
-      case 'Switch':
-        return state === 'ON' ? 'LOCKED' : state === 'OFF' ? 'UNLOCKED' : undefined;
-    }
-  }
-}
-
-/**
  * Normalizes color temperature value based on item type
  *   Alexa colorTemperature api property spectrum from 1000K (warmer) to 10000K (colder)
  *
@@ -174,6 +159,29 @@ function normalizeColorTemperature(value, type) {
 }
 
 /**
+ * Normalizes property state based on user map if provided, otherwise on item type default map
+ *    User mapping e.g. [1=LOCKED,2=UNLOCKED,3=LOCKED,4=UNLOCKED,11=JAMMED] (lockState)
+ *
+ * @param  {String} name
+ * @param  {Object} property
+ * @return {String}
+ */
+function normalizePropertyState(name, property) {
+  var parameters = property.parameters;
+  var state = property.item.state.toUpperCase();
+  var type = property.item.type;
+
+  var itemTypeMap = ITEM_TYPE_PROPERTY_STATE_MAPPING[name] && ITEM_TYPE_PROPERTY_STATE_MAPPING[name][type] ?
+    ITEM_TYPE_PROPERTY_STATE_MAPPING[name][type] : {};
+  var alexaStates = Object.values(itemTypeMap);
+  var userMap = Object.keys(parameters).reduce(function(map, param) {
+    return Object.assign(map, alexaStates.includes(parameters[param]) ? {[param]: parameters[param]} : {});
+  }, {});
+
+  return userMap[state] || itemTypeMap[state] || state;
+}
+
+/**
  * Normalizes OH item state based on state description pattern
  *
  * @param  {Object} item
@@ -184,12 +192,12 @@ function normalizeItemState(item) {
   var state = item.state;
   var type = item.type.split(':')[0];
 
-  if (pattern) {
+  if (pattern && state != 'NULL') {
     switch (type) {
       case 'Dimmer':
       case 'Number':
       case 'Rollershutter':
-        return sprintf(pattern, state != 'NULL' ? parseFloat(state) : state);
+        return sprintf(pattern, parseFloat(state));
       case 'String':
         return sprintf(pattern, state);
     }
@@ -256,7 +264,7 @@ module.exports.timeInSeconds = timeInSeconds;
 
 module.exports.normalizeColorTemperature = normalizeColorTemperature;
 module.exports.normalizeItemState = normalizeItemState;
-module.exports.normalizeLockState = normalizeLockState;
+module.exports.normalizePropertyState = normalizePropertyState;
 module.exports.normalizeTemperatureScale = normalizeTemperatureScale;
 module.exports.normalizeThermostatMode = normalizeThermostatMode;
 module.exports.supportedDisplayCategory = supportedDisplayCategory;

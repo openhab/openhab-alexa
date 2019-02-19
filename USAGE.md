@@ -260,6 +260,18 @@ In openHAB a thermostat is modeled as many different items, typically there are 
     * Supported item type:
       * Player
     * Default category: OTHER
+  * `ContactSensor.detectionState`
+    * Items that represent a contact sensor that can be used to trigger Alexa routines
+    * Supported item type:
+      * Contact
+      * Switch
+    * Default category: CONTACT_SENSOR
+  * `MotionSensor.detectionState`
+    * Items that represent a motion sensor that can be used to trigger Alexa routines
+    * Supported item type:
+      * Contact
+      * Switch
+    * Default category: MOTION_SENSOR
 * Item Scale
   * With the introduction of the [unit of measurement](https://www.openhab.org/docs/concepts/units-of-measurement.html) concept, the item scale can be automatically determined for thermostat and temperature using that feature, removing the need of having to set a metadata scale parameter for each of the relevant items or groups.
   * Below are two examples; the scale on the first will be set to Fahrenheit based on how it is defined in the item state presentation pattern and the second one will be set based on your openHAB system regional settings (US=Fahrenheit; SI=Celsius).
@@ -276,15 +288,18 @@ In openHAB a thermostat is modeled as many different items, typically there are 
   * You can override this default value on items by adding it as a parameter to the metadata, ex:
 
   `Switch LightSwitch "Light Switch" {alexa="PowerController.powerState" [category="OTHER"]}`
-  * List of Alexa categories currently supported from Alexa Skill API docs:
+  * List of Alexa categories currently supported from [Alexa Skill API](https://developer.amazon.com/docs/device-apis/alexa-discovery.html#display-categories) docs:
 
 Category	| Description	| Notes
 ---------|-------------|-------
 ACTIVITY_TRIGGER	| Describes a combination of devices set to a specific state, when the state change must occur in a specific order. |For example, a "watch Netflix" scene might require the: 1. TV to be powered on & 2. Input set to HDMI1.	| Applies to Scenes
 CAMERA	| Indicates media devices with video or photo capabilities.	 
+CONTACT_SENSOR | Indicates an endpoint that detects and reports changes in contact between two surfaces.
 DOOR	| Indicates a door.	 
+DOORBELL | Indicates a doorbell.
 LIGHT	| Indicates light sources or fixtures.
 MICROWAVE | Indicates a microwave oven endpoint.	 
+MOTION_SENSOR | Indicates an endpoint that detects and reports movement in an area.
 OTHER	| An endpoint that cannot be described in on of the other categories.	 
 SCENE_TRIGGER	|Describes a combination of devices set to a specific state, when the order of the state change is not important. For example a bedtime scene might include turning off lights and lowering the thermostat, but the order is unimportant.	| Applies to Scenes
 SMARTLOCK	| Indicates an endpoint that locks.	 
@@ -444,6 +459,22 @@ Number SpeakerVolume "Speaker Volume" ["SpeakerVolume"]
 Number SpeakerVolume "Speaker Volume" {alexa="SpeakerVolume"}
 
 Number SpeakerVolume "Speaker Volume" {alexa="Speaker.volume"}
+```
+* ContactSensor
+```
+Contact ContactSensor "Contact Sensor" ["ContactSensor"]
+
+Contact ContactSensor "Contact Sensor" {alexa="ContactSensor"}
+
+Contact ContactSensor "Contact Sensor" {alexa="ContactSensor.detectionState"}
+```
+* MotionSensor
+```
+Contact MotionSensor "Motion Sensor" ["MotionSensor"]
+
+Contact MotionSensor "Motion Sensor" {alexa="MotionSensor"}
+
+Contact MotionSensor "Motion Sensor" {alexa="MotionSensor.detectionState"}
 ```
 
 ### Version 2 Item mapping
