@@ -10,6 +10,7 @@
 /**
  * An Amazon Echo Smart Home Skill API implementation for openHAB (v2.x)
  */
+var decamelize = require('decamelize');
 var uuid = require('uuid/v4');
 var log = require('./log.js');
 var utils = require('./utils.js');
@@ -43,38 +44,38 @@ exports.handleRequest = function (_directive, _callback) {
   var name = directive.header.name; // ex: AdjustBrightness
 
   switch (namespace) {
-    case "Alexa":
+    case 'Alexa':
       switch (name) {
         case 'ReportState':
           reportState();
       }
       break;
-    case "Alexa.Discovery":
+    case 'Alexa.Discovery':
       discoverDevices();
       break;
-    case "Alexa.PowerController":
+    case 'Alexa.PowerController':
       setPowerState();
       break;
-    case "Alexa.PowerLevelController":
-    case "Alexa.BrightnessController":
-    case "Alexa.PercentageController":
+    case 'Alexa.PowerLevelController':
+    case 'Alexa.BrightnessController':
+    case 'Alexa.PercentageController':
       adjustPercentage();
       break;
-    case "Alexa.ColorController":
+    case 'Alexa.ColorController':
       setColor();
       break;
-    case "Alexa.ColorTemperatureController":
+    case 'Alexa.ColorTemperatureController':
       switch(name) {
-        case "SetColorTemperature":
+        case 'SetColorTemperature':
           setColorTemperature();
           break;
-        case "DecreaseColorTemperature":
-        case "IncreaseColorTemperature":
+        case 'DecreaseColorTemperature':
+        case 'IncreaseColorTemperature':
           adjustColorTemperature();
           break;
       }
       break;
-    case "Alexa.ThermostatController":
+    case 'Alexa.ThermostatController':
       switch (name) {
         case 'AdjustTargetTemperature':
           adjustTargetTemperature();
@@ -87,10 +88,10 @@ exports.handleRequest = function (_directive, _callback) {
           break;
       }
       break;
-    case "Alexa.LockController":
+    case 'Alexa.LockController':
       setLockState();
       break;
-    case "Alexa.ChannelController":
+    case 'Alexa.ChannelController':
       switch (name) {
         case 'ChangeChannel':
           setChannel();
@@ -100,51 +101,51 @@ exports.handleRequest = function (_directive, _callback) {
           break;
       }
       break;
-    case "Alexa.InputController":
+    case 'Alexa.InputController':
       setInput();
       break;
-    case "Alexa.PlaybackController":
+    case 'Alexa.PlaybackController':
       setPlayback();
       break;
-    case "Alexa.SceneController":
+    case 'Alexa.SceneController':
       setScene();
       break;
-    case "Alexa.Speaker":
+    case 'Alexa.Speaker':
       switch (name) {
-        case "AdjustVolume":
+        case 'AdjustVolume':
           adjustSpeakerVolume();
           break;
-        case "SetVolume":
+        case 'SetVolume':
           setSpeakerVolume();
           break;
-        case "SetMute":
+        case 'SetMute':
           setSpeakerMute();
           break;
       }
       break;
-    case "Alexa.StepSpeaker":
+    case 'Alexa.StepSpeaker':
       switch (name) {
-        case "AdjustVolume":
+        case 'AdjustVolume':
           adjustStepSpeakerVolume();
           break;
-        case "SetMute":
+        case 'SetMute':
           setStepSpeakerMute();
           break;
       }
       break;
-    case "Alexa.CameraStreamController":
+    case 'Alexa.CameraStreamController':
       break;
     default:
   }
 };
 
 /**
- * Answers a "ReportState" request.  Returns the state(s) of an endpoint
+ * Answers a 'ReportState' request.  Returns the state(s) of an endpoint
  */
 function reportState() {
   // Generate properties response based on property map received
   //  and return as state report
-  getPropertiesResponseAndReturn();
+  getPropertiesResponseAndReturn(null, {header: {name: 'StateReport'}});
 }
 
 /**
@@ -167,32 +168,32 @@ function adjustPercentage() {
   var payloadValue;
 
   switch (directive.header.name) {
-    case "AdjustPowerLevel":
+    case 'AdjustPowerLevel':
       isSetCommand = false;
       propertyName = 'powerLevel';
       payloadValue = directive.payload.powerLevelDelta;
       break;
-    case "SetPowerLevel":
+    case 'SetPowerLevel':
       isSetCommand = true;
       propertyName = 'powerLevel';
       payloadValue = directive.payload.powerLevel;
       break;
-    case "AdjustPercentage":
+    case 'AdjustPercentage':
       isSetCommand = false;
       propertyName = 'percentage';
       payloadValue = directive.payload.percentageDelta;
       break;
-    case "SetPercentage":
+    case 'SetPercentage':
       isSetCommand = true;
       propertyName = 'percentage';
       payloadValue = directive.payload.percentage;
       break;
-    case "AdjustBrightness":
+    case 'AdjustBrightness':
       isSetCommand = false;
       propertyName = 'brightness';
       payloadValue = directive.payload.brightnessDelta;
       break;
-    case "SetBrightness":
+    case 'SetBrightness':
       isSetCommand = true;
       propertyName = 'brightness';
       payloadValue = directive.payload.brightness;
@@ -269,7 +270,7 @@ function adjustColorTemperature() {
           type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
           message: 'The light is currently set to a color.',
           currentDeviceMode: 'COLOR'
-        }));
+        }, directive.header.namespace));
         return;
       }
       // Generate error if state not a number
@@ -331,8 +332,8 @@ function setTargetTemperature() {
   if (directive.payload.targetSetpoint && !directive.payload.upperSetpoint && !directive.payload.lowerSetpoint &&
     !properties.targetSetpoint && properties.upperSetpoint && properties.lowerSetpoint) {
     // default range if not set
-    var upperRange = properties.upperSetpoint.parameters.scale == 'FAHRENHEIT' ? 1 : .5;
-    var lowerRange = properties.lowerSetpoint.parameters.scale == 'FAHRENHEIT' ? 1 : .5;
+    var upperRange = properties.upperSetpoint.parameters.scale === 'FAHRENHEIT' ? 1 : .5;
+    var lowerRange = properties.lowerSetpoint.parameters.scale === 'FAHRENHEIT' ? 1 : .5;
     // use user defined comfort range if set
     if (typeof properties.upperSetpoint.parameters.comfort_range !== 'undefined') {
       upperRange = parseFloat(properties.upperSetpoint.parameters.comfort_range);
@@ -353,7 +354,7 @@ function setTargetTemperature() {
     );
   }
 
-  log.debug('setTargetTemperature to values: ', JSON.stringify(postItems));
+  log.debug('setTargetTemperature to values:', JSON.stringify(postItems));
   postItemsAndReturn(postItems, 'ThermostatController');
 }
 
@@ -367,9 +368,9 @@ function adjustTargetTemperature() {
 
   // adjust target setpoint if defined otherwise upper/lower setpoints if in dual mode
   if (properties.targetSetpoint) {
-    propertyNames.push("targetSetpoint");
+    propertyNames.push('targetSetpoint');
   } else if (properties.upperSetpoint && properties.lowerSetpoint) {
-    propertyNames.push("upperSetpoint", "lowerSetpoint");
+    propertyNames.push('upperSetpoint', 'lowerSetpoint');
   }
   propertyNames.forEach(function (propertyName) {
     promises.push(new Promise(function (resolve, reject) {
@@ -385,10 +386,10 @@ function adjustTargetTemperature() {
     }));
   })
   Promise.all(promises).then(function (postItems) {
-    log.debug('adjustTargetTemperature to values: ', JSON.stringify(postItems));
+    log.debug('adjustTargetTemperature to values:', JSON.stringify(postItems));
     postItemsAndReturn(postItems, 'ThermostatController');
   }).catch(function (error) {
-    log.debug('adjustTargetTemperature failed with error: ' + JSON.stringify(error));
+    log.debug('adjustTargetTemperature failed with error:', JSON.stringify(error));
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -407,10 +408,9 @@ function setThermostatMode() {
     postItemsAndReturn([postItem], 'ThermostatController');
   } else {
     returnAlexaResponse(generateControlError({
-      type: "UNSUPPORTED_THERMOSTAT_MODE",
-      message: postItem.name + " doesn't support thermostat mode [" +
-        directive.payload.thermostatMode.value + "]",
-    }));
+      type: 'UNSUPPORTED_THERMOSTAT_MODE',
+      message: `${postItem.name} doesn't support thermostat mode [${directive.payload.thermostatMode.value}]`,
+    }, directive.header.namespace));
   }
 }
 
@@ -487,9 +487,10 @@ function setScene() {
   var response = {
     context: {},
     event: {
-      header: generateResponseHeader(
-        directive.header.name === 'Activate' ? 'ActivationStarted' : 'DeactivationStarted',
-        'Alexa.SceneController'),
+      header: generateResponseHeader({
+        name: directive.header.name === 'Activate' ? 'ActivationStarted' : 'DeactivationStarted',
+        namespace: directive.header.namespace
+      }),
       payload: {
         cause: {
           type: 'VOICE_INTERACTION'
@@ -498,7 +499,7 @@ function setScene() {
       }
     }
   };
-  postItemsAndReturn([postItem], 'SceneController', response);
+  postItemsAndReturn([postItem], 'SceneController', {response: response});
 }
 
 /**
@@ -571,7 +572,7 @@ function adjustStepSpeakerVolume() {
  */
 function setStepSpeakerMute() {
   var postItem = Object.assign(propertyMap.StepSpeaker.muted.item, {
-    state: directive.payload.mute ? "ON" : "OFF"
+    state: directive.payload.mute ? 'ON' : 'OFF'
   });
   postItemsAndReturn([postItem], 'StepSpeaker');
 }
@@ -580,25 +581,26 @@ function setStepSpeakerMute() {
  * Generic method to post list of items to OH
  *  and then return a formatted response to the Alexa request
  *
+ *
  * @param {Array}  items
  * @param {String} interfaceName
- * @param {Object} response         Return response object directly if provided (optional)
+ * @param {Object} parameters     Additional parameters [header, payload, response] (optional)
  */
-function postItemsAndReturn(items, interfaceName, response) {
+function postItemsAndReturn(items, interfaceName, parameters = {}) {
   var promises = [];
   items.forEach(function (item) {
     promises.push( rest.postItemCommand(directive.endpoint.scope.token,
       item.name, item.state));
   });
   Promise.all(promises).then(function () {
-    if (typeof response === 'object') {
-      log.debug('postItemsAndReturn done with response: ' + JSON.stringify(response));
-      returnAlexaResponse(response);
+    if (parameters.response) {
+      log.debug('postItemsAndReturn done with response:', JSON.stringify(parameters.response));
+      returnAlexaResponse(parameters.response);
     } else {
-      getPropertiesResponseAndReturn(interfaceName);
+      getPropertiesResponseAndReturn(interfaceName, parameters);
     }
   }).catch(function (error) {
-    log.debug('postItemsAndReturn failed with error: ' + JSON.stringify(error));
+    log.debug('postItemsAndReturn failed with error:', JSON.stringify(error));
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -609,8 +611,9 @@ function postItemsAndReturn(items, interfaceName, response) {
  *  and then return a formatted response to the Alexa request
  *
  * @param {String} interfaceName
+ * @param {Object} parameters     Additional parameters [header, payload, response] (optional)
  */
-function getPropertiesResponseAndReturn(interfaceName) {
+function getPropertiesResponseAndReturn(interfaceName, parameters = {}) {
   // Use the property map defined interface names if interfaceName not defined (e.g. reportState)
   var interfaceNames = interfaceName ? [interfaceName] : Object.keys(propertyMap);
   // Get list of all unique item objects part of interfaces
@@ -646,19 +649,19 @@ function getPropertiesResponseAndReturn(interfaceName) {
         properties: contextProperties.propertiesResponseForInterfaces(interfaceNames, propertyMap)
       },
       event: {
-        header: generateResponseHeader(interfaceName ? 'Response' : 'StateReport'),
+        header: generateResponseHeader(parameters.header),
         endpoint: {
           scope: directive.endpoint.scope,
           endpointId: directive.endpoint.endpointId
         },
-        payload: {}
+        payload: parameters.payload || {}
       }
     };
-    log.debug('getPropertiesResponseAndReturn done with response: ' + JSON.stringify(response));
+    log.debug('getPropertiesResponseAndReturn done with response:', JSON.stringify(response));
     returnAlexaResponse(response);
 
   }).catch(function (error) {
-    log.debug('getPropertiesResponseAndReturn failed with error: ' + JSON.stringify(error));
+    log.debug('getPropertiesResponseAndReturn failed with error:', JSON.stringify(error));
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -673,14 +676,13 @@ function returnAlexaResponse(response) {
 
 /**
  * V3 response header
- * @param  {String} name
- * @param  {String} namespace (optional)
+ * @param  {Object} parameters  [name, namespace]
  * @return {Object}
  */
-function generateResponseHeader(name, namespace) {
+function generateResponseHeader(parameters = {}) {
   var header = {
-    namespace: namespace || 'Alexa',
-    name: name,
+    namespace: parameters.namespace || 'Alexa',
+    name: parameters.name || 'Response',
     messageId: uuid(),
     payloadVersion: directive.header.payloadVersion
   };
@@ -694,13 +696,13 @@ function generateResponseHeader(name, namespace) {
 /**
  * V3 Control Error Response
  * @param  {Object} payload
- * @param  {Object} namespace (optional)
+ * @param  {String} namespace (optional)
  * @return {Object}
  */
 function generateControlError(payload, namespace) {
   var response = {
     event: {
-      header: generateResponseHeader('ErrorResponse', namespace),
+      header: generateResponseHeader({name: 'ErrorResponse', namespace: namespace}),
       payload: payload
     }
   };
@@ -709,7 +711,7 @@ function generateControlError(payload, namespace) {
     response.event.endpoint = directive.endpoint;
   }
 
-  log.debug('generateControlError done with response' + JSON.stringify(response));
+  log.debug('generateControlError done with response:', JSON.stringify(response));
   return response;
 }
 
@@ -719,8 +721,8 @@ function generateControlError(payload, namespace) {
  */
 function generateGenericErrorResponse() {
   return generateControlError({
-    type: "ENDPOINT_UNREACHABLE",
-    message: "Unable to reach device"
+    type: 'ENDPOINT_UNREACHABLE',
+    message: 'Unable to reach device'
   });
 }
 
@@ -734,11 +736,11 @@ function discoverDevices() {
     //items here are part of a group and should not be added individually
     var groupItems = [];
 
-    //log.debug("GET ITEMS: " + JSON.stringify(items));
+    //log.debug('GET ITEMS:', JSON.stringify(items));
 
     //convert v2 style label/tag to v3
     convertV2Items(items);
-    //log.debug("Items: " + JSON.stringify(items));
+    //log.debug('Items:', JSON.stringify(items));
     items.forEach(function (item) {
       //this item is already part of a group
       if (groupItems.includes(item.name)) {
@@ -760,20 +762,20 @@ function discoverDevices() {
 
       //OH Goups can act as a single Endpoint using its children for capabilities
       if (item.type === 'Group') {
-        item.metadata.alexa.value.split(',').forEach(function (capability) {
+        item.metadata.alexa.value.split(',').some(function (capability) {
           //found matching Endpoint capability
           var groupMatch;
           if (groupMatch = capability.match(ENDPOINT_PATTERN)) {
-            log.debug("found group " + groupMatch[0] + " for item " + item.name);
+            log.debug('found group ' + groupMatch[0] + ' for item ' + item.name);
             isEndpointGroup = true;
             item.members.forEach(function (member) {
-              log.debug("adding  " + member.name + " to group " + item.name);
+              log.debug('adding  ' + member.name + ' to group ' + item.name);
               groupItems.push(member.name);
               propertyMap.addItem(member);
             });
             //set display category for group
-            addDisplayCategory(groupMatch[1].toUpperCase());
-            return; //returns forEach
+            addDisplayCategory(decamelize(groupMatch[1]).toUpperCase());
+            return true;
           }
         });
       }
@@ -783,11 +785,11 @@ function discoverDevices() {
       }
 
       //no capability found
-      if (Object.keys(propertyMap).length == 0) {
+      if (Object.keys(propertyMap).length === 0) {
         return;  //just returns forEach function
       }
 
-      log.debug("Property Map: " + JSON.stringify(propertyMap));
+      log.debug('Property Map:', JSON.stringify(propertyMap));
 
       capabilities.push(alexaCapabilities.alexa());
 
@@ -795,59 +797,59 @@ function discoverDevices() {
         var properties = propertyMap[interfaceName];
         var capability;
         switch (interfaceName) {
-          case "PowerController":
+          case 'PowerController':
             capability = alexaCapabilities.powerController();
             break;
-          case "BrightnessController":
+          case 'BrightnessController':
             capability = alexaCapabilities.brightnessController();
             break;
-          case "PowerLevelController":
+          case 'PowerLevelController':
             capability = alexaCapabilities.powerLevelController();
             break;
-          case "PercentageController":
+          case 'PercentageController':
             capability = alexaCapabilities.percentageController();
             break;
-          case "ColorController":
+          case 'ColorController':
             capability = alexaCapabilities.colorController();
             break;
-          case "ColorTemperatureController":
+          case 'ColorTemperatureController':
             capability = alexaCapabilities.colorTemperatureController();
             break;
-          case "TemperatureSensor":
+          case 'TemperatureSensor':
             capability = alexaCapabilities.temperatureSensor();
             break;
-          case "ThermostatController":
+          case 'ThermostatController':
             capability = alexaCapabilities.thermostatController(properties.targetSetpoint,
               properties.upperSetpoint, properties.lowerSetpoint, properties.thermostatMode);
             break;
-          case "Speaker":
+          case 'Speaker':
             capability = alexaCapabilities.speaker(properties.volume, properties.muted);
             break;
-          case "StepSpeaker":
+          case 'StepSpeaker':
             capability = alexaCapabilities.stepSpeaker();
             break;
-          case "LockController":
+          case 'LockController':
             capability = alexaCapabilities.lockController();
             break;
-          case "CameraStreamController":
+          case 'CameraStreamController':
             capability = alexaCapabilities.cameraStreamController(properties.cameraStreamConfigurations);
             break;
-          case "SceneController":
+          case 'SceneController':
             capability = alexaCapabilities.sceneController(properties.scene);
             break;
-          case "ChannelController":
+          case 'ChannelController':
             capability = alexaCapabilities.channelController();
             break;
-          case "InputController":
+          case 'InputController':
             capability = alexaCapabilities.inputController();
             break;
-          case "PlaybackController":
+          case 'PlaybackController':
             capability = alexaCapabilities.playbackController();
             break;
-          case "ContactSensor":
+          case 'ContactSensor':
             capability = alexaCapabilities.contactSensor();
             break;
-          case "MotionSensor":
+          case 'MotionSensor':
             capability = alexaCapabilities.motionSensor();
             break;
           default:
@@ -855,7 +857,7 @@ function discoverDevices() {
         }
 
         if (capability) {
-          //log.debug("interfaceName: " + interfaceName + " capability: " + JSON.stringify(capability));
+          //log.debug(`interfaceName: ${interfaceName} capability:`, JSON.stringify(capability));
           capabilities.push(capability.capabilities);
           // add properties or capability categories if not endpoint group item
           if (!isEndpointGroup) {
@@ -885,7 +887,7 @@ function discoverDevices() {
 
     var header = {
       messageId: directive.header.messageId,
-      name: "Discover.Response",
+      name: 'Discover.Response',
       namespace: directive.header.namespace,
       payloadVersion: directive.header.payloadVersion
     };
@@ -911,10 +913,10 @@ function discoverDevices() {
       }
     };
 
-    log.debug('Discovery: ' + JSON.stringify(response));
+    log.debug('Discovery:', JSON.stringify(response));
     returnAlexaResponse(response);
   }).catch(function (error) {
-    log.error("discoverDevices failed: " + error.message);
+    log.error('discoverDevices failed: ' + error.message);
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -1089,23 +1091,23 @@ function getV2SwitchableCapabilities(item) {
   switch (item.type === 'Group' ? item.groupType : item.type) {
     case 'Switch':
       return [
-        "PowerController.powerState"
+        'PowerController.powerState'
       ];
     case 'Dimmer':
       return [
-        "PowerController.powerState",
-        "BrightnessController.brightness"
+        'PowerController.powerState',
+        'BrightnessController.brightness'
       ];
     case 'Color':
       return [
-        "PowerController.powerState",
-        "BrightnessController.brightness",
-        "ColorController.color"
+        'PowerController.powerState',
+        'BrightnessController.brightness',
+        'ColorController.color'
       ];
     case 'Rollershutter':
       return [
-        "PowerController.powerState",
-        "PercentageController.percentage"
+        'PowerController.powerState',
+        'PercentageController.percentage'
       ];
     default:
       return [];

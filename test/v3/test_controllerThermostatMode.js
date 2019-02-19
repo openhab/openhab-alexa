@@ -174,7 +174,7 @@ module.exports = [
       alexa: {
         "event": {
           "header": {
-            "namespace": "Alexa",
+            "namespace": "Alexa.ThermostatController",
             "name": "ErrorResponse"
           },
           "payload": {

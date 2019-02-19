@@ -14,8 +14,8 @@ var sprintf = require('sprintf-js').sprintf;
  */
 var DISPLAY_CATEGORIES = [
   'ACTIVITY_TRIGGER', 'CAMERA', 'CONTACT_SENSOR', 'DOOR', 'DOORBELL', 'LIGHT', 'MICROWAVE',
-  'MOTION_SENSOR', 'OTHER', 'SCENE_TRIGGER', 'SMARTLOCK', 'SMARTPLUG', 'SPEAKER', 'SWITCH',
-  'TEMPERATURE_SENSOR', 'THERMOSTAT', 'TV'
+  'MOTION_SENSOR', 'OTHER', 'SCENE_TRIGGER', 'SECURITY_PANEL', 'SMARTLOCK', 'SMARTPLUG',
+  'SPEAKER', 'SWITCH', 'TEMPERATURE_SENSOR', 'THERMOSTAT', 'TV'
 ];
 
 /**
@@ -29,7 +29,7 @@ var ITEM_TYPE_CAPABILITIES = {
   'ContactSensor':              {'detectionState': ['Contact', 'Switch']},
   'InputController':            {'input': ['Number', 'String']},
   'LockController':             {'lockState': ['Switch']},
-  'MotionSensor':              {'detectionState': ['Contact', 'Switch']},
+  'MotionSensor':               {'detectionState': ['Contact', 'Switch']},
   'PercentageController':       {'percentage': ['Dimmer', 'Rollershutter']},
   'PlaybackController':         {'playback': ['Player']},
   'PowerController':            {'powerState': ['Color', 'Dimmer', 'Rollershutter', 'Switch']},
@@ -104,7 +104,7 @@ function normalizeThermostatMode(mode, parameters = {}) {
 
 /**
  * Normalizes temperature scale between Alexa value and OH expected scale
- *    Temperature e.g. {value: 21.5, scale: "CELSIUS"}
+ *    Temperature e.g. {value: 21.5, scale: 'CELSIUS'}
  *
  * @param  {Object}  temperature
  * @param  {String}  scale
@@ -188,7 +188,7 @@ function normalizePropertyState(name, property) {
  * @return {String}
  */
 function normalizeItemState(item) {
-  var pattern = item.stateDescription ? item.stateDescription.pattern : undefined;
+  var pattern = item.stateDescription && item.stateDescription.pattern;
   var state = item.state;
   var type = item.type.split(':')[0];
 

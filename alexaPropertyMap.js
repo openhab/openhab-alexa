@@ -212,7 +212,7 @@ AlexaPropertyMap.prototype.getItemsByInterfaces = function(interfaceNames) {
       var item = properties[propertyName].item;
       var index = items.findIndex(i => i.name === item.name);
 
-       if (index == -1) {
+       if (index === -1) {
         items.push(Object.assign(item, {capabilities: [capability]}));
       } else {
         items[index].capabilities.push(capability);

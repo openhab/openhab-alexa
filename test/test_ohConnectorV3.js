@@ -80,7 +80,7 @@ describe('ohConnectorV3 Tests', function () {
             ohv3.handleRequest(utils.generateDirectiveRequest(test.directive), callback);
             // Wait for async functions
             setTimeout(function() {
-              // console.log("Capture: " + JSON.stringify(capture, null, 2));
+              // console.log("Capture:", JSON.stringify(capture, null, 2));
               assert.capturedCalls(capture.calls, test.expected.openhab);
               assert.capturedResult(capture.result, test.expected.alexa);
               done();

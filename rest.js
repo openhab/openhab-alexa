@@ -33,7 +33,7 @@ function getConfig() {
   );
   // Merge username & password if specified
   if (config.openhab.user && config.openhab.pass) {
-    config.openhab.userpass = config.openhab.user + ":" + config.openhab.pass;
+    config.openhab.userpass = `${config.openhab.user}:${config.openhab.pass}`;
   }
   return config;
 }
@@ -83,7 +83,7 @@ function getItemsRecursively(token) {
  */
 function getItemOrItems(token, itemName, parameters) {
   var options = {
-    method: "GET",
+    method: 'GET',
     uri: `${config.openhab.baseURL}/items${itemName ? '/' + itemName : ''}${parameters ? '?' + qs.stringify(parameters) : ''}`,
     headers: {
       'Authorization': ohAuthorizationHeader(token),
@@ -105,7 +105,7 @@ function getItemOrItems(token, itemName, parameters) {
 function postItemCommand(token, itemName, value) {
   var data = value.toString();
   var options = {
-    method: "POST",
+    method: 'POST',
     uri: `${config.openhab.baseURL}/items/${itemName}`,
     headers: {
       'Authorization': ohAuthorizationHeader(token),
@@ -116,7 +116,7 @@ function postItemCommand(token, itemName, value) {
   if (itemName) {
     return request(options);
   } else {
-    return Promise.reject("No item name provided");
+    return Promise.reject('No item name provided');
   }
 }
 module.exports.getItem = getItem;
