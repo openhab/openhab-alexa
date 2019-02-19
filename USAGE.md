@@ -301,7 +301,8 @@ LIGHT	| Indicates light sources or fixtures.
 MICROWAVE | Indicates a microwave oven endpoint.	 
 MOTION_SENSOR | Indicates an endpoint that detects and reports movement in an area.
 OTHER	| An endpoint that cannot be described in on of the other categories.	 
-SCENE_TRIGGER	|Describes a combination of devices set to a specific state, when the order of the state change is not important. For example a bedtime scene might include turning off lights and lowering the thermostat, but the order is unimportant.	| Applies to Scenes
+SCENE_TRIGGER	| Describes a combination of devices set to a specific state, when the order of the state change is not important. For example a bedtime scene might include turning off lights and lowering the thermostat, but the order is unimportant.	| Applies to Scenes
+SECURITY_PANEL | Indicates a security panel.
 SMARTLOCK	| Indicates an endpoint that locks.	 
 SMARTPLUG	| Indicates modules that are plugged into an existing electrical outlet.	| Can control a variety of devices.
 SPEAKER	| Indicates the endpoint is a speaker or speaker system.	 

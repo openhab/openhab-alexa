@@ -10,6 +10,7 @@
 /**
  * An Amazon Echo Smart Home Skill API implementation for openHAB (v2.x)
  */
+var decamelize = require('decamelize');
 var uuid = require('uuid/v4');
 var log = require('./log.js');
 var utils = require('./utils.js');
@@ -144,7 +145,7 @@ exports.handleRequest = function (_directive, _callback) {
 function reportState() {
   // Generate properties response based on property map received
   //  and return as state report
-  getPropertiesResponseAndReturn();
+  getPropertiesResponseAndReturn(null, {header: {name: 'StateReport'}});
 }
 
 /**
@@ -269,7 +270,7 @@ function adjustColorTemperature() {
           type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
           message: 'The light is currently set to a color.',
           currentDeviceMode: 'COLOR'
-        }));
+        }, directive.header.namespace));
         return;
       }
       // Generate error if state not a number
@@ -410,7 +411,7 @@ function setThermostatMode() {
       type: "UNSUPPORTED_THERMOSTAT_MODE",
       message: postItem.name + " doesn't support thermostat mode [" +
         directive.payload.thermostatMode.value + "]",
-    }));
+    }, directive.header.namespace));
   }
 }
 
@@ -487,9 +488,10 @@ function setScene() {
   var response = {
     context: {},
     event: {
-      header: generateResponseHeader(
-        directive.header.name === 'Activate' ? 'ActivationStarted' : 'DeactivationStarted',
-        'Alexa.SceneController'),
+      header: generateResponseHeader({
+        name: directive.header.name === 'Activate' ? 'ActivationStarted' : 'DeactivationStarted',
+        namespace: directive.header.namespace
+      }),
       payload: {
         cause: {
           type: 'VOICE_INTERACTION'
@@ -498,7 +500,7 @@ function setScene() {
       }
     }
   };
-  postItemsAndReturn([postItem], 'SceneController', response);
+  postItemsAndReturn([postItem], 'SceneController', {response: response});
 }
 
 /**
@@ -580,22 +582,23 @@ function setStepSpeakerMute() {
  * Generic method to post list of items to OH
  *  and then return a formatted response to the Alexa request
  *
+ *
  * @param {Array}  items
  * @param {String} interfaceName
- * @param {Object} response         Return response object directly if provided (optional)
+ * @param {Object} parameters     Additonal parameters [header, payload, response] (optional)
  */
-function postItemsAndReturn(items, interfaceName, response) {
+function postItemsAndReturn(items, interfaceName, parameters = {}) {
   var promises = [];
   items.forEach(function (item) {
     promises.push( rest.postItemCommand(directive.endpoint.scope.token,
       item.name, item.state));
   });
   Promise.all(promises).then(function () {
-    if (typeof response === 'object') {
-      log.debug('postItemsAndReturn done with response: ' + JSON.stringify(response));
-      returnAlexaResponse(response);
+    if (parameters.response) {
+      log.debug('postItemsAndReturn done with response: ' + JSON.stringify(parameters.response));
+      returnAlexaResponse(parameters.response);
     } else {
-      getPropertiesResponseAndReturn(interfaceName);
+      getPropertiesResponseAndReturn(interfaceName, parameters);
     }
   }).catch(function (error) {
     log.debug('postItemsAndReturn failed with error: ' + JSON.stringify(error));
@@ -609,8 +612,9 @@ function postItemsAndReturn(items, interfaceName, response) {
  *  and then return a formatted response to the Alexa request
  *
  * @param {String} interfaceName
+ * @param {Object} parameters     Additonal parameters [header, payload, response] (optional)
  */
-function getPropertiesResponseAndReturn(interfaceName) {
+function getPropertiesResponseAndReturn(interfaceName, parameters = {}) {
   // Use the property map defined interface names if interfaceName not defined (e.g. reportState)
   var interfaceNames = interfaceName ? [interfaceName] : Object.keys(propertyMap);
   // Get list of all unique item objects part of interfaces
@@ -646,12 +650,12 @@ function getPropertiesResponseAndReturn(interfaceName) {
         properties: contextProperties.propertiesResponseForInterfaces(interfaceNames, propertyMap)
       },
       event: {
-        header: generateResponseHeader(interfaceName ? 'Response' : 'StateReport'),
+        header: generateResponseHeader(parameters.header),
         endpoint: {
           scope: directive.endpoint.scope,
           endpointId: directive.endpoint.endpointId
         },
-        payload: {}
+        payload: parameters.payload || {}
       }
     };
     log.debug('getPropertiesResponseAndReturn done with response: ' + JSON.stringify(response));
@@ -673,14 +677,13 @@ function returnAlexaResponse(response) {
 
 /**
  * V3 response header
- * @param  {String} name
- * @param  {String} namespace (optional)
+ * @param  {Object} parameters  [name, namespace]
  * @return {Object}
  */
-function generateResponseHeader(name, namespace) {
+function generateResponseHeader(parameters = {}) {
   var header = {
-    namespace: namespace || 'Alexa',
-    name: name,
+    namespace: parameters.namespace || 'Alexa',
+    name: parameters.name || 'Response',
     messageId: uuid(),
     payloadVersion: directive.header.payloadVersion
   };
@@ -694,13 +697,13 @@ function generateResponseHeader(name, namespace) {
 /**
  * V3 Control Error Response
  * @param  {Object} payload
- * @param  {Object} namespace (optional)
+ * @param  {String} namespace (optional)
  * @return {Object}
  */
 function generateControlError(payload, namespace) {
   var response = {
     event: {
-      header: generateResponseHeader('ErrorResponse', namespace),
+      header: generateResponseHeader({name: 'ErrorResponse', namespace: namespace}),
       payload: payload
     }
   };
@@ -760,7 +763,7 @@ function discoverDevices() {
 
       //OH Goups can act as a single Endpoint using its children for capabilities
       if (item.type === 'Group') {
-        item.metadata.alexa.value.split(',').forEach(function (capability) {
+        item.metadata.alexa.value.split(',').some(function (capability) {
           //found matching Endpoint capability
           var groupMatch;
           if (groupMatch = capability.match(ENDPOINT_PATTERN)) {
@@ -772,8 +775,8 @@ function discoverDevices() {
               propertyMap.addItem(member);
             });
             //set display category for group
-            addDisplayCategory(groupMatch[1].toUpperCase());
-            return; //returns forEach
+            addDisplayCategory(decamelize(groupMatch[1]).toUpperCase());
+            return true;
           }
         });
       }
