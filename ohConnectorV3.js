@@ -210,23 +210,21 @@ function adjustPercentage() {
     postItem.state = payloadValue;
     postItemsAndReturn([postItem], interfaceName);
   } else {
-    rest.getItem(directive.endpoint.scope.token,
-      postItem.name).then(function (item) {
-        log.debug('adjustPercentage: item state ' +
-          item.state + ' delta ' + payloadValue);
+    getItemState(postItem).then(function (item) {
+      log.debug(`adjustPercentage: item state ${item.state} delta ${payloadValue}`);
 
-        //skip this if we don't have a number to start with
-        if (isNaN(item.state)) {
-          returnAlexaResponse(generateGenericErrorResponse());
-          return;
-        }
-        var state = parseInt(item.state) + parseInt(payloadValue);
-        postItem.state = state < 0 ? 0 : state < 100 ? state : 100;
-        postItemsAndReturn([postItem], interfaceName);
-      }).catch(function (error) {
-        returnAlexaResponse(generateGenericErrorResponse());
+      // Throw error if state not a number
+      if (isNaN(item.state)) {
+        throw 'Could not get numeric item state';
       }
-    );
+
+      var state = parseInt(item.state) + parseInt(payloadValue);
+      postItem.state = state < 0 ? 0 : state < 100 ? state : 100;
+      postItemsAndReturn([postItem], interfaceName);
+    }).catch(function (error) {
+      log.error('adjustPercentage failed with error:', JSON.stringify(error));
+      returnAlexaResponse(generateGenericErrorResponse());
+    });
   }
 }
 
@@ -262,52 +260,48 @@ function adjustColorTemperature() {
   var properties = propertyMap.ColorTemperatureController;
   var postItem = properties.colorTemperatureInKelvin.item;
 
-  rest.getItem(directive.endpoint.scope.token,
-    postItem.name).then(function (item) {
-      // Generate error if in color mode (color controller property defined & empty state)
-      if (propertyMap.ColorController && !parseInt(item.state)) {
-        returnAlexaResponse(generateControlError({
-          type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
-          message: 'The light is currently set to a color.',
-          currentDeviceMode: 'COLOR'
-        }, directive.header.namespace));
-        return;
-      }
-      // Generate error if state not a number
-      if (isNaN(item.state)) {
-        log.debug('adjustColorTemperature error: Could not get numeric item state');
-        returnAlexaResponse(generateGenericErrorResponse());
-        return;
-      }
-
-      var isIncreaseRequest = directive.header.name === 'IncreaseColorTemperature';
-      var increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment);
-      var state;
-
-      switch (item.type) {
-        case 'Dimmer':
-          // Send reverse command/value to OH since cold (0%) and warm (100%), depending if increment defined
-          if (isNaN(increment)) {
-            state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
-          } else {
-            state = parseInt(item.state) + (isIncreaseRequest ? -1 : 1) * increment;
-            state = state < 0 ? 0 : state < 100 ? state : 100;
-          }
-          break;
-        case 'Number':
-          // Increment current state by defined value as Number doesn't support IncreaseDecreaseType commands
-          state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * (increment || 500);
-          state = utils.normalizeColorTemperature(state, item.type);
-          break;
-      }
-
-      postItem.state = state;
-      log.debug('adjustColorTemperature to value: ' + postItem.state);
-      postItemsAndReturn([postItem], 'ColorTemperatureController');
+  getItemState(postItem).then(function (item) {
+    // Generate error if in color mode (color controller property defined & empty state)
+    if (propertyMap.ColorController && !parseInt(item.state)) {
+      returnAlexaResponse(generateControlError({
+        type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
+        message: 'The light is currently set to a color.',
+        currentDeviceMode: 'COLOR'
+      }, directive.header.namespace));
+      return;
     }
-  ).catch(function (error) {
-    log.error(`Could not get item: ${error}`);
-  })
+    // Throw error if state not a number
+    if (isNaN(item.state)) {
+      throw 'Could not get numeric item state';
+    }
+
+    var isIncreaseRequest = directive.header.name === 'IncreaseColorTemperature';
+    var increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment);
+    var state;
+
+    switch (item.type) {
+      case 'Dimmer':
+        // Send reverse command/value to OH since cold (0%) and warm (100%), depending if increment defined
+        if (isNaN(increment)) {
+          state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
+        } else {
+          state = parseInt(item.state) + (isIncreaseRequest ? -1 : 1) * increment;
+          state = state < 0 ? 0 : state < 100 ? state : 100;
+        }
+        break;
+      case 'Number':
+        // Increment current state by defined value as Number doesn't support IncreaseDecreaseType commands
+        state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * (increment || 500);
+        state = utils.normalizeColorTemperature(state, item.type);
+        break;
+    }
+
+    postItem.state = state;
+    postItemsAndReturn([postItem], 'ColorTemperatureController');
+  }).catch(function (error) {
+    log.error('adjustColorTemperature failed with error:', JSON.stringify(error));
+    returnAlexaResponse(generateGenericErrorResponse());
+  });
 }
 
 /**
@@ -373,23 +367,18 @@ function adjustTargetTemperature() {
     propertyNames.push('upperSetpoint', 'lowerSetpoint');
   }
   propertyNames.forEach(function (propertyName) {
-    promises.push(new Promise(function (resolve, reject) {
-      rest.getItem(directive.endpoint.scope.token,
-        properties[propertyName].item.name).then(function(item) {
-          resolve(Object.assign(properties[propertyName].item, {
-            state: parseFloat(item.state) + utils.normalizeTemperatureScale(
-              directive.payload.targetSetpointDelta, properties[propertyName].parameters.scale, true)
-          }));
-        }).catch(function (error) {
-          reject(error);
-        });
-    }));
-  })
+    promises.push(getItemState(properties[propertyName].item).then(item =>
+      Object.assign(properties[propertyName].item, {
+        state: parseFloat(item.state) + utils.normalizeTemperatureScale(
+          directive.payload.targetSetpointDelta, properties[propertyName].parameters.scale, true)
+      })
+    ));
+  });
   Promise.all(promises).then(function (postItems) {
     log.debug('adjustTargetTemperature to values:', JSON.stringify(postItems));
     postItemsAndReturn(postItems, 'ThermostatController');
   }).catch(function (error) {
-    log.debug('adjustTargetTemperature failed with error:', JSON.stringify(error));
+    log.error('adjustTargetTemperature failed with error:', JSON.stringify(error));
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -450,21 +439,20 @@ function setChannel() {
  */
 function adjustChannel() {
   var postItem = propertyMap.ChannelController.channel.item;
-  rest.getItem(directive.endpoint.scope.token,
-    postItem.name).then(function (item) {
-      var state = parseInt(item.state);
-      if (isNaN(state)) {
-        state = Math.abs(directive.payload.channelCount);
-      } else {
-        state += directive.payload.channelCount;
-      }
-      // Value defined as a string in alexa api
-      postItem.state = state.toString();
-      postItemsAndReturn([postItem], 'ChannelController');
-    }).catch(function (error) {
-      returnAlexaResponse(generateGenericErrorResponse());
+  getItemState(postItem).then(function (item) {
+    var state = parseInt(item.state);
+    if (isNaN(state)) {
+      state = Math.abs(directive.payload.channelCount);
+    } else {
+      state += directive.payload.channelCount;
     }
-  );
+    // Value defined as a string in alexa api
+    postItem.state = state.toString();
+    postItemsAndReturn([postItem], 'ChannelController');
+  }).catch(function (error) {
+    log.error('adjustChannel failed with error:', JSON.stringify(error));
+    returnAlexaResponse(generateGenericErrorResponse());
+  });
 }
 
 /**
@@ -520,20 +508,19 @@ function adjustSpeakerVolume() {
   var defaultIncrement = parseInt(propertyMap.Speaker.volume.parameters.increment);
   var volumeIncrement = directive.payload.volumeDefault && defaultIncrement > 0 ?
     (directive.payload.volume >= 0 ? 1 : -1) * defaultIncrement : directive.payload.volume;
-  rest.getItem(directive.endpoint.scope.token,
-    postItem.name).then(function (item) {
-      var state = parseInt(item.state);
-      if (isNaN(state)) {
-        state = Math.abs(volumeIncrement);
-      } else {
-        state += volumeIncrement;
-      }
-      postItem.state = state;
-      postItemsAndReturn([postItem], 'Speaker');
-    }).catch(function (error) {
-      returnAlexaResponse(generateGenericErrorResponse());
+  getItemState(postItem).then(function (item) {
+    var state = parseInt(item.state);
+    if (isNaN(state)) {
+      state = Math.abs(volumeIncrement);
+    } else {
+      state += volumeIncrement;
     }
-  );
+    postItem.state = state;
+    postItemsAndReturn([postItem], 'Speaker');
+  }).catch(function (error) {
+    log.error('adjustSpeakerVolume failed with error:', JSON.stringify(error));
+    returnAlexaResponse(generateGenericErrorResponse());
+  });
 }
 
 /**
@@ -561,20 +548,19 @@ function setSpeakerMute() {
  */
 function adjustStepSpeakerVolume() {
   var postItem = propertyMap.StepSpeaker.volume.item;
-  rest.getItem(directive.endpoint.scope.token,
-    postItem.name).then(function (item) {
-      var state = parseInt(item.state);
-      if (isNaN(state)) {
-        state = Math.abs(directive.payload.volumeSteps);
-      } else {
-        state += directive.payload.volumeSteps;
-      }
-      postItem.state = state;
-      postItemsAndReturn([postItem], 'StepSpeaker');
-    }).catch(function (error) {
-      returnAlexaResponse(generateGenericErrorResponse());
+  getItemState(postItem).then(function (item) {
+    var state = parseInt(item.state);
+    if (isNaN(state)) {
+      state = Math.abs(directive.payload.volumeSteps);
+    } else {
+      state += directive.payload.volumeSteps;
     }
-  );
+    postItem.state = state;
+    postItemsAndReturn([postItem], 'StepSpeaker');
+  }).catch(function (error) {
+    log.error('adjustStepSpeakerVolume failed with error:', JSON.stringify(error));
+    returnAlexaResponse(generateGenericErrorResponse());
+  });
 }
 
 /**
@@ -599,8 +585,7 @@ function setStepSpeakerMute() {
 function postItemsAndReturn(items, interfaceName, parameters = {}) {
   var promises = [];
   items.forEach(function (item) {
-    promises.push( rest.postItemCommand(directive.endpoint.scope.token,
-      item.name, item.state));
+    promises.push(rest.postItemCommand(directive.endpoint.scope.token, item.name, item.state));
   });
   Promise.all(promises).then(function () {
     if (parameters.response) {
@@ -610,7 +595,7 @@ function postItemsAndReturn(items, interfaceName, parameters = {}) {
       getPropertiesResponseAndReturn(interfaceName, parameters);
     }
   }).catch(function (error) {
-    log.debug('postItemsAndReturn failed with error:', JSON.stringify(error));
+    log.error('postItemsAndReturn failed with error:', JSON.stringify(error));
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -631,21 +616,12 @@ function getPropertiesResponseAndReturn(interfaceName, parameters = {}) {
   var promises = [];
 
   interfaceItems.forEach(function (item) {
-    promises.push(new Promise(function (resolve, reject) {
-      // Use item sensor name over standard item name, if defined, to get the accurate current state
-      var itemName = item.sensor || item.name;
-      rest.getItem(directive.endpoint.scope.token,
-        itemName).then(function (result) {
-          // Normalize item state
-          result.state = utils.normalizeItemState(result);
-          // Update item information in propertyMap object for each item capabilities
-          item.capabilities.forEach(function (capability) {
-            propertyMap[capability.interface][capability.property].item = result;
-          });
-          resolve(result);
-      }).catch(function (error) {
-        reject(error);
+    promises.push(getItemState(item).then(function (result) {
+      // Update item information in propertyMap object for each item capabilities
+      item.capabilities.forEach(function (capability) {
+        propertyMap[capability.interface][capability.property].item = result;
       });
+      return result;
     }));
   });
   Promise.all(promises).then(function (items) {
@@ -671,8 +647,22 @@ function getPropertiesResponseAndReturn(interfaceName, parameters = {}) {
     returnAlexaResponse(response);
 
   }).catch(function (error) {
-    log.debug('getPropertiesResponseAndReturn failed with error:', JSON.stringify(error));
+    log.error('getPropertiesResponseAndReturn failed with error:', JSON.stringify(error));
     returnAlexaResponse(generateGenericErrorResponse());
+  });
+}
+
+/**
+ * Returns item state using item sensor name, if defined, over standard one
+ * @param  {Object}  item
+ * @return {Promise}
+ */
+function getItemState(item) {
+  var itemName = item.sensor || item.name;
+  return rest.getItem(directive.endpoint.scope.token, itemName).then(function (result) {
+    // Normalize item state
+    result.state = utils.normalizeItemState(result);
+    return result;
   });
 }
 
@@ -926,7 +916,7 @@ function discoverDevices() {
     log.debug('Discovery:', JSON.stringify(response));
     returnAlexaResponse(response);
   }).catch(function (error) {
-    log.error('discoverDevices failed: ' + error.message);
+    log.error('discoverDevices failed with error:', JSON.stringify(error));
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }

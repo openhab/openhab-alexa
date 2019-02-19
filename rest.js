@@ -17,6 +17,7 @@ var config = getConfig();
 
 /**
  * Get config
+ * @return {Object}
  */
 function getConfig() {
   // Default configuration
@@ -40,7 +41,8 @@ function getConfig() {
 
 /**
  * Returns openHAB authorization header value
- * @param  {String} token
+ * @param  {String}   token
+ * @return {String}
  */
 function ohAuthorizationHeader(token) {
   if (config.openhab.userpass) {
@@ -56,8 +58,7 @@ function ohAuthorizationHeader(token) {
  * Returns a single item
  * @param  {String}   token
  * @param  {String}   itemName
- * @param  {Function} success
- * @param  {Function} failure
+ * @return {Promise}
  */
 function getItem(token, itemName) {
   return getItemOrItems(token, itemName, null);
@@ -66,8 +67,7 @@ function getItem(token, itemName) {
 /**
  * Returns all items recursively with alexa metadata
  * @param  {String}   token
- * @param  {Function} success
- * @param  {Function} failure
+ * @return {Promise}
  */
 function getItemsRecursively(token) {
   return getItemOrItems(token, null, {'metadata': 'alexa', 'recursive': true});
@@ -78,8 +78,7 @@ function getItemsRecursively(token) {
  * @param  {String}   token
  * @param  {String}   itemName
  * @param  {Object}   parameters
- * @param  {Function} success
- * @param  {Function} failure
+ * @return {Promise}
  */
 function getItemOrItems(token, itemName, parameters) {
   var options = {
@@ -99,8 +98,7 @@ function getItemOrItems(token, itemName, parameters) {
  * @param  {String}   token
  * @param  {String}   itemName
  * @param  {String}   value
- * @param  {Function} success
- * @param  {Function} failure
+ * @return {Promise}
  **/
 function postItemCommand(token, itemName, value) {
   var data = value.toString();
