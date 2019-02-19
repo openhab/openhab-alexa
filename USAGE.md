@@ -220,11 +220,15 @@ In openHAB a thermostat is modeled as many different items, typically there are 
         * true (default if omitted)
         * false
   * `ChannelController.channel`
-    * Items that represent a channel
+    * Items that represent a channel. A channel mapping may be specified in metadata parameters allowing channel request by name. (All channel name mappings must be in uppercase)
     * Supported item type:
       * Number
       * String
     * Default category: TV
+    * supports additional properties:
+      * `<channelName1>`=`<channelNumber1>`
+      * `<channelName2>`=`<channelNumber2>`
+      * ...
   * `InputController.input`
     * Items that represent a source input (ex, "HDMI 1", or "MUSIC" on a stereo)
     * Supported item type:

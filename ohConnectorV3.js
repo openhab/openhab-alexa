@@ -429,10 +429,20 @@ function setLockState() {
  * Sends the channel value to a string or number item
  */
 function setChannel() {
-  var postItem = Object.assign(propertyMap.ChannelController.channel.item, {
-    state: directive.payload.channel.number
+  var properties = propertyMap.ChannelController;
+  var postItem = Object.assign(properties.channel.item, {
+    state: directive.payload.channel.number ||
+      String(properties.channel.parameters[directive.payload.channelMetadata.name.toUpperCase()])
   });
-  postItemsAndReturn([postItem], 'ChannelController');
+
+  if (!isNaN(postItem.state)) {
+    postItemsAndReturn([postItem], 'ChannelController');
+  } else {
+    returnAlexaResponse(generateControlError({
+      type: 'INVALID_VALUE',
+      message: `Invalid channel name [${directive.payload.channelMetadata.name}]`
+    }));
+  }
 }
 
 /**
