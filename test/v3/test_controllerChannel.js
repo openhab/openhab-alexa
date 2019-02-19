@@ -54,6 +54,95 @@ module.exports = [
     }
   },
   {
+    description: "change channel by name",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ChannelController",
+        "name": "ChangeChannel"
+      },
+      "endpoint": {
+        "endpointId": "gTelevision",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ChannelController": {"channel": {"parameters": {
+              "FOO": 12, "BAR": 34, "BAZ": 56, "QUX": 78}, "item": {"name": "gTelevision"}}}
+          })
+        }
+      },
+      "payload": {
+        "channel": {},
+        "channelMetadata": {
+          "name": "BAZ"
+        }
+      }
+    },
+    mocked: {
+      openhab: {"name": "gTelevision", "state": "56", "type": "Number"}
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.ChannelController",
+            "name": "channel",
+            "value": {
+              "number": "56"
+            }
+          }]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
+          }
+        }
+      },
+      openhab: [
+        {"name": "gTelevision", "value": "56"}
+      ]
+    }
+  },
+  {
+    description: "change channel invalid value",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ChannelController",
+        "name": "ChangeChannel"
+      },
+      "endpoint": {
+        "endpointId": "gTelevision",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ChannelController": {"channel": {"parameters": {
+              "FOO": 12, "BAR": 34}, "item": {"name": "gTelevision"}}}
+          })
+        }
+      },
+      "payload": {
+        "channel": {},
+        "channelMetadata": {
+          "name": "BAZ"
+        }
+      }
+    },
+    mocked: {},
+    expected: {
+      alexa: {
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "ErrorResponse"
+          },
+          "payload": {
+            type: "INVALID_VALUE",
+            message: "Invalid channel name [BAZ]",
+          }
+        }
+      },
+      openhab: []
+    }
+  },
+  {
     description: "skip channel",
     directive: {
       "header": {
