@@ -15,27 +15,27 @@ var assert = require('chai').assert;
  */
 function generateDirectiveRequest(request) {
   var template = {
-    "header": {
-      "namespace": null,
-      "name": null,
-      "messageId": "message-id",
-      "correlationToken": "correlation-token",
-      "payloadVersion": "3"
+    'header': {
+      'namespace': null,
+      'name': null,
+      'messageId': 'message-id',
+      'correlationToken': 'correlation-token',
+      'payloadVersion': '3'
     },
-    "endpoint": {
-      "endpointId": null,
-      "cookie": {},
-      "scope": {
-        "type": "BearerToken",
-        "token": "access-token-from-skill"
+    'endpoint': {
+      'endpointId': null,
+      'cookie': {},
+      'scope': {
+        'type': 'BearerToken',
+        'token': 'access-token-from-skill'
       }
     },
-    "payload": {}
+    'payload': {}
   };
   var directive = {
-    "header": Object.assign(template.header, request.header),
-    "endpoint": Object.assign(template.endpoint, request.endpoint),
-    "payload": Object.assign(template.payload, request.payload)
+    'header': Object.assign(template.header, request.header),
+    'endpoint': Object.assign(template.endpoint, request.endpoint),
+    'payload': Object.assign(template.payload, request.payload)
   };
   // remove endpoint if no id defined
   if (directive.endpoint.endpointId === null) {

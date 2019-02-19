@@ -104,7 +104,7 @@ function normalizeThermostatMode(mode, parameters = {}) {
 
 /**
  * Normalizes temperature scale between Alexa value and OH expected scale
- *    Temperature e.g. {value: 21.5, scale: "CELSIUS"}
+ *    Temperature e.g. {value: 21.5, scale: 'CELSIUS'}
  *
  * @param  {Object}  temperature
  * @param  {String}  scale

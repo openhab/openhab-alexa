@@ -21,12 +21,12 @@ var AlexaContextProperties = function () {
  */
 AlexaContextProperties.prototype.powerStateProperty = function (state) {
   // Extract brightness level from color item state
-  if (state.split(',').length == 3) {
+  if (state.split(',').length === 3) {
     state = state.split(',').pop();
   }
   if (!isNaN(state)) {
     var num = parseInt(state);
-    state = num > 0 ? "ON" : "OFF"
+    state = num > 0 ? 'ON' : 'OFF'
   }
   return this.generateProperty('Alexa.PowerController', 'powerState', state);
 }
@@ -37,11 +37,11 @@ AlexaContextProperties.prototype.powerStateProperty = function (state) {
  */
 AlexaContextProperties.prototype.percentageStateProperty = function (state) {
   // Extract brightness level from color item state
-  if (state.split(',').length == 3) {
+  if (state.split(',').length === 3) {
     state = state.split(',').pop();
   }
   if (isNaN(state)) {
-    state = state === "ON" ? 100 : 0;
+    state = state === 'ON' ? 100 : 0;
   }
   return this.generateProperty('Alexa.PercentageController', 'percentage', parseInt(state));
 }
@@ -52,11 +52,11 @@ AlexaContextProperties.prototype.percentageStateProperty = function (state) {
  */
 AlexaContextProperties.prototype.brightnessStateProperty = function (state) {
   // Extract brightness level from color item state
-  if (state.split(',').length == 3) {
+  if (state.split(',').length === 3) {
     state = state.split(',').pop();
   }
   if (isNaN(state)) {
-    state = state === "ON" ? 100 : 0;
+    state = state === 'ON' ? 100 : 0;
   }
   return this.generateProperty('Alexa.BrightnessController', 'brightness', parseInt(state));
 }
@@ -67,7 +67,7 @@ AlexaContextProperties.prototype.brightnessStateProperty = function (state) {
  */
 AlexaContextProperties.prototype.powerLevelStateProperty = function (state) {
   if (isNaN(state)) {
-    state = state === "ON" ? 100 : 0;
+    state = state === 'ON' ? 100 : 0;
   }
   return this.generateProperty('Alexa.PowerLevelController', 'powerLevel', parseInt(state));
 }
@@ -188,7 +188,7 @@ AlexaContextProperties.prototype.inputStateProperty = function (state) {
  * @param {string} state
  */
 AlexaContextProperties.prototype.speakerMutedStateProperty = function (state) {
-  var muted = state === "ON" ? true : false;
+  var muted = state === 'ON' ? true : false;
   return this.generateProperty('Alexa.Speaker', 'muted', muted);
 }
 
@@ -221,7 +221,7 @@ AlexaContextProperties.prototype.motionSensorStateProperty = function (state) {
  */
 AlexaContextProperties.prototype.endpointHealthProperty = function () {
   return this.generateProperty('Alexa.EndpointHealth', 'connectivity', {
-    value: "OK"
+    value: 'OK'
   });
 }
 
@@ -254,48 +254,48 @@ AlexaContextProperties.prototype.propertiesResponseForInterfaces = function (int
   interfaceNames.forEach(function (interfaceName) {
     var properties = propertyMap[interfaceName];
     switch (interfaceName) {
-      case "PowerController": //Switch, Dimmer [Switchable]
+      case 'PowerController': //Switch, Dimmer [Switchable]
         var item = properties.powerState.item;
         response.push(self.powerStateProperty(item.state));
         break;
-      case "PowerLevelController": //Dimmer or Number, Rollershutter [Lighting]
+      case 'PowerLevelController': //Dimmer or Number, Rollershutter [Lighting]
         var item = properties.powerLevel.item;
         response.push(self.powerLevelStateProperty(item.state));
         break;
-      case "BrightnessController":
+      case 'BrightnessController':
         var item = properties.brightness.item;
         response.push(self.brightnessStateProperty(item.state));
         break;
-      case "PercentageController":
+      case 'PercentageController':
         var item = properties.percentage.item;
         response.push(self.percentageStateProperty(item.state));
         break;
-      case "ColorController": //Color [Lighting]
+      case 'ColorController': //Color [Lighting]
         var item = properties.color.item;
         response.push(self.colorStateProperty(item.state));
         break;
-      case "ColorTemperatureController": //Dimmer or Number
+      case 'ColorTemperatureController': //Dimmer or Number
         var item = properties.colorTemperatureInKelvin.item;
         var state = utils.normalizeColorTemperature(item.state, item.type);
         response.push(self.colorTemperatureStateProperty(state));
         break;
-      case "ThermostatController": //Group [Thermostat]
+      case 'ThermostatController': //Group [Thermostat]
         if (properties.targetSetpoint) {
           var item = properties.targetSetpoint.item;
           var scale = properties.targetSetpoint.parameters.scale ?
-            properties.targetSetpoint.parameters.scale.toUpperCase() : "CELSIUS";
+            properties.targetSetpoint.parameters.scale.toUpperCase() : 'CELSIUS';
           response.push(self.targetSetpointStateProperty(item.state, scale));
         }
         if (properties.upperSetpoint) {
           var item = properties.upperSetpoint.item;
           var scale = properties.upperSetpoint.parameters.scale ?
-            properties.upperSetpoint.parameters.scale.toUpperCase() : "CELSIUS";
+            properties.upperSetpoint.parameters.scale.toUpperCase() : 'CELSIUS';
           response.push(self.upperSetpointStateProperty(item.state, scale));
         }
         if (properties.lowerSetpoint) {
           var item = properties.lowerSetpoint.item;
           var scale = properties.lowerSetpoint.parameters.scale ?
-            properties.lowerSetpoint.parameters.scale.toUpperCase() : "CELSIUS";
+            properties.lowerSetpoint.parameters.scale.toUpperCase() : 'CELSIUS';
           response.push(self.lowerSetpointStateProperty(item.state, scale));
         }
         if (properties.thermostatMode) {
@@ -304,29 +304,29 @@ AlexaContextProperties.prototype.propertiesResponseForInterfaces = function (int
           response.push(self.thermostatModeStateProperty(state));
         }
         break;
-      case "TemperatureSensor":
+      case 'TemperatureSensor':
         var item = properties.temperature.item;
         var scale = properties.temperature.parameters.scale ?
-          properties.temperature.parameters.scale.toUpperCase() : "CELSIUS";
+          properties.temperature.parameters.scale.toUpperCase() : 'CELSIUS';
         response.push(self.temperatureSensorStateProperty(item.state, scale));
         break;
-      case "LockController": //Switch [Lock]
+      case 'LockController': //Switch [Lock]
         var state = utils.normalizePropertyState('lockState', properties.lockState);
         response.push(self.lockStateProperty(state));
         break;
-      case "ChannelController": //Number [Alexa@Channel]
+      case 'ChannelController': //Number [Alexa@Channel]
         var item = properties.channel.item;
         response.push(self.channelStateProperty(item.state));
         break;
-      case "InputController": //String [Alexa@Input]
+      case 'InputController': //String [Alexa@Input]
         var item = properties.input.item;
         response.push(self.inputStateProperty(item.state));
         break;
-      case "PlaybackController": //Player or Group? [Alexa@Player]
+      case 'PlaybackController': //Player or Group? [Alexa@Player]
         break;
-      case "SceneController": //Switch ? [Scene]
+      case 'SceneController': //Switch ? [Scene]
         break;
-      case "Speaker": //Group ? (volume dimmer, mute switch) [Alexa@Speaker]
+      case 'Speaker': //Group ? (volume dimmer, mute switch) [Alexa@Speaker]
         if (properties.muted) {
           var item = properties.muted.item;
           response.push(self.speakerMutedStateProperty(item.state));
@@ -336,15 +336,15 @@ AlexaContextProperties.prototype.propertiesResponseForInterfaces = function (int
           response.push(self.speakerVolumeStateProperty(item.state));
         }
         break;
-      case "StepSpeaker": //Group ? (steup string, mute, not really sure) [Alexa@StepSpeaker]
+      case 'StepSpeaker': //Group ? (steup string, mute, not really sure) [Alexa@StepSpeaker]
         break;
-      case "CameraStreamController":  //not supported.
+      case 'CameraStreamController':  //not supported.
         break;
-      case "ContactSensor":
+      case 'ContactSensor':
         var state = utils.normalizePropertyState('detectionState', properties.detectionState);
         response.push(self.contactSensorStateProperty(state));
         break;
-      case "MotionSensor":
+      case 'MotionSensor':
         var state = utils.normalizePropertyState('detectionState', properties.detectionState);
         response.push(self.motionSensorStateProperty(state));
         break;
