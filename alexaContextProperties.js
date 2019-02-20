@@ -24,8 +24,8 @@ AlexaContextProperties.prototype.powerStateProperty = function (state) {
   if (state.split(',').length === 3) {
     state = state.split(',').pop();
   }
-  if (!isNaN(state)) {
-    var num = parseInt(state);
+  var num = parseInt(state);
+  if (!isNaN(num)) { 
     state = num > 0 ? 'ON' : 'OFF'
   }
   return this.generateProperty('Alexa.PowerController', 'powerState', state);
