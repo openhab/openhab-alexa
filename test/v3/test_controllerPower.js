@@ -56,7 +56,7 @@ module.exports = [
       },
     },
     mocked: {
-      openhab: {"name": "light1", "state": "100", "type": "Dimmer"}
+      openhab: {"name": "light1", "state": "100", "type": "Dimmer", "stateDescription": {"pattern": ">%d%<"}}
     },
     expected: {
       alexa: {
