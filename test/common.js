@@ -8,6 +8,11 @@
  */
 var assert = require('chai').assert;
 
+// set log level to error in test environment
+if (process.env.NODE_ENV === 'test') {
+  process.env.LOG_LEVEL = 'ERROR';
+}
+
 /**
  * Generate directive request based of default template
  * @param  {*} request
