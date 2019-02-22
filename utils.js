@@ -19,6 +19,11 @@ var DISPLAY_CATEGORIES = [
 ];
 
 /**
+ * Define OH state description formatter pattern
+ */
+var ITEM_STATE_FORMATTER_PATTERN = /%(?:[.0]\d+)?[dfs]/;
+
+/**
  * Define openHAB item type supported capabilities
  */
 var ITEM_TYPE_CAPABILITIES = {
@@ -47,7 +52,7 @@ var ITEM_TYPE_CAPABILITIES = {
 /**
  * Define alexa property state mapping based on OH item type
  */
-ITEM_TYPE_PROPERTY_STATE_MAPPING = {
+var ITEM_TYPE_PROPERTY_STATE_MAPPING = {
   'detectionState': {
     'Contact': {CLOSED: 'NOT_DETECTED', OPEN: 'DETECTED'},
     'Switch':  {OFF: 'NOT_DETECTED', ON: 'DETECTED'}
@@ -188,18 +193,19 @@ function normalizePropertyState(name, property) {
  * @return {String}
  */
 function normalizeItemState(item) {
-  var pattern = item.stateDescription && item.stateDescription.pattern;
+  var format = item.stateDescription && item.stateDescription.pattern &&
+    item.stateDescription.pattern.match(ITEM_STATE_FORMATTER_PATTERN);
   var state = item.state;
   var type = item.type.split(':')[0];
 
-  if (pattern && state != 'NULL') {
+  if (format && state != 'NULL') {
     switch (type) {
       case 'Dimmer':
       case 'Number':
       case 'Rollershutter':
-        return sprintf(pattern, parseFloat(state));
+        return sprintf(format[0], parseFloat(state));
       case 'String':
-        return sprintf(pattern, state);
+        return sprintf(format[0], state);
     }
   }
   return state;
