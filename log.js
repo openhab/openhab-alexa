@@ -1,13 +1,16 @@
-const winston = require('winston');
+const { createLogger, format, transports } = require('winston');
 
 let setLevel = typeof (process.env.LOG_LEVEL) !== 'undefined' ? process.env.LOG_LEVEL.toLowerCase() : 'debug';
 
-const logger = winston.createLogger({
+const logger = createLogger({
     level: setLevel,
     levels : { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, trace: 5 },
-    format: winston.format.simple(),
+    format: format.combine(
+      format.splat(),
+      format.simple()
+    ),
     transports: [
-        new winston.transports.Console()
+        new transports.Console()
     ]
   });
 

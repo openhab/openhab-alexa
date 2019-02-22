@@ -20,7 +20,7 @@
     "setup": "node-lambda setup",
     "run": "node-lambda run",
     "deploy": "node-lambda deploy",
-    "test": "NODE_ENV=test LOG_LEVEL=error ./node_modules/mocha/bin/mocha --reporter spec test/*.js"
+    "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --reporter spec test/*.js"
   },
   "dependencies": {
     "decamelize": "^2.0.0",

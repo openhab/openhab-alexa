@@ -15,7 +15,7 @@ var ohv3 = require('./ohConnectorV3.js');
  * Incoming events from Alexa Lighting APIs are processed via this method.
  */
 exports.handler = function (event, context, callback) {
-  log.debug('Input: ' + JSON.stringify(event));
+  log.debug('Input: ', event);
   var version = parseInt(event.directive ? event.directive.header.payloadVersion : event.header.payloadVersion);
   switch (version) {
     case 3:

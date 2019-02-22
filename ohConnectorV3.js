@@ -222,7 +222,7 @@ function adjustPercentage() {
       postItem.state = state < 0 ? 0 : state < 100 ? state : 100;
       postItemsAndReturn([postItem], interfaceName);
     }).catch(function (error) {
-      log.error('adjustPercentage failed with error:', JSON.stringify(error));
+      log.error('adjustPercentage failed with error:', error);
       returnAlexaResponse(generateGenericErrorResponse());
     });
   }
@@ -299,7 +299,7 @@ function adjustColorTemperature() {
     postItem.state = state;
     postItemsAndReturn([postItem], 'ColorTemperatureController');
   }).catch(function (error) {
-    log.error('adjustColorTemperature failed with error:', JSON.stringify(error));
+    log.error('adjustColorTemperature failed with error:', error);
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -348,7 +348,7 @@ function setTargetTemperature() {
     );
   }
 
-  log.debug('setTargetTemperature to values:', JSON.stringify(postItems));
+  log.debug('setTargetTemperature to values:', postItems);
   postItemsAndReturn(postItems, 'ThermostatController');
 }
 
@@ -375,10 +375,10 @@ function adjustTargetTemperature() {
     ));
   });
   Promise.all(promises).then(function (postItems) {
-    log.debug('adjustTargetTemperature to values:', JSON.stringify(postItems));
+    log.debug('adjustTargetTemperature to values:', postItems);
     postItemsAndReturn(postItems, 'ThermostatController');
   }).catch(function (error) {
-    log.error('adjustTargetTemperature failed with error:', JSON.stringify(error));
+    log.error('adjustTargetTemperature failed with error:', error);
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -450,7 +450,7 @@ function adjustChannel() {
     postItem.state = state.toString();
     postItemsAndReturn([postItem], 'ChannelController');
   }).catch(function (error) {
-    log.error('adjustChannel failed with error:', JSON.stringify(error));
+    log.error('adjustChannel failed with error:', error);
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -518,7 +518,7 @@ function adjustSpeakerVolume() {
     postItem.state = state;
     postItemsAndReturn([postItem], 'Speaker');
   }).catch(function (error) {
-    log.error('adjustSpeakerVolume failed with error:', JSON.stringify(error));
+    log.error('adjustSpeakerVolume failed with error:', error);
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -558,7 +558,7 @@ function adjustStepSpeakerVolume() {
     postItem.state = state;
     postItemsAndReturn([postItem], 'StepSpeaker');
   }).catch(function (error) {
-    log.error('adjustStepSpeakerVolume failed with error:', JSON.stringify(error));
+    log.error('adjustStepSpeakerVolume failed with error:', error);
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -589,13 +589,13 @@ function postItemsAndReturn(items, interfaceName, parameters = {}) {
   });
   Promise.all(promises).then(function () {
     if (parameters.response) {
-      log.debug('postItemsAndReturn done with response:', JSON.stringify(parameters.response));
+      log.debug('postItemsAndReturn done with response:', parameters.response);
       returnAlexaResponse(parameters.response);
     } else {
       getPropertiesResponseAndReturn(interfaceName, parameters);
     }
   }).catch(function (error) {
-    log.error('postItemsAndReturn failed with error:', JSON.stringify(error));
+    log.error('postItemsAndReturn failed with error:', error);
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -643,11 +643,11 @@ function getPropertiesResponseAndReturn(interfaceName, parameters = {}) {
         payload: parameters.payload || {}
       }
     };
-    log.debug('getPropertiesResponseAndReturn done with response:', JSON.stringify(response));
+    log.debug('getPropertiesResponseAndReturn done with response:', response);
     returnAlexaResponse(response);
 
   }).catch(function (error) {
-    log.error('getPropertiesResponseAndReturn failed with error:', JSON.stringify(error));
+    log.error('getPropertiesResponseAndReturn failed with error:', error);
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
@@ -711,7 +711,7 @@ function generateControlError(payload, namespace) {
     response.event.endpoint = directive.endpoint;
   }
 
-  log.debug('generateControlError done with response:', JSON.stringify(response));
+  log.debug('generateControlError done with response:', response);
   return response;
 }
 
@@ -736,11 +736,11 @@ function discoverDevices() {
     //items here are part of a group and should not be added individually
     var groupItems = [];
 
-    //log.debug('GET ITEMS:', JSON.stringify(items));
+    log.debug('GET ITEMS:', items);
 
     //convert v2 style label/tag to v3
     convertV2Items(items);
-    //log.debug('Items:', JSON.stringify(items));
+    //log.debug('Items:', items);
     items.forEach(function (item) {
       //this item is already part of a group
       if (groupItems.includes(item.name)) {
@@ -789,7 +789,7 @@ function discoverDevices() {
         return;  //just returns forEach function
       }
 
-      log.debug('Property Map:', JSON.stringify(propertyMap));
+      log.debug('Property Map:', propertyMap);
 
       capabilities.push(alexaCapabilities.alexa());
 
@@ -857,7 +857,7 @@ function discoverDevices() {
         }
 
         if (capability) {
-          //log.debug(`interfaceName: ${interfaceName} capability:`, JSON.stringify(capability));
+          //log.debug(`interfaceName: ${interfaceName} capability:`, capability);
           capabilities.push(capability.capabilities);
           // add properties or capability categories if not endpoint group item
           if (!isEndpointGroup) {
@@ -913,10 +913,10 @@ function discoverDevices() {
       }
     };
 
-    log.debug('Discovery:', JSON.stringify(response));
+    log.debug('Discovery:', response);
     returnAlexaResponse(response);
   }).catch(function (error) {
-    log.error('discoverDevices failed with error:', JSON.stringify(error));
+    log.error('discoverDevices failed with error:', error);
     returnAlexaResponse(generateGenericErrorResponse());
   });
 }
