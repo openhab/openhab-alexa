@@ -1,9 +1,28 @@
 # Amazon Alexa Smart Home Skill
-Alexa is an intelligent personal assistant developed by Amazon and designed to run on smart speakers and devices such as the Amazon Echo and Dot. This certified Amazon Smart Home Skill allows users to naturally control their openHAB powered smart home with natural voice commands.  
+<img align="right" width="150px" src="https://images-na.ssl-images-amazon.com/images/I/51-cpfTnBzL._SL210_QL95_BG0,0,0,0_FMpng_.png">
+
+Alexa is an intelligent personal assistant developed by Amazon and designed to run on smart speakers and devices such as the Amazon Echo and Dot.
+
+<p></p>
+
+This certified Amazon Smart Home Skill allows users to naturally control their openHAB powered smart home with natural voice commands.  Lights, locks, thermostats, AV devices, sensors and many other device types can be controled through a user's Alexa powered device like the Echo or Dot.
+
+<p></p>
 
 This page describes how to use the [openHAB Alexa Smart Home Skill](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L).
 The skill connects your openHAB setup through the [myopenHAB.org](http://myopenHAB.org) cloud service to Amazon Alexa.
-(See [the skill README](https://github.com/openhab/openhab-alexa/blob/master/README.md) for other setup options and development information.)
+
+## Other openHAB Alexa Integrations
+
+openHAB has two other Alexa integrations that can be used in conjunction with or indepently of this skill.
+
+### Amazon Echo Control Binding
+
+Control Amazon Echo devices from your openHAB.  This allows openHAB to send commands to a echo device and control its ability to play music, set alarms, change the volume and use it a Text-To-Speech output device. See the [Amazon Echo Control Binding](https://www.openhab.org/addons/bindings/amazonechocontrol/) for more information..
+
+### Hue Emulation Service
+
+Hue Emulation exposes openHAB items as Hue devices to other Hue HTTP API compatible applications like an Amazon Echo, Google Home or any Hue compatible application. This is done on the local network and does not require the cloud service. See the [Hue Emulation Service](https://www.openhab.org/addons/integrations/hueemulation/) for more information.
 
 ## Requirements
 
