@@ -10,7 +10,9 @@ module.exports = [
         "endpointId": "doorLock",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "LockController": {"lockState": {"parameters": {}, "item": {"name": "doorLock", "type": "Switch"}}}
+            "LockController": {
+              "lockState": {
+                "parameters": {}, "item": {"name": "doorLock", "type": "Switch"}, "schema": {"name": "lockState"}}}
           })
         }
       }
@@ -50,7 +52,9 @@ module.exports = [
         "endpointId": "doorLock",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "LockController": {"lockState": {"parameters": {}, "item": {"name": "doorLock", "type": "Switch"}}}
+            "LockController": {
+              "lockState": {
+                "parameters": {}, "item": {"name": "doorLock", "type": "Switch"}, "schema": {"name": "lockState"}}}
           })
         }
       }
@@ -91,8 +95,9 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "LockController": {"lockState": {
-              "parameters": {1: "LOCKED", 2: "UNLOCKED", 42: "JAMMED"},
-              "item": {"name": "doorLock", "sensor": "doorLockSensor", "type": "Number"}}}
+              "parameters": {"LOCKED": 1, "UNLOCKED": 2, "JAMMED": 42},
+              "item": {"name": "doorLock", "sensor": "doorLockSensor", "type": "Number"},
+              "schema": {"name": "lockState"}}}
           })
         }
       }

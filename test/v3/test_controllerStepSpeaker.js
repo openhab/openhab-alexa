@@ -10,7 +10,8 @@ module.exports = [
         "endpointId": "gStepSpeaker",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "StepSpeaker": {"volume": {"parameters": {}, "item": {"name": "stepSpeakerVolume"}}}
+            "StepSpeaker": {
+              "volume": {"parameters": {}, "item": {"name": "stepSpeakerVolume"}, "schema": {"name": "volumeLevel"}}}
           })
         }
       },
@@ -53,7 +54,8 @@ module.exports = [
         "endpointId": "gStepSpeaker",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "StepSpeaker": {"muted": {"parameters": {}, "item": {"name": "stepSpeakerMute"}}}
+            "StepSpeaker": {
+              "muted": {"parameters": {}, "item": {"name": "stepSpeakerMute"}, "schema": {"name": "muteState"}}}
           })
         }
       },

@@ -31,7 +31,8 @@ module.exports = {
       "capabilities": [
         "Alexa",
         "Alexa.PowerController.powerState",
-        "Alexa.PercentageController.percentage"
+        "Alexa.PercentageController.percentage",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["SWITCH"],
       "friendlyName": "Roller Shutter 1"
@@ -40,7 +41,8 @@ module.exports = {
       "capabilities": [
         "Alexa",
         "Alexa.PowerController.powerState",
-        "Alexa.PercentageController.percentage"
+        "Alexa.PercentageController.percentage",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["OTHER"],
       "friendlyName": "Roller Shutter 2"

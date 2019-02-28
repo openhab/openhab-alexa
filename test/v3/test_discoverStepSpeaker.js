@@ -45,7 +45,9 @@ module.exports = {
     "gStepSpeaker": {
       "capabilities": [
         "Alexa",
-        "Alexa.StepSpeaker"
+        "Alexa.StepSpeaker.muted",
+        "Alexa.StepSpeaker.volume",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["SPEAKER"],
       "friendlyName": "Speaker"

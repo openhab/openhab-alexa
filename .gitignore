@@ -1,6 +1,6 @@
 .env
 .lambda/
-config.js
+/config.js
 /nbproject/
 .vscode
 

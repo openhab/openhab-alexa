@@ -54,7 +54,8 @@ module.exports = {
       "capabilities": [
         "Alexa",
         "Alexa.PowerController.powerState",
-        "Alexa.BrightnessController.brightness"
+        "Alexa.BrightnessController.brightness",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["LIGHT"],
       "friendlyName": "Dimmer Light"
@@ -64,7 +65,8 @@ module.exports = {
         "Alexa",
         "Alexa.PowerController.powerState",
         "Alexa.BrightnessController.brightness",
-        "Alexa.ColorController.color"
+        "Alexa.ColorController.color",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["LIGHT"],
       "friendlyName": "Color Light"
@@ -72,7 +74,8 @@ module.exports = {
     "lightGroup": {
       "capabilities": [
         "Alexa",
-        "Alexa.PowerController.powerState"
+        "Alexa.PowerController.powerState",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["LIGHT"],
       "friendlyName": "Light Group"

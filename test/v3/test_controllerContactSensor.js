@@ -12,7 +12,8 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "ContactSensor": {
               "detectionState": {
-                "parameters": {}, "item": {"name": "contact1", "type": "Contact"}}}
+                "parameters": {}, "item": {"name": "contact1", "type": "Contact"},
+                "schema": {"name": "detectionState"}}}
           })
         }
       }
@@ -39,6 +40,7 @@ module.exports = [
         }
       },
       openhab: []
-    }
+    },
+    validate: false
   }
 ];

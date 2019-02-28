@@ -10,9 +10,12 @@ module.exports = [
         "endpointId": "light1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PowerController": {"powerState": {"parameters": {}, "item": {"name": "light1"}}},
-            "BrightnessController": {"brightness": {"parameters": {}, "item": {"name": "light1"}}},
-            "ColorController": {"color": {"parameters": {}, "item": {"name": "light1"}}}
+            "PowerController": {
+              "powerState": {"parameters": {}, "item": {"name": "light1"}, "schema": {"name": "powerState"}}},
+            "BrightnessController": {
+              "brightness": {"parameters": {}, "item": {"name": "light1"}, "schema": {"name": "brightness"}}},
+            "ColorController": {
+              "color": {"parameters": {}, "item": {"name": "light1"}, "schema": {"name": "color"}}}
           })
         }
       }
@@ -68,7 +71,11 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "TemperatureSensor": {
               "temperature": {
-                "parameters": {"scale": "Fahrenheit"}, "item": {"name": "temperature1", "type": "Number:Temperature"}}}
+                "parameters": {"scale": "Fahrenheit"},
+                "item": {"name": "temperature1", "type": "Number:Temperature"},
+                "schema": {"name": "temperature"}
+              }
+            }
           })
         }
       }
@@ -112,7 +119,9 @@ module.exports = [
         "endpointId": "switch1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PowerController": {"powerState": {"parameters": {}, "item": {"name": "switch1"}}},
+            "PowerController": {
+              "powerState": {"parameters": {}, "item": {"name": "switch1"}, "schema": {"name": "powerState"}}
+            },
           })
         }
       }
@@ -130,6 +139,62 @@ module.exports = [
           "payload": {
             type: "ENDPOINT_UNREACHABLE",
             message: "Unable to reach device"
+          }
+        }
+      },
+      openhab: []
+    }
+  },
+  {
+    description: "invalid directive namespace error",
+    directive: {
+      "header": {
+        "namespace": "Alexa.Foobar",
+        "name": "ReportState"
+      },
+      "endpoint": {
+        "endpointId": "foobar1"
+      }
+    },
+    mocked: {},
+    expected: {
+      alexa: {
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "ErrorResponse"
+          },
+          "payload": {
+            "type": "INVALID_DIRECTIVE",
+            "message": "Unsupported directive"
+          }
+        }
+      },
+      openhab: []
+    }
+  },
+  {
+    description: "invalid directive name error",
+    directive: {
+      "header": {
+        "namespace": "Alexa",
+        "name": "FooBar"
+      },
+      "endpoint": {
+        "endpointId": "foobar1"
+      }
+    },
+    mocked: {},
+    expected: {
+      alexa: {
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "ErrorResponse"
+          },
+          "payload": {
+            "type": "INVALID_DIRECTIVE",
+            "message": "Unsupported directive"
           }
         }
       },

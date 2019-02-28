@@ -22,7 +22,10 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "InputController.input"
+              "value": "InputController.input",
+              "config": {
+                "supportedInputs": "HDMI1,TV,FOOBAR"
+              }
             }
           },
           "groupNames": ["gTelevision"]
@@ -53,9 +56,16 @@ module.exports = {
       "capabilities": [
         "Alexa",
         "Alexa.ChannelController.channel",
-        "Alexa.InputController.input"
+        "Alexa.InputController",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["TV"],
+      "parameters": {
+        "Alexa.InputController.inputs": [
+          {"name": "HDMI 1"},
+          {"name": "TV"}
+        ]
+      },
       "friendlyName": "Television"
     }
   }

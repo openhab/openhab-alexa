@@ -10,7 +10,7 @@ module.exports = [
         "endpointId": "scene1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "SceneController": {"scene": {"parameters": {}, "item": {"name": "scene1"}}}
+            "SceneController": {"scene": {"parameters": {}, "item": {"name": "scene1"}, "schema": {"name": "scene"}}}
           })
         }
       }
@@ -46,7 +46,7 @@ module.exports = [
         "endpointId": "scene1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "SceneController": {"scene": {"parameters": {}, "item": {"name": "scene1"}}}
+            "SceneController": {"scene": {"parameters": {}, "item": {"name": "scene1"}, "schema": {"name": "scene"}}}
           })
         }
       }

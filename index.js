@@ -7,16 +7,20 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-var log = require('./log.js');
-var ohv3 = require('./ohConnectorV3.js');
+require('module-alias/register');
+const log = require('@lib/log.js');
+const ohv3 = require('./ohConnectorV3.js');
 
 /**
  * Main entry point.
- * Incoming events from Alexa Lighting APIs are processed via this method.
+ * Incoming events from Alexa Skill APIs are processed via this method.
+ * @param  {Object}   event
+ * @param  {Object}   context
+ * @param  {Function} callback
  */
 exports.handler = function (event, context, callback) {
-  log.debug('Input: ', event);
-  var version = parseInt(event.directive ? event.directive.header.payloadVersion : event.header.payloadVersion);
+  log.debug('Input:', event);
+  const version = parseInt(event.directive ? event.directive.header.payloadVersion : event.header.payloadVersion);
   switch (version) {
     case 3:
       ohv3.handleRequest(event.directive, callback);

@@ -34,7 +34,7 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "PlaybackController.playback"
+              "value": "PlaybackController.playbackState"
             }
           },
           "groupNames": ["gSpeaker"]
@@ -59,7 +59,8 @@ module.exports = {
         "Alexa",
         "Alexa.Speaker.volume",
         "Alexa.Speaker.muted",
-        "Alexa.PlaybackController"
+        "Alexa.PlaybackController",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["SPEAKER"],
       "friendlyName": "Speaker"

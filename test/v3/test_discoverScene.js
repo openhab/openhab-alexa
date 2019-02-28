@@ -38,20 +38,38 @@ module.exports = {
   ],
   expected: {
     "scene1": {
-      "capabilities": ["Alexa", "Alexa.SceneController"],
-      "parameters": {"Alexa.SceneController.supportsDeactivation": true},
+      "capabilities": [
+        "Alexa",
+        "Alexa.SceneController",
+        "Alexa.EndpointHealth.connectivity"
+      ],
+      "parameters": {
+        "Alexa.SceneController.supportsDeactivation": true
+      },
       "displayCategories": ["SCENE_TRIGGER"],
       "friendlyName": "Scene 1"
     },
     "scene2": {
-      "capabilities": ["Alexa",  "Alexa.SceneController"],
-      "parameters": {"Alexa.SceneController.supportsDeactivation": false},
+      "capabilities": [
+        "Alexa",
+        "Alexa.SceneController",
+        "Alexa.EndpointHealth.connectivity"
+      ],
+      "parameters": {
+        "Alexa.SceneController.supportsDeactivation": false
+      },
       "displayCategories": ["SCENE_TRIGGER"],
       "friendlyName": "Scene 2"
     },
     "activity1": {
-      "capabilities": ["Alexa",  "Alexa.SceneController"],
-      "parameters": {"Alexa.SceneController.supportsDeactivation": true},
+      "capabilities": [
+        "Alexa",
+        "Alexa.SceneController",
+        "Alexa.EndpointHealth.connectivity"
+      ],
+      "parameters": {
+        "Alexa.SceneController.supportsDeactivation": true
+      },
       "displayCategories": ["ACTIVITY_TRIGGER"],
       "friendlyName": "Activity 1"
     }

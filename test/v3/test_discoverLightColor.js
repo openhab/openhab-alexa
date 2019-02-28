@@ -45,7 +45,8 @@ module.exports = {
         "Alexa",
         "Alexa.PowerController.powerState",
         "Alexa.BrightnessController.brightness",
-        "Alexa.ColorController.color"
+        "Alexa.ColorController.color",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["LIGHT"],
       "friendlyName": "Color Light 1"
@@ -55,7 +56,8 @@ module.exports = {
         "Alexa",
         "Alexa.PowerController.powerState",
         "Alexa.BrightnessController.brightness",
-        "Alexa.ColorController.color"
+        "Alexa.ColorController.color",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["LIGHT"],
       "friendlyName": "Color Light 2"
@@ -65,7 +67,8 @@ module.exports = {
         "Alexa",
         "Alexa.PowerController.powerState",
         "Alexa.BrightnessController.brightness",
-        "Alexa.ColorController.color"
+        "Alexa.ColorController.color",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["SWITCH", "LIGHT"],
       "friendlyName": "Color Light 3"
