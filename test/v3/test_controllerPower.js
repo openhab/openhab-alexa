@@ -10,7 +10,8 @@ module.exports = [
         "endpointId": "light1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PowerController": {"powerState": {"parameters": {}, "item": {"name": "light1"}}}
+            "PowerController": {
+              "powerState": {"parameters": {}, "item": {"name": "light1"}, "schema": {"name": "powerState"}}}
           })
         }
       },
@@ -50,7 +51,8 @@ module.exports = [
         "endpointId": "light1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PowerController": {"powerState": {"parameters": {}, "item": {"name": "light1"}}}
+            "PowerController": {
+              "powerState": {"parameters": {}, "item": {"name": "light1"}, "schema": {"name": "powerState"}}}
           })
         }
       },
@@ -90,7 +92,8 @@ module.exports = [
         "endpointId": "light1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PowerController": {"powerState": {"parameters": {}, "item": {"name": "light1"}}}
+            "PowerController": {
+              "powerState": {"parameters": {}, "item": {"name": "light1"}, "schema": {"name": "powerState"}}}
           })
         }
       },

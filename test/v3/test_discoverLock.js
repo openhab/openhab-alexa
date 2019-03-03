@@ -13,7 +13,8 @@ module.exports = {
     "doorLock": {
       "capabilities": [
         "Alexa",
-        "Alexa.LockController.lockState"
+        "Alexa.LockController.lockState",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["SMARTLOCK"],
       "friendlyName": "Door Lock"

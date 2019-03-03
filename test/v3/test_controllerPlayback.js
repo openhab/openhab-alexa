@@ -10,7 +10,9 @@ module.exports = [
         "endpointId": "gSpeaker",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "PlaybackController": {"playback": {"parameters": {}, "item": {"name": "speakerPlayer"}}}
+            "PlaybackController": {
+              "playbackState": {
+                "parameters": {}, "item": {"name": "speakerPlayer"}, "schema": {"name": "playbackState"}}}
           })
         }
       }

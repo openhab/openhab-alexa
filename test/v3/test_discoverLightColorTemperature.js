@@ -48,7 +48,8 @@ module.exports = {
         "Alexa.PowerController.powerState",
         "Alexa.BrightnessController.brightness",
         "Alexa.ColorController.color",
-        "Alexa.ColorTemperatureController.colorTemperatureInKelvin"
+        "Alexa.ColorTemperatureController.colorTemperatureInKelvin",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["LIGHT"],
       "friendlyName": "Color Light"

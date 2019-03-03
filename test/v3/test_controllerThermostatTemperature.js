@@ -11,9 +11,12 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "targetTemperature"}},
-              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "highTargetTemperature"}},
-              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "lowTargetTemperature"}}
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "targetTemperature"}, "schema": {"name": "temperature"}},
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "highTargetTemperature"}, "schema": {"name": "temperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "lowTargetTemperature"}, "schema": {"name": "temperature"}}
             }
           })
         }
@@ -97,8 +100,10 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "highTargetTemperature"}},
-              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "lowTargetTemperature"}}
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "highTargetTemperature"}, "schema": {"name": "temperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "lowTargetTemperature"}, "schema": {"name": "temperature"}}
             }
           })
         }
@@ -164,8 +169,10 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT", "comfort_range": 5}, "item": {"name": "highTargetTemperature"}},
-              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT", "comfort_range": 5}, "item": {"name": "lowTargetTemperature"}},
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT", "comfortRange": 5},
+                "item": {"name": "highTargetTemperature"}, "schema": {"name": "temperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT", "comfortRange": 5},
+                "item": {"name": "lowTargetTemperature"}, "schema": {"name": "temperature"}},
             }
           })
         }
@@ -231,7 +238,8 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "targetTemperature"}}
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "targetTemperature"}, "schema": {"name": "temperature"}}
             }
           })
         }
@@ -287,7 +295,8 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "targetTemperature"}}
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "targetTemperature"}, "schema": {"name": "temperature"}}
             }
           })
         }
@@ -344,8 +353,10 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "highTargetTemperature"}},
-              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "lowTargetTemperature"}}
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "highTargetTemperature"}, "schema": {"name": "temperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "lowTargetTemperature"}, "schema": {"name": "temperature"}}
             }
           })
         }
@@ -414,7 +425,8 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"}, "item": {"name": "targetTemperature"}}
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "targetTemperature"}, "schema": {"name": "temperature"}}
             }
           })
         }

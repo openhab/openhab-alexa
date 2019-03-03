@@ -33,6 +33,9 @@ var settings = {
       "Alexa": [
         "./v3/test_controllerAlexa.js"
       ],
+      "Authorization": [
+        "./v3/test_controllerAuthorization.js"
+      ],      
       "BrightnessController": [
         "./v3/test_controllerBrightness.js"
       ],

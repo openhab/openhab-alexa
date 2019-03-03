@@ -11,7 +11,9 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ColorTemperatureController": {
-              "colorTemperatureInKelvin": {"parameters": {}, "item": {"name": "colorTemperature", "type": "Dimmer"}}}
+              "colorTemperatureInKelvin": {
+                "parameters": {}, "item": {"name": "colorTemperature", "type": "Dimmer"},
+                "schema": {"name": "colorTemperatureInKelvin"}}}
           })
         }
       },
@@ -55,7 +57,9 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ColorTemperatureController": {
-              "colorTemperatureInKelvin": {"parameters": {}, "item": {"name": "colorTemperature", "type": "Dimmer"}}}
+              "colorTemperatureInKelvin": {
+                "parameters": {}, "item": {"name": "colorTemperature", "type": "Dimmer"},
+                "schema": {"name": "colorTemperatureInKelvin"}}}
           })
         }
       }
@@ -100,7 +104,9 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ColorTemperatureController": {
-              "colorTemperatureInKelvin": {"parameters": {"increment": 10}, "item": {"name": "colorTemperature", "type": "Dimmer"}}}
+              "colorTemperatureInKelvin": {
+                "parameters": {"increment": 10}, "item": {"name": "colorTemperature", "type": "Dimmer"},
+                "schema": {"name": "colorTemperatureInKelvin"}}}
           })
         }
       }
@@ -145,7 +151,9 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ColorTemperatureController": {
-              "colorTemperatureInKelvin": {"parameters": {"increment": 900}, "item": {"name": "colorTemperature", "type": "Number"}}}
+              "colorTemperatureInKelvin": {
+                "parameters": {"increment": 900}, "item": {"name": "colorTemperature", "type": "Number"},
+                "schema": {"name": "colorTemperatureInKelvin"}}}
           })
         }
       }
@@ -189,9 +197,12 @@ module.exports = [
         "endpointId": "gColorLight",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ColorController": {"color": {"parameters": {}, "item": {"name": "colorLight"}}},
+            "ColorController": {"color": {
+              "parameters": {}, "item": {"name": "colorLight"}, "schema": {"name": "color"}}},
             "ColorTemperatureController": {
-              "colorTemperatureInKelvin": {"parameters": {"increment": 900}, "item": {"name": "colorTemperature", "type": "Number"}}}
+              "colorTemperatureInKelvin": {
+                "parameters": {"increment": 900}, "item": {"name": "colorTemperature", "type": "Number"},
+                "schema": {"name": "colorTemperatureInKelvin"}}}
           })
         }
       }
@@ -214,6 +225,7 @@ module.exports = [
         }
       },
       openhab: []
-    }
+    },
+    validate: false
   }
 ];

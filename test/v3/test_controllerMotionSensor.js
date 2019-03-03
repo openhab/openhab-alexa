@@ -10,24 +10,25 @@ module.exports = [
         "endpointId": "motion1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ContactSensor": {
+            "MotionSensor": {
               "detectionState": {
-                "parameters": {}, "item": {"name": "motion1", "type": "Contact"}}}
+                "parameters": {}, "item": {"name": "motion1", "type": "Switch"},
+                "schema": {"name": "detectionState"}}}
           })
         }
       }
     },
     mocked: {
-      openhab: {"name": "motion1", "state": "OPEN", "type": "Contact"}
+      openhab: {"name": "motion1", "state": "OFF", "type": "Switch"}
     },
     expected: {
       alexa: {
         "context": {
           "properties": [
             {
-              "namespace": "Alexa.ContactSensor",
+              "namespace": "Alexa.MotionSensor",
               "name": "detectionState",
-              "value": "DETECTED"
+              "value": "NOT_DETECTED"
             }
           ]
         },
@@ -39,6 +40,7 @@ module.exports = [
         }
       },
       openhab: []
-    }
+    },
+    validate: false
   }
 ];

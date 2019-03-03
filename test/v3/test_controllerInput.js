@@ -10,12 +10,13 @@ module.exports = [
         "endpointId": "tvSource",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "InputController": {"input": {"parameters": {}, "item": {"name": "tvSource"}}}
+            "InputController": {
+              "input": {"parameters": {}, "item": {"name": "tvSource"}, "schema": {"name": "inputs"}}}
           })
         }
       },
       "payload": {
-        "input": "hdmi 1"
+        "input": "HDMI 1"
       }
     },
     mocked: {
@@ -27,7 +28,7 @@ module.exports = [
           "properties": [{
             "namespace": "Alexa.InputController",
             "name": "input",
-            "value": "HDMI1"
+            "value": "HDMI 1"
           }]
         },
         "event": {

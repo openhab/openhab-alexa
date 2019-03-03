@@ -1,37 +1,49 @@
 /**
-* Copyright (c) 2014-2019 by the respective copyright holders.
-*
-* All rights reserved. This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v1.0
-* which accompanies this distribution, and is available at
-* http://www.eclipse.org/legal/epl-v10.html
-*/
-var common = require('./common.js');
-var ohv3 = require('../ohConnectorV3.js');
-var rest = require('../rest.js');
-var settings = require('./settings.js');
-var assert = common.assert;
-var utils = common.utils;
+ * Copyright (c) 2014-2019 by the respective copyright holders.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
+
+require('module-alias/register');
+const log = require('@lib/log.js');
+const rest = require('@lib/rest.js');
+const ohv3 = require('@root/ohConnectorV3.js');
+const settings = require('./settings.js');
+const { assert, utils } = require('./common.js');
 
 describe('ohConnectorV3 Tests', function () {
 
-  var callback, capture, response;
+  let callback, capture, response;
 
   before(function () {
     // mock rest external calls
-    rest.getItem = function(token, itemName) {
-      return Promise.resolve(Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
+    rest.getItem = function (token, itemName) {
+      return Promise.resolve(
+        Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.getItemsRecursively = function(token) {
-      return Promise.resolve(Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
+    rest.getItemsRecursively = function (token) {
+      return Promise.resolve(
+        Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.postItemCommand = function(token, itemName, value) {
-      capture.calls.push({"name": itemName, "value": value});
-      return Promise.resolve({"statusCode": 200});
+    rest.getRegionalSettings = function (token) {
+      return Promise.resolve(response.settings && response.settings.regional);
+    };
+    rest.postItemCommand = function (token, itemName, value) {
+      capture.calls.push({'name': itemName, 'value': value});
+      return Promise.resolve({'statusCode': 200});
+    };
+
+    // mock log error calls
+    log.error = function (...args) {
+      capture.logs.push(
+        args.map(arg => typeof arg === 'object' ? arg.stack || JSON.stringify(arg) : arg).join(' '));
     };
 
     // mock aws lambda callback calls
-    callback = function(error, result) {
+    callback = function (error, result) {
       capture.result = capture.result ? [].concat(capture.result, result) : result;
     };
   });
@@ -39,27 +51,35 @@ describe('ohConnectorV3 Tests', function () {
   beforeEach(function () {
     // reset mock variables
     response = {};
-    capture = {"calls": [], "result": null};
+    capture = {'calls': [], 'logs': [], 'result': null};
+  });
+
+  afterEach(function () {
+    // output log errors if test failed
+    if (this.currentTest.state === 'failed') {
+      capture.logs.forEach(message => console.log(message));
+    }
   });
 
   // Discovery Tests
   describe('Discovery Interface', function () {
-    var directive = utils.generateDirectiveRequest({
-      "header": {
-        "namespace": "Alexa.Discovery",
-        "name": "Discover"
+    const directive = utils.generateDirectiveRequest({
+      'header': {
+        'namespace': 'Alexa.Discovery',
+        'name': 'Discover'
       }
     });
 
-    Object.keys(settings.testCasesV3.discovery).forEach(function(name) {
-      settings.testCasesV3.discovery[name].forEach(function(path) {
-        var test = require(path);
+    Object.keys(settings.testCasesV3.discovery).forEach(function (name) {
+      settings.testCasesV3.discovery[name].forEach(function (path) {
+        const test = require(path);
 
         it(test.description, function (done) {
-          response = {"openhab": test.mocked};
+          response = {'openhab': test.mocked, 'settings': test.settings};
           ohv3.handleRequest(directive, callback);
-          //wait for async responses
-          setTimeout(function() {
+          // wait for async responses
+          setTimeout(function () {
+            // console.log('Capture:', JSON.stringify(capture, null, 2));
             assert.discoveredEndpoints(capture.result.event.payload.endpoints, test.expected);
             done();
           }, 1);
@@ -69,20 +89,21 @@ describe('ohConnectorV3 Tests', function () {
   });
 
   // Controller Tests
-  Object.keys(settings.testCasesV3.controllers).forEach(function(name){
+  Object.keys(settings.testCasesV3.controllers).forEach(function (name){
     describe(name + ' Interface', function () {
-      settings.testCasesV3.controllers[name].forEach(function(path){
-        var tests = require(path);
+      settings.testCasesV3.controllers[name].forEach(function (path){
+        const tests = require(path);
 
-        tests.forEach(function(test) {
-          it(test.description, function(done) {
+        tests.forEach(function (test) {
+          it(test.description, function (done) {
             response = test.mocked;
             ohv3.handleRequest(utils.generateDirectiveRequest(test.directive), callback);
-            // Wait for async functions
-            setTimeout(function() {
-              // console.log("Capture:", JSON.stringify(capture, null, 2));
+            // wait for async responses
+            setTimeout(function () {
+              // console.log('Capture:', JSON.stringify(capture, null, 2));
               assert.capturedCalls(capture.calls, test.expected.openhab);
               assert.capturedResult(capture.result, test.expected.alexa);
+              assert.validSchema(capture.result, test.validate);
               done();
             }, 5);
           });

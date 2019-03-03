@@ -10,7 +10,8 @@ module.exports = [
         "endpointId": "gTelevision",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ChannelController": {"channel": {"parameters": {}, "item": {"name": "gTelevision"}}}
+            "ChannelController": {
+              "channel": {"parameters": {}, "item": {"name": "gTelevision"}, "schema": {"name": "channel"}}}
           })
         }
       },
@@ -64,8 +65,10 @@ module.exports = [
         "endpointId": "gTelevision",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ChannelController": {"channel": {"parameters": {
-              "FOO": 12, "BAR": 34, "BAZ": 56, "QUX": 78}, "item": {"name": "gTelevision"}}}
+            "ChannelController": {
+              "channel": {
+                "parameters": {"FOO": 12, "BAR": 34, "BAZ": 56, "QUX": 78},
+                "item": {"name": "gTelevision"}, "schema": {"name": "channel"}}}
           })
         }
       },
@@ -98,7 +101,7 @@ module.exports = [
         }
       },
       openhab: [
-        {"name": "gTelevision", "value": "56"}
+        {"name": "gTelevision", "value": 56}
       ]
     }
   },
@@ -113,8 +116,10 @@ module.exports = [
         "endpointId": "gTelevision",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ChannelController": {"channel": {"parameters": {
-              "FOO": 12, "BAR": 34}, "item": {"name": "gTelevision"}}}
+            "ChannelController": {
+              "channel": {
+                "parameters": {"FOO": 12, "BAR": 34},
+                "item": {"name": "gTelevision"}, "schema": {"name": "channel"}}}
           })
         }
       },
@@ -135,7 +140,7 @@ module.exports = [
           },
           "payload": {
             type: "INVALID_VALUE",
-            message: "Invalid channel name [BAZ]",
+            message: "Invalid channel",
           }
         }
       },
@@ -153,7 +158,8 @@ module.exports = [
         "endpointId": "gTelevision",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "ChannelController": {"channel": {"parameters": {}, "item": {"name": "gTelevision"}}}
+            "ChannelController": {
+              "channel": {"parameters": {}, "item": {"name": "gTelevision"}, "schema": {"name": "channel"}}}
           })
         }
       },
@@ -187,7 +193,7 @@ module.exports = [
         }
       },
       openhab: [
-        {"name": "gTelevision", "value": "1230"}
+        {"name": "gTelevision", "value": 1230}
       ]
     }
   }

@@ -106,9 +106,9 @@ In openHAB a thermostat is modeled as many different items, typically there are 
   Number Volume   "Volume"  (Stereo)  {alexa="Speaker.volume"}
   Switch Mute     "Mute"    (Stereo)  {alexa="Speaker.muted"}
   Switch Power    "Power"   (Stereo)  {alexa="PowerController.powerState"}
-  String Input    "Input"   (Stereo)  {alexa="InputController.input"}
+  String Input    "Input"   (Stereo)  {alexa="InputController.input" [supportedInputs="HDMI1,TV"]}
   String Channel  "Channel" (Stereo)  {alexa="ChannelController.channel"}
-  Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback"}
+  Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playbackState"}
   ```
 
 #### Supported item mapping metadata
@@ -139,42 +139,43 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * Rollershutter
     * Default category: OTHER
   * `ThermostatController.targetSetpoint`
-    * Items that represent a target set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (default to Celsius).
+    * Items that represent a target set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
       * Number(:Temperature)
     * Default category: THERMOSTAT
     * supports additional properties:
       * scale=`<value>`
-        * Celsius (default if omitted)
+        * Celsius
         * Fahrenheit
       * defaults to scale=Celsius if omitted.
   * `ThermostatController.upperSetpoint`
-    * Items that represent a upper or HEAT set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (default to Celsius).
+    * Items that represent a upper or HEAT set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
       * Number(:Temperature)
     * Default category: THERMOSTAT
     * supports additional properties:
       * scale=`<value>`
-        * Celsius (default if omitted)
+        * Celsius
         * Fahrenheit
-      * comfort_range=`<number>`
-        * When dual setpoints (upper,lower) are used this is the amount over the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfort_range=1 if using Fahrenheit and comfort_range=.5 if using Celsius. Ignored if a targetSetpoint is included in the thermostat group.
+      * comfortRange=`<number>`
+        * When dual setpoints (upper,lower) are used this is the amount over the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius. Ignored if a targetSetpoint is included in the thermostat group.
   * `ThermostatController.lowerSetpoint`
-    * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted).
+    * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
       * Number(:Temperature)
     * Default category: THERMOSTAT
     * supports additional properties:
       * scale=`<value>`
-        * Celsius (default if omitted)
+        * Celsius
         * Fahrenheit
-      * comfort_range=`<number>`
-        * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfort_range=1 if using Fahrenheit and comfort_range=.5 if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
+      * comfortRange=`<number>`
+        * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
   * `ThermostatController.thermostatMode`
-    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=`<value>`).  For thermostats that only support a subset of the standards modes, a comma delimited of the Alexa modes that the thermostat supports can be set using the supportedMode property.
+    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=`<value>`). If neither of these settings are provided, for thermostats that only support a subset of the standard modes, a comma delimited list of the Alexa supported modes should be set using the supportedModes parameter, otherwise, the supported list will be compiled based of the configured mapping.
     * Supported item type:
       * Number
       * String
+      * Switch (Heating only)
     * Default category: THERMOSTAT
     * supports additional optional properties:
       * OFF=`<state>`
@@ -183,36 +184,38 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * ECO=`<state>`
       * AUTO=`<state>`
       * binding=`<value>`
-        * ecobee1 [OFF=off, HEAT=heat, COOL=cool, AUTO=auto]
-        * nest [OFF=OFF, HEAT=HEAT, COOL=COOL, ECO=ECO, AUTO=HEAT_COOL]
-        * nest1 [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=heat-cool]
-        * zwave1 [OFF=0, HEAT=1, COOL=2, AUTO=3]
+        * [ecobee1](https://www.openhab.org/addons/bindings/ecobee1/) [OFF=off, HEAT=heat, COOL=cool, AUTO=auto]
+        * [max](https://www.openhab.org/addons/bindings/max/) [HEAT=MANUAL, ECO=VACATION, AUTO=AUTOMATIC]
+        * [nest](https://www.openhab.org/addons/bindings/nest/) [OFF=OFF, HEAT=HEAT, COOL=COOL, ECO=ECO, AUTO=HEAT_COOL]
+        * [nest1](https://www.openhab.org/addons/bindings/nest1/) [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=heat-cool]
+        * [zwave](https://www.openhab.org/addons/bindings/zwave/) [OFF=0, HEAT=1, COOL=2, AUTO=3]
+        * [zwave1](https://www.openhab.org/addons/bindings/zwave1/) [OFF=0, HEAT=1, COOL=2, AUTO=3]
         * defaults to [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=auto] if omitted
-      * supportedModes=`<value>`
-        * defaults to "AUTO,COOL,HEAT,ECO,OFF" if omitted
+      * supportedModes=`<values>`
+        * defaults to, depending on the parameters provided, either user-based, preset-based or default mapping.
   * `TemperatureSensor.temperature`
-    * Items that represent the current temperature, value may be in Celsius or Fahrenheit depending on how the item is configured (for example, scale=Fahrenheit, defaults to Celsius if omitted).
+    * Items that represent the current temperature, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
       * Number(:Temperature)
     * Default category: TEMPERATURE_SENSOR
     * supports additional properties:
       * scale=`<value>`
-        * Celsius (default if omitted)
+        * Celsius
         * Fahrenheit
   * `LockController.lockState`
-    * Items that represent the state of a lock (ON lock, OFF unlock). When associated to an item sensor, the state of that item will be returned instead of the original actionable item. Additionally, when linking to such item, multiple properties to one state can be mapped (e.g. for a zwave lock: [1=LOCKED,2=UNLOCKED,3=LOCKED,4=UNLOCKED,11=JAMMED]).
+    * Items that represent the state of a lock (ON lock, OFF unlock). When associated to an item sensor, the state of that item will be returned instead of the original actionable item. Additionally, when linking to such item, multiple properties to one state can be mapped with column delimiter (e.g. for a zwave lock: [LOCKED="1:3",UNLOCKED="2:4",JAMMED=11]).
     * Supported item type:
       * Switch
     * Supported sensor type:
-      * Contact [CLOSED=LOCKED, OPEN=UNLOCKED]
-      * Number [1=LOCKED, 2=UNLOCKED, 3=JAMMED]
-      * String [locked=LOCKED, unlocked=UNLOCKED, jammed=JAMMED]
-      * Switch [ON=LOCKED, OFF=UNLOCKED]
+      * Contact [LOCKED=CLOSED, UNLOCKED=OPEN]
+      * Number [LOCKED=1, UNLOCKED=2, JAMMED=3]
+      * String [LOCKED=locked, UNLOCKED=unlocked, JAMMED=jammed]
+      * Switch [LOCKED=ON, UNLOCKED=OFF]
     * Default category: SMARTLOCK
     * supports additional properties:
-      * `<state>`=LOCKED
-      * `<state>`=UNLOCKED
-      * `<state>`=JAMMED
+      * LOCKED=`<state>`
+      * UNLOCKED=`<state>`
+      * JAMMED=`<state>`
       * defaults based on item sensor type if omitted
   * `ColorController.color`
     * Items that represent a color
@@ -239,7 +242,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
         * true (default if omitted)
         * false
   * `ChannelController.channel`
-    * Items that represent a channel. A channel mapping may be specified in metadata parameters allowing channel request by name. (All channel name mappings must be in uppercase)
+    * Items that represent a channel. A channel mapping may be specified in metadata parameters allowing channel request by name.
     * Supported item type:
       * Number
       * String
@@ -249,10 +252,13 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * `<channelName2>`=`<channelNumber2>`
       * ...
   * `InputController.input`
-    * Items that represent a source input (ex, "HDMI 1", or "MUSIC" on a stereo)
+    * Items that represent a source input (e.g. "HDMI 1", or "TUNER" on a stereo). A list of [supported input values](https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#input-values) needs to be provided using the supportedInputs parameter. The space between the input name and number is not sent to OH (e.g. "HDMI 1" [alexa] => "HDMI1" [OH]). That space can also be omitted in the supported list as well.
     * Supported item type:
       * String
     * Default category: TV
+    * supports additional properties:
+      * supportedInputs=`<values>`
+        * required list of supported input values (e.g. "HMDI1,TV,XBOX")
   * `Speaker.volume`
     * Items that represent a volume level, default increment may be specified in metadata parameters
     * Supported item type:
@@ -278,8 +284,8 @@ In openHAB a thermostat is modeled as many different items, typically there are 
     * Supported item type:
       * Switch
     * Default category: SPEAKER
-  * `PlaybackController.playback`
-    * Items that represent the playback of a AV device (mostly compatible with Player Items)
+  * `PlaybackController.playbackState`
+    * Items that represent the playback of a AV device. (Supported commands: Play, Pause, Next, Previous, Rewind, Fast Forward)
     * Supported item type:
       * Player
     * Default category: OTHER
@@ -466,7 +472,7 @@ String EntertainmentInput "Entertainment Input" {alexa="InputController.input"}
 ```
 Player MediaPlayer "Media Player" ["MediaPlayer"]
 
-Player MediaPlayer "Media Player" {alexa="PlaybackController.playback"}
+Player MediaPlayer "Media Player" {alexa="PlaybackController.playbackState"}
 ```
 * SpeakerMute
 ```

@@ -6,20 +6,18 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-var assert = require('chai').assert;
 
-// set log level to error in test environment
-if (process.env.NODE_ENV === 'test') {
-  process.env.LOG_LEVEL = 'ERROR';
-}
+const { assert } = require('chai');
+const ajv = require('ajv')();
+const validate = initializeSchemaValidator();
 
 /**
- * Generate directive request based of default template
- * @param  {*} request
- * @return {*}
+ * Generates directive request based of default template
+ * @param  {Object} request
+ * @return {Object}
  */
-function generateDirectiveRequest(request) {
-  var template = {
+function generateDirectiveRequest (request) {
+  const template = {
     'header': {
       'namespace': null,
       'name': null,
@@ -37,7 +35,7 @@ function generateDirectiveRequest(request) {
     },
     'payload': {}
   };
-  var directive = {
+  const directive = {
     'header': Object.assign(template.header, request.header),
     'endpoint': Object.assign(template.endpoint, request.endpoint),
     'payload': Object.assign(template.payload, request.payload)
@@ -54,13 +52,14 @@ function generateDirectiveRequest(request) {
 }
 
 /**
- * Get list of capabilities namespaces
- * @param {*} capabilities
+ * Returns list of capabilities namespaces
+ * @param  {Array} capabilities
+ * @return {Array}
  */
-function getCapabilitiesNamespaces(capabilities) {
-  return capabilities.reduce(function(result, capability) {
+function getCapabilitiesNamespaces (capabilities) {
+  return capabilities.reduce(function (result, capability) {
     if (capability.properties && capability.properties.supported) {
-      capability.properties.supported.forEach(function(property) {
+      capability.properties.supported.forEach(function (property) {
         result.push(capability.interface + '.' + property.name);
       });
     } else {
@@ -71,12 +70,13 @@ function getCapabilitiesNamespaces(capabilities) {
 };
 
 /**
- * Get list of capabilities parameters
- * @param {*} capabilities
+ * Returns list of capabilities parameters
+ * @param  {Array}  capabilities
+ * @return {Object}
  */
 function getCapabilitiesParameters(capabilities) {
-  return capabilities.reduce(function(result, capability) {
-    Object.keys(capability).forEach(function(parameter) {
+  return capabilities.reduce(function (result, capability) {
+    Object.keys(capability).forEach(function (parameter) {
       if (parameter !== 'properties') {
         result[capability.interface + '.' + parameter] = capability[parameter];
       }
@@ -86,24 +86,40 @@ function getCapabilitiesParameters(capabilities) {
 };
 
 /**
- * Assert captured calls
- * @param {*} calls
- * @param {*} expected
+ * Returns initialized schema validator function
+ * @return {Function}
  */
-assert.capturedCalls = function(calls, expected) {
+function initializeSchemaValidator() {
+  try {
+    const schema = require('./schemas/alexa_smart_home_message_schema.json');
+    // Add metadata for json schema draft v6 support
+    ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
+    // Return function with compiled schema
+    return ajv.compile(schema);
+  } catch (e) {
+    return;
+  }
+}
+
+/**
+ * Asserts captured calls
+ * @param  {Object}  calls
+ * @param  {Object}  expected
+ */
+assert.capturedCalls = function (calls, expected) {
   if (expected) {
     assert.deepEqual(calls, expected);
   }
 };
 
 /**
- * Assert captured result
- * @param {*} result
- * @param {*} expected
+ * Asserts captured result
+ * @param  {Object}  result
+ * @param  {Object}  expected
  */
-assert.capturedResult = function(result, expected) {
+assert.capturedResult = function (result, expected) {
   if (expected) {
-    Object.keys(expected).forEach(function(key) {
+    Object.keys(expected).forEach(function (key) {
       if (typeof expected[key] === 'object') {
         assert.exists(result[key]);
         assert.capturedResult(result[key], expected[key]);
@@ -115,18 +131,18 @@ assert.capturedResult = function(result, expected) {
 };
 
 /**
- * Assert discovered endpoints (v3)
- * @param {*} endpoints
- * @param {*} results
+ * Asserts discovered endpoints (v3)
+ * @param  {Array}   endpoints
+ * @param  {Object}  results
  */
-assert.discoveredEndpoints = function(endpoints, results) {
+assert.discoveredEndpoints = function (endpoints, results) {
   assert.equal(endpoints.length, Object.keys(results).length);
 
-  endpoints.forEach(function(endpoint) {
-    var expected = results[endpoint.endpointId];
+  endpoints.forEach(function (endpoint) {
+    const expected = results[endpoint.endpointId];
     assert.isDefined(expected);
 
-    Object.keys(expected).forEach(function(key) {
+    Object.keys(expected).forEach(function (key) {
       switch (key) {
         case 'capabilities':
           assert.sameMembers(getCapabilitiesNamespaces(endpoint.capabilities), expected.capabilities);
@@ -147,7 +163,24 @@ assert.discoveredEndpoints = function(endpoints, results) {
   });
 };
 
-module.exports.assert = assert;
-module.exports.utils = {
-  generateDirectiveRequest: generateDirectiveRequest
+/**
+ * Asserts json schema validator
+ * @param  {Object}  result
+ * @param  {Boolean} canValidate
+ */
+assert.validSchema = function (result, canValidate) {
+  // Validate schema using official reference if not excluded in test unit (test.validate = false)
+  //  This is to account for the official alexa schema not supporting latest api changes yet
+  //    https://github.com/alexa/alexa-smarthome/wiki/Validation-Schemas
+  if (canValidate !== false && typeof validate === 'function') {
+    assert(validate(result),
+      `Schema Validation Failed\nData: ${JSON.stringify(result)}\n\nErrors: ${ajv.errorsText(validate.errors)}`);
+  }
+};
+
+module.exports = {
+  assert: assert,
+  utils: {
+    generateDirectiveRequest: generateDirectiveRequest
+  }
 };

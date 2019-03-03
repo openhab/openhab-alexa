@@ -10,7 +10,8 @@ module.exports = [
         "endpointId": "light1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "BrightnessController": {"brightness": {"parameters": {}, "item": {"name": "light1"}}}
+            "BrightnessController": {
+              "brightness": {"parameters": {}, "item": {"name": "light1"}, "schema": {"name": "brightness"}}}
           })
         }
       },
@@ -53,7 +54,8 @@ module.exports = [
         "endpointId": "light1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "BrightnessController": {"brightness": {"parameters": {}, "item": {"name": "light1"}}}
+            "BrightnessController": {
+              "brightness": {"parameters": {}, "item": {"name": "light1"}, "schema": {"name": "brightness"}}}
           })
         }
       },
@@ -96,7 +98,8 @@ module.exports = [
         "endpointId": "light1",
         "cookie": {
           "propertyMap": JSON.stringify({
-            "BrightnessController": {"brightness": {"parameters": {}, "item": {"name": "light1"}}}
+            "BrightnessController": {
+              "brightness": {"parameters": {}, "item": {"name": "light1"}, "schema": {"name": "brightness"}}}
           })
         }
       },

@@ -21,7 +21,8 @@ module.exports = {
     "contact1": {
       "capabilities": [
         "Alexa",
-        "Alexa.ContactSensor.detectionState"
+        "Alexa.ContactSensor.detectionState",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["CONTACT_SENSOR"],
       "friendlyName": "Contact Sensor"
@@ -29,7 +30,8 @@ module.exports = {
     "motion1": {
       "capabilities": [
         "Alexa",
-        "Alexa.MotionSensor.detectionState"
+        "Alexa.MotionSensor.detectionState",
+        "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["MOTION_SENSOR"],
       "friendlyName": "Motion Sensor"

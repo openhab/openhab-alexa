@@ -12,7 +12,9 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "ThermostatController": {
               "thermostatMode": {
-                "parameters": {"OFF": "0", "HEAT": "1", "COOL": "2", "AUTO":"3"}, "item": {"name": "thermostatMode"}
+                "parameters": {"OFF": "0", "HEAT": "1", "COOL": "2", "AUTO":"3"},
+                "item": {"name": "thermostatMode", "type": "Number"},
+                "schema": {"name": "thermostatMode"}
               }
             }
           })
@@ -25,7 +27,7 @@ module.exports = [
       }
     },
     mocked: {
-      openhab: {"name": "thermostatMode", "state": "2", "type": "String"}
+      openhab: {"name": "thermostatMode", "state": "2", "type": "Number"}
     },
     expected: {
       alexa: {
@@ -61,7 +63,9 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "ThermostatController": {
               "thermostatMode": {
-                "parameters": {"OFF": 0, "HEAT": 1, "COOL": 2, "AUTO": 3}, "item": {"name": "thermostatMode"}
+                "parameters": {"OFF": 0, "HEAT": 1, "COOL": 2, "AUTO": 3},
+                "item": {"name": "thermostatMode", "type": "Number"},
+                "schema": {"name": "thermostatMode"}
               }
             }
           })
@@ -74,7 +78,7 @@ module.exports = [
       }
     },
     mocked: {
-      openhab: {"name": "thermostatMode", "state": "0", "type": "String"}
+      openhab: {"name": "thermostatMode", "state": "0", "type": "Number"}
     },
     expected: {
       alexa: {
@@ -109,7 +113,11 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "thermostatMode": {"parameters": {"binding": "nest"}, "item": {"name": "thermostatMode"}}
+              "thermostatMode": {
+                "parameters": {"binding": "nest"},
+                "item": {"name": "thermostatMode", "type": "String"},
+                "schema": {"name": "thermostatMode"}
+              }
             }
           })
         }
@@ -157,7 +165,9 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "ThermostatController": {
               "thermostatMode": {
-                "parameters": {"OFF": "0", "HEAT": "1", "COOL": "2", "AUTO":"3"}, "item": {"name": "thermostatMode"}
+                "parameters": {"OFF": "0", "HEAT": "1", "COOL": "2", "AUTO":"3"},
+                "item": {"name": "thermostatMode", "type": "Number"},
+                "schema": {"name": "thermostatMode"}
               }
             }
           })
