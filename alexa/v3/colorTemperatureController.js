@@ -64,7 +64,7 @@ class AlexaColorTemperatureController extends AlexaDirective {
       }
       // Throw error if state not a number
       if (isNaN(item.state)) {
-        throw `Could not get numeric item state: ${item.state}`;
+        throw {reason: 'Could not get numeric item state', item: item};
       }
 
       const isIncreaseRequest = this.directive.header.name === 'IncreaseColorTemperature';

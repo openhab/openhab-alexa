@@ -244,7 +244,7 @@ module.exports = {
     },
     {
       "link": "https://myopenhab.org/rest/items/temperature2",
-      "state": "70 °F",
+      "state": "295 K",
       "type": "Number:Temperature",
       "name": "temperature2",
       "label": "Temperature 2",
@@ -289,6 +289,11 @@ module.exports = {
       ],
       "displayCategories": ["THERMOSTAT"],
       "friendlyName": "Thermostat 1",
+      "configuration": {
+        "Alexa.ThermostatController": {
+          "supportsScheduling": false
+        }
+      },
       "propertyMap": {
         "TemperatureSensor": {
           "temperature": {
@@ -333,6 +338,12 @@ module.exports = {
       ],
       "displayCategories": ["THERMOSTAT"],
       "friendlyName": "Thermostat 2",
+      "configuration": {
+        "Alexa.ThermostatController": {
+          "supportsScheduling": false,
+          "supportedModes": ["HEAT", "OFF"]
+        }
+      },
       "propertyMap": {
         "TemperatureSensor": {
           "temperature": {
@@ -358,7 +369,7 @@ module.exports = {
             "schema": {"name": "temperature"}
           },
           "thermostatMode": {
-            "parameters": {"OFF": "off", "HEAT": "heat", "binding": "foobar", "supportedModes": ["OFF", "HEAT"]},
+            "parameters": {"OFF": "off", "HEAT": "heat", "binding": "foobar", "supportedModes": ["HEAT", "OFF"]},
             "item": {"name": "thermostatMode2", "type": "String"},
             "schema": {"name": "thermostatMode"}
           }
@@ -373,13 +384,10 @@ module.exports = {
       ],
       "displayCategories": ["THERMOSTAT"],
       "friendlyName": "Thermostat 3",
-      "propertyMap": {
-        "ThermostatController": {
-          "thermostatMode": {
-            "parameters": {"supportedModes": ["AUTO", "OFF"]},
-            "item": {"name": "thermostatMode3", "type": "String"},
-            "schema": {"name": "thermostatMode"}
-          }
+      "configuration": {
+        "Alexa.ThermostatController": {
+          "supportsScheduling": false,
+          "supportedModes": ["AUTO", "OFF"]
         }
       }
     },
@@ -409,13 +417,10 @@ module.exports = {
       ],
       "displayCategories": ["THERMOSTAT"],
       "friendlyName": "Thermostat 5",
-      "propertyMap": {
-        "ThermostatController": {
-          "thermostatMode": {
-            "parameters": {"supportedModes": ["HEAT", "OFF"]},
-            "item": {"name": "thermostatMode5", "type": "Switch"},
-            "schema": {"name": "thermostatMode"}
-          }
+      "configuration": {
+        "Alexa.ThermostatController": {
+          "supportsScheduling": false,
+          "supportedModes": ["HEAT", "OFF"]
         }
       }
     },
@@ -448,7 +453,7 @@ module.exports = {
       "propertyMap": {
         "TemperatureSensor": {
           "temperature": {
-            "parameters": {"scale": "FAHRENHEIT"},
+            "parameters": {"scale": "KELVIN"},
             "item": {"name": "temperature2", "type": "Number:Temperature"},
             "schema": {"name": "temperature"}
           }

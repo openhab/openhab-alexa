@@ -218,9 +218,9 @@ module.exports = [
             "name": "ErrorResponse"
           },
           "payload": {
-            type: "NOT_SUPPORTED_IN_CURRENT_MODE",
-            message: "The light is currently set to a color.",
-            currentDeviceMode: "COLOR"
+            "type": "NOT_SUPPORTED_IN_CURRENT_MODE",
+            "message": "The light is currently set to a color.",
+            "currentDeviceMode": "COLOR"
           }
         }
       },

@@ -48,7 +48,7 @@ class AlexaBrightnessController extends AlexaDirective {
     this.getItemState(postItem).then((item) => {
       // Throw error if state not a number
       if (isNaN(item.state)) {
-        throw `Could not get numeric item state: ${item.state}`;
+        throw {reason: 'Could not get numeric item state', item: item};
       }
 
       const state = parseInt(item.state) + this.directive.payload.brightnessDelta;

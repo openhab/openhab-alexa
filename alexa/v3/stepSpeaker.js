@@ -33,10 +33,15 @@ class AlexaStepSpeaker extends AlexaDirective {
    * Adjust volume
    */
   adjustVolume() {
-    const volumeSteps = this.directive.payload.volumeSteps;
     const postItem = this.propertyMap.StepSpeaker.volume.item;
+
     this.getItemState(postItem).then((item) => {
-      postItem.state = isNaN(item.state) ? Math.abs(volumeSteps) : parseInt(item.state) + volumeSteps;
+      // Throw error if state not a number
+      if (isNaN(item.state)) {
+        throw {reason: 'Could not get numeric item state', item: item};
+      }
+
+      postItem.state = parseInt(item.state) + this.directive.payload.volumeSteps;
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
       log.error('adjustVolume failed with error:', error);

@@ -120,18 +120,6 @@ const normalizeFunctions = {
   },
 
   /**
-   * Normalizes power level value
-   * @param  {*}      value
-   * @return {Integer}
-   */
-  powerLevel: function (value) {
-    if (isNaN(value)) {
-      value = value === 'ON' ? 100 : 0;
-    }
-    return parseInt(value);
-  },
-
-  /**
    * Normalizes power state value
    * @param  {*}      value
    * @return {String}
@@ -168,13 +156,30 @@ const normalizeFunctions = {
     const value = parseFloat(temperature.value);
 
     switch (conversion.toUpperCase()) {
-      case 'F->C':
-        return (value - (isDelta ? 0 : 32)) * 5 / 9;
       case 'C->F':
         return value * 9 / 5 + (isDelta ? 0 : 32);
+      case 'F->C':
+        return (value - (isDelta ? 0 : 32)) * 5 / 9;
+      case 'C->K':
+        return value + (isDelta ? 0 : 273.15);
+      case 'K->C':
+        return value - (isDelta ? 0 : 273.15);
+      case 'F->K':
+        return (value - (isDelta ? 0 : 32)) * 5 / 9 + (isDelta ? 0 : 273.15);
+      case 'K->F':
+        return (value - (isDelta ? 0 : 273.15)) * 9 / 5 + (isDelta ? 0 : 32);
       default:
         return value;
     }
+  },
+
+  /**
+   * Normalizes toggle state value
+   * @param  {*}      value
+   * @return {String}
+   */
+  toggleState: function (value) {
+    return this.powerState(value);
   }
 };
 
@@ -198,7 +203,7 @@ const normalizeFunctions = {
 function normalize(property, value, options) {
   const propertyStateMap = getPropertyStateMap(property);
   const method = property.schema.name;
-  let state = value || property.item.state;
+  let state = typeof value !== 'undefined' ? value : property.item.state;
 
   // Return if state not defined
   if (typeof state === 'undefined') {

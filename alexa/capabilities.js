@@ -10,7 +10,7 @@
 /**
  * Amazon Smart Home Skill Capabilities for API V3
  */
-const { CAPABILITIES, PROPERTY_SCHEMAS, DISPLAY_CATEGORIES, CAPABILITY_PATTERN } = require('./config.js');
+const { CAPABILITIES, PROPERTY_SCHEMAS, ASSET_IDENTIFIERS, DISPLAY_CATEGORIES, CAPABILITY_PATTERN } = require('./config.js');
 
 /**
  * Returns alexa capability display category for a given interface
@@ -18,6 +18,8 @@ const { CAPABILITIES, PROPERTY_SCHEMAS, DISPLAY_CATEGORIES, CAPABILITY_PATTERN }
  * @return {String}
  */
 function getCapabilityCategory(interfaceName) {
+  // Strip instance name from interface name if present
+  interfaceName = interfaceName.split(':').shift();
   return CAPABILITIES[interfaceName] && CAPABILITIES[interfaceName]['category'];
 }
 
@@ -44,27 +46,15 @@ function getCapabilityCategory(interfaceName) {
  *
  * @param  {String} interfaceName
  * @param  {Object} properties     (optional)
+ * @param  {Object} settings       (optional)
  * @return {Object}
  */
-function getCapabilityInterface(interfaceName, properties) {
-  const capability = {
-    'type': 'AlexaInterface',
-    'interface': interfaceName === 'Alexa'? 'Alexa' : 'Alexa.' + interfaceName,
-    'version': '3',
-  };
-  const configuration = {};
-  const resources = {};
-  const supported = [];
+function getCapabilityInterface(interfaceName, properties, settings = {}) {
+  let instance;
 
-  // Determines if capability standard
-  const isStandardCapability = function () {
-    const standardKeys = ['type', 'interface', 'version', 'capabilityResources', 'properties', 'configuration'];
-    return Object.keys(capability).every(key => standardKeys.includes(key));
-  };
-
-  // Return capability if 'Alexa' interface name
-  if (interfaceName === 'Alexa') {
-    return capability;
+  // Extract instance name from interface name if present
+  if (interfaceName.split(':').length === 2) {
+    [interfaceName, instance] = interfaceName.split(':');
   }
 
   // Skip capability if interface not defined
@@ -78,6 +68,21 @@ function getCapabilityInterface(interfaceName, properties) {
       return Object.assign(map, {[property.name]: {parameters: {}}});
     }, {});
   }
+
+  // Initialize capability interface object
+  const capability = {
+    'type': 'AlexaInterface',
+    'interface': interfaceName === 'Alexa'? 'Alexa' : 'Alexa.' + interfaceName,
+    'version': '3'
+  };
+
+  // Define locale based on regional settings if defined, otherwise default to 'en-US'
+  const locale = settings.regional && settings.regional.language && settings.regional.region ?
+    [settings.regional.language, settings.regional.region].join('-') : 'en-US';
+
+  let configuration = {};
+  let resources = {};
+  let supported = [];
 
   // Iterate over interface properties
   Object.keys(properties).forEach((propertyName) => {
@@ -96,15 +101,50 @@ function getCapabilityInterface(interfaceName, properties) {
         capability.supportsDeactivation = parameters.supportsDeactivation === false ? false : true;
         break;
       case 'thermostatMode':
-        if (parameters.supportedModes) {
-          configuration.supportedModes = parameters.supportedModes;
-        }
+        configuration = Object.assign(configuration, {
+          'supportsScheduling': false
+        }, parameters.supportedModes && {
+          'supportedModes': parameters.supportedModes
+        });
+        break;
+      case 'mode':
+        resources = Object.assign(resources, parameters.friendlyNames && getResourcesObject({
+          labels: parameters.friendlyNames, locale: parameters.locale || locale}));
+        configuration = Object.assign(configuration, {
+          'ordered': parameters.ordered === true,
+          'supportedModes': parameters.supportedModes.reduce((modes, mode) => modes.concat({
+            'value': mode.split(':').shift(),
+            'modeResources': getResourcesObject({labels: mode.split(':'), locale: parameters.locale || locale})
+          }), [])
+        });
+        break;
+      case 'rangeValue':
+        resources = Object.assign(resources, parameters.friendlyNames && getResourcesObject({
+          labels: parameters.friendlyNames, locale: parameters.locale || locale}));
+        configuration = Object.assign(configuration, Object.assign({
+          'supportedRange': parameters.supportedRange
+        }, parameters.unitOfMeasure && {
+          'unitOfMeasure': 'Alexa.Unit.' + parameters.unitOfMeasure
+        }, parameters.presets && {
+          'presets': parameters.presets.reduce((presets, preset) => presets.concat({
+            'rangeValue': preset.rangeValue,
+            'presetResources': getResourcesObject({labels: preset.friendlyNames, locale: parameters.locale || locale})
+          }), [])
+        }));
+        break;
+      case 'toggleState':
+        resources = Object.assign(resources, parameters.friendlyNames && getResourcesObject({
+          labels: parameters.friendlyNames, locale: parameters.locale || locale}));
         break;
     }
   });
 
-  // Update capability with common properties, if deemed standard
-  if (isStandardCapability()) {
+  // Update capability with common properties, if deemed standard (no property added since initialized)
+  if (Object.keys(capability).length === 3) {
+    // Add capability instance if defined
+    if (instance) {
+      capability.instance = instance;
+    }
     // Add capability resources if not empty
     if (Object.keys(resources).length > 0) {
       capability.capabilityResources = resources;
@@ -124,6 +164,55 @@ function getCapabilityInterface(interfaceName, properties) {
   }
 
   return capability;
+}
+
+/**
+ * Returns alexa resources object for a given list of parameters
+ *  https://developer.amazon.com/docs/device-apis/resources-and-assets.html#resources-objects
+ *
+ *  {
+ *    'labels': [ <label1>, <label2>, <assetId:asset1>, ... ],
+ *    'locale': <localeSetting> [ Not used at the moment (en-US only supported) ]
+ *  }
+ *
+ * @param  {Object} parameters
+ * @return {Object}
+ */
+function getResourcesObject(parameters = {}) {
+  return {
+    friendlyNames: parameters.labels.reduce((names, label) => {
+      if (label.startsWith('assetId:')) {
+        const assetId = label.split(':').pop();
+        if (isSupportedAssetId(assetId)) {
+          names.push({
+            '@type': 'asset',
+            'value': {
+              'assetId': 'Alexa.' + assetId
+            }
+          });
+        }
+      } else {
+        names.push({
+          '@type': 'text',
+          'value': {
+            'text': label,
+            'locale': 'en-US'
+          }
+        });
+      }
+      return names;
+    }, [])
+  };
+}
+
+/**
+ * Determines if asset id is supported
+ * @param  {String} assetId
+ * @return {Boolean}
+ */
+function isSupportedAssetId(assetId) {
+  const [type, name] = assetId.split('.');
+  return typeof ASSET_IDENTIFIERS[type] !== 'undefined' && ASSET_IDENTIFIERS[type].includes(name);
 }
 
 /**
@@ -180,10 +269,9 @@ function getPropertyStateMap(property) {
   // Use default map keys as alexa states if defined,
   //  otherwise use supportedModes parameter states (e.g. '<mode1>:<akaMode1>,...')
   const alexaStates = defaultMap ? Object.keys(defaultMap) : supportedModes.map(mode => mode.split(':').shift());
-  // Define user map using property parameters keys present in alexa states list
-  const userMap = Object.keys(parameters).reduce((map, param) => {
-    return Object.assign(map, alexaStates.includes(param) && {[param]: parameters[param]});
-  }, {});
+  // Define user map using alexa states present in property parameters
+  const userMap = alexaStates.reduce((map, state) =>
+    Object.assign(map, typeof parameters[state] !== 'undefined' && {[state]: parameters[state]}), {});
 
   return Object.keys(userMap).length > 0 ? userMap : customMap || defaultMap || {};
 }

@@ -62,10 +62,15 @@ class AlexaChannelController extends AlexaDirective {
    * Adjusts channel number
    */
   adjustChannel() {
-    const channelCount = this.directive.payload.channelCount;
     const postItem = this.propertyMap.ChannelController.channel.item;
+
     this.getItemState(postItem).then((item) => {
-      postItem.state = isNaN(item.state) ? Math.abs(channelCount) : parseInt(item.state) + channelCount;
+      // Throw error if state not a number
+      if (isNaN(item.state)) {
+        throw {reason: 'Could not get numeric item state', item: item};
+      }
+
+      postItem.state = parseInt(item.state) + this.directive.payload.channelCount;
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
       log.error('adjustChannel failed with error:', error);

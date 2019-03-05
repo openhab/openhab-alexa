@@ -1,6 +1,9 @@
 var settings = {
   "testCasesV3": {
     "discovery": {
+      "Fan": [
+        "./v3/test_discoverFan.js",
+      ],
       "Light": [
         "./v3/test_discoverLightColor.js",
         "./v3/test_discoverLightColorTemperature.js",
@@ -28,6 +31,9 @@ var settings = {
       "TV": [
         "./v3/test_discoverTelevision.js"
       ],
+      "Washer": [
+        "./v3/test_discoverWasher.js"
+      ],
     },
     "controllers": {
       "Alexa": [
@@ -35,7 +41,7 @@ var settings = {
       ],
       "Authorization": [
         "./v3/test_controllerAuthorization.js"
-      ],      
+      ],
       "BrightnessController": [
         "./v3/test_controllerBrightness.js"
       ],
@@ -57,6 +63,9 @@ var settings = {
       "LockController": [
         "./v3/test_controllerLock.js"
       ],
+      "ModeController": [
+        "./v3/test_controllerMode.js"
+      ],
       "MotionSensor": [
         "./v3/test_controllerMotionSensor.js"
       ],
@@ -72,6 +81,9 @@ var settings = {
       "PowerLevelController": [
         "./v3/test_controllerPowerLevel.js"
       ],
+      "RangeController": [
+        "./v3/test_controllerRange.js"
+      ],
       "SceneController": [
         "./v3/test_controllerScene.js"
       ],
@@ -84,6 +96,9 @@ var settings = {
       "ThermostatController": [
         "./v3/test_controllerThermostatMode.js",
         "./v3/test_controllerThermostatTemperature.js"
+      ],
+      "ToggleController": [
+        "./v3/test_controllerToggle.js"
       ],
     }
   }

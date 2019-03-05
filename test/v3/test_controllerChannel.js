@@ -139,8 +139,8 @@ module.exports = [
             "name": "ErrorResponse"
           },
           "payload": {
-            type: "INVALID_VALUE",
-            message: "Invalid channel",
+            "type": "INVALID_VALUE",
+            "message": "Invalid channel",
           }
         }
       },

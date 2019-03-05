@@ -23,9 +23,47 @@ class AlexaRangeController extends AlexaDirective {
     super(directive, callback);
     this.interface = 'RangeController';
     this.map = {
-      setRangeValue: undefined,
-      adjustRangeValue: undefined
+      setRangeValue: 'setRangeValue',
+      adjustRangeValue: 'adjustRangeValue'
     };
+  }
+
+  /**
+   * Set range value
+   */
+  setRangeValue() {
+    // Append instance name to interface property
+    this.interface += ':' + this.directive.header.instance;
+    const postItem = Object.assign(this.propertyMap[this.interface].rangeValue.item, {
+      state: this.directive.payload.rangeValue
+    });
+    this.postItemsAndReturn([postItem]);
+  }
+
+  /**
+   * Adjust range value
+   */
+  adjustRangeValue() {
+    // Append instance name to interface property
+    this.interface += ':' + this.directive.header.instance;
+    const properties = this.propertyMap[this.interface]
+    const postItem = properties.rangeValue.item;
+
+    this.getItemState(postItem).then((item) => {
+      // Throw error if state not a number
+      if (isNaN(item.state)) {
+        throw {reason: 'Could not get numeric item state', item: item};
+      }
+
+      const minRange = properties.rangeValue.parameters.supportedRange.minimumValue;
+      const maxRange = properties.rangeValue.parameters.supportedRange.maximumValue;
+      const state = parseInt(item.state) + this.directive.payload.rangeValueDelta;
+      postItem.state = state < minRange ? minRange : state < maxRange ? state : maxRange;
+      this.postItemsAndReturn([postItem]);
+    }).catch((error) => {
+      log.error('adjustRangeValue failed with error:', error);
+      this.returnAlexaGenericErrorResponse();
+    });
   }
 }
 

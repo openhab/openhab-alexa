@@ -94,7 +94,7 @@ class AlexaDiscovery extends AlexaDirective {
         // Iterate over property map capabilities
         Object.keys(propertyMap).forEach((interfaceName) => {
           const properties = propertyMap[interfaceName];
-          const capability = getCapabilityInterface(interfaceName, properties);
+          const capability = getCapabilityInterface(interfaceName, properties, settings);
           // Skip if capability not defined
           if (!capability) {
             log.error('Unsupported capability:', {name: interfaceName, properties: properties});
@@ -294,6 +294,15 @@ function convertV2Item(item, config = {}) {
           break;
         case 'MotionSensor':
           capabilities = ['MotionSensor.detectionState'];
+          break;
+        case 'ModeComponent':
+          capabilities = ['ModeController.mode'];
+          break;
+        case 'RangeComponent':
+          capabilities = ['RangeController.rangeValue'];
+          break;
+        case 'ToggleComponent':
+          capabilities = ['ToggleController.toggleState'];
           break;
       }
     }

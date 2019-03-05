@@ -19,7 +19,12 @@ module.exports = Object.freeze({
    *    <interfaceName1>: {
    *      'category': <defaultCategoryName>,
    *      'properties': [
-   *        { 'name': <propertyName1>, 'schema': <propertySchemaName1>, 'isReportable': <boolean> },
+   *        {
+   *          'name': <propertyName1>,
+   *          'schema': <propertySchemaName1>,
+   *          'isReportable': <boolean>,
+   *          'multiInstance': <boolean>
+   *        },
    *        ...
    *      ]
    *    }
@@ -28,6 +33,9 @@ module.exports = Object.freeze({
    * @type {Object}
    */
   CAPABILITIES: {
+    'Alexa': {
+      'properties': []
+    },
     'BrightnessController': {
       'category': 'LIGHT',
       'properties': [
@@ -79,6 +87,12 @@ module.exports = Object.freeze({
         {'name': 'lockState', 'schema': 'lockState'}
       ]
     },
+    'ModeController': {
+      'category': 'OTHER',
+      'properties': [
+        {'name': 'mode', 'schema': 'mode', 'multiInstance': true}
+      ]
+    },
     'MotionSensor': {
       'category': 'MOTION_SENSOR',
       'properties': [
@@ -107,6 +121,12 @@ module.exports = Object.freeze({
       'category': 'SWITCH',
       'properties': [
         {'name': 'powerLevel', 'schema': 'powerLevel'}
+      ]
+    },
+    'RangeController': {
+      'category': 'OTHER',
+      'properties': [
+        {'name': 'rangeValue', 'schema': 'rangeValue', 'multiInstance': true}
       ]
     },
     'SceneController': {
@@ -142,6 +162,12 @@ module.exports = Object.freeze({
         {'name': 'lowerSetpoint', 'schema': 'temperature'},
         {'name': 'upperSetpoint', 'schema': 'temperature'},
         {'name': 'thermostatMode', 'schema': 'thermostatMode'}
+      ]
+    },
+    'ToggleController': {
+      'category': 'OTHER',
+      'properties': [
+        {'name': 'toggleState', 'schema': 'toggleState', 'multiInstance': true}
       ]
     }
   },
@@ -249,6 +275,12 @@ module.exports = Object.freeze({
         'type': 'boolean'
       }
     },
+    'mode': {
+      'itemTypes': ['Number', 'String'],
+      'state': {
+        'type': 'string'
+      }
+    },
     'percentage': {
       'itemTypes': ['Dimmer', 'Rollershutter'],
       'state': {
@@ -276,6 +308,13 @@ module.exports = Object.freeze({
       'itemTypes': ['Color', 'Dimmer', 'Rollershutter', 'Switch'],
       'state': {
         'type': 'string'
+      }
+    },
+    'rangeValue': {
+      'itemTypes': ['Dimmer', 'Number', 'Number:Angle', 'Number:Dimensionless', 'Number:Length', 'Number:Mass',
+        'Number:Temperature', 'Number:Volume', 'Rollershutter'],
+      'state': {
+        'type': 'integer'
       }
     },
     'scene': {
@@ -308,12 +347,40 @@ module.exports = Object.freeze({
         'type': 'string'
       }
     },
+    'toggleState': {
+      'itemTypes': ['Color', 'Dimmer', 'Rollershutter', 'Switch'],
+      'state': {
+        'type': 'string'
+      }
+    },
     'volumeLevel': {
       'itemTypes': ['Dimmer', 'Number'],
       'state': {
         'type': 'integer'
       }
     }
+  },
+
+  /**
+   * Defines alexa global asset identifiers
+   *  https://developer.amazon.com/docs/device-apis/resources-and-assets.html#global-alexa-catalog
+   *
+   * @type {Object}
+   */
+  ASSET_IDENTIFIERS: {
+    'DeviceName': [
+      'Shower', 'Washer', 'Router', 'Fan', 'AirPurifier', 'SpaceHeater'
+    ],
+    'Shower': [
+      'RainHead', 'HandHeld'
+    ],
+    'Setting': [
+      'WaterTemperature', 'Temperature', 'WashCycle', '2GGuestWiFi', '5GGuestWiFi', 'GuestWiFi',
+      'Auto', 'Night', 'Quiet', 'Oscillate', 'FanSpeed', 'Preset', 'Mode', 'Direction'
+    ],
+    'Value': [
+      'Delicate', 'QuickWash', 'Maximum', 'Minimum', 'High', 'Low', 'Medium'
+    ]
   },
 
   /**
@@ -346,7 +413,6 @@ module.exports = Object.freeze({
     'VIDEO 3', 'XBOX'
   ],
 
-
   /**
    * Defines alexa supported thermostat modes
    *  https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#thermostat-mode-values
@@ -356,6 +422,68 @@ module.exports = Object.freeze({
   THERMOSTAT_MODES: [
     'AUTO', 'COOL', 'HEAT', 'ECO', 'OFF'
   ],
+
+  /**
+   * Defines alexa supported unit of measurement
+   *    https://developer.amazon.com/docs/device-apis/alexa-rangecontroller.html#supported-values-for-unitofmeasure
+   *    https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html (Alexa units)
+   *    https://www.openhab.org/docs/concepts/units-of-measurement.html#list-of-units (OH symbols)
+   *
+   *    {
+   *      '<ohItemTypeNumberDimension>': [
+   *        {
+   *          'id': <alexaUnitOfMesureId>,       (Alexa unitOfMeasure id used by RangeController interface)
+   *          'unit': <alexaUnit>,               (Alexa unit properties naming convention)
+   *          'symbol': <ohUnitOfMeasureSymbol>, (OH unit of measurement item state symbol)
+   *          'system': <measurementSystem>      (Measurement sytem)
+   *        },
+   *        ...
+   *      ],
+   *      ...
+   *    }
+   *
+   * @type {Object}
+   */
+  UNIT_OF_MEASUREMENT: {
+    'Angle': [
+      {'id': 'Angle.Degrees',           'unit': undefined,          'symbol': '°',     'system': 'SI'},
+      {'id': 'Angle.Radians',           'unit': undefined,          'symbol': 'rad',   'system': 'SI'},
+    ],
+    'Dimensionless': [
+      {'id': 'Percent',                 'unit': undefined,          'symbol': '%',     'system': 'SI'},
+    ],
+    'Length': [
+      {'id': 'Distance.Yards',          'unit': undefined,          'symbol': 'yd',    'system': 'US'},
+      {'id': 'Distance.Inches',         'unit': undefined,          'symbol': 'in',    'system': 'US'},
+      {'id': 'Distance.Meters',         'unit': undefined,          'symbol': 'm',     'system': 'SI'},
+      {'id': 'Distance.Feet',           'unit': undefined,          'symbol': 'ft',    'system': 'US'},
+      {'id': 'Distance.Miles',          'unit': undefined,          'symbol': 'mi',    'system': 'US'},
+      {'id': 'Distance.Kilometers',     'unit': undefined,          'symbol': 'km',    'system': 'SI'},
+    ],
+    'Mass': [
+      {'id': 'Mass.Kilograms',          'unit': 'KILOGRAM',         'symbol': 'kg',    'system': 'SI'},
+      {'id': 'Mass.Grams',              'unit': 'GRAM',             'symbol': 'g',     'system': 'SI'},
+      {'id': 'Weight.Pounds',           'unit': 'POUND',            'symbol': 'lb',    'system': 'US'},
+      {'id': 'Weight.Ounces',           'unit': 'OUNCE',            'symbol': 'oz',    'system': 'US'},
+    ],
+    'Temperature': [
+      {'id': 'Temperature.Degrees',     'unit': undefined,          'symbol': '°',     'system': 'SI'},
+      {'id': 'Temperature.Celsius',     'unit': 'CELSIUS',          'symbol': '°C',    'system': 'SI'},
+      {'id': 'Temperature.Fahrenheit',  'unit': 'FAHRENHEIT',       'symbol': '°F',    'system': 'US'},
+      {'id': 'Temperature.Kelvin',      'unit': 'KELVIN',           'symbol': 'K',     'system': 'SI'},
+    ],
+    'Volume': [
+      {'id': 'Volume.Gallons',          'unit': 'UK_GALLON',        'symbol': 'gal',   'system': 'UK'},
+      {'id': 'Volume.Gallons',          'unit': 'US_FLUID_GALLON',  'symbol': 'gal',   'system': 'US'},
+      {'id': 'Volume.Pints',            'unit': 'UK_PINT',          'symbol': 'pt',    'system': 'UK'},
+      {'id': 'Volume.Pints',            'unit': 'US_FLUID_PINT',    'symbol': 'pt',    'system': 'US'},
+      {'id': 'Volume.Quarts',           'unit': 'UK_QUART',         'symbol': 'qt',    'system': 'UK'},
+      {'id': 'Volume.Quarts',           'unit': 'US_FLUID_QUART',   'symbol': 'qt',    'system': 'US'},
+      {'id': 'Volume.Liters',           'unit': 'LITER',            'symbol': 'l',     'system': 'SI'},
+      {'id': 'Volume.CubicMeters',      'unit': 'CUBIC_METER',      'symbol': 'm3',    'system': 'SI'},
+      {'id': 'Volume.CubicFeet',        'unit': 'CUBIC_FOOT',       'symbol': 'ft3',   'system': 'US'},
+    ]
+  },
 
   /**
    * Defines alexa capability namespace format pattern
