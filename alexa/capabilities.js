@@ -114,7 +114,8 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
           'ordered': parameters.ordered === true,
           'supportedModes': parameters.supportedModes.reduce((modes, mode) => modes.concat({
             'value': mode.split(':').shift().split('.').pop(),
-            'modeResources': getResourcesObject({labels: mode.split(':'), locale: parameters.locale || locale})
+            'modeResources': getResourcesObject({
+              labels: mode.split(':'), locale: parameters.locale || locale})
           }), [])
         });
         break;
@@ -127,8 +128,9 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
           'unitOfMeasure': 'Alexa.Unit.' + parameters.unitOfMeasure
         }, parameters.presets && {
           'presets': parameters.presets.reduce((presets, preset) => presets.concat({
-            'rangeValue': preset.rangeValue,
-            'presetResources': getResourcesObject({labels: preset.friendlyNames, locale: parameters.locale || locale})
+            'rangeValue': parseInt(preset.split(':').shift()),
+            'presetResources': getResourcesObject({
+              labels: preset.split(':').slice(1), locale: parameters.locale || locale})
           }), [])
         }));
         break;
@@ -230,9 +232,7 @@ function isSupportedAssetId(assetId) {
  * @return {Object}
  */
 function getPropertySettings(capability) {
-  const match = capability.match(CAPABILITY_PATTERN);
-  const interfaceName = match && match[1];
-  const propertyName = match && match[2];
+  const [match, interfaceName, propertyName] = capability.match(CAPABILITY_PATTERN) || [];
   const properties = CAPABILITIES[interfaceName] && CAPABILITIES[interfaceName]['properties'] || [];
   const property = properties.find(property => property.name === propertyName) || {};
 
@@ -264,8 +264,9 @@ function getPropertyStateMap(property) {
   const defaultMap = stateMap['default'] && stateMap['default'][type];
 
   // Use default map keys as alexa states if defined,
-  //  otherwise use supportedModes parameter states (e.g. '<mode1>:<akaMode1>,...')
-  const alexaStates = defaultMap ? Object.keys(defaultMap) : supportedModes.map(mode => mode.split(':').shift());
+  //  otherwise use supportedModes parameter states (e.g. '<assetIdOrLabel1>:<alternateAssetIdOrLabel2>,...')
+  const alexaStates = defaultMap ? Object.keys(defaultMap) :
+    supportedModes.map(mode => mode.split(':').shift().split('.').pop());
   // Define user map using alexa states present in property parameters
   const userMap = alexaStates.reduce((map, state) =>
     Object.assign(map, typeof parameters[state] !== 'undefined' && {[state]: parameters[state]}), {});

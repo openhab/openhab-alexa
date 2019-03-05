@@ -13,10 +13,8 @@ module.exports = {
               "value": "RangeController.rangeValue",
               "config": {
                 "supportedRange": "1:10:1",
-                "friendlyNames": "Setting.FanSpeed,Air Speed,Speed",
-                "preset-1": "Value.Minimum,Value.Low,Lowest",
-                "preset-10": "Value.Maximum,Value.High,Highest",
-                "preset-99": "invalid"
+                "presets": "1:Value.Minimum:Value.Low:Lowest,10:Value.Maximum:Value.High:Highest,99:invalid",
+                "friendlyNames": "Setting.FanSpeed,Air Speed,Speed"
               }
             }
           },
@@ -123,11 +121,8 @@ module.exports = {
           "rangeValue": {
             "parameters": {
               "supportedRange": {"minimumValue": 1, "maximumValue": 10, "precision": 1},
-              "friendlyNames": ["Setting.FanSpeed", "Air Speed", "Speed"],
-              "presets": [
-                {"rangeValue": 1, "friendlyNames": ["Value.Minimum", "Value.Low", "Lowest"]},
-                {"rangeValue": 10, "friendlyNames": ["Value.Maximum", "Value.High", "Highest"]}
-              ]
+              "presets": ["1:Value.Minimum:Value.Low:Lowest", "10:Value.Maximum:Value.High:Highest"],
+              "friendlyNames": ["Setting.FanSpeed", "Air Speed", "Speed"]
             },
             "item": {"name": "TowerFanSpeed", "type": "Number"},
             "schema": {"name": "rangeValue"}

@@ -29,6 +29,7 @@ const PARAMETER_ITEM_PATTERN = /^item(\w+)$/;
 const PARAMETER_TYPE_MAPPING = {
   'friendlyNames': 'list',
   'ordered': 'boolean',
+  'presets': 'list',
   'supportedInputs': 'list',
   'supportedModes': 'list',
   'supportsDeactivation': 'boolean'
@@ -167,6 +168,11 @@ class AlexaPropertyMap {
           return;
         }
 
+        // Set friendly names parameter on property multi-instance enabled to use item label if not defined
+        if (propertySettings.multiInstance && !property.parameters.friendlyNames && item.label) {
+          property.parameters.friendlyNames = item.label;
+        }
+
         // Iterate over parameters
         Object.keys(property.parameters).forEach((parameter) => {
           // Convert parameters that have a defined type
@@ -236,39 +242,24 @@ class AlexaPropertyMap {
                 return modes.concat(option.label);
               }, []);
             }
-            // Use item label to determine friendly names parameter if not already defined
-            if (item.label && !property.parameters.friendlyNames) {
-              property.parameters.friendlyNames = [item.label];
-            }
             break;
 
           case 'rangeValue':
             // Define range values based on supported range parameter ([0] => minimum; [1] => maximum; [2] => precision)
-            let rangeValues =  (property.parameters.supportedRange || '').split(':').map(value => parseInt(value));
+            let rangeValues = (property.parameters.supportedRange || '').split(':').map(value => parseInt(value));
             // Update range values if not valid (min >= max; max - min <= precision) using default based on item type
             if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) ||
-              rangeValues[0] >= rangeValues[1] || rangeValues[1] - rangeValues[0] <= rangeValues[2]) {
+              rangeValues[0] >= rangeValues[1] || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
               rangeValues = ['Dimmer', 'Rollershutter'].includes(item.type) ? [0, 100, 1] : [0, 10, 1];
             }
             // Set supported range object
             property.parameters.supportedRange = {
-              'minimumValue': rangeValues[0],
-              'maximumValue': rangeValues[1],
-              'precision': rangeValues[2]
-            };
-            // Combine preset parameters removing invalid values in the process
-            property.parameters.presets = Object.keys(property.parameters).reduce((presets, parameter) => {
-              if (parameter.startsWith('preset-')) {
-                const presetValue = parseInt(parameter.split('-').pop());
-                if (rangeValues[0] <= presetValue && presetValue <= rangeValues[1]) {
-                  presets = [].concat(presets || [], {
-                    'rangeValue': presetValue,
-                    'friendlyNames': property.parameters[parameter].split(',').map(value => value.trim())
-                  });
-                }
-                delete property.parameters[parameter];
-              }
-              return presets;
+              'minimumValue': rangeValues[0], 'maximumValue': rangeValues[1], 'precision': Math.abs(rangeValues[2])};
+            // Remove invalid presets from parameter
+            property.parameters.presets = (property.parameters.presets || []).reduce((presets, value) => {
+              const presetValue = parseInt(value.split(':').shift());
+              return rangeValues[0] <= presetValue && presetValue <= rangeValues[1] && value.split(':').length > 1 ?
+                [].concat(presets || [], value) : presets;
             }, undefined);
             // Use unit of measurement item state symbol and type dimension to determine unitOfMeasure if not defined
             if (item.type.startsWith('Number:') && !property.parameters.unitOfMeasure) {
@@ -281,17 +272,6 @@ class AlexaPropertyMap {
             if (property.parameters.unitOfMeasure && !Object.values(UNIT_OF_MEASUREMENT).reduce((values, item) =>
               values.concat(item), []).find(meas => meas.id === property.parameters.unitOfMeasure)) {
               delete property.parameters.unitOfMeasure;
-            }
-            // Use item label to determine friendly names parameter if not already defined
-            if (item.label && !property.parameters.friendlyNames) {
-              property.parameters.friendlyNames = [item.label];
-            }
-            break;
-
-          case 'toggleState':
-            // Use item label to determine friendly names parameter if not already defined
-            if (item.label && !property.parameters.friendlyNames) {
-              property.parameters.friendlyNames = [item.label];
             }
             break;
         }

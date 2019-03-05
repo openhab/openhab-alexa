@@ -126,7 +126,7 @@ class AlexaDirective extends AlexaResponse {
     Promise.all(promises).then((items) => {
       // Throw error if one of the state item is set to 'NULL'
       if (items.find(item => item.state === 'NULL')) {
-        throw {reason: 'Invalid item state returned by openHAB', item: item};
+        throw {reason: 'Invalid item state returned by openHAB', items: items};
       }
       // Get context properties response and throw error if one of its value not defined
       const properties = this.propertyMap.getContextPropertiesResponse(interfaceNames);

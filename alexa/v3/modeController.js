@@ -51,7 +51,7 @@ class AlexaModeController extends AlexaDirective {
     this.interface += ':' + this.directive.header.instance;
     const properties = this.propertyMap[this.interface];
     const postItem = properties.mode.item;
-    
+
     this.getItemState(postItem).then((item) => {
       // Convert current item state to alexa state
       const currentMode = normalize(properties.mode, item.state);
@@ -59,22 +59,22 @@ class AlexaModeController extends AlexaDirective {
       const supportedModes = properties.mode.parameters.supportedModes.map(mode => mode.split(':').shift());
       // Find current mode index
       const index = supportedModes.findIndex(mode => mode === currentMode);
-      // Convert back adjusted mode to OH state, if current mode found
-      postItem.state = index > -1 ?
-        normalize(properties.mode, supportedModes[index + this.directive.payload.modeDelta]) : undefined;
+
+      // Throw error if current mode not found
+      if (index === -1 ) {
+        throw {reason: 'Current mode not found in supported list', current: ''+currentMode, supported: supportedModes};
+      }
+
+      // Convert back adjusted mode to OH state
+      postItem.state = normalize(properties.mode, supportedModes[index + this.directive.payload.modeDelta]);
 
       if (typeof postItem.state !== 'undefined') {
         this.postItemsAndReturn([postItem]);
       } else {
-        // Return out of range error if current mode found, otherwise not provisioned error
         this.returnAlexaErrorResponse({
-          payload: index > -1 ? {
+          payload: {
             type: 'VALUE_OUT_OF_RANGE',
             message: 'Adjusted mode value is out of range'
-          } : {
-            type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
-            message: 'Adjusted mode value cannot be set',
-            currentDeviceMode: 'NOT_PROVISIONED'
           }
         });
       }

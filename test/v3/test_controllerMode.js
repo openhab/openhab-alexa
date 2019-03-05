@@ -162,56 +162,5 @@ module.exports = [
       },
       openhab: []
     }
-  },
-  {
-    description: "adjust mode not provisioned error",
-    directive: {
-      "header": {
-        "namespace": "Alexa.ModeController",
-        "name": "AdjustMode",
-        "instance": "WashTemperature"
-      },
-      "endpoint": {
-        "endpointId": "gWasher",
-        "cookie": {
-          "propertyMap": JSON.stringify({
-            "ModeController:WashTemperature": {
-              "mode": {
-                "parameters": {
-                  "Cold": 0, "Warm": 1, "Hot": 2,
-                  "supportedModes": ["Cold:Cool", "Warm", "Hot"],
-                  "friendlyNames": ["Wash Temperature", "Setting.WaterTemperature"],
-                  "ordered": true
-                },
-                "item": {"name": "WashTemperature", "type": "Number"},
-                "schema": {"name": "mode"}
-              }
-            }
-          })
-        }
-      },
-      "payload": {
-        "modeDelta": 1
-      }
-    },
-    mocked: {
-      openhab: {"name": "WashTemperature", "state": "NULL", "type": "Number"}
-    },
-    expected: {
-      alexa: {
-        "event": {
-          "header": {
-            "namespace": "Alexa",
-            "name": "ErrorResponse"
-          },
-          "payload": {
-            "type": "NOT_SUPPORTED_IN_CURRENT_MODE",
-            "message": "Adjusted mode value cannot be set",
-            "currentDeviceMode": 'NOT_PROVISIONED'
-          }
-        }
-      },
-      openhab: []
-    }
   }
 ];
