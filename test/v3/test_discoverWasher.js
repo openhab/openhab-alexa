@@ -12,7 +12,7 @@ module.exports = {
             "alexa": {
               "value": "ModeController.mode",
               "config": {
-                "supportedModes": "Normal:Cottons,Delicates:Knites",
+                "supportedModes": "Normal:Cottons,Value.Delicate:Knites",
                 "friendlyNames": "Wash Cycle,Wash Setting"
               }
             }
@@ -32,7 +32,7 @@ module.exports = {
                 "Warm": 1,
                 "Hot": 2,
                 "supportedModes": "Cold:Cool,Warm,Hot",
-                "friendlyNames": "Wash Temperature,assetId:Setting.WaterTemperature",
+                "friendlyNames": "Wash Temperature,Setting.WaterTemperature",
                 "ordered": true
               }
             }
@@ -103,8 +103,8 @@ module.exports = {
             "Normal": {
               "friendlyNames": ["text:Normal:en-US", "text:Cottons:en-US"]
             },
-            "Delicates": {
-              'friendlyNames': ["text:Delicates:en-US", "text:Knites:en-US"]
+            "Delicate": {
+              'friendlyNames': ["asset:Alexa.Value.Delicate", "text:Knites:en-US"]
             }
           }
         },

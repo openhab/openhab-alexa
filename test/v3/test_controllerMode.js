@@ -14,7 +14,7 @@ module.exports = [
             "ModeController:WashCycle": {
               "mode": {
                 "parameters": {
-                  "supportedModes": ["Normal:Cottons", "Delicates:Knites"],
+                  "supportedModes": ["Normal:Cottons", "Value.Delicate:Knites"],
                   "friendlyNames": ["Wash Cycle", "Wash Setting"]
                 },
                 "item": {"name": "WashCycle", "type": "String"},
@@ -70,7 +70,7 @@ module.exports = [
                 "parameters": {
                   "Cold": 0, "Warm": 1, "Hot": 2,
                   "supportedModes": ["Cold:Cool", "Warm", "Hot"],
-                  "friendlyNames": ["Wash Temperature", "assetId:Setting.WaterTemperature"],
+                  "friendlyNames": ["Wash Temperature", "Setting.WaterTemperature"],
                   "ordered": true
                 },
                 "item": {"name": "WashTemperature", "type": "Number"},
@@ -130,7 +130,7 @@ module.exports = [
                 "parameters": {
                   "Cold": 0, "Warm": 1, "Hot": 2,
                   "supportedModes": ["Cold:Cool", "Warm", "Hot"],
-                  "friendlyNames": ["Wash Temperature", "assetId:Setting.WaterTemperature"],
+                  "friendlyNames": ["Wash Temperature", "Setting.WaterTemperature"],
                   "ordered": true
                 },
                 "item": {"name": "WashTemperature", "type": "Number"},
@@ -180,7 +180,7 @@ module.exports = [
                 "parameters": {
                   "Cold": 0, "Warm": 1, "Hot": 2,
                   "supportedModes": ["Cold:Cool", "Warm", "Hot"],
-                  "friendlyNames": ["Wash Temperature", "assetId:Setting.WaterTemperature"],
+                  "friendlyNames": ["Wash Temperature", "Setting.WaterTemperature"],
                   "ordered": true
                 },
                 "item": {"name": "WashTemperature", "type": "Number"},

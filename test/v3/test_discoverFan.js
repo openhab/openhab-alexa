@@ -13,9 +13,9 @@ module.exports = {
               "value": "RangeController.rangeValue",
               "config": {
                 "supportedRange": "1:10:1",
-                "friendlyNames": "assetId:Setting.FanSpeed,Air Speed,Speed",
-                "preset-1": "assetId:Value.Minimum,assetId:Value.Low,Lowest",
-                "preset-10": "assetId:Value.Maximum,assetId:Value.High,Highest",
+                "friendlyNames": "Setting.FanSpeed,Air Speed,Speed",
+                "preset-1": "Value.Minimum,Value.Low,Lowest",
+                "preset-10": "Value.Maximum,Value.High,Highest",
                 "preset-99": "invalid"
               }
             }
@@ -31,7 +31,7 @@ module.exports = {
             "alexa": {
               "value": "ToggleController.toggleState",
               "config": {
-                "friendlyNames": "assetId:Setting.Oscillate,Rotate"
+                "friendlyNames": "Setting.Oscillate,Rotate"
               }
             }
           },
@@ -123,10 +123,10 @@ module.exports = {
           "rangeValue": {
             "parameters": {
               "supportedRange": {"minimumValue": 1, "maximumValue": 10, "precision": 1},
-              "friendlyNames": ["assetId:Setting.FanSpeed", "Air Speed", "Speed"],
+              "friendlyNames": ["Setting.FanSpeed", "Air Speed", "Speed"],
               "presets": [
-                {"rangeValue": 1, "friendlyNames": ["assetId:Value.Minimum", "assetId:Value.Low", "Lowest"]},
-                {"rangeValue": 10, "friendlyNames": ["assetId:Value.Maximum", "assetId:Value.High", "Highest"]}
+                {"rangeValue": 1, "friendlyNames": ["Value.Minimum", "Value.Low", "Lowest"]},
+                {"rangeValue": 10, "friendlyNames": ["Value.Maximum", "Value.High", "Highest"]}
               ]
             },
             "item": {"name": "TowerFanSpeed", "type": "Number"},
@@ -135,7 +135,7 @@ module.exports = {
         },
         "ToggleController:TowerFanOscillate": {
           "toggleState": {
-            "parameters": {"friendlyNames": ["assetId:Setting.Oscillate", "Rotate"]},
+            "parameters": {"friendlyNames": ["Setting.Oscillate", "Rotate"]},
             "item": {"name": "TowerFanOscillate", "type": "Switch"},
             "schema": {"name": "toggleState"}
           }

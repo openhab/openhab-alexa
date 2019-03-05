@@ -13,7 +13,7 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "ToggleController:TowerFan": {
               "toggleState": {
-                "parameters": {"friendlyNames": ["assetId:Setting.Oscillate", "Rotate"]},
+                "parameters": {"friendlyNames": ["Setting.Oscillate", "Rotate"]},
                 "item": {"name": "TowerFan", "type": "Switch"}, "schema": {"name": "toggleState"}}}
           })
         }

@@ -15,7 +15,7 @@ module.exports = [
               "rangeValue": {
                 "parameters": {
                   "supportedRange": {"minimumValue": 1, "maximumValue": 10, "precision": 1},
-                  "friendlyNames": ["assetId:Setting.FanSpeed"]},
+                  "friendlyNames": ["Setting.FanSpeed"]},
                 "item": {"name": "BasementFan", "type": "Number"},
                 "schema": {"name": "rangeValue"}
               }
@@ -68,7 +68,7 @@ module.exports = [
               "rangeValue": {
                 "parameters": {
                   "supportedRange": {"minimumValue": 1, "maximumValue": 10, "precision": 1},
-                  "friendlyNames": ["assetId:Setting.FanSpeed"]},
+                  "friendlyNames": ["Setting.FanSpeed"]},
                 "item": {"name": "BasementFan", "type": "Number"},
                 "schema": {"name": "rangeValue"}
               }

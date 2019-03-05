@@ -114,14 +114,16 @@ In openHAB a thermostat is modeled as many different items, typically there are 
   For components of a device, which isn't covered by the existing interfaces, that have more than one setting, characterized by a number within a range or just turn on and off, the Mode, Range and Toggle controllers can be used to highly customize how you interact with that device via Alexa. Below are few examples on how these interfaces can be used. Details about to the configuration settings are listed in the next section under the relevant interface.
 
 ```
-  Group Washer     "Washer"               {alexa="Endpoint.Other"}
-  Number WashCycle "Cycle"       (Washer) {alexa="ModeController.mode" [Normal=0,Delicates=1,supportedModes="Normal:Cottons,Delicates:Knites",friendlyNames="Wash Cycle,Wash Setting",ordered=false]}
-  Number WashTemp  "Temperature" (Washer) {alexa="ModeController.mode" [Cold=0,Warm=1,Hot=2,supportedModes="Cold:Cool,Warm,Hot",friendlyNames="Wash Temperature,assetId:Setting.WaterTemperature",ordered=true]}  
+  Group Washer       "Washer"               {alexa="Endpoint.Other"}
+  Number Cycle       "Cycle"       (Washer) {alexa="ModeController.mode" [Normal=0,Delicate=1,supportedModes="Normal:Cottons,Value.Delicate:Knites",friendlyNames="Wash Cycle,Wash Setting",ordered=false]}
+  Number Temperature "Temperature" (Washer) {alexa="ModeController.mode" [Cold=0,Warm=1,Hot=2,supportedModes="Cold:Cool,Warm,Hot",friendlyNames="Wash Temperature,Setting.WaterTemperature",ordered=true]}  
+  Switch Power       "Power"       (Washer) {alexa="ToggleController.toggleState" [friendlyNames="DeviceName.Washer"]}
   ```
 ```
-  Group Fan        "Fan"          {alexa="Endpoint.Other"}
-  Number FanSpeed  "Speed"  (Fan) {alexa="RangeController.rangeValue" [supportedRange="1:10:1",friendlyNames="assetId:Setting.FanSpeed,Speed",preset-1="assetId:Value.Minimum,assetId:Value.Low,Lowest",preset-10="assetId:Value.Maximum,assetId:Value.High,Highest"]}
-  Switch FanRotate "Rotate" (Fan) {alexa="ToggleController.toggleState" [friendlyNames="assetId:Setting.Oscillate,Rotate"]}
+  Group Fan     "Fan"          {alexa="Endpoint.Other"}
+  Number Speed  "Speed"  (Fan) {alexa="RangeController.rangeValue" [supportedRange="1:10:1",friendlyNames="Setting.FanSpeed,Speed",preset-1="Value.Minimum,Value.Low,Lowest",preset-10="Value.Maximum,Value.High,Highest"]}
+  Switch Rotate "Rotate" (Fan) {alexa="ToggleController.toggleState" [friendlyNames="Setting.Oscillate,Rotate"]}
+  Switch Power  "Power"       (Washer) {alexa="ToggleController.toggleState" [friendlyNames="DeviceName.Fan"]}
   ```
 
 #### Supported item mapping metadata
@@ -316,7 +318,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * Switch
     * Default category: MOTION_SENSOR
   * `ModeController.mode`
-    * Items that represent components of a device that have more than one setting. Multiple instances can be configured in a group endpoint. By default, to ask for a specific mode, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels. Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well by prefixing these with `assertId:` (e.g. `assetId:Setting.WaterTemperature`). In regards to supported modes and their mappings, by default, the item state description options are used to determine these configurations. To configure it, use `supportedModes` parameter and provide a comma delimited list of modes and alternate names, for that same mode, separated by column sign (e.g. `Cold:Cool,Warm,Hot`). When specifying alternate mode names, the first item will be used as Alexa state. For the mapping, add each mode to the parameters similar to how it is done with other interfaces (e.g. `Cold=0,Warm=1,Hot=2`). No need to provide mappings if Alexa and OH states are the same. Additionally, in order to be able to request Alexa to adjust mode incrementally, set parameter `ordered=true`, otherwise requests to only set a specific mode will be accepted.
+    * Items that represent components of a device that have more than one setting. Multiple instances can be configured in a group endpoint. By default, to ask for a specific mode, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels. Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well (e.g. `Setting.WaterTemperature`). In regards to supported modes and their mappings, by default, the item state description options are used to determine these configurations. To configure it, use `supportedModes` parameter and provide a comma delimited list of modes and alternate names/asset ids, for that same mode, separated by column sign (e.g. `Cold:Cool,Warm,Hot`). When specifying alternate mode names, the first item will be used as Alexa state. In the event, the primary mode is an asset id, the last word will be used as mode name (e.g. `Normal:Cottons,Value.Delicate:Knites`; Modes => `[Normal, Delicate]`). For the mapping, add each mode to the parameters similar to how it is done with other interfaces (e.g. `Cold=0,Warm=1,Hot=2`). No need to provide mappings if Alexa and OH states are the same. Additionally, in order to be able to request Alexa to adjust modes incrementally, set parameter `ordered=true`, otherwise requests to only set a specific mode will be accepted.
     * Supported item type:
       * Number
       * String
@@ -332,7 +334,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * friendlyNames=`<names/assetIds>`
         * defaults to item label name
   * `RangeController.rangeValue`
-    * Items that represent components of a device that are characterized by numbers within a minimum and maximum range. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels. Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well by prefixing these with `assertId:` (e.g. `assetId:Setting.FanSpeed`). To set the supported range, provide a column delimited list including minimum, maximum and precision values. The later value will be use as default increment when requesting adjusted range values. Optionally, to name specific presets, like fan speeds low [1] & high value [10], add a parameter for each desired presets to the list of parameters including the preset number in key and friendly names/assetIds for that preset as value. (e.g. `preset-10=assetId:Value.High,Highest`) Another optional settings is `unitOfMeasure` parameter which gives a unit of measure to the range values. By default it is based on unit of measurement number item type that have a supported unit, otherwise, a [unit id](#item-unit-of-measurement-catalog) can be used. (e.g. `unitOfMeasure=Angle.Degrees`)
+    * Items that represent components of a device that are characterized by numbers within a minimum and maximum range. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels. Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well (e.g. `Setting.FanSpeed`). To set the supported range, provide a column delimited list including minimum, maximum and precision values. The later value will be use as default increment when requesting adjusted range values. Optionally, to name specific presets, like fan speeds low [1] & high value [10], add a parameter for each desired presets to the list of parameters including the preset number in key and friendly names/assetIds for that preset as value. (e.g. `preset-10=Value.High,Highest`) Another optional settings is `unitOfMeasure` parameter which gives a unit of measure to the range values. By default it is based on unit of measurement number item type that have a supported unit, otherwise, a [unit id](#item-unit-of-measurement-catalog) can be used. (e.g. `unitOfMeasure=Angle.Degrees`)
     * Supported item type:
       * Dimmer
       * Number
@@ -353,7 +355,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * friendlyNames=`<names/assetIds>`
         * defaults to item label name
   * `ToggleController.toggleState`
-    * Items that represent components of a device that can be turned on or off. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels. Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well by prefixing these with `assertId:` (e.g. `assetId:Setting.Oscillate`).
+    * Items that represent components of a device that can be turned on or off. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels. Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well (e.g. `Setting.Oscillate`).
     * Supported item type:
       * Color
       * Dimmer

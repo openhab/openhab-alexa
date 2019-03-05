@@ -113,7 +113,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
         configuration = Object.assign(configuration, {
           'ordered': parameters.ordered === true,
           'supportedModes': parameters.supportedModes.reduce((modes, mode) => modes.concat({
-            'value': mode.split(':').shift(),
+            'value': mode.split(':').shift().split('.').pop(),
             'modeResources': getResourcesObject({labels: mode.split(':'), locale: parameters.locale || locale})
           }), [])
         });
@@ -171,7 +171,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
  *  https://developer.amazon.com/docs/device-apis/resources-and-assets.html#resources-objects
  *
  *  {
- *    'labels': [ <label1>, <label2>, <assetId:asset1>, ... ],
+ *    'labels': [ <assetIdOrText1>, <assetIdOrText2>, ... ],
  *    'locale': <localeSetting> [ Not used at the moment (en-US only supported) ]
  *  }
  *
@@ -181,16 +181,13 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
 function getResourcesObject(parameters = {}) {
   return {
     friendlyNames: parameters.labels.reduce((names, label) => {
-      if (label.startsWith('assetId:')) {
-        const assetId = label.split(':').pop();
-        if (isSupportedAssetId(assetId)) {
-          names.push({
-            '@type': 'asset',
-            'value': {
-              'assetId': 'Alexa.' + assetId
-            }
-          });
-        }
+      if (isSupportedAssetId(label)) {
+        names.push({
+          '@type': 'asset',
+          'value': {
+            'assetId': 'Alexa.' + label
+          }
+        });
       } else {
         names.push({
           '@type': 'text',
