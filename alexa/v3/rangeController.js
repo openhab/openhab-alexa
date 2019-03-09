@@ -34,7 +34,7 @@ class AlexaRangeController extends AlexaDirective {
   setRangeValue() {
     // Append instance name to interface property
     this.interface += ':' + this.directive.header.instance;
-    const postItem = Object.assign(this.propertyMap[this.interface].rangeValue.item, {
+    const postItem = Object.assign({}, this.propertyMap[this.interface].rangeValue.item, {
       state: this.directive.payload.rangeValue
     });
     this.postItemsAndReturn([postItem]);
@@ -47,7 +47,7 @@ class AlexaRangeController extends AlexaDirective {
     // Append instance name to interface property
     this.interface += ':' + this.directive.header.instance;
     const properties = this.propertyMap[this.interface]
-    const postItem = properties.rangeValue.item;
+    const postItem = Object.assign({}, properties.rangeValue.item);
 
     this.getItemState(postItem).then((item) => {
       // Throw error if state not a number

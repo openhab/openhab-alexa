@@ -135,6 +135,16 @@ module.exports = Object.freeze({
         {'name': 'scene', 'schema': 'scene', 'isReportable': false}
       ]
     },
+    'SecurityPanelController': {
+      'category': 'SECURITY_PANEL',
+      'properties': [
+        {'name': 'armState', 'schema': 'armState'},
+        {'name': 'burglaryAlarm', 'schema': 'alarmState'},
+        {'name': 'fireAlarm', 'schema': 'alarmState'},
+        {'name': 'carbonMonoxideAlarm', 'schema': 'alarmState'},
+        {'name': 'waterAlarm', 'schema': 'alarmState'}
+      ]
+    },
     'Speaker': {
       'category': 'SPEAKER',
       'properties': [
@@ -203,6 +213,42 @@ module.exports = Object.freeze({
    * @type {Object}
    */
   PROPERTY_SCHEMAS: {
+    'alarmState': {
+      'itemTypes': ['Contact', 'Switch'],
+      'state': {
+        'map': {
+          'default': {
+            'Contact': {'OK': 'CLOSED', 'ALARM': 'OPEN'},
+            'Switch':  {'OK': 'OFF', 'ALARM': 'ON'}
+          }
+        },
+        'type': 'string'
+      }
+    },
+    'armState': {
+      'itemTypes': ['Number', 'String', 'Switch'],
+      'state': {
+        'map': {
+          'default': {
+            'Number': {
+              'DISARMED': '0', 'ARMED_STAY': '1', 'ARMED_AWAY': '2', 'ARMED_NIGHT': '3', 'AUTHORIZATION_REQUIRED': '4',
+              'NOT_READY': '5', 'UNCLEARED_ALARM': '6', 'UNCLEARED_TROUBLE': '7', 'BYPASS_NEEDED': '8'
+            },
+            'String': {
+              'DISARMED': 'disarm', 'ARMED_STAY': 'stay', 'ARMED_AWAY': 'away', 'ARMED_NIGHT': 'night',
+              'AUTHORIZATION_REQUIRED': 'authreq', 'UNAUTHORIZED': 'unauth', 'NOT_READY': 'notrdy',
+              'UNCLEARED_ALARM': 'alarm', 'UNCLEARED_TROUBLE': 'trouble', 'BYPASS_NEEDED': 'bypass'
+            },
+            'Switch': {'DISARMED': 'OFF', 'ARMED_STAY': 'ON'}
+          }
+        },
+        'supported': [
+          // https://developer.amazon.com/docs/device-apis/alexa-securitypanelcontroller.html#configuration
+          'ARMED_AWAY', 'ARMED_STAY', 'ARMED_NIGHT', 'DISARMED'
+        ],
+        'type': 'string'
+      }
+    },
     'brightness': {
       'itemTypes': ['Color', 'Dimmer'],
       'state': {
@@ -247,6 +293,17 @@ module.exports = Object.freeze({
     'inputs': {
       'itemTypes': ['String'],
       'state': {
+        'supported': [
+          // https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#input-values
+          'AUX 1', 'AUX 2', 'AUX 3', 'AUX 4', 'AUX 5', 'AUX 6', 'AUX 7', 'BLURAY', 'CABLE', 'CD',
+          'COAX 1', 'COAX 2', 'COMPOSITE 1', 'DVD', 'GAME', 'HD RADIO', 'HDMI 1', 'HDMI 2', 'HDMI 3',
+          'HDMI 4', 'HDMI 5', 'HDMI 6', 'HDMI 7', 'HDMI 8', 'HDMI 9', 'HDMI 10', 'HDMI ARC', 'INPUT 1',
+          'INPUT 2', 'INPUT 3', 'INPUT 4', 'INPUT 5', 'INPUT 6', 'INPUT 7', 'INPUT 8', 'INPUT 9',
+          'INPUT 10', 'IPOD', 'LINE 1', 'LINE 2', 'LINE 3', 'LINE 4', 'LINE 5', 'LINE 6', 'LINE 7',
+          'MEDIA PLAYER', 'OPTICAL 1', 'OPTICAL 2', 'PHONO', 'PLAYSTATION', 'PLAYSTATION 3',
+          'PLAYSTATION 4', 'SATELLITE', 'SMARTCAST', 'TUNER', 'TV', 'USB DAC', 'VIDEO 1', 'VIDEO 2',
+          'VIDEO 3', 'XBOX'
+        ],
         'type': 'string'
       }
     },
@@ -344,6 +401,10 @@ module.exports = Object.freeze({
             'Switch': {'HEAT': 'ON', 'OFF': 'OFF'}
           }
         },
+        'supported': [
+          // https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#thermostat-mode-values
+          'AUTO', 'COOL', 'HEAT', 'ECO', 'OFF'
+        ],
         'type': 'string'
       }
     },
@@ -393,34 +454,6 @@ module.exports = Object.freeze({
     'ACTIVITY_TRIGGER', 'CAMERA', 'CONTACT_SENSOR', 'DOOR', 'DOORBELL', 'LIGHT', 'MICROWAVE',
     'MOTION_SENSOR', 'OTHER', 'SCENE_TRIGGER', 'SECURITY_PANEL', 'SMARTLOCK', 'SMARTPLUG',
     'SPEAKER', 'SWITCH', 'TEMPERATURE_SENSOR', 'THERMOSTAT', 'TV'
-  ],
-
-
-  /**
-   * Defines alexa supported input controller names
-   *  https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#input-values
-   *
-   * @type {Array}
-   */
-  INPUT_NAMES: [
-    'AUX 1', 'AUX 2', 'AUX 3', 'AUX 4', 'AUX 5', 'AUX 6', 'AUX 7', 'BLURAY', 'CABLE', 'CD',
-    'COAX 1', 'COAX 2', 'COMPOSITE 1', 'DVD', 'GAME', 'HD RADIO', 'HDMI 1', 'HDMI 2', 'HDMI 3',
-    'HDMI 4', 'HDMI 5', 'HDMI 6', 'HDMI 7', 'HDMI 8', 'HDMI 9', 'HDMI 10', 'HDMI ARC', 'INPUT 1',
-    'INPUT 2', 'INPUT 3', 'INPUT 4', 'INPUT 5', 'INPUT 6', 'INPUT 7', 'INPUT 8', 'INPUT 9',
-    'INPUT 10', 'IPOD', 'LINE 1', 'LINE 2', 'LINE 3', 'LINE 4', 'LINE 5', 'LINE 6', 'LINE 7',
-    'MEDIA PLAYER', 'OPTICAL 1', 'OPTICAL 2', 'PHONO', 'PLAYSTATION', 'PLAYSTATION 3',
-    'PLAYSTATION 4', 'SATELLITE', 'SMARTCAST', 'TUNER', 'TV', 'USB DAC', 'VIDEO 1', 'VIDEO 2',
-    'VIDEO 3', 'XBOX'
-  ],
-
-  /**
-   * Defines alexa supported thermostat modes
-   *  https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#thermostat-mode-values
-   *
-   * @type {Array}
-   */
-  THERMOSTAT_MODES: [
-    'AUTO', 'COOL', 'HEAT', 'ECO', 'OFF'
   ],
 
   /**

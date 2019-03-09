@@ -75,7 +75,7 @@ NOTE: the Alexa skill has 3 different percentage interfaces, BrightnessControlle
 
 While single mapping items works for many use cases, occasionally multiple openHAB items need to be mapped to a single endpoint in Alexa. When using a group item, keep in mind that there can only be one specific interface capability per group. If you need to have more than one instance of a given capability, you should use the Mode, Range and Toggle controllers that are described at the end of this section.
 
-For this example we will use 2 different use cases, a thermostat and a stereo.
+For this example we will use various use cases, a thermostat, a stereo, a security system, a washer and a fan.
 
 In openHAB a thermostat is modeled as many different items, typically there are items for set points (target, heat, cool), modes, and the current temperature. To map these items to a single endpoint in Alexa, we will add them to a group which also uses "Alexa" metadata. When items are alexa-enabled, but are also a member of a group alexa-enabled, they will be added to the group endpoint and not exposed as their own endpoints.
 
@@ -109,6 +109,17 @@ In openHAB a thermostat is modeled as many different items, typically there are 
   String Input    "Input"   (Stereo)  {alexa="InputController.input" [supportedInputs="HDMI1,TV"]}
   String Channel  "Channel" (Stereo)  {alexa="ChannelController.channel"}
   Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playbackState"}
+  ```
+
+  A security system is another example including alarm mode and different alarm states.
+
+```
+  Group  SecuritySystem      "Security System"                  {alexa="Endpoint.SecurityPanel"}
+  String AlarmMode           "Alarm Mode"      (SecuritySystem) {alexa="SecurityPanelController.armState" [supportedArmStates="DISARMED,ARMED_STAY,ARMED_AWAY"]}
+  Switch BurglaryAlarm       "Burglary"        (SecuritySystem) {alexa="SecurityPanelController.burglaryAlarm"}
+  Switch FireAlarm           "Fire"            (SecuritySystem) {alexa="SecurityPanelController.fireAlarm"}
+  Switch CarbonMonoxideAlarm "Carbon Monoxide" (SecuritySystem) {alexa="SecurityPanelController.carbonMonoxideAlarm"}
+  Switch WaterAlarm          "Water"           (SecuritySystem) {alexa="SecurityPanelController.waterAlarm"}
   ```
 
   For components of a device, which isn't covered by the existing interfaces, that have more than one setting, characterized by a number within a range or just turn on and off, the Mode, Range and Toggle controllers can be used to highly customize how you interact with that device via Alexa. Below are few examples on how these interfaces can be used. Details about to the configuration settings are listed in the next section under the relevant interface.
@@ -274,7 +285,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
     * Supported item type:
       * String
     * Default category: TV
-    * supports additional properties:
+    * Supports additional properties:
       * supportedInputs=`<inputs>`
         * required list of supported input values (e.g. "HMDI1,TV,XBOX")
   * `Speaker.volume`
@@ -319,21 +330,83 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * Contact
       * Switch
     * Default category: MOTION_SENSOR
+  * `SecurityPanelController.armState`
+    * Items that represent a device that controls a security system. Set supported arm states using `supportedArmStates="DISARMED,ARMED_STAY,ARMED_AWAY"` parameter. For the mapping, default item type mapping (listed below) can be used or if necessary, add each state to the parameters similar to how it is done with other interfaces. If using a String item type, supports for arm instant (ability to request arm to occur immediately for system that have an option to shorten the standard exit delay), and pin codes (ability to have the disarm pin code verification done in openHAB) can be configured using `supportsArmInstant=true` and `supportsPinCodes=true`. For arm instant, it also requires exit delay parameter to be set up. Instant request will include 'instant' in the item command delimited by a column sign (e.g. `away:instant`). For system that have an exit delay, provide the delay in seconds using parameter `exitDelay=180`. If defined, the delay is provided to Alexa during arm away requests only. For the pin code, you will need to enable voice pin in the Alexa app for the relevant device. If pin codes support is set to true, disarm request will include the pin code in item command delimited by a column sign (e.g. `disarm:1234`), otherwise, the verification is done by Alexa based on the voice pin code you configured. When the pin code is attached to the item command, it is your responsibility to validate the code on the openHAB side and change the item status to UNAUTHORIZED corresponding state in order to indicate that the code is invalid. Otherwise, if no action is taken, the skill will consider the request successful. Other errors state can also be used based on the list of additional properties below. These should only be used when arm/disarm commands are received. When associated to an [item sensor](#item-sensor), the item command and state can be decoupled. Although at this time, the skill doesn't support delayed responses, so there should be no delay in updating the relevant item state.
+    * Supported item type:
+      * Number [DISARMED=0, ARMED_STAY=1, ARMED_AWAY=2, ARMED_NIGHT=3, NOT_READY=4, UNCLEARED_ALARM=5, UNCLEARED_TROUBLE=6, BYPASS_NEEDED=7]
+      * String [DISARMED=disarm, ARMED_STAY=stay, ARMED_AWAY=away, ARMED_NIGHT=night, AUTHORIZATION_REQUIRED=authreq, UNAUTHORIZED=unauth, NOT_READY=notrdy, UNCLEARED_ALARM=alarm, UNCLEARED_TROUBLE=trouble, BYPASS_NEEDED=bypass]
+      * Switch [DISARMED=OFF, ARMED_STAY=ON]
+    * Default category: SECURITY_PANEL
+    * Supports additional properties:
+      * DISARMED=`<state>`
+      * ARMED_STAY=`<state>`
+      * ARMED_AWAY=`<state>`
+      * ARMED_NIGHT=`<state>`
+      * AUTHORIZATION_REQUIRED=`<state>`
+        * error state when in arm away mode while arm request in stay or night
+      * UNAUTHORIZED=`<state>`
+        * error state when provided disarm pin code is incorrect (Only used with pin codes support)
+      * NOT_READY=`<state>`
+        * error state when system not ready for arming or disarming
+      * UNCLEARED_ALARM=`<state>`
+        * error state when system has uncleared alarm preventing arming
+      * UNCLEARED_TROUBLE=`<state>`
+        * error state when system has uncleared trouble condition preventing arming
+      * BYPASS_NEEDED=`<state>`
+        * error state when system has open zones preventing arming
+      * supportedArmStates=`<states>`
+        * supported arm states should only be a list of DISARMED and ARMED_* states; do not put error states in that parameter.
+        * defaults to, depending on the parameters provided, either user-based or default item type mapping.
+      * supportsArmInstant=`<boolean>` (optional)
+        * only supported with String item type and exitDelay parameter provided
+        * defaults to false
+      * supportsPinCodes=`<boolean>` (optional)
+        * only supported with String item type
+        * defaults to false
+      * exitDelay=`<number>` (optional)
+        * maximum delay Alexa restriction up to 255 seconds.
+        * defaults to no value
+  * `SecurityPanelController.burglaryAlarm`
+    * Items that represent the current state of the burglary alarm part of a security system
+    * Supported item type:
+      * Contact
+      * Switch
+    * Default category: SECURITY_PANEL
+  * `SecurityPanelController.fireAlarm`
+    * Items that represent the current state of the fire alarm part of a security system
+    * Supported item type:
+      * Contact
+      * Switch
+    * Default category: SECURITY_PANEL
+  * `SecurityPanelController.carbonMonoxideAlarm`
+    * Items that represent the current state of the carbon monoxide alarm part of a security system
+    * Supported item type:
+      * Contact
+      * Switch
+    * Default category: SECURITY_PANEL
+  * `SecurityPanelController.waterAlarm`
+    * Items that represent the current state of the water alarm part of a security system
+    * Supported item type:
+      * Contact
+      * Switch
+    * Default category: SECURITY_PANEL
   * `ModeController.mode`
-    * Items that represent components of a device that have more than one setting. Multiple instances can be configured in a group endpoint. By default, to ask for a specific mode, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#item-friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well prefixing with an @ sign (e.g. `@Setting.WaterTemperature`). In regards to supported modes and their mappings, by default if omitted, the openHAB item state description options, if defined, are used to determine these configurations. To configure it, use `supportedModes` parameter and provide a comma delimited list of mode mappings composed of openHAB item states and the associated names/asset ids they should be called, delimited by equal and column signs (e.g. `0=Cold:Cool,1=Warm,2=Hot`). For string based modes if the mapping state value and name are the same (case sensitive), a shortened format can be used, where the name doesn't need to be added to the list by either leaving the first element empty or not providing the names at all (e.g. `supportedModes="Normal=:Cottons,Whites"` equivalent to `supportedModes="Normal=Normal:Cottons,Whites=Whites`). Additionally, if the mode can be adjusted incrementally (e.g. temperature control), set parameter `ordered=true`, otherwise only requests to set a specific mode will be accepted.
+    * Items that represent components of a device that have more than one setting. Multiple instances can be configured in a group endpoint. By default, to ask for a specific mode, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#item-friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well prefixing with an @ sign (e.g. `friendlyNames=Wash Temperature,@Setting.WaterTemperature`). In regards to supported modes and their mappings, by default if omitted, the openHAB item state description options, if defined, are used to determine these configurations. To configure it, use `supportedModes` parameter and provide a comma delimited list of mode mappings composed of openHAB item states and the associated names/asset ids they should be called, delimited by equal and column signs (e.g. `supportedModes="0=Cold:Cool,1=Warm,2=Hot"`). For string based modes if the mapping state value and name are the same (case sensitive), a shortened format can be used, where the name doesn't need to be added to the list by either leaving the first element empty or not providing the names at all (e.g. `supportedModes="Normal=:Cottons,Whites"` <=> `supportedModes="Normal=Normal:Cottons,Whites=Whites`). Additionally, if the mode can be adjusted incrementally (e.g. temperature control), set parameter `ordered=true`, otherwise only requests to set a specific mode will be accepted.
     * Supported item type:
       * Number
       * String
     * Default category: OTHER
     * Supports additional properties:
+      * friendlyNames=`<names>`
+        * each name formatted as `<@assetIdOrName>`
+        * defaults to item label name
       * supportedModes=`<modes>`
+        * each mode formatted as `<modeValue>=<@assetIdOrName1>:<@assetIdOrName2>:...`
         * defaults to item state description options `supportedModes="value1=label1,..."`, if defined, otherwise no supported modes
       * ordered=`<boolean>`
         * defaults to false
-      * friendlyNames=`<names/assetIds>`
-        * defaults to item label name
   * `RangeController.rangeValue`
-    * Items that represent components of a device that are characterized by numbers within a minimum and maximum range. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#item-friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well  prefixing with an @ sign (e.g. `@Setting.FanSpeed`). To set the supported range, provide a column delimited list including minimum, maximum and precision values. The latter value will be use as default increment when requesting adjusted range values. Optionally, to name specific presets, like fan speeds low [1] & high value [10], can be added in `presets` parameter and provide a comma delimited list of preset mappings composed of range value and the associated names/asset ids they should be called, delimited by equal and column signs (e.g. `1=@Value.Minimum:@Value.Low:Lowest,10=@Value.Maximum:@Value.High:Highest`). Another optional settings is `unitOfMeasure` parameter which gives a unit of measure to the range values. By default if omitted, it is based on the unit of measurement number item type that have a supported unit, otherwise, a [unit id](#item-unit-of-measurement-catalog) can be used. (e.g. `unitOfMeasure=Angle.Degrees`)
+    * Items that represent components of a device that are characterized by numbers within a minimum and maximum range. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#item-friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well  prefixing with an @ sign (e.g. `friendlyNames="@Setting.FanSpeed,Speed"`). To set the supported range, provide a column delimited list including minimum, maximum and precision values. The latter value will be use as default increment when requesting adjusted range values. Optionally, to name specific presets, like fan speeds low [1] & high value [10], can be added in `presets` parameter and provide a comma delimited list of preset mappings composed of range value and the associated names/asset ids they should be called, delimited by equal and column signs (e.g. `presets="1=@Value.Minimum:@Value.Low:Lowest,10=@Value.Maximum:@Value.High:Highest"`). Another optional settings is `unitOfMeasure` parameter which gives a unit of measure to the range values. By default if omitted, it is based on the unit of measurement number item type that have a supported unit, otherwise, a [unit id](#item-unit-of-measurement-catalog) can be used. (e.g. `unitOfMeasure=Angle.Degrees`)
     * Supported item type:
       * Dimmer
       * Number
@@ -346,16 +419,17 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * Rollershutter
     * Default category: OTHER
     * supports additional properties:
+      * friendlyNames=`<names>`
+        * each name formatted as `<@assetIdOrName>`
+        * defaults to item label name
       * supportedRange=`<minValue:maxValue:precision>`
         * defaults to `[0:100:1]` for Dimmer/Rollershutter, `[0:10:1]` for Number* item types
-      * unitOfMeasure=`<unitOfMeasureId>` (optional)
-        * defaults to item state unit of measurement symbol for Number:* item types
       * presets=`<presets>` (optional)
-        * each preset formatted as `<presetValue>:<assetIdOrName1>:<assetIdOrName2>:...`
-      * friendlyNames=`<names/assetIds>`
-        * defaults to item label name
+        * each preset formatted as `<presetValue>=<@assetIdOrName1>:<@assetIdOrName2>:...`
+      * unitOfMeasure=`<unitId>` (optional)
+        * defaults to item state unit of measurement symbol for Number:* item types
   * `ToggleController.toggleState`
-    * Items that represent components of a device that can be turned on or off. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#item-friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well with an @ sign prefix (e.g. `@Setting.Oscillate`).
+    * Items that represent components of a device that can be turned on or off. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#item-friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well with an @ sign prefix (e.g. `friendlyNames="@Setting.Oscillate,Rotate"`).
     * Supported item type:
       * Color
       * Dimmer
@@ -363,7 +437,8 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * Switch
     * Default category: OTHER
     * Supports additional properties:
-      * friendlyNames=`<names/assetIds>`
+      * friendlyNames=`<names>`
+        * each name formatted as `<@assetIdOrName>`
         * defaults to item label name
 
 ##### Item Scale
@@ -664,6 +739,46 @@ Contact MotionSensor "Motion Sensor" ["MotionSensor"]
 Contact MotionSensor "Motion Sensor" {alexa="MotionSensor"}
 
 Contact MotionSensor "Motion Sensor" {alexa="MotionSensor.detectionState"}
+```
+* SecurityAlarmMode
+```
+String SecurityAlarmMode "Security Alarm Mode" ["SecurityAlarmMode"]
+
+String SecurityAlarmMode "Security Alarm Mode" {alexa="SecurityAlarmMode"}
+
+String SecurityAlarmMode "Security Alarm Mode" {alexa="SecurityPanelController.armState"}
+```
+* BurglaryAlarm
+```
+Contact BurglaryAlarm "Burglary Alarm" ["BurglaryAlarm"]
+
+Contact BurglaryAlarm "Burglary Alarm" {alexa="BurglaryAlarm"}
+
+Contact BurglaryAlarm "Burglary Alarm" {alexa="SecurityPanelController.burglaryAlarm"}
+```
+* FireAlarm
+```
+Contact FireAlarm "Fire Alarm" ["FireAlarm"]
+
+Contact FireAlarm "Fire Alarm" {alexa="FireAlarm"}
+
+Contact FireAlarm "Fire Alarm" {alexa="SecurityPanelController.fireAlarm"}
+```
+* CarbonMonoxideAlarm
+```
+Contact CarbonMonoxideAlarm "Carbon Monoxide Alarm" ["CarbonMonoxideAlarm"]
+
+Contact CarbonMonoxideAlarm "Carbon Monoxide Alarm" {alexa="CarbonMonoxideAlarm"}
+
+Contact CarbonMonoxideAlarm "Carbon Monoxide Alarm" {alexa="SecurityPanelController.carbonMonoxideAlarm"}
+```
+* WaterAlarm
+```
+Contact WaterAlarm "Water Alarm" ["WaterAlarm"]
+
+Contact WaterAlarm "Water Alarm" {alexa="WaterAlarm"}
+
+Contact WaterAlarm "Water Alarm" {alexa="SecurityPanelController.waterAlarm"}
 ```
 * ModeComponent
 ```

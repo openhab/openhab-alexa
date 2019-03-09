@@ -33,7 +33,7 @@ class AlexaBrightnessController extends AlexaDirective {
    * Set brightness
    */
   setBrightness() {
-    const postItem = Object.assign(this.propertyMap.BrightnessController.brightness.item, {
+    const postItem = Object.assign({}, this.propertyMap.BrightnessController.brightness.item, {
       state: this.directive.payload.brightness
     });
     this.postItemsAndReturn([postItem]);
@@ -43,7 +43,7 @@ class AlexaBrightnessController extends AlexaDirective {
    * Adjust brightness
    */
   adjustBrightness() {
-    const postItem = this.propertyMap.BrightnessController.brightness.item;
+    const postItem = Object.assign({}, this.propertyMap.BrightnessController.brightness.item);
 
     this.getItemState(postItem).then((item) => {
       // Throw error if state not a number

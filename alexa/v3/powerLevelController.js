@@ -33,7 +33,7 @@ class AlexaPowerLevelController extends AlexaDirective {
    * Set power level
    */
   setPowerLevel() {
-    const postItem = Object.assign(this.propertyMap.PowerLevelController.powerLevel.item, {
+    const postItem = Object.assign({}, this.propertyMap.PowerLevelController.powerLevel.item, {
       state: this.directive.payload.powerLevel
     });
     this.postItemsAndReturn([postItem]);
@@ -43,7 +43,7 @@ class AlexaPowerLevelController extends AlexaDirective {
    * Adjust power level
    */
   adjustPowerLevel() {
-    const postItem = this.propertyMap.PowerLevelController.powerLevel.item;
+    const postItem = Object.assign({}, this.propertyMap.PowerLevelController.powerLevel.item);
 
     this.getItemState(postItem).then((item) => {
       // Throw error if state not a number

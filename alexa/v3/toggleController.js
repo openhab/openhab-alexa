@@ -34,7 +34,7 @@ class AlexaToggleController extends AlexaDirective {
   setToggleState() {
     // Append instance name to interface property
     this.interface += ':' + this.directive.header.instance;
-    const postItem = Object.assign(this.propertyMap[this.interface].toggleState.item, {
+    const postItem = Object.assign({}, this.propertyMap[this.interface].toggleState.item, {
       state: this.directive.header.name === 'TurnOn' ? 'ON' : 'OFF'
     });
     this.postItemsAndReturn([postItem]);

@@ -36,7 +36,7 @@ class AlexaColorTemperatureController extends AlexaDirective {
    */
   setColorTemperature() {
     const properties = this.propertyMap.ColorTemperatureController;
-    const postItem = Object.assign(properties.colorTemperatureInKelvin.item, {
+    const postItem = Object.assign({}, properties.colorTemperatureInKelvin.item, {
       state: normalize(properties.colorTemperatureInKelvin, this.directive.payload.colorTemperatureInKelvin)
     });
     this.postItemsAndReturn([postItem]);
@@ -47,7 +47,7 @@ class AlexaColorTemperatureController extends AlexaDirective {
    */
   adjustColorTemperature() {
     const properties = this.propertyMap.ColorTemperatureController;
-    const postItem = properties.colorTemperatureInKelvin.item;
+    const postItem = Object.assign({}, properties.colorTemperatureInKelvin.item);
 
     this.getItemState(postItem).then((item) => {
       // Generate error if in color mode (color controller property defined & empty state)

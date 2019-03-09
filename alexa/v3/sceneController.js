@@ -34,7 +34,7 @@ class AlexaSceneController extends AlexaDirective {
    */
   setScene() {
     const isSceneActivate = this.directive.header.name === 'Activate';
-    const postItem = Object.assign(this.propertyMap.SceneController.scene.item, {
+    const postItem = Object.assign({}, this.propertyMap.SceneController.scene.item, {
       state: isSceneActivate ? 'ON' : 'OFF'
     });
     const response = this.generateResponse({

@@ -42,7 +42,7 @@ class AlexaThermostatController extends AlexaDirective {
     // Add requested properties to be updated that are part of the controller properties
     const postItems = Object.keys(properties).reduce((items, propertyName) => {
       if (directive.payload[propertyName]) {
-        items.push(Object.assign(properties[propertyName].item, {
+        items.push(Object.assign({}, properties[propertyName].item, {
           state: normalize(properties[propertyName], directive.payload[propertyName])
         }));
       }
@@ -65,10 +65,10 @@ class AlexaThermostatController extends AlexaDirective {
       }
       // set dual setpoints
       postItems.push(
-        Object.assign(properties.upperSetpoint.item, {
+        Object.assign({}, properties.upperSetpoint.item, {
           state: normalize(properties.upperSetpoint, directive.payload.targetSetpoint) + upperRange
         }),
-        Object.assign(properties.lowerSetpoint.item, {
+        Object.assign({}, properties.lowerSetpoint.item, {
           state: normalize(properties.lowerSetpoint, directive.payload.targetSetpoint) - lowerRange
         })
       );
@@ -95,7 +95,7 @@ class AlexaThermostatController extends AlexaDirective {
     }
     propertyNames.forEach((propertyName) => {
       promises.push(this.getItemState(properties[propertyName].item).then(item =>
-        Object.assign(properties[propertyName].item, {
+        Object.assign({}, properties[propertyName].item, {
           state: parseFloat(item.state) + normalize(properties[propertyName],
             this.directive.payload.targetSetpointDelta, {isDelta: true})
         })
@@ -115,7 +115,7 @@ class AlexaThermostatController extends AlexaDirective {
    */
   setThermostatMode() {
     const properties = this.propertyMap.ThermostatController;
-    const postItem = Object.assign(properties.thermostatMode.item, {
+    const postItem = Object.assign({}, properties.thermostatMode.item, {
       state: normalize(properties.thermostatMode, this.directive.payload.thermostatMode.value)
     });
 

@@ -36,7 +36,7 @@ class AlexaColorController extends AlexaDirective {
       this.directive.payload.color.saturation * 100.0,
       this.directive.payload.color.brightness * 100.0
     ];
-    const postItem = Object.assign(this.propertyMap.ColorController.color.item, {
+    const postItem = Object.assign({}, this.propertyMap.ColorController.color.item, {
       state: hsb.join(',')
     });
     this.postItemsAndReturn([postItem]);

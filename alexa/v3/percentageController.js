@@ -33,7 +33,7 @@ class AlexaPercentageController extends AlexaDirective {
    * Set percentage
    */
   setPercentage() {
-    const postItem = Object.assign(this.propertyMap.PercentageController.percentage.item, {
+    const postItem = Object.assign({}, this.propertyMap.PercentageController.percentage.item, {
       state: this.directive.payload.percentage
     });
     this.postItemsAndReturn([postItem]);
@@ -43,7 +43,7 @@ class AlexaPercentageController extends AlexaDirective {
    * Adjust percentage
    */
   adjustPercentage() {
-    const postItem = this.propertyMap.PercentageController.percentage.item;
+    const postItem = Object.assign({}, this.propertyMap.PercentageController.percentage.item);
 
     this.getItemState(postItem).then((item) => {
       // Throw error if state not a number

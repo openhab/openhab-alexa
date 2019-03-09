@@ -48,7 +48,7 @@ class AlexaModeController extends AlexaDirective {
     // Append instance name to interface property
     this.interface += ':' + this.directive.header.instance;
     const properties = this.propertyMap[this.interface];
-    const postItem = properties.mode.item;
+    const postItem = Object.assign({}, properties.mode.item);
 
     this.getItemState(postItem).then((item) => {
       // Define supported modes list stripping alternate names

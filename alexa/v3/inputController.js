@@ -31,7 +31,7 @@ class AlexaInputController extends AlexaDirective {
    * Select input (HDMI1, Music, etc..)
    */
   selectInput() {
-    const postItem = Object.assign(this.propertyMap.InputController.input.item, {
+    const postItem = Object.assign({}, this.propertyMap.InputController.input.item, {
       state: this.directive.payload.input.replace(/\s/g, '').toUpperCase()
     });
     this.postItemsAndReturn([postItem]);

@@ -33,7 +33,7 @@ class AlexaStepSpeaker extends AlexaDirective {
    * Adjust volume
    */
   adjustVolume() {
-    const postItem = this.propertyMap.StepSpeaker.volume.item;
+    const postItem = Object.assign({}, this.propertyMap.StepSpeaker.volume.item);
 
     this.getItemState(postItem).then((item) => {
       // Throw error if state not a number
@@ -53,7 +53,7 @@ class AlexaStepSpeaker extends AlexaDirective {
    * Set mute
    */
   setMute() {
-    const postItem = Object.assign(this.propertyMap.StepSpeaker.muted.item, {
+    const postItem = Object.assign({}, this.propertyMap.StepSpeaker.muted.item, {
       state: this.directive.payload.mute ? 'ON' : 'OFF'
     });
     this.postItemsAndReturn([postItem]);

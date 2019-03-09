@@ -33,27 +33,26 @@ class AlexaResponse {
    * @return {Object}
    */
   generateResponse(parameters = {}) {
-    return Object.assign({},
-      parameters.context && {
-        // Include context properties if provided
-        context: parameters.context
+    return Object.assign({
+    }, parameters.context && {
+      // Include context properties if provided
+      context: parameters.context
+    }, {
+      // Include event properties
+      event: Object.assign({
+        // Add event header
+        header: this.generateResponseHeader(parameters.header)
+      }, this.directive.endpoint && {
+        // Add event endpoint if provided in directive
+        endpoint: {
+          scope: this.directive.endpoint.scope,
+          endpointId: this.directive.endpoint.endpointId
+        }
       }, {
-        // Include event properties
-        event: Object.assign({
-          // Add event header
-          header: this.generateResponseHeader(parameters.header)
-        }, this.directive.endpoint && {
-          // Add event endpoint if provided in directive
-          endpoint: {
-            scope: this.directive.endpoint.scope,
-            endpointId: this.directive.endpoint.endpointId
-          }
-        }, {
-          // Add event payload
-          payload: parameters.payload || {}
-        })
-      }
-    );
+        // Add event payload
+        payload: parameters.payload || {}
+      })
+    });
   }
 
   /**

@@ -80,6 +80,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   const locale = settings.regional && settings.regional.language && settings.regional.region ?
     [settings.regional.language, settings.regional.region].join('-') : 'en-US';
 
+  // Initialize capability common properties
   const configuration = {};
   const resources = {};
   const supported = [];
@@ -105,6 +106,18 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
           'supportsScheduling': false
         }, parameters.supportedModes && {
           'supportedModes': parameters.supportedModes
+        });
+        break;
+      case 'armState':
+        Object.assign(configuration, {
+          'supportsArmInstant': parameters.supportsArmInstant === true,
+          'supportedArmStates': parameters.supportedArmStates.reduce((states, state) => states.concat({
+            'value': state
+          }), [])
+        }, parameters.supportsPinCodes === true && {
+          'supportedAuthorizationTypes': [{
+            'type': 'FOUR_DIGIT_PIN'
+          }]
         });
         break;
       case 'mode':
@@ -239,7 +252,7 @@ function getPropertySettings(capability) {
   const properties = CAPABILITIES[interfaceName] && CAPABILITIES[interfaceName]['properties'] || [];
   const property = properties.find(property => property.name === propertyName) || {};
 
-  return Object.assign(property, PROPERTY_SCHEMAS[property.schema]);
+  return Object.assign({}, property, PROPERTY_SCHEMAS[property.schema]);
 }
 
 /**

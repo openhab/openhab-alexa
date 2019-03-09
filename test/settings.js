@@ -15,6 +15,9 @@ var settings = {
       "Scene": [
         "./v3/test_discoverScene.js"
       ],
+      "SecurityPanel": [
+        "./v3/test_discoverSecurityPanel.js"
+      ],
       "Sensor": [
         "./v3/test_discoverSensor.js"
       ],
@@ -86,6 +89,9 @@ var settings = {
       ],
       "SceneController": [
         "./v3/test_controllerScene.js"
+      ],
+      "SecurityPanelController": [
+        "./v3/test_controllerSecurityPanel.js"
       ],
       "Speaker": [
         "./v3/test_controllerSpeaker.js"
