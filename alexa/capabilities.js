@@ -80,9 +80,9 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   const locale = settings.regional && settings.regional.language && settings.regional.region ?
     [settings.regional.language, settings.regional.region].join('-') : 'en-US';
 
-  let configuration = {};
-  let resources = {};
-  let supported = [];
+  const configuration = {};
+  const resources = {};
+  const supported = [];
 
   // Iterate over interface properties
   Object.keys(properties).forEach((propertyName) => {
@@ -101,41 +101,41 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
         capability.supportsDeactivation = parameters.supportsDeactivation === false ? false : true;
         break;
       case 'thermostatMode':
-        configuration = Object.assign(configuration, {
+        Object.assign(configuration, {
           'supportsScheduling': false
         }, parameters.supportedModes && {
           'supportedModes': parameters.supportedModes
         });
         break;
       case 'mode':
-        resources = Object.assign(resources, parameters.friendlyNames && getResourcesObject({
+        Object.assign(resources, parameters.friendlyNames && getResourcesObject({
           labels: parameters.friendlyNames, locale: parameters.locale || locale}));
-        configuration = Object.assign(configuration, {
+        Object.assign(configuration, {
           'ordered': parameters.ordered === true,
           'supportedModes': parameters.supportedModes.reduce((modes, mode) => modes.concat({
-            'value': mode.split(':').shift().split('.').pop(),
+            'value': mode.split('=').shift(),
             'modeResources': getResourcesObject({
-              labels: mode.split(':'), locale: parameters.locale || locale})
+              labels: mode.split(/[=:]/).slice(1), locale: parameters.locale || locale})
           }), [])
         });
         break;
       case 'rangeValue':
-        resources = Object.assign(resources, parameters.friendlyNames && getResourcesObject({
+        Object.assign(resources, parameters.friendlyNames && getResourcesObject({
           labels: parameters.friendlyNames, locale: parameters.locale || locale}));
-        configuration = Object.assign(configuration, Object.assign({
+        Object.assign(configuration, Object.assign({
           'supportedRange': parameters.supportedRange
         }, parameters.unitOfMeasure && {
           'unitOfMeasure': 'Alexa.Unit.' + parameters.unitOfMeasure
         }, parameters.presets && {
           'presets': parameters.presets.reduce((presets, preset) => presets.concat({
-            'rangeValue': parseInt(preset.split(':').shift()),
+            'rangeValue': parseInt(preset.split('=').shift()),
             'presetResources': getResourcesObject({
-              labels: preset.split(':').slice(1), locale: parameters.locale || locale})
+              labels: preset.split(/[=:]/).slice(1), locale: parameters.locale || locale})
           }), [])
         }));
         break;
       case 'toggleState':
-        resources = Object.assign(resources, parameters.friendlyNames && getResourcesObject({
+        Object.assign(resources, parameters.friendlyNames && getResourcesObject({
           labels: parameters.friendlyNames, locale: parameters.locale || locale}));
         break;
     }
@@ -183,14 +183,17 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
 function getResourcesObject(parameters = {}) {
   return {
     friendlyNames: parameters.labels.reduce((names, label) => {
-      if (isSupportedAssetId(label)) {
-        names.push({
-          '@type': 'asset',
-          'value': {
-            'assetId': 'Alexa.' + label
-          }
-        });
-      } else {
+      if (label.startsWith('@')) {
+        const assetId = label.slice(1);
+        if (isSupportedAssetId(assetId)) {
+          names.push({
+            '@type': 'asset',
+            'value': {
+              'assetId': 'Alexa.' + assetId
+            }
+          });
+        }
+      } else if (label) {
         names.push({
           '@type': 'text',
           'value': {
@@ -261,17 +264,12 @@ function getPropertyStateMap(property) {
     return key.startsWith('custom:') && param ? stateMap[key][param] : map;
   }, undefined);
   // Define default map if defined in schema state map
-  const defaultMap = stateMap['default'] && stateMap['default'][type];
-
-  // Use default map keys as alexa states if defined,
-  //  otherwise use supportedModes parameter states (e.g. '<assetIdOrLabel1>:<alternateAssetIdOrLabel2>,...')
-  const alexaStates = defaultMap ? Object.keys(defaultMap) :
-    supportedModes.map(mode => mode.split(':').shift().split('.').pop());
-  // Define user map using alexa states present in property parameters
-  const userMap = alexaStates.reduce((map, state) =>
+  const defaultMap = stateMap['default'] && stateMap['default'][type] || {};
+  // Define user map using default map keys as supported alexa states present in property parameters
+  const userMap = Object.keys(defaultMap).reduce((map, state) =>
     Object.assign(map, typeof parameters[state] !== 'undefined' && {[state]: parameters[state]}), {});
 
-  return Object.keys(userMap).length > 0 ? userMap : customMap || defaultMap || {};
+  return Object.keys(userMap).length > 0 ? userMap : customMap || defaultMap;
 }
 
 /**

@@ -13,8 +13,8 @@ module.exports = {
               "value": "RangeController.rangeValue",
               "config": {
                 "supportedRange": "1:10:1",
-                "presets": "1:Value.Minimum:Value.Low:Lowest,10:Value.Maximum:Value.High:Highest,99:invalid",
-                "friendlyNames": "Setting.FanSpeed,Air Speed,Speed"
+                "presets": "1=@Value.Minimum:@Value.Low:Lowest,10=@Value.Maximum:@Value.High:Highest,99=invalid",
+                "friendlyNames": "@Setting.FanSpeed,Air Speed,Speed"
               }
             }
           },
@@ -29,7 +29,7 @@ module.exports = {
             "alexa": {
               "value": "ToggleController.toggleState",
               "config": {
-                "friendlyNames": "Setting.Oscillate,Rotate"
+                "friendlyNames": "@Setting.Oscillate,Rotate"
               }
             }
           },
@@ -121,8 +121,8 @@ module.exports = {
           "rangeValue": {
             "parameters": {
               "supportedRange": {"minimumValue": 1, "maximumValue": 10, "precision": 1},
-              "presets": ["1:Value.Minimum:Value.Low:Lowest", "10:Value.Maximum:Value.High:Highest"],
-              "friendlyNames": ["Setting.FanSpeed", "Air Speed", "Speed"]
+              "presets": ["1=@Value.Minimum:@Value.Low:Lowest", "10=@Value.Maximum:@Value.High:Highest"],
+              "friendlyNames": ["@Setting.FanSpeed", "Air Speed", "Speed"]
             },
             "item": {"name": "TowerFanSpeed", "type": "Number"},
             "schema": {"name": "rangeValue"}
@@ -130,7 +130,7 @@ module.exports = {
         },
         "ToggleController:TowerFanOscillate": {
           "toggleState": {
-            "parameters": {"friendlyNames": ["Setting.Oscillate", "Rotate"]},
+            "parameters": {"friendlyNames": ["@Setting.Oscillate", "Rotate"]},
             "item": {"name": "TowerFanOscillate", "type": "Switch"},
             "schema": {"name": "toggleState"}
           }

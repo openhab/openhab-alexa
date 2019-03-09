@@ -14,7 +14,7 @@ module.exports = [
             "ModeController:WashCycle": {
               "mode": {
                 "parameters": {
-                  "supportedModes": ["Normal:Cottons", "Value.Delicate:Knites"],
+                  "supportedModes": ["Normal=Normal:Cottons", "Delicate=@Value.Delicate:Knites", "Whites=Whites"],
                   "friendlyNames": ["Wash Cycle", "Wash Setting"]
                 },
                 "item": {"name": "WashCycle", "type": "String"},
@@ -68,9 +68,8 @@ module.exports = [
             "ModeController:WashTemperature": {
               "mode": {
                 "parameters": {
-                  "Cold": 0, "Warm": 1, "Hot": 2,
-                  "supportedModes": ["Cold:Cool", "Warm", "Hot"],
-                  "friendlyNames": ["Wash Temperature", "Setting.WaterTemperature"],
+                  "supportedModes": ["0=Cold:Cool", "1=Warm", "2=Hot"],
+                  "friendlyNames": ["Wash Temperature", "@Setting.WaterTemperature"],
                   "ordered": true
                 },
                 "item": {"name": "WashTemperature", "type": "Number"},
@@ -98,7 +97,7 @@ module.exports = [
             "namespace": "Alexa.ModeController",
             "name": "mode",
             "instance": "WashTemperature",
-            "value": "Warm"
+            "value": "1"
           }]
         },
         "event": {
@@ -109,7 +108,7 @@ module.exports = [
         }
       },
       openhab: [
-        {"name": "WashTemperature", "value": 1}
+        {"name": "WashTemperature", "value": "1"}
       ]
     }
   },
@@ -128,9 +127,8 @@ module.exports = [
             "ModeController:WashTemperature": {
               "mode": {
                 "parameters": {
-                  "Cold": 0, "Warm": 1, "Hot": 2,
-                  "supportedModes": ["Cold:Cool", "Warm", "Hot"],
-                  "friendlyNames": ["Wash Temperature", "Setting.WaterTemperature"],
+                  "supportedModes": ["0=Cold:Cool", "1=Warm", "2=Hot"],
+                  "friendlyNames": ["Wash Temperature", "@Setting.WaterTemperature"],
                   "ordered": true
                 },
                 "item": {"name": "WashTemperature", "type": "Number"},

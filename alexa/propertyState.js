@@ -214,6 +214,7 @@ function normalize(property, value, options) {
     return normalizeFunctions[method](state, property, options);
   }
   // Return normalized property state using state map otherwise
+  //  { <alexaState>: '<ohState1>:<ohState2>:...', ... }
   if (Object.keys(propertyStateMap).length > 0) {
     if (typeof propertyStateMap[state] !== 'undefined') {
       // Convert Alexa to OH if state in property map

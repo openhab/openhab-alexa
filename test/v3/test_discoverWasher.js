@@ -12,7 +12,7 @@ module.exports = {
             "alexa": {
               "value": "ModeController.mode",
               "config": {
-                "supportedModes": "Normal:Cottons,Value.Delicate:Knites",
+                "supportedModes": "Normal=:Cottons,Delicate=@Value.Delicate:Knites,Whites",
                 "friendlyNames": "Wash Cycle,Wash Setting"
               }
             }
@@ -28,11 +28,8 @@ module.exports = {
             "alexa": {
               "value": "ModeController.mode",
               "config": {
-                "Cold": 0,
-                "Warm": 1,
-                "Hot": 2,
-                "supportedModes": "Cold:Cool,Warm,Hot",
-                "friendlyNames": "Wash Temperature,Setting.WaterTemperature",
+                "supportedModes": "0=Cold:Cool,1=Warm,2=Hot",
+                "friendlyNames": "Wash Temperature,@Setting.WaterTemperature",
                 "ordered": true
               }
             }
@@ -105,19 +102,22 @@ module.exports = {
             },
             "Delicate": {
               'friendlyNames': ["asset:Alexa.Value.Delicate", "text:Knites:en-US"]
+            },
+            "Whites": {
+              'friendlyNames': ["text:Whites:en-US"]
             }
           }
         },
         "Alexa.ModeController.WashTemperature": {
           "ordered": true,
           "supportedModes": {
-            "Cold": {
+            "0": {
               "friendlyNames": ["text:Cold:en-US", "text:Cool:en-US"]
             },
-            "Warm": {
+            "1": {
               'friendlyNames': ["text:Warm:en-US"]
             },
-            "Hot": {
+            "2": {
               'friendlyNames': ["text:Hot:en-US"]
             }
           }
@@ -125,27 +125,44 @@ module.exports = {
         "Alexa.ModeController.WashSpinSpeed": {
           "ordered": false,
           "supportedModes": {
-            "No Spin": {
+            "off": {
               'friendlyNames': ["text:No Spin:en-US"]
             },
-            "Low": {
+            "low": {
               'friendlyNames': ["text:Low:en-US"]
             },
-            "Medium": {
+            "medium": {
               'friendlyNames': ["text:Medium:en-US"]
             },
-            "High": {
+            "high": {
               "friendlyNames": ["text:High:en-US"]
             }
           }
         }
       },
       "propertyMap": {
+        "ModeController:WashCycle": {
+          "mode": {
+            "parameters": {
+              "supportedModes": ["Normal=Normal:Cottons", "Delicate=@Value.Delicate:Knites", "Whites=Whites"],
+              "friendlyNames": ["Wash Cycle", "Wash Setting"]},
+            "item": {"name": "WashCycle", "type": "String"},
+            "schema": {"name": "mode"}
+          }
+        },
+        "ModeController:WashTemperature": {
+          "mode": {
+            "parameters": {
+              "supportedModes": ["0=Cold:Cool", "1=Warm", "2=Hot"], "ordered": true,
+              "friendlyNames": ["Wash Temperature", "@Setting.WaterTemperature"]},
+            "item": {"name": "WashTemperature", "type": "Number"},
+            "schema": {"name": "mode"}
+          }
+        },
         "ModeController:WashSpinSpeed": {
           "mode": {
             "parameters": {
-              "No Spin": "off", "Low": "low", "Medium": "medium", "High": "high",
-              "supportedModes": ["No Spin", "Low", "Medium", "High"],
+              "supportedModes": ["off=No Spin", "low=Low", "medium=Medium", "high=High"],
               "friendlyNames": ["Wash Spin Speed"]},
             "item": {"name": "WashSpinSpeed", "type": "String"},
             "schema": {"name": "mode"}

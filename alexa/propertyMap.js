@@ -23,6 +23,12 @@ const { normalize } = require('./propertyState.js');
 const PARAMETER_ITEM_PATTERN = /^item(\w+)$/;
 
 /**
+ * Defines parameter resources single element format pattern
+ * @type {RegExp}
+ */
+const PARAMETER_RESOURCES_PATTERN = /^(\w+)(?:=(.+))?$/;
+
+/**
  * Defines parameter type mapping
  * @type {Object}
  */
@@ -237,11 +243,14 @@ class AlexaPropertyMap {
           case 'mode':
             // Use item state description options to determine supported modes and its mapping if not already defined
             if (item.stateDescription && item.stateDescription.options && !property.parameters.supportedModes) {
-              property.parameters.supportedModes = item.stateDescription.options.reduce((modes, option) => {
-                property.parameters[option.label] = option.value;
-                return modes.concat(option.label);
-              }, []);
+              property.parameters.supportedModes = item.stateDescription.options.reduce((modes, option) =>
+                modes.concat(`${option.value}=${option.label}`), []);
             }
+            // Update supported modes using mode as labels if not defined or first element empty
+            property.parameters.supportedModes = (property.parameters.supportedModes || []).reduce((modes, value) => {
+              const [match, mode, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
+              return modes.concat(mode ? `${mode}=${labels.match(/^(:|$)/) ? mode : ''}${labels}` : []);
+            }, []);
             break;
 
           case 'rangeValue':
@@ -255,11 +264,11 @@ class AlexaPropertyMap {
             // Set supported range object
             property.parameters.supportedRange = {
               'minimumValue': rangeValues[0], 'maximumValue': rangeValues[1], 'precision': Math.abs(rangeValues[2])};
-            // Remove invalid presets from parameter
+            // Update presets parameter removing out of range values
             property.parameters.presets = (property.parameters.presets || []).reduce((presets, value) => {
-              const presetValue = parseInt(value.split(':').shift());
-              return rangeValues[0] <= presetValue && presetValue <= rangeValues[1] && value.split(':').length > 1 ?
-                [].concat(presets || [], value) : presets;
+              const [match, preset, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
+              return rangeValues[0] <= preset && preset <= rangeValues[1] && labels ?
+                [].concat(presets || [], match) : presets;
             }, undefined);
             // Use unit of measurement item state symbol and type dimension to determine unitOfMeasure if not defined
             if (item.type.startsWith('Number:') && !property.parameters.unitOfMeasure) {

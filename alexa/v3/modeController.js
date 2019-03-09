@@ -9,7 +9,6 @@
 
 const log = require('@lib/log.js');
 const AlexaDirective = require('../directive.js');
-const { normalize } = require('../propertyState.js');
 
 /**
  * Defines Alexa.ModeController interface directive class
@@ -36,9 +35,8 @@ class AlexaModeController extends AlexaDirective {
   setMode() {
     // Append instance name to interface property
     this.interface += ':' + this.directive.header.instance;
-    const properties = this.propertyMap[this.interface];
-    const postItem = Object.assign(properties.mode.item, {
-      state: normalize(properties.mode, this.directive.payload.mode)
+    const postItem = Object.assign(this.propertyMap[this.interface].mode.item, {
+      state: this.directive.payload.mode
     });
     this.postItemsAndReturn([postItem]);
   }
@@ -53,20 +51,18 @@ class AlexaModeController extends AlexaDirective {
     const postItem = properties.mode.item;
 
     this.getItemState(postItem).then((item) => {
-      // Convert current item state to alexa state
-      const currentMode = normalize(properties.mode, item.state);
-      // Define supported modes list stripping alternate modes
-      const supportedModes = properties.mode.parameters.supportedModes.map(mode => mode.split(':').shift());
+      // Define supported modes list stripping alternate names
+      const supportedModes = properties.mode.parameters.supportedModes.map(mode => mode.split('=').shift());
       // Find current mode index
-      const index = supportedModes.findIndex(mode => mode === currentMode);
+      const index = supportedModes.findIndex(mode => mode === item.state);
 
       // Throw error if current mode not found
       if (index === -1 ) {
-        throw {reason: 'Current mode not found in supported list', current: ''+currentMode, supported: supportedModes};
+        throw {reason: 'Current mode not found in supported list', item: item, supported: supportedModes};
       }
 
-      // Convert back adjusted mode to OH state
-      postItem.state = normalize(properties.mode, supportedModes[index + this.directive.payload.modeDelta]);
+      // Set adjusted mode
+      postItem.state = supportedModes[index + this.directive.payload.modeDelta];
 
       if (typeof postItem.state !== 'undefined') {
         this.postItemsAndReturn([postItem]);
