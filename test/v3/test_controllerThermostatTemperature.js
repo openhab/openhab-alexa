@@ -158,7 +158,7 @@ module.exports = [
     }
   },
   {
-    description: "set target temperature dual mode with comfort_range defined",
+    description: "set target temperature dual mode with comfort range defined",
     directive: {
       "header": {
         "namespace": "Alexa.ThermostatController",

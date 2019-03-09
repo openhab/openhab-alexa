@@ -34,29 +34,24 @@ class AlexaResponse {
    */
   generateResponse(parameters = {}) {
     return Object.assign({},
-      // Include context properties if provided
       parameters.context && {
+        // Include context properties if provided
         context: parameters.context
-      },
-      // Include event properties
-      {
-        event: Object.assign(
+      }, {
+        // Include event properties
+        event: Object.assign({
           // Add event header
-          {
-            header: this.generateResponseHeader(parameters.header)
-          },
+          header: this.generateResponseHeader(parameters.header)
+        }, this.directive.endpoint && {
           // Add event endpoint if provided in directive
-          this.directive.endpoint && {
-            endpoint: {
-              scope: this.directive.endpoint.scope,
-              endpointId: this.directive.endpoint.endpointId
-            }
-          },
-          // Add event payload
-          {
-            payload: parameters.payload || {}
+          endpoint: {
+            scope: this.directive.endpoint.scope,
+            endpointId: this.directive.endpoint.endpointId
           }
-        )
+        }, {
+          // Add event payload
+          payload: parameters.payload || {}
+        })
       }
     );
   }
@@ -67,18 +62,15 @@ class AlexaResponse {
    * @return {Object}
    */
   generateResponseHeader(parameters = {}) {
-    return Object.assign(
-      {
-        namespace: parameters.namespace || 'Alexa',
-        name: parameters.name || 'Response',
-        messageId: uuid(),
-        payloadVersion: this.directive.header.payloadVersion
-      },
+    return Object.assign({
+      namespace: parameters.namespace || 'Alexa',
+      name: parameters.name || 'Response',
+      messageId: uuid(),
+      payloadVersion: this.directive.header.payloadVersion
+    }, this.directive.header.correlationToken && {
       // Include correlationToken property if provided in directive header
-      this.directive.header.correlationToken && {
-        correlationToken: this.directive.header.correlationToken
-      }
-    );
+      correlationToken: this.directive.header.correlationToken
+    });
   }
 
   /**

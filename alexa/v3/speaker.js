@@ -52,7 +52,12 @@ class AlexaSpeaker extends AlexaDirective {
       (volumeAdjust >= 0 ? 1 : -1) * defaultIncrement : volumeAdjust;
 
     this.getItemState(postItem).then((item) => {
-      postItem.state = isNaN(item.state) ? Math.abs(volumeIncrement) : parseInt(item.state) + volumeIncrement;
+      // Throw error if state not a number
+      if (isNaN(item.state)) {
+        throw {reason: 'Could not get numeric item state', item: item};
+      }
+
+      postItem.state = parseInt(item.state) + volumeIncrement;
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
       log.error('adjustVolume failed with error:', error);

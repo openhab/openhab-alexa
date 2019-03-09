@@ -13,7 +13,7 @@
 const camelcase = require('camelcase');
 const utils = require('@lib/utils.js');
 const { getPropertySettings, getPropertyStateMap, isSupportedDisplayCategory } = require('./capabilities.js');
-const { CAPABILITY_PATTERN, THERMOSTAT_MODES } = require('./config.js');
+const { CAPABILITY_PATTERN, THERMOSTAT_MODES, UNIT_OF_MEASUREMENT } = require('./config.js');
 const { normalize } = require('./propertyState.js');
 
 /**
@@ -23,22 +23,22 @@ const { normalize } = require('./propertyState.js');
 const PARAMETER_ITEM_PATTERN = /^item(\w+)$/;
 
 /**
+ * Defines parameter resources single element format pattern
+ * @type {RegExp}
+ */
+const PARAMETER_RESOURCES_PATTERN = /^(\w+)(?:=(.+))?$/;
+
+/**
  * Defines parameter type mapping
  * @type {Object}
  */
 const PARAMETER_TYPE_MAPPING = {
+  'friendlyNames': 'list',
+  'ordered': 'boolean',
+  'presets': 'list',
   'supportedInputs': 'list',
   'supportedModes': 'list',
   'supportsDeactivation': 'boolean'
-};
-
-/**
- * Defines unit of measurement scale mapping
- * @type {Object}
- */
-const UNIT_MEASUREMENT_SCALE_MAPPING = {
-  '°C': 'CELSIUS',
-  '°F': 'FAHRENHEIT'
 };
 
 /**
@@ -153,9 +153,10 @@ class AlexaPropertyMap {
 
     item.metadata.alexa.value.split(',').forEach((capability) => {
       if (matches = capability.match(CAPABILITY_PATTERN)) {
-        const interfaceName = matches[1];
-        const propertyName = matches[2];
         const propertySettings = getPropertySettings(capability);
+        // Append item name, as instance name, if property multi-instance enabled
+        const interfaceName = matches[1] + (propertySettings.multiInstance ? ':' + item.name : '');
+        const propertyName = matches[2];
         const properties = propertyMap[interfaceName] || {};
         const property = {
           parameters: item.metadata.alexa.config || {},
@@ -171,6 +172,11 @@ class AlexaPropertyMap {
         // Skip item if its (group)type not supported by capability
         if (!propertySettings.itemTypes || !propertySettings.itemTypes.includes(item.groupType || item.type)) {
           return;
+        }
+
+        // Set friendly names parameter on property multi-instance enabled to use item label if not defined
+        if (propertySettings.multiInstance && !property.parameters.friendlyNames && item.label) {
+          property.parameters.friendlyNames = item.label;
         }
 
         // Iterate over parameters
@@ -200,12 +206,6 @@ class AlexaPropertyMap {
           }
         });
 
-        // Set scale parameter based on unit of measurement number item type if not already defined
-        if (item.type.startsWith('Number:') && !property.parameters.scale) {
-          const unit = item.state.split(' ').pop();
-          property.parameters.scale = UNIT_MEASUREMENT_SCALE_MAPPING[unit];
-        }
-
         // Update specific parameters based on schema name
         switch (property.schema.name) {
           case 'inputs':
@@ -213,23 +213,74 @@ class AlexaPropertyMap {
             property.parameters.supportedInputs = (property.parameters.supportedInputs || []).reduce(
               (inputs, value) => inputs.concat(normalize(property, value) || []), []);
             break;
+
           case 'temperature':
-            // Use regional settings measurementSystem or region to determine scale if not already defined
+            // Use unit of measurement item state symbol to determine scale parameter if not already defined
+            if (item.type === 'Number:Temperature' && !property.parameters.scale) {
+              const symbol = item.state.split(' ').pop();
+              const measurement = UNIT_OF_MEASUREMENT['Temperature'].find(meas => meas.symbol === symbol) || {};
+              property.parameters.scale = measurement.unit;
+            }
+            // Use regional settings measurementSystem or region to determine scale parameter if not already defined
             if (globalSettings.regional && !property.parameters.scale) {
               const setting = globalSettings.regional.measurementSystem || globalSettings.regional.region;
-              property.parameters.scale = setting === 'US' ? 'FAHRENHEIT' : 'CELSIUS';
+              property.parameters.scale = setting === 'US' ? 'FAHRENHEIT' : setting === 'SI' ? 'CELSIUS' : undefined;
             }
             break;
+
           case 'thermostatMode':
-            // Use property state map to determine thermostat supported modes if not defined, removing invalid values
-            const values = property.parameters.supportedModes || Object.keys(getPropertyStateMap(property));
-            const supportedModes = values.reduce(
+            // Use property state map to determine thermostat supported modes if not defined
+            const thermostatModes = property.parameters.supportedModes || Object.keys(getPropertyStateMap(property));
+            // Update supported modes parameter removing invalid values based on alexa thermostat supported modes
+            property.parameters.supportedModes = thermostatModes.reduce(
               (modes, value) => modes.concat(THERMOSTAT_MODES.includes(value) ? value : []), []);
-            // Update supported modes parameter only if subset of alexa thermostat modes, otherwise remove it
-            if (supportedModes.length > 0 && !THERMOSTAT_MODES.every(mode => supportedModes.includes(mode))) {
-              property.parameters.supportedModes = supportedModes;
-            } else {
+            // Remove supported modes parameter if includes every alexa thermostat supported modes
+            if (THERMOSTAT_MODES.every(mode => property.parameters.supportedModes.includes(mode))) {
               delete property.parameters.supportedModes;
+            }
+            break;
+
+          case 'mode':
+            // Use item state description options to determine supported modes and its mapping if not already defined
+            if (item.stateDescription && item.stateDescription.options && !property.parameters.supportedModes) {
+              property.parameters.supportedModes = item.stateDescription.options.reduce((modes, option) =>
+                modes.concat(`${option.value}=${option.label}`), []);
+            }
+            // Update supported modes using mode as labels if not defined or first element empty
+            property.parameters.supportedModes = (property.parameters.supportedModes || []).reduce((modes, value) => {
+              const [match, mode, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
+              return modes.concat(mode ? `${mode}=${labels.match(/^(:|$)/) ? mode : ''}${labels}` : []);
+            }, []);
+            break;
+
+          case 'rangeValue':
+            // Define range values based on supported range parameter ([0] => minimum; [1] => maximum; [2] => precision)
+            let rangeValues = (property.parameters.supportedRange || '').split(':').map(value => parseInt(value));
+            // Update range values if not valid (min >= max; max - min <= precision) using default based on item type
+            if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) ||
+              rangeValues[0] >= rangeValues[1] || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
+              rangeValues = ['Dimmer', 'Rollershutter'].includes(item.type) ? [0, 100, 1] : [0, 10, 1];
+            }
+            // Set supported range object
+            property.parameters.supportedRange = {
+              'minimumValue': rangeValues[0], 'maximumValue': rangeValues[1], 'precision': Math.abs(rangeValues[2])};
+            // Update presets parameter removing out of range values
+            property.parameters.presets = (property.parameters.presets || []).reduce((presets, value) => {
+              const [match, preset, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
+              return rangeValues[0] <= preset && preset <= rangeValues[1] && labels ?
+                [].concat(presets || [], match) : presets;
+            }, undefined);
+            // Use unit of measurement item state symbol and type dimension to determine unitOfMeasure if not defined
+            if (item.type.startsWith('Number:') && !property.parameters.unitOfMeasure) {
+              const symbol = item.state.split(' ').pop();
+              const dimension = item.type.split(':').pop();
+              const measurement = UNIT_OF_MEASUREMENT[dimension].find(meas => meas.symbol === symbol) || {};
+              property.parameters.unitOfMeasure = measurement.id;
+            }
+            // Remove unitOfMeasure parameter if not found in unit of measurement flattened values
+            if (property.parameters.unitOfMeasure && !Object.values(UNIT_OF_MEASUREMENT).reduce((values, item) =>
+              values.concat(item), []).find(meas => meas.id === property.parameters.unitOfMeasure)) {
+              delete property.parameters.unitOfMeasure;
             }
             break;
         }
@@ -280,24 +331,35 @@ class AlexaPropertyMap {
     const propertyMap = this;
     const response = [];
 
-    // Returns property object for a given namespace, name and value
-    const generateProperty = function (namespace, name, value) {
-      return {
+    // Returns property object for a given namespace, name, value and instance
+    const generateProperty = function (namespace, name, value, instance) {
+      return Object.assign({
         namespace: namespace,
-        name: name,
+        name: name
+      }, instance && {
+        instance: instance
+      }, {
         value: value,
         timeOfSample: utils.date(),
         uncertaintyInMilliseconds: 0
-      };
+      });
     };
 
     // Iterate over interface and property names
     interfaceNames.forEach((interfaceName) => {
       Object.keys(propertyMap[interfaceName]).forEach((propertyName) => {
+        let state = normalize(propertyMap[interfaceName][propertyName]);
+        let instance;
+
+        // Extract instance name from interface name if present
+        if (interfaceName.split(':').length === 2) {
+          [interfaceName, instance] = interfaceName.split(':');
+        }
+
+        // Get capability property settings
         const capability = [interfaceName, propertyName].join('.');
         const propertySettings = getPropertySettings(capability);
         const type = propertySettings.state && propertySettings.state.type;
-        let state = normalize(propertyMap[interfaceName][propertyName]);
 
         // Skip property if not reportable or its state type not defined
         if (propertySettings.isReportable === false || typeof type === 'undefined') {
@@ -320,7 +382,7 @@ class AlexaPropertyMap {
         }
 
         // Add property state to response
-        response.push(generateProperty('Alexa.' + interfaceName, propertyName, state));
+        response.push(generateProperty('Alexa.' + interfaceName, propertyName, state, instance));
       });
     });
 

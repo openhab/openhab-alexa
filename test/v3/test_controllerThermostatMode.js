@@ -188,8 +188,8 @@ module.exports = [
             "name": "ErrorResponse"
           },
           "payload": {
-            type: "UNSUPPORTED_THERMOSTAT_MODE",
-            message: "thermostatMode doesn't support thermostat mode [ECO]",
+            "type": "UNSUPPORTED_THERMOSTAT_MODE",
+            "message": "thermostatMode doesn't support thermostat mode [ECO]",
           }
         }
       },

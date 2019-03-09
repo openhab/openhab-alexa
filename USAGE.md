@@ -73,7 +73,7 @@ NOTE: the Alexa skill has 3 different percentage interfaces, BrightnessControlle
 
 #### Group Items
 
-While single mapping items works for many use cases, occasionally multiple openHAB items need to be mapped to a single endpoint in Alex.
+While single mapping items works for many use cases, occasionally multiple openHAB items need to be mapped to a single endpoint in Alexa. When using a group item, keep in mind that there can only be one specific interface capability per group. If you need to have more than one instance of a given capability, you should use the Mode, Range and Toggle controllers that are described at the end of this section.
 
 For this example we will use 2 different use cases, a thermostat and a stereo.
 
@@ -111,6 +111,21 @@ In openHAB a thermostat is modeled as many different items, typically there are 
   Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playbackState"}
   ```
 
+  For components of a device, which isn't covered by the existing interfaces, that have more than one setting, characterized by a number within a range or just turn on and off, the Mode, Range and Toggle controllers can be used to highly customize how you interact with that device via Alexa. Below are few examples on how these interfaces can be used. Details about to the configuration settings are listed in the next section under the relevant interface.
+
+```
+  Group Washer       "Washer"               {alexa="Endpoint.Other"}
+  String Cycle       "Cycle"       (Washer) {alexa="ModeController.mode" [supportedModes="Normal=Normal:Cottons,Delicate=@Value.Delicate:Knites",friendlyNames="Wash Cycle,Wash Setting",ordered=false]}
+  Number Temperature "Temperature" (Washer) {alexa="ModeController.mode" [supportedModes="0=Cold:Cool,1=Warm,2=Hot",friendlyNames="Wash Temperature,@Setting.WaterTemperature",ordered=true]}  
+  Switch Power       "Power"       (Washer) {alexa="ToggleController.toggleState" [friendlyNames="DeviceName.Washer"]}
+  ```
+```
+  Group Fan     "Fan"          {alexa="Endpoint.Other"}
+  Number Speed  "Speed"  (Fan) {alexa="RangeController.rangeValue" [supportedRange="1:10:1",presets="1=@Value.Minimum:@Value.Low:Lowest,10=@Value.Maximum:@Value.High:Highest",friendlyNames="@Setting.FanSpeed,Speed"]}
+  Switch Rotate "Rotate" (Fan) {alexa="ToggleController.toggleState" [friendlyNames="@Setting.Oscillate,Rotate"]}
+  Switch Power  "Power"  (Fan) {alexa="ToggleController.toggleState" [friendlyNames="@DeviceName.Fan"]}
+  ```
+
 #### Supported item mapping metadata
 * The following are a list of supported metadata.
   * `PowerController.powerState`
@@ -143,20 +158,21 @@ In openHAB a thermostat is modeled as many different items, typically there are 
     * Supported item type:
       * Number(:Temperature)
     * Default category: THERMOSTAT
-    * supports additional properties:
-      * scale=`<value>`
+    * Supports additional properties:
+      * scale=`<scale>`
         * Celsius
         * Fahrenheit
-      * defaults to scale=Celsius if omitted.
+        * Kelvin
   * `ThermostatController.upperSetpoint`
     * Items that represent a upper or HEAT set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
       * Number(:Temperature)
     * Default category: THERMOSTAT
-    * supports additional properties:
-      * scale=`<value>`
+    * Supports additional properties:
+      * scale=`<scale>`
         * Celsius
         * Fahrenheit
+        * Kelvin
       * comfortRange=`<number>`
         * When dual setpoints (upper,lower) are used this is the amount over the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius. Ignored if a targetSetpoint is included in the thermostat group.
   * `ThermostatController.lowerSetpoint`
@@ -164,10 +180,11 @@ In openHAB a thermostat is modeled as many different items, typically there are 
     * Supported item type:
       * Number(:Temperature)
     * Default category: THERMOSTAT
-    * supports additional properties:
-      * scale=`<value>`
+    * Supports additional properties:
+      * scale=`<scale>`
         * Celsius
         * Fahrenheit
+        * Kelvin
       * comfortRange=`<number>`
         * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
   * `ThermostatController.thermostatMode`
@@ -177,7 +194,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * String
       * Switch (Heating only)
     * Default category: THERMOSTAT
-    * supports additional optional properties:
+    * Supports additional optional properties:
       * OFF=`<state>`
       * HEAT=`<state>`
       * COOL=`<state>`
@@ -198,12 +215,13 @@ In openHAB a thermostat is modeled as many different items, typically there are 
     * Supported item type:
       * Number(:Temperature)
     * Default category: TEMPERATURE_SENSOR
-    * supports additional properties:
-      * scale=`<value>`
+    * Supports additional properties:
+      * scale=`<scale>`
         * Celsius
         * Fahrenheit
+        * Kelvin
   * `LockController.lockState`
-    * Items that represent the state of a lock (ON lock, OFF unlock). When associated to an item sensor, the state of that item will be returned instead of the original actionable item. Additionally, when linking to such item, multiple properties to one state can be mapped with column delimiter (e.g. for a zwave lock: [LOCKED="1:3",UNLOCKED="2:4",JAMMED=11]).
+    * Items that represent the state of a lock (ON lock, OFF unlock). When associated to an [item sensor](#item-sensor), the state of that item will be returned instead of the original actionable item. Additionally, when linking to such item, multiple properties to one state can be mapped with column delimiter (e.g. for a zwave lock: [LOCKED="1:3",UNLOCKED="2:4",JAMMED=11]).
     * Supported item type:
       * Switch
     * Supported sensor type:
@@ -212,7 +230,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * String [LOCKED=locked, UNLOCKED=unlocked, JAMMED=jammed]
       * Switch [LOCKED=ON, UNLOCKED=OFF]
     * Default category: SMARTLOCK
-    * supports additional properties:
+    * Supports additional properties:
       * LOCKED=`<state>`
       * UNLOCKED=`<state>`
       * JAMMED=`<state>`
@@ -228,7 +246,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * Dimmer: colder (0%) to warmer (100%) based of Alexa color temperature spectrum [Hue and LIFX support]
       * Number: color temperature value in Kelvin [custom integration]
     * Default category: LIGHT
-    * supports additional properties:
+    * Supports additional properties:
       * increment=`<number>`
         * value in % for dimmer item/in Kelvin for number item
         * defaults to increment=INCREASE/DECREASE (Dimmer) or increment=500 (Number) if omitted
@@ -237,8 +255,8 @@ In openHAB a thermostat is modeled as many different items, typically there are 
     * Supported item type:
       * Switch
     * Default category: SCENE_TRIGGER
-    * supports additional properties:
-      * supportsDeactivation=`<value>`
+    * Supports additional properties:
+      * supportsDeactivation=`<boolean>`
         * true (default if omitted)
         * false
   * `ChannelController.channel`
@@ -247,7 +265,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * Number
       * String
     * Default category: TV
-    * supports additional properties:
+    * Supports additional properties:
       * `<channelName1>`=`<channelNumber1>`
       * `<channelName2>`=`<channelNumber2>`
       * ...
@@ -257,7 +275,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * String
     * Default category: TV
     * supports additional properties:
-      * supportedInputs=`<values>`
+      * supportedInputs=`<inputs>`
         * required list of supported input values (e.g. "HMDI1,TV,XBOX")
   * `Speaker.volume`
     * Items that represent a volume level, default increment may be specified in metadata parameters
@@ -265,7 +283,7 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * Dimmer
       * Number
     * Default category: SPEAKER
-    * supports additional properties:
+    * Supports additional properties:
       * increment=`<number>`
         * defaults to increment=10 (standard value provided by Alexa) if omitted.
   * `Speaker.muted`
@@ -290,55 +308,196 @@ In openHAB a thermostat is modeled as many different items, typically there are 
       * Player
     * Default category: OTHER
   * `ContactSensor.detectionState`
-    * Items that represent a contact sensor that can be used to trigger Alexa routines
+    * Items that represent a contact sensor that can be used to trigger Alexa routines. (Currently not usable as proactive reporting not supported yet)
     * Supported item type:
       * Contact
       * Switch
     * Default category: CONTACT_SENSOR
   * `MotionSensor.detectionState`
-    * Items that represent a motion sensor that can be used to trigger Alexa routines
+    * Items that represent a motion sensor that can be used to trigger Alexa routines. (Currently not usable as proactive reporting not supported yet)
     * Supported item type:
       * Contact
       * Switch
     * Default category: MOTION_SENSOR
-* Item Scale
+  * `ModeController.mode`
+    * Items that represent components of a device that have more than one setting. Multiple instances can be configured in a group endpoint. By default, to ask for a specific mode, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#item-friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well prefixing with an @ sign (e.g. `@Setting.WaterTemperature`). In regards to supported modes and their mappings, by default if omitted, the openHAB item state description options, if defined, are used to determine these configurations. To configure it, use `supportedModes` parameter and provide a comma delimited list of mode mappings composed of openHAB item states and the associated names/asset ids they should be called, delimited by equal and column signs (e.g. `0=Cold:Cool,1=Warm,2=Hot`). For string based modes if the mapping state value and name are the same (case sensitive), a shortened format can be used, where the name doesn't need to be added to the list by either leaving the first element empty or not providing the names at all (e.g. `supportedModes="Normal=:Cottons,Whites"` equivalent to `supportedModes="Normal=Normal:Cottons,Whites=Whites`). Additionally, if the mode can be adjusted incrementally (e.g. temperature control), set parameter `ordered=true`, otherwise only requests to set a specific mode will be accepted.
+    * Supported item type:
+      * Number
+      * String
+    * Default category: OTHER
+    * Supports additional properties:
+      * supportedModes=`<modes>`
+        * defaults to item state description options `supportedModes="value1=label1,..."`, if defined, otherwise no supported modes
+      * ordered=`<boolean>`
+        * defaults to false
+      * friendlyNames=`<names/assetIds>`
+        * defaults to item label name
+  * `RangeController.rangeValue`
+    * Items that represent components of a device that are characterized by numbers within a minimum and maximum range. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#item-friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well  prefixing with an @ sign (e.g. `@Setting.FanSpeed`). To set the supported range, provide a column delimited list including minimum, maximum and precision values. The latter value will be use as default increment when requesting adjusted range values. Optionally, to name specific presets, like fan speeds low [1] & high value [10], can be added in `presets` parameter and provide a comma delimited list of preset mappings composed of range value and the associated names/asset ids they should be called, delimited by equal and column signs (e.g. `1=@Value.Minimum:@Value.Low:Lowest,10=@Value.Maximum:@Value.High:Highest`). Another optional settings is `unitOfMeasure` parameter which gives a unit of measure to the range values. By default if omitted, it is based on the unit of measurement number item type that have a supported unit, otherwise, a [unit id](#item-unit-of-measurement-catalog) can be used. (e.g. `unitOfMeasure=Angle.Degrees`)
+    * Supported item type:
+      * Dimmer
+      * Number
+      * Number:Angle
+      * Number:Dimensionless
+      * Number:Length
+      * Number:Mass
+      * Number:Temperature
+      * Number:Volume
+      * Rollershutter
+    * Default category: OTHER
+    * supports additional properties:
+      * supportedRange=`<minValue:maxValue:precision>`
+        * defaults to `[0:100:1]` for Dimmer/Rollershutter, `[0:10:1]` for Number* item types
+      * unitOfMeasure=`<unitOfMeasureId>` (optional)
+        * defaults to item state unit of measurement symbol for Number:* item types
+      * presets=`<presets>` (optional)
+        * each preset formatted as `<presetValue>:<assetIdOrName1>:<assetIdOrName2>:...`
+      * friendlyNames=`<names/assetIds>`
+        * defaults to item label name
+  * `ToggleController.toggleState`
+    * Items that represent components of a device that can be turned on or off. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#item-friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#item-asset-catalog) can be used to label a mode as well with an @ sign prefix (e.g. `@Setting.Oscillate`).
+    * Supported item type:
+      * Color
+      * Dimmer
+      * Rollershutter
+      * Switch
+    * Default category: OTHER
+    * Supports additional properties:
+      * friendlyNames=`<names/assetIds>`
+        * defaults to item label name
+
+##### Item Scale
   * With the introduction of the [unit of measurement](https://www.openhab.org/docs/concepts/units-of-measurement.html) concept, the item scale can be automatically determined for thermostat and temperature using that feature, removing the need of having to set a metadata scale parameter for each of the relevant items or groups.
   * Below are two examples; the scale on the first will be set to Fahrenheit based on how it is defined in the item state presentation pattern and the second one will be set based on your openHAB system regional settings (US=Fahrenheit; SI=Celsius).
 
   `Number:Temperature Temperature1 "Temperature [%.1f °F]" {alexa="TemperatureSensor.temperature"}`
   `Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSensor.temperature"}`
-* Item Sensor
+
+##### Item Sensor
   * When available, use a specific item (called "sensor") for property state reporting over the actionable item state.
   * Design to bridge channel status items to provide improved reporting state accuracy.
   * Configured by adding the `itemSensor=<itemName>` metadata parameter.
   * Sensor items need to be the same type than their parent item, except for LockController capable items.
-* Item Categories
+
+##### Item Categories
   * Alexa has certain categories that effect how voice control and their mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and associate a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHT" to send the command to.  
   * You can override this default value on items by adding it as a parameter to the metadata, ex:
 
   `Switch LightSwitch "Light Switch" {alexa="PowerController.powerState" [category="OTHER"]}`
   * List of Alexa categories currently supported from [Alexa Skill API](https://developer.amazon.com/docs/device-apis/alexa-discovery.html#display-categories) docs:
 
-Category	| Description	| Notes
+Category | Description | Notes
 ---------|-------------|-------
-ACTIVITY_TRIGGER	| Describes a combination of devices set to a specific state, when the state change must occur in a specific order. |For example, a "watch Netflix" scene might require the: 1. TV to be powered on & 2. Input set to HDMI1.	| Applies to Scenes
-CAMERA	| Indicates media devices with video or photo capabilities.	 
+ACTIVITY_TRIGGER | Describes a combination of devices set to a specific state, when the state change must occur in a specific order. |For example, a "watch Netflix" scene might require the: 1. TV to be powered on & 2. Input set to HDMI1. | Applies to Scenes
+CAMERA | Indicates media devices with video or photo capabilities.  
 CONTACT_SENSOR | Indicates an endpoint that detects and reports changes in contact between two surfaces.
-DOOR	| Indicates a door.	 
+DOOR | Indicates a door.  
 DOORBELL | Indicates a doorbell.
-LIGHT	| Indicates light sources or fixtures.
-MICROWAVE | Indicates a microwave oven endpoint.	 
+LIGHT | Indicates light sources or fixtures.
+MICROWAVE | Indicates a microwave oven endpoint.  
 MOTION_SENSOR | Indicates an endpoint that detects and reports movement in an area.
-OTHER	| An endpoint that cannot be described in on of the other categories.	 
-SCENE_TRIGGER	| Describes a combination of devices set to a specific state, when the order of the state change is not important. For example a bedtime scene might include turning off lights and lowering the thermostat, but the order is unimportant.	| Applies to Scenes
+OTHER | An endpoint that cannot be described in on of the other categories.  
+SCENE_TRIGGER | Describes a combination of devices set to a specific state, when the order of the state change is not important. For example a bedtime scene might include turning off lights and lowering the thermostat, but the order is unimportant. | Applies to Scenes
 SECURITY_PANEL | Indicates a security panel.
-SMARTLOCK	| Indicates an endpoint that locks.	 
-SMARTPLUG	| Indicates modules that are plugged into an existing electrical outlet.	| Can control a variety of devices.
-SPEAKER	| Indicates the endpoint is a speaker or speaker system.	 
-SWITCH	| Indicates in-wall switches wired to the electrical system.	| Can control a variety of devices.
-TEMPERATURE_SENSOR	| Indicates endpoints that report the temperature only.	 
-THERMOSTAT	| Indicates endpoints that control temperature, stand-alone air conditioners, or heaters with direct temperature control.	 
-TV	| Indicates the endpoint is a television.	 
+SMARTLOCK | Indicates an endpoint that locks.  
+SMARTPLUG | Indicates modules that are plugged into an existing electrical outlet. | Can control a variety of devices.
+SPEAKER | Indicates the endpoint is a speaker or speaker system.  
+SWITCH | Indicates in-wall switches wired to the electrical system. | Can control a variety of devices.
+TEMPERATURE_SENSOR | Indicates endpoints that report the temperature only.  
+THERMOSTAT | Indicates endpoints that control temperature, stand-alone air conditioners, or heaters with direct temperature control.  
+TV | Indicates the endpoint is a television.  
+
+##### Item Asset Catalog
+  * List of Alexa asset catalog from [Alexa Skill API](https://developer.amazon.com/docs/device-apis/resources-and-assets.html#global-alexa-catalog) docs:
+
+Asset Identifier | Supported Friendly Names
+-----------------|-------------------------
+DeviceName.Shower | Shower
+DeviceName.Washer | Washer<br>Washing Machine
+DeviceName.Router | Router<br>Internet Router<br>Network Router<br>Wifi Router<br>Net Router
+DeviceName.Fan | Fan<br>Blower
+DeviceName.AirPurifier | Air Purifier<br>Air Cleaner<br>Clean Air Machine
+DeviceName.SpaceHeater | Space Heater<br>Portable Heater
+Shower.RainHead | Rain Head<br>Overhead shower<br>Rain Shower<br>Rain Spout<br>Rain Faucet
+Shower.HandHeld | Handheld Shower<br>Shower Wand<br>Hand Shower
+Setting.WaterTemperature | Water Temperature<br>Water Temp<br>Water Heat
+Setting.Temperature | Temperature<br>Temp
+Setting.WashCycle | Wash Cycle<br>Wash Preset<br>Wash setting
+Setting.2GGuestWiFi | 2.4G Guest Wi-Fi<br>2.4G Guest Network<br>Guest Network 2.4G<br>2G Guest Wifi
+Setting.5GGuestWiFi | 5G Guest Wi-Fi<br>5G Guest Network<br>Guest Network 5G<br>5G Guest Wifi
+Setting.GuestWiFi | Guest Wi-fi<br>Guest Network<br>Guest Net
+Setting.Auto | Auto<br>Automatic<br>Automatic Mode<br>Auto Mode
+Setting.Night | Night<br>Night Mode
+Setting.Quiet | Quiet<br>Quiet Mode<br>Noiseless<br>Silent
+Setting.Oscillate | Oscillate<br>Swivel<br>Oscillation<br>Spin<br>Back and forth
+Setting.FanSpeed | Fan Speed<br>Airflow speed<br>Wind Speed<br>Air speed<br>Air velocity<br>
+Setting.Preset | Preset<br>Setting
+Setting.Mode | Mode
+Setting.Direction | Direction
+Value.Delicate | Delicates<br>Delicate
+Value.QuickWash | Quick Wash<br>Fast Wash<br>Wash Quickly<br>Speed Wash
+Value.Maximum | Maximum<br>Max
+Value.Minimum | Minimum<br>Min
+Value.High | High
+Value.Low | Low
+Value.Medium | Medium<br>Mid
+
+##### Item Friendly Names Not Allowed
+  * List of Alexa friendly names that cannot be used from [Alexa Skill API](https://developer.amazon.com/docs/device-apis/resources-and-assets.html#names-you-cannot-use)
+
+Friendly Names |
+---------------|
+alarm |
+alarms |
+all alarms |
+away mode |
+bass |
+camera |
+date |
+date today |
+day |
+do not disturb |
+drop in |
+music |
+night light |
+notification |
+playing |
+sleep sounds |
+time |
+timer |
+today in music |
+treble |
+volume |
+way f. m. |
+
+##### Item Unit of Measurement Catalog
+  * List of Alexa unit of measurement catalog from [Alexa Skill API](https://developer.amazon.com/docs/device-apis/alexa-rangecontroller.html#supported-values-for-unitofmeasure) docs:
+
+Unit Identifier |
+----------------|
+Angle.Degrees |
+Angle.Radians |
+Distance.Yards |
+Distance.Inches |
+Distance.Meters |
+Distance.Feet |
+Distance.Miles |
+Distance.Kilometers |
+Mass.Kilograms |
+Mass.Grams |
+Percent |
+Temperature.Degrees |
+Temperature.Celsius |
+Temperature.Fahrenheit |
+Temperature.Kelvin |
+Volume.Gallons |
+Volume.Pints |
+Volume.Quarts |
+Volume.Liters |
+Volume.CubicMeters |
+Volume.CubicFeet |
+Weight.Pounds |
+Weight.Ounces |
 
 #### Supported Group mapping metadata
 * Functional groups (no group type) can be labelled with one of Alexa categories listed above. It can be set using one of the two formats: `Endpoint.<category>` or `<category>`
@@ -505,6 +664,30 @@ Contact MotionSensor "Motion Sensor" ["MotionSensor"]
 Contact MotionSensor "Motion Sensor" {alexa="MotionSensor"}
 
 Contact MotionSensor "Motion Sensor" {alexa="MotionSensor.detectionState"}
+```
+* ModeComponent
+```
+String ModeComponent "Mode Component" ["ModeComponent"]
+
+String ModeComponent "Mode Component" {alexa="ModeComponent"}
+
+String ModeComponent "Mode Component" {alexa="ModeController.range"}
+```
+* RangeComponent
+```
+Number RangeComponent "Range Component" ["RangeComponent"]
+
+Number RangeComponent "Range Component" {alexa="RangeComponent"}
+
+Number RangeComponent "Range Component" {alexa="RangeController.rangeValue"}
+```
+* ToggleComponent
+```
+Switch ToggleComponent "Toggle Component" ["Toggle Component"]
+
+Switch ToggleComponent "Toggle Component" {alexa="ToggleComponent"}
+
+Switch ToggleComponent "Toggle Component" {alexa="ToggleController.toggleState"}
 ```
 
 ### Version 2 Item mapping

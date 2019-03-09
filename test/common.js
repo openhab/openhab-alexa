@@ -52,18 +52,54 @@ function generateDirectiveRequest (request) {
 }
 
 /**
+ * Returns list of capabilities configuration
+ * @param  {Array}  capabilities
+ * @return {Object}
+ */
+function getCapabilitiesConfiguration(capabilities) {
+  return capabilities.reduce((result, capability) => {
+    const interfaceName = [capability.interface].concat(capability.instance || []).join('.');
+    const resourcesParams = {
+      'presets': {key: 'presetResources', value: 'rangeValue'},
+      'supportedModes': {key: 'modeResources', value: 'value'}
+    };
+
+    if (capability.configuration) {
+      result[interfaceName] = Object.keys(capability.configuration).reduce((config, parameter) => {
+        // Streamline resources parameters, otherwise copy parameter directly
+        if (resourcesParams[parameter] && typeof capability.configuration[parameter][0] === 'object') {
+          config[parameter] = capability.configuration[parameter].reduce((map, resource) =>
+            Object.assign(map, resource[resourcesParams[parameter]['key']] && {
+              [resource[resourcesParams[parameter]['value']]]: {
+                friendlyNames: resource[resourcesParams[parameter]['key']].friendlyNames.reduce((names, label) =>
+                  names.concat([label['@type']].concat(Object.values(label.value)).join(':')), [])
+                }
+            }), {});
+        } else {
+          config[parameter] = capability.configuration[parameter];
+        }
+        return config;
+      }, {});
+    }
+    return result;
+  }, {});
+};
+
+/**
  * Returns list of capabilities namespaces
  * @param  {Array} capabilities
  * @return {Array}
  */
 function getCapabilitiesNamespaces (capabilities) {
-  return capabilities.reduce(function (result, capability) {
+  return capabilities.reduce((result, capability) => {
+    const interfaceName = [capability.interface].concat(capability.instance || []).join('.');
+
     if (capability.properties && capability.properties.supported) {
-      capability.properties.supported.forEach(function (property) {
-        result.push(capability.interface + '.' + property.name);
+      capability.properties.supported.forEach((property) => {
+        result.push(interfaceName + '.' + property.name);
       });
     } else {
-      result.push(capability.interface);
+      result.push(interfaceName);
     }
     return result;
   }, []);
@@ -75,12 +111,34 @@ function getCapabilitiesNamespaces (capabilities) {
  * @return {Object}
  */
 function getCapabilitiesParameters(capabilities) {
-  return capabilities.reduce(function (result, capability) {
-    Object.keys(capability).forEach(function (parameter) {
-      if (parameter !== 'properties') {
-        result[capability.interface + '.' + parameter] = capability[parameter];
+  return capabilities.reduce((result, capability) => {
+    const interfaceName = [capability.interface].concat(capability.instance || []).join('.');
+    const standardParams = ['capabilityResources', 'configuration', 'properties'];
+
+    Object.keys(capability).forEach((parameter) => {
+      if (!standardParams.includes(parameter)) {
+        result[interfaceName + '.' + parameter] = capability[parameter];
       }
     });
+    return result;
+  }, {});
+};
+
+/**
+ * Returns list of capabilities resources
+ * @param  {Array}  capabilities
+ * @return {Object}
+ */
+function getCapabilitiesResources(capabilities) {
+  return capabilities.reduce((result, capability) => {
+    const interfaceName = [capability.interface].concat(capability.instance || []).join('.');
+
+    if (capability.capabilityResources) {
+      result[interfaceName] = {
+        friendlyNames: capability.capabilityResources.friendlyNames.reduce((names, label) =>
+          names.concat([label['@type']].concat(Object.values(label.value)).join(':')), [])
+      }
+    }
     return result;
   }, {});
 };
@@ -119,7 +177,7 @@ assert.capturedCalls = function (calls, expected) {
  */
 assert.capturedResult = function (result, expected) {
   if (expected) {
-    Object.keys(expected).forEach(function (key) {
+    Object.keys(expected).forEach((key) => {
       if (typeof expected[key] === 'object') {
         assert.exists(result[key]);
         assert.capturedResult(result[key], expected[key]);
@@ -138,20 +196,26 @@ assert.capturedResult = function (result, expected) {
 assert.discoveredEndpoints = function (endpoints, results) {
   assert.equal(endpoints.length, Object.keys(results).length);
 
-  endpoints.forEach(function (endpoint) {
+  endpoints.forEach((endpoint) => {
     const expected = results[endpoint.endpointId];
     assert.isDefined(expected);
 
-    Object.keys(expected).forEach(function (key) {
+    Object.keys(expected).forEach((key) => {
       switch (key) {
         case 'capabilities':
           assert.sameMembers(getCapabilitiesNamespaces(endpoint.capabilities), expected.capabilities);
+          break;
+        case 'configuration':
+          assert.deepInclude(getCapabilitiesConfiguration(endpoint.capabilities), expected.configuration);
           break;
         case 'displayCategories':
           assert.sameMembers(endpoint.displayCategories, expected.displayCategories);
           break;
         case 'parameters':
           assert.deepInclude(getCapabilitiesParameters(endpoint.capabilities), expected.parameters);
+          break;
+        case 'resources':
+          assert.deepInclude(getCapabilitiesResources(endpoint.capabilities), expected.resources);
           break;
         case 'propertyMap':
           assert.deepInclude(JSON.parse(endpoint.cookie.propertyMap), expected.propertyMap);

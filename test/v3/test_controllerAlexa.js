@@ -137,8 +137,8 @@ module.exports = [
             "name": "ErrorResponse"
           },
           "payload": {
-            type: "ENDPOINT_UNREACHABLE",
-            message: "Unable to reach device"
+            "type": "ENDPOINT_UNREACHABLE",
+            "message": "Unable to reach device"
           }
         }
       },
