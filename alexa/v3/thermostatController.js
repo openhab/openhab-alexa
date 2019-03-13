@@ -106,7 +106,7 @@ class AlexaThermostatController extends AlexaDirective {
       this.postItemsAndReturn(postItems);
     }).catch((error) => {
       log.error('adjustTargetTemperature failed with error:', error);
-      this.returnAlexaGenericErrorResponse();
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 

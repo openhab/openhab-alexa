@@ -178,7 +178,7 @@ assert.capturedCalls = function (calls, expected) {
 assert.capturedResult = function (result, expected) {
   if (expected) {
     Object.keys(expected).forEach((key) => {
-      if (typeof expected[key] === 'object') {
+      if (typeof expected[key] === 'object' && expected[key] !== null) {
         assert.exists(result[key]);
         assert.capturedResult(result[key], expected[key]);
       } else {

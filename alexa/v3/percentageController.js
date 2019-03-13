@@ -48,7 +48,7 @@ class AlexaPercentageController extends AlexaDirective {
     this.getItemState(postItem).then((item) => {
       // Throw error if state not a number
       if (isNaN(item.state)) {
-        throw {reason: 'Could not get numeric item state', item: item};
+        throw {cause: 'Could not get numeric item state', item: item};
       }
 
       const state = parseInt(item.state) + this.directive.payload.percentageDelta;
@@ -56,7 +56,7 @@ class AlexaPercentageController extends AlexaDirective {
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
       log.error('adjustPercentage failed with error:', error);
-      this.returnAlexaGenericErrorResponse();
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 }

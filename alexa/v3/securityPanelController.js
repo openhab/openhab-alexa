@@ -74,7 +74,7 @@ class AlexaSecurityPanelController extends AlexaDirective {
       }
     }).catch((error) => {
       log.error('arm failed with error:', error);
-      this.returnAlexaGenericErrorResponse();
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 

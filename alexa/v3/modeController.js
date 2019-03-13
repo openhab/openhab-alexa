@@ -58,7 +58,7 @@ class AlexaModeController extends AlexaDirective {
 
       // Throw error if current mode not found
       if (index === -1 ) {
-        throw {reason: 'Current mode not found in supported list', item: item, supported: supportedModes};
+        throw {cause: 'Current mode not found in supported list', item: item, supported: supportedModes};
       }
 
       // Set adjusted mode
@@ -76,7 +76,7 @@ class AlexaModeController extends AlexaDirective {
       }
     }).catch((error) => {
       log.error('adjustMode failed with error:', error);
-      this.returnAlexaGenericErrorResponse();
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 }

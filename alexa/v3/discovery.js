@@ -151,7 +151,7 @@ class AlexaDiscovery extends AlexaDirective {
       this.returnAlexaResponse(response);
     }).catch((error) => {
       log.error('discover failed with error:', error);
-      this.returnAlexaGenericErrorResponse();
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 

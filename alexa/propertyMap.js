@@ -347,11 +347,11 @@ class AlexaPropertyMap {
    *      ...
    *    ]
    *
-   * @param  {Array}  interfaceNames
-   * @param  {Array}  properties      [list of properties to include only] (optional)
+   * @param  {Array}   interfaceNames
+   * @param  {Boolean} isEndpointHealthy  [endpoint health status] (optional)
    * @return {Object}
    */
-  getContextPropertiesResponse(interfaceNames, properties) {
+  getContextPropertiesResponse(interfaceNames, isEndpointHealthy = true) {
     const propertyMap = this;
     const response = [];
 
@@ -372,11 +372,6 @@ class AlexaPropertyMap {
     // Iterate over interface and property names
     interfaceNames.forEach((interfaceName) => {
       Object.keys(propertyMap[interfaceName]).forEach((propertyName) => {
-        // Skip property if not included in properties list
-        if (Array.isArray(properties) && !properties.includes(propertyName)) {
-          return;
-        }
-
         // Get normalized property state
         let state = normalize(propertyMap[interfaceName][propertyName]);
         let instance;
@@ -391,8 +386,8 @@ class AlexaPropertyMap {
         const propertySettings = getPropertySettings(capability);
         const type = propertySettings.state && propertySettings.state.type;
 
-        // Skip property if not reportable or its state type not defined
-        if (propertySettings.isReportable === false || typeof type === 'undefined') {
+        // Skip property if not reportable, its state or type not defined
+        if (propertySettings.isReportable === false || typeof state === 'undefined' || typeof type === 'undefined') {
           return;
         }
 
@@ -416,8 +411,11 @@ class AlexaPropertyMap {
       });
     });
 
-    // Add connectivity property state to response
-    response.push(generateProperty('Alexa.EndpointHealth', 'connectivity', {value: 'OK'}));
+    // Add connectivity property state to response if endpoint healthly or at least one property response present
+    if (isEndpointHealthy || response.length > 0) {
+      response.push(generateProperty('Alexa.EndpointHealth', 'connectivity', {
+        value: isEndpointHealthy ? 'OK' : 'UNREACHABLE'}));
+    }
 
     return response;
   }
@@ -442,14 +440,20 @@ class AlexaPropertyMap {
    *    ]
    *
    * @param  {Array} interfaceNames
+   * @param  {Array} propertyNames  [property names filter] (optional)
    * @return {Array}
    */
-  getItemsByInterfaces(interfaceNames) {
+  getItemsByInterfaces(interfaceNames, propertyNames) {
     const propertyMap = this;
 
     return interfaceNames.reduce((items, interfaceName) => {
       const properties = propertyMap[interfaceName] || {};
       Object.keys(properties).forEach((propertyName) => {
+        // Skip property if not included in property names list
+        if (Array.isArray(propertyNames) && !propertyNames.includes(propertyName)) {
+          return;
+        }
+        // Add/update item object with capability to list
         const capability = {interface: interfaceName, property: propertyName};
         const item = Object.assign({}, properties[propertyName].item);
         const index = items.findIndex(i => i.name === item.name);
