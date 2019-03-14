@@ -109,6 +109,68 @@ module.exports = [
     }
   },
   {
+    description: "report state partial thermostat group",
+    directive: {
+      "header": {
+        "namespace": "Alexa",
+        "name": "ReportState"
+      },
+      "endpoint": {
+        "endpointId": "temperature1",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ThermostatController": {
+              "targetSetpoint": {"parameters": {"scale": "Fahrenheit"},
+                "item": {"name": "targetTemperature", "type": "Number"}, "schema": {"name": "temperature"}},
+              "upperSetpoint": {"parameters": {"scale": "Fahrenheit"},
+                "item": {"name": "highTargetTemperature", "type": "Number"}, "schema": {"name": "temperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "Fahrenheit"},
+                "item": {"name": "lowTargetTemperature", "type": "Number"}, "schema": {"name": "temperature"}}
+            }
+          })
+        }
+      }
+    },
+    mocked: {
+      openhab: [
+        {"name": "targetTemperature", "state": "70", "type": "Number"},
+        {"name": "highTargetTemperature", "state": "NULL", "type": "Number"},
+        {"name": "lowTargetTemperature", "state": "UNDEF", "type": "Number"}
+      ],
+      staged: true
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [
+            {
+              "namespace": "Alexa.ThermostatController",
+              "name": "targetSetpoint",
+              "value": {
+                "value": 70.0,
+                "scale": "FAHRENHEIT"
+              }
+            },
+            {
+              "namespace": "Alexa.EndpointHealth",
+              "name": "connectivity",
+              "value": {
+                "value": "UNREACHABLE"
+              }
+            }
+          ]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "StateReport"
+          },
+        }
+      },
+      openhab: []
+    }
+  },
+  {
     description: "report state unreachable error",
     directive: {
       "header": {
@@ -138,7 +200,7 @@ module.exports = [
           },
           "payload": {
             "type": "ENDPOINT_UNREACHABLE",
-            "message": "Unable to reach device"
+            "message": "Unable to get context properties response"
           }
         }
       },

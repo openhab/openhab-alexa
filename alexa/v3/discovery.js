@@ -151,7 +151,7 @@ class AlexaDiscovery extends AlexaDirective {
       this.returnAlexaResponse(response);
     }).catch((error) => {
       log.error('discover failed with error:', error);
-      this.returnAlexaGenericErrorResponse();
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 
@@ -231,7 +231,7 @@ function convertV2Item(item, config = {}) {
           }
           break;
         default:
-          if (isSupportedDisplayCategory(label)) {
+          if (isSupportedDisplayCategory(decamelize(label))) {
             capabilities = ['Endpoint.' + label];
           }
       }
@@ -295,6 +295,21 @@ function convertV2Item(item, config = {}) {
         case 'MotionSensor':
           capabilities = ['MotionSensor.detectionState'];
           break;
+        case 'SecurityAlarmMode':
+          capabilities = ['SecurityPanelController.armState'];
+          break;
+        case 'BurglaryAlarm':
+          capabilities = ['SecurityPanelController.burglaryAlarm'];
+          break;
+        case 'FireAlarm':
+          capabilities = ['SecurityPanelController.fireAlarm'];
+          break;
+        case 'CarbonMonoxideAlarm':
+          capabilities = ['SecurityPanelController.carbonMonoxideAlarm'];
+          break;
+        case 'WaterAlarm':
+          capabilities = ['SecurityPanelController.waterAlarm'];
+          break;
         case 'ModeComponent':
           capabilities = ['ModeController.mode'];
           break;
@@ -323,7 +338,7 @@ function convertV2Item(item, config = {}) {
   }
 
   // Update item alexa metadata information
-  item.metadata = Object.assign(item.metadata, {
+  Object.assign(item.metadata, {
     alexa: {
       value: metadata.values.join(','),
       config: metadata.config

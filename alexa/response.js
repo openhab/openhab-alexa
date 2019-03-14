@@ -33,27 +33,26 @@ class AlexaResponse {
    * @return {Object}
    */
   generateResponse(parameters = {}) {
-    return Object.assign({},
-      parameters.context && {
-        // Include context properties if provided
-        context: parameters.context
+    return Object.assign({
+    }, parameters.context && {
+      // Include context properties if provided
+      context: parameters.context
+    }, {
+      // Include event properties
+      event: Object.assign({
+        // Add event header
+        header: this.generateResponseHeader(parameters.header)
+      }, this.directive.endpoint && {
+        // Add event endpoint if provided in directive
+        endpoint: {
+          scope: this.directive.endpoint.scope,
+          endpointId: this.directive.endpoint.endpointId
+        }
       }, {
-        // Include event properties
-        event: Object.assign({
-          // Add event header
-          header: this.generateResponseHeader(parameters.header)
-        }, this.directive.endpoint && {
-          // Add event endpoint if provided in directive
-          endpoint: {
-            scope: this.directive.endpoint.scope,
-            endpointId: this.directive.endpoint.endpointId
-          }
-        }, {
-          // Add event payload
-          payload: parameters.payload || {}
-        })
-      }
-    );
+        // Add event payload
+        payload: parameters.payload || {}
+      })
+    });
   }
 
   /**
@@ -97,14 +96,47 @@ class AlexaResponse {
 
   /**
    * Returns Alexa generic error response
+   * @param  {Object} error   [error object] (optional)
    */
-  returnAlexaGenericErrorResponse() {
-    this.returnAlexaErrorResponse({
-      payload: {
-        type: 'ENDPOINT_UNREACHABLE',
-        message: 'Unable to reach device'
-      }
-    });
+  returnAlexaGenericErrorResponse(error = {}) {
+    // Set default error response parameters
+    const parameters = {payload: {
+      type: 'ENDPOINT_UNREACHABLE',
+      message: error.cause || 'Unable to reach device'
+    }};
+
+    // Update error response parameters based on request error status code
+    switch (error.statusCode) {
+      case 400:
+        Object.assign(parameters, {payload: {
+          type: 'INVALID_VALUE',
+          message: 'Invalid item command value'
+        }});
+        break;
+      case 401:
+        Object.assign(parameters, {payload: {
+          type: 'INVALID_AUTHORIZATION_CREDENTIAL',
+          message: 'Failed to authenticate'
+        }});
+        break;
+      case 404:
+        // Set to bridge unreachable when oh rest server not accessible, otherwise no such endpoint for items not found
+        if (!error.response.body || error.response.body.includes('Problem accessing')) {
+          Object.assign(parameters, {payload: {
+            type: 'BRIDGE_UNREACHABLE',
+            message: 'Server not accessible'
+          }});
+        } else {
+          Object.assign(parameters, {payload: {
+            type: 'NO_SUCH_ENDPOINT',
+            message: 'Item not found'
+          }});
+        }
+        break;
+    }
+
+    // Return alexa error response
+    this.returnAlexaErrorResponse(parameters);
   }
 }
 

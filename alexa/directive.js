@@ -71,13 +71,11 @@ class AlexaDirective extends AlexaResponse {
    *
    *
    * @param {Array}  items
-   * @param {Object} parameters     Additional parameters [header, payload, response] (optional)
+   * @param {Object} parameters     Additional parameters [header, payload, properties, response] (optional)
    */
   postItemsAndReturn(items, parameters = {}) {
-    const promises = [];
-    items.forEach((item) => {
-      promises.push(rest.postItemCommand(this.directive.endpoint.scope.token, item.name, item.state));
-    });
+    const promises = items.map(item =>
+      rest.postItemCommand(this.directive.endpoint.scope.token, item.name, item.state));
     Promise.all(promises).then(() => {
       if (parameters.response) {
         log.debug('postItemsAndReturn done with response:', parameters.response);
@@ -87,16 +85,7 @@ class AlexaDirective extends AlexaResponse {
       }
     }).catch((error) => {
       log.error('postItemsAndReturn failed with error:', error);
-      if (error.statusCode === 404) {
-        this.returnAlexaErrorResponse({
-          payload: {
-            type: 'NO_SUCH_ENDPOINT',
-            message: 'Endpoint not found'
-          }
-        });
-      } else {
-        this.returnAlexaGenericErrorResponse();
-      }
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 
@@ -105,54 +94,52 @@ class AlexaDirective extends AlexaResponse {
    *  based of interface-specific properties latest item state from OH
    *  and then return a formatted response to the Alexa request
    *
-   * @param {Object} parameters     Additional parameters [header, payload, response] (optional)
+   * @param {Object} parameters     Additional parameters [header, payload, properties, response] (optional)
    */
   getPropertiesResponseAndReturn(parameters = {}) {
     // Use the property map defined interface names if this.interface not defined (e.g. reportState)
     const interfaceNames = this.interface ? [this.interface] : Object.keys(this.propertyMap);
     // Get list of all unique item objects part of interfaces
-    const interfaceItems = this.propertyMap.getItemsByInterfaces(interfaceNames);
-    const promises = [];
-
-    interfaceItems.forEach((item) => {
-      promises.push(this.getItemState(item).then((result) => {
+    const interfaceItems = this.propertyMap.getItemsByInterfaces(interfaceNames, parameters.properties);
+    // Define get item state promises array, excluding items with defined state already
+    const promises = interfaceItems.reduce((promises, item) => promises.concat(
+      typeof item.state !== 'undefined' ? [] : this.getItemState(item).then((result) => {
         // Update item information in propertyMap object for each item capabilities
         item.capabilities.forEach((capability) => {
           this.propertyMap[capability.interface][capability.property].item = result;
         });
         return result;
-      }));
-    });
+      })
+    ), []);
     Promise.all(promises).then((items) => {
-      // Throw error if one of the state item is set to 'NULL'
-      if (items.find(item => item.state === 'NULL')) {
-        throw {reason: 'Invalid item state returned by openHAB', items: items};
+      // Define endpoint health status based on every retrieved item states being defined
+      const isEndpointHealthy = items.every(item => typeof item.state !== 'undefined');
+      // Get context properties response
+      const properties = this.propertyMap.getContextPropertiesResponse(interfaceNames, isEndpointHealthy);
+      // Throw error if no context properties found
+      if (properties.length === 0) {
+        throw {cause: 'Unable to get context properties response', properties: this.propertyMap};
       }
-      // Get context properties response and throw error if one of its value not defined
-      const properties = this.propertyMap.getContextPropertiesResponse(interfaceNames);
-      if (properties.find(property => typeof property.value === 'undefined')) {
-        throw {reason: 'Undefined context property value', properties: properties};
+      // Get error response based on context property name/value if method defined
+      const error = properties.reduce((error, property) => {
+        const method = property.name + 'ErrorResponse';
+        return this[method] && this[method](property.value) || error;
+      }, undefined);
+      // Generate/return properties response if error not defined, otherwise return error response
+      if (typeof error === 'undefined') {
+        const response = this.generateResponse(Object.assign(parameters, {
+          context: {
+            properties: properties
+          }
+        }));
+        log.debug('getPropertiesResponseAndReturn done with response:', response);
+        this.returnAlexaResponse(response);
+      } else {
+        this.returnAlexaErrorResponse(error);
       }
-      // Generate properties response
-      const response = this.generateResponse(Object.assign(parameters, {
-        context: {
-          properties: properties
-        }
-      }));
-      log.debug('getPropertiesResponseAndReturn done with response:', response);
-      this.returnAlexaResponse(response);
     }).catch((error) => {
       log.error('getPropertiesResponseAndReturn failed with error:', error);
-      if (error.statusCode === 404) {
-        this.returnAlexaErrorResponse({
-          payload: {
-            type: 'NO_SUCH_ENDPOINT',
-            message: 'Endpoint not found'
-          }
-        });
-      } else {
-        this.returnAlexaGenericErrorResponse();
-      }
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 
@@ -164,7 +151,8 @@ class AlexaDirective extends AlexaResponse {
   getItemState(item) {
     const itemName = item.sensor || item.name;
     return rest.getItem(this.directive.endpoint.scope.token, itemName).then((result) =>
-      Object.assign(result, {state: formatItemState(result)}));
+      // Set state to undefined if uninitialized or undefined in oh, otherwise get formatted item state
+      Object.assign(result, {state: ['NULL', 'UNDEF'].includes(result.state) ? undefined : formatItemState(result)}));
   }
 }
 
@@ -186,7 +174,7 @@ function formatItemState(item) {
   const state = item.state;
   const type = item.type.split(':').shift();
 
-  if (format && state != 'NULL') {
+  if (format) {
     switch (type) {
       case 'Dimmer':
       case 'Number':

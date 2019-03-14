@@ -13,7 +13,7 @@
 const camelcase = require('camelcase');
 const utils = require('@lib/utils.js');
 const { getPropertySettings, getPropertyStateMap, isSupportedDisplayCategory } = require('./capabilities.js');
-const { CAPABILITY_PATTERN, THERMOSTAT_MODES, UNIT_OF_MEASUREMENT } = require('./config.js');
+const { CAPABILITY_PATTERN, UNIT_OF_MEASUREMENT } = require('./config.js');
 const { normalize } = require('./propertyState.js');
 
 /**
@@ -36,9 +36,12 @@ const PARAMETER_TYPE_MAPPING = {
   'friendlyNames': 'list',
   'ordered': 'boolean',
   'presets': 'list',
+  'supportedArmStates': 'list',
   'supportedInputs': 'list',
   'supportedModes': 'list',
-  'supportsDeactivation': 'boolean'
+  'supportsArmInstant': 'boolean',
+  'supportsDeactivation': 'boolean',
+  'supportsPinCodes': 'boolean'
 };
 
 /**
@@ -233,10 +236,30 @@ class AlexaPropertyMap {
             const thermostatModes = property.parameters.supportedModes || Object.keys(getPropertyStateMap(property));
             // Update supported modes parameter removing invalid values based on alexa thermostat supported modes
             property.parameters.supportedModes = thermostatModes.reduce(
-              (modes, value) => modes.concat(THERMOSTAT_MODES.includes(value) ? value : []), []);
+              (modes, value) => modes.concat(propertySettings.state.supported.includes(value) ? value : []), []);
             // Remove supported modes parameter if includes every alexa thermostat supported modes
-            if (THERMOSTAT_MODES.every(mode => property.parameters.supportedModes.includes(mode))) {
+            if (propertySettings.state.supported.every(mode => property.parameters.supportedModes.includes(mode))) {
               delete property.parameters.supportedModes;
+            }
+            break;
+
+          case 'armState':
+            // Use property state map to determine security panel supported arm states if not defined
+            const armStates = property.parameters.supportedArmStates || Object.keys(getPropertyStateMap(property));
+            // Update supported arm states parameter removing invalid values based on alexa supported arm states
+            property.parameters.supportedArmStates = armStates.reduce(
+              (states, value) => states.concat(propertySettings.state.supported.includes(value) ? value : []), []);
+            // Update exit delay parameters within alexa supported spread (0-255) if defined
+            property.parameters.exitDelay = !isNaN(property.parameters.exitDelay) ? property.parameters.exitDelay > 0 ?
+              property.parameters.exitDelay < 255 ? property.parameters.exitDelay : 255 : 0 : undefined;
+            // Remove arm instant support parameter if exit delay not defined
+            if (typeof property.parameters.exitDelay === 'undefined') {
+              delete property.parameters.supportsArmInstant;
+            }
+            // Remove arm instant & pin codes support parameters if item type not string
+            if (item.type !== 'String') {
+              delete property.parameters.supportsArmInstant;
+              delete property.parameters.supportsPinCodes;
             }
             break;
 
@@ -324,10 +347,11 @@ class AlexaPropertyMap {
    *      ...
    *    ]
    *
-   * @param  {Array}  interfaceNames
+   * @param  {Array}   interfaceNames
+   * @param  {Boolean} isEndpointHealthy  [endpoint health status] (optional)
    * @return {Object}
    */
-  getContextPropertiesResponse(interfaceNames) {
+  getContextPropertiesResponse(interfaceNames, isEndpointHealthy = true) {
     const propertyMap = this;
     const response = [];
 
@@ -348,6 +372,7 @@ class AlexaPropertyMap {
     // Iterate over interface and property names
     interfaceNames.forEach((interfaceName) => {
       Object.keys(propertyMap[interfaceName]).forEach((propertyName) => {
+        // Get normalized property state
         let state = normalize(propertyMap[interfaceName][propertyName]);
         let instance;
 
@@ -361,8 +386,8 @@ class AlexaPropertyMap {
         const propertySettings = getPropertySettings(capability);
         const type = propertySettings.state && propertySettings.state.type;
 
-        // Skip property if not reportable or its state type not defined
-        if (propertySettings.isReportable === false || typeof type === 'undefined') {
+        // Skip property if not reportable, its state or type not defined
+        if (propertySettings.isReportable === false || typeof state === 'undefined' || typeof type === 'undefined') {
           return;
         }
 
@@ -386,8 +411,11 @@ class AlexaPropertyMap {
       });
     });
 
-    // Add connectivity property state to response
-    response.push(generateProperty('Alexa.EndpointHealth', 'connectivity', {value: 'OK'}));
+    // Add connectivity property state to response if endpoint healthly or at least one property response present
+    if (isEndpointHealthy || response.length > 0) {
+      response.push(generateProperty('Alexa.EndpointHealth', 'connectivity', {
+        value: isEndpointHealthy ? 'OK' : 'UNREACHABLE'}));
+    }
 
     return response;
   }
@@ -412,16 +440,22 @@ class AlexaPropertyMap {
    *    ]
    *
    * @param  {Array} interfaceNames
+   * @param  {Array} propertyNames  [property names filter] (optional)
    * @return {Array}
    */
-  getItemsByInterfaces(interfaceNames) {
+  getItemsByInterfaces(interfaceNames, propertyNames) {
     const propertyMap = this;
 
     return interfaceNames.reduce((items, interfaceName) => {
       const properties = propertyMap[interfaceName] || {};
       Object.keys(properties).forEach((propertyName) => {
+        // Skip property if not included in property names list
+        if (Array.isArray(propertyNames) && !propertyNames.includes(propertyName)) {
+          return;
+        }
+        // Add/update item object with capability to list
         const capability = {interface: interfaceName, property: propertyName};
-        const item = properties[propertyName].item;
+        const item = Object.assign({}, properties[propertyName].item);
         const index = items.findIndex(i => i.name === item.name);
 
         if (index === -1) {

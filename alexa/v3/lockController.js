@@ -33,7 +33,7 @@ class AlexaLockController extends AlexaDirective {
    */
   setLockState() {
     const properties = this.propertyMap.LockController;
-    const postItem = Object.assign(properties.lockState.item, {
+    const postItem = Object.assign({}, properties.lockState.item, {
       state: this.directive.header.name.toUpperCase() === 'LOCK' ? 'ON' : 'OFF'
     });
     this.postItemsAndReturn([postItem]);

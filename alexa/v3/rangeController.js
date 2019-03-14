@@ -34,7 +34,7 @@ class AlexaRangeController extends AlexaDirective {
   setRangeValue() {
     // Append instance name to interface property
     this.interface += ':' + this.directive.header.instance;
-    const postItem = Object.assign(this.propertyMap[this.interface].rangeValue.item, {
+    const postItem = Object.assign({}, this.propertyMap[this.interface].rangeValue.item, {
       state: this.directive.payload.rangeValue
     });
     this.postItemsAndReturn([postItem]);
@@ -47,12 +47,12 @@ class AlexaRangeController extends AlexaDirective {
     // Append instance name to interface property
     this.interface += ':' + this.directive.header.instance;
     const properties = this.propertyMap[this.interface]
-    const postItem = properties.rangeValue.item;
+    const postItem = Object.assign({}, properties.rangeValue.item);
 
     this.getItemState(postItem).then((item) => {
       // Throw error if state not a number
       if (isNaN(item.state)) {
-        throw {reason: 'Could not get numeric item state', item: item};
+        throw {cause: 'Could not get numeric item state', item: item};
       }
 
       const minRange = properties.rangeValue.parameters.supportedRange.minimumValue;
@@ -62,7 +62,7 @@ class AlexaRangeController extends AlexaDirective {
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
       log.error('adjustRangeValue failed with error:', error);
-      this.returnAlexaGenericErrorResponse();
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 }

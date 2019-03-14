@@ -11,7 +11,7 @@
  * Amazon Smart Home Skill Property State for API V3
  */
 const { getPropertyStateMap } = require('./capabilities.js');
-const { INPUT_NAMES } = require('./config.js');
+const { PROPERTY_SCHEMAS } = require('./config.js');
 
 /**
  * Defines normalize functions
@@ -105,7 +105,7 @@ const normalizeFunctions = {
   inputs: function (value) {
     const input = value.replace(/(\S)(\d+)$/, '$1 $2').toUpperCase();
 
-    if (INPUT_NAMES.includes(input)) {
+    if (PROPERTY_SCHEMAS.inputs.state.supported.includes(input)) {
       return input;
     }
   },
@@ -203,7 +203,8 @@ const normalizeFunctions = {
 function normalize(property, value, options) {
   const propertyStateMap = getPropertyStateMap(property);
   const method = property.schema.name;
-  let state = typeof value !== 'undefined' ? value : property.item.state;
+  let state = typeof value !== 'undefined' ? value :
+    typeof property.item.state === 'string' ? property.item.state.split(':').shift() : property.item.state;
 
   // Return if state not defined
   if (typeof state === 'undefined') {

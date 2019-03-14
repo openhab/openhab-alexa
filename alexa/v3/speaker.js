@@ -34,7 +34,7 @@ class AlexaSpeaker extends AlexaDirective {
    * Set volume
    */
   setVolume() {
-    const postItem = Object.assign(this.propertyMap.Speaker.volume.item, {
+    const postItem = Object.assign({}, this.propertyMap.Speaker.volume.item, {
       state: this.directive.payload.volume
     });
     this.postItemsAndReturn([postItem]);
@@ -44,7 +44,7 @@ class AlexaSpeaker extends AlexaDirective {
    * Adjust volume
    */
   adjustVolume() {
-    const postItem = this.propertyMap.Speaker.volume.item;
+    const postItem = Object.assign({}, this.propertyMap.Speaker.volume.item);
     const defaultIncrement = parseInt(this.propertyMap.Speaker.volume.parameters.increment);
     const volumeAdjust = this.directive.payload.volume;
     const volumeDefault = this.directive.payload.volumeDefault;
@@ -54,14 +54,14 @@ class AlexaSpeaker extends AlexaDirective {
     this.getItemState(postItem).then((item) => {
       // Throw error if state not a number
       if (isNaN(item.state)) {
-        throw {reason: 'Could not get numeric item state', item: item};
+        throw {cause: 'Could not get numeric item state', item: item};
       }
 
       postItem.state = parseInt(item.state) + volumeIncrement;
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
       log.error('adjustVolume failed with error:', error);
-      this.returnAlexaGenericErrorResponse();
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 
@@ -69,7 +69,7 @@ class AlexaSpeaker extends AlexaDirective {
    * Set Mute
    */
   setMute() {
-    const postItem = Object.assign(this.propertyMap.Speaker.muted.item, {
+    const postItem = Object.assign({}, this.propertyMap.Speaker.muted.item, {
       state: this.directive.payload.mute ? 'ON' : 'OFF'
     });
     this.postItemsAndReturn([postItem]);

@@ -32,7 +32,7 @@ class AlexaPowerController extends AlexaDirective {
    * Turns a Switch ON or OFF
    */
   setPowerState () {
-    const postItem = Object.assign(this.propertyMap.PowerController.powerState.item, {
+    const postItem = Object.assign({}, this.propertyMap.PowerController.powerState.item, {
       state: this.directive.header.name === 'TurnOn' ? 'ON' : 'OFF'
     });
     this.postItemsAndReturn([postItem]);
