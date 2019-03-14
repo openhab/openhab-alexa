@@ -12,6 +12,35 @@ This certified Amazon Smart Home Skill allows users to naturally control their o
 This page describes how to use the [openHAB Alexa Smart Home Skill](https://www.amazon.com/openHAB-Foundation/dp/B01MTY7Z5L).
 The skill connects your openHAB setup through the [myopenHAB.org](http://myopenHAB.org) cloud service to Amazon Alexa.
 
+## Table of Contents
+* [Other openHAB Alexa Integrations](#Other-openHAB-Alexa-Integrations)
+  * [Amazon Echo Control Binding](#Amazon-Echo-Control-Binding)
+  * [Hue Emulation Service](#Hue-Emulation-Service)
+* [Requirements](#Requirements)
+* [Troubleshooting](#Troubleshooting)
+  * [Command Not Working](#Command-Not-Working)
+  * [Device Not Found](#Command-Not-Working)
+  * [Device Not Responding](#Device-Not-Responding)
+  * [Server Authentication Issue](#Server-Authentication-Issue)
+  * [Server Not Accessible](#Server-Not-Accessible)
+* [Setup](#Setup)
+  * [Item Label Recommendation](#Item-Label-Recommendation)
+  * [Item Configuration](#Item-Configuration)
+    * [Single items](#Single-items)
+    * [Group Items](#Group-Items)
+    * [Item Sensor](#Item-Sensor)
+    * [Item State](#Item-State)
+    * [Item Unit of Measurement](#Item-Unit-of-Measurement)
+    * [Supported Item Metadata](#Supported-Item-Metadata)
+    * [Item Categories](#Item-Categories)
+    * [Asset Catalog](#Asset-Catalog)
+    * [Friendly Names Not Allowed](#Friendly-Names-Not-Allowed)
+    * [Unit of Measurement Catalog](#Unit-of-Measurement-Catalog)
+    * [Supported Group Metadata](#Supported-Group-Metadata)
+    * [Label Support](#Label-Support)
+  *  [Version 2 Item mapping](#Version-2-Item-mapping)
+* [Example Voice Commands](#Example-Voice-Commands)
+
 ## Other openHAB Alexa Integrations
 
 openHAB has two other Alexa integrations that can be used in conjunction with or indepently of this skill.
