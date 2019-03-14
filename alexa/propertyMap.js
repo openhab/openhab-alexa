@@ -156,10 +156,12 @@ class AlexaPropertyMap {
 
     item.metadata.alexa.value.split(',').forEach((capability) => {
       if (matches = capability.match(CAPABILITY_PATTERN)) {
-        const propertySettings = getPropertySettings(capability);
+        const propertySettings = getPropertySettings(matches[1], matches[2]);
         // Append item name, as instance name, if property multi-instance enabled
         const interfaceName = matches[1] + (propertySettings.multiInstance ? ':' + item.name : '');
-        const propertyName = matches[2];
+        // Append component name if part of capability matches
+        const propertyName = matches[2] + (matches[3] ? ':' + matches[3] : '');
+        const component = matches[3];
         const properties = propertyMap[interfaceName] || {};
         const property = {
           parameters: item.metadata.alexa.config || {},
@@ -172,14 +174,19 @@ class AlexaPropertyMap {
           }
         };
 
-        // Skip item if its (group)type not supported by capability
+        // Skip property if its item (group)type not supported by capability
         if (!propertySettings.itemTypes || !propertySettings.itemTypes.includes(item.groupType || item.type)) {
           return;
         }
 
-        // Set friendly names parameter on property multi-instance enabled to use item label if not defined
-        if (propertySettings.multiInstance && !property.parameters.friendlyNames && item.label) {
-          property.parameters.friendlyNames = item.label;
+        // Skip property if component-enabled and not valid
+        if (propertySettings.components && !propertySettings.components.includes(component)) {
+          return;
+        }
+
+        // Set friendly names parameter on multi-instance property to use item synonyms metadata or label if not defined
+        if (propertySettings.multiInstance && !property.parameters.friendlyNames) {
+          property.parameters.friendlyNames = item.metadata.synonyms && item.metadata.synonyms.value || item.label;
         }
 
         // Iterate over parameters
@@ -232,6 +239,10 @@ class AlexaPropertyMap {
             break;
 
           case 'thermostatMode':
+            // Use item channel metadata value to determine binding parameter if not defined
+            if (item.metadata.channel && item.metadata.channel.value && !property.parameters.binding) {
+              property.parameters.binding = item.metadata.channel.value.split(':').shift();
+            }
             // Use property state map to determine thermostat supported modes if not defined
             const thermostatModes = property.parameters.supportedModes || Object.keys(getPropertyStateMap(property));
             // Update supported modes parameter removing invalid values based on alexa thermostat supported modes
@@ -261,6 +272,31 @@ class AlexaPropertyMap {
               delete property.parameters.supportsArmInstant;
               delete property.parameters.supportsPinCodes;
             }
+            break;
+
+          case 'equalizerBands':
+            // Define equalizer range based on range parameter ([0] => minimum; [1] => maximum)
+            let equalizerRange = (property.parameters.range || '').split(':').map(value => parseInt(value));
+            // Update range values if not valid (min >= max) using default based on item type
+            if (equalizerRange.length !== 2 || equalizerRange.some(value => isNaN(value)) ||
+              equalizerRange[0] >= equalizerRange[1]) {
+              equalizerRange = item.type === 'Dimmer' ? [0, 100] : [-10, 10];
+            }
+            // Define equalizer default based on parameter
+            const equalizerDefault = parseInt(property.parameters.default);
+            // Update default parameter if out of range or not defined using equalizer range midpoint spread
+            property.parameters.default = equalizerRange[0] <= equalizerDefault &&
+              equalizerDefault <= equalizerRange[1] ? equalizerDefault : (equalizerRange[0] + equalizerRange[1]) / 2;
+            // Set range object
+            property.parameters.range = {'minimum': equalizerRange[0], 'maximum': equalizerRange[1]};
+            break;
+
+          case 'equalizerMode':
+            // Use property state map to determine equalizer supported modes if not defined
+            const equalizerModes = property.parameters.supportedModes || Object.keys(getPropertyStateMap(property));
+            // Update supported modes parameter removing invalid values based on alexa equalizer supported modes
+            property.parameters.supportedModes = equalizerModes.reduce(
+              (modes, value) => modes.concat(propertySettings.state.supported.includes(value) ? value : []), []);
             break;
 
           case 'mode':
@@ -300,9 +336,9 @@ class AlexaPropertyMap {
               const measurement = UNIT_OF_MEASUREMENT[dimension].find(meas => meas.symbol === symbol) || {};
               property.parameters.unitOfMeasure = measurement.id;
             }
-            // Remove unitOfMeasure parameter if not found in unit of measurement flattened values
-            if (property.parameters.unitOfMeasure && !Object.values(UNIT_OF_MEASUREMENT).reduce((values, item) =>
-              values.concat(item), []).find(meas => meas.id === property.parameters.unitOfMeasure)) {
+            // Remove unitOfMeasure parameter if not found in supported unit of measurement
+            if (property.parameters.unitOfMeasure && !Object.keys(UNIT_OF_MEASUREMENT).some(dimension =>
+              UNIT_OF_MEASUREMENT[dimension].find(meas => meas.id === property.parameters.unitOfMeasure))) {
               delete property.parameters.unitOfMeasure;
             }
             break;
@@ -374,16 +410,14 @@ class AlexaPropertyMap {
       Object.keys(propertyMap[interfaceName]).forEach((propertyName) => {
         // Get normalized property state
         let state = normalize(propertyMap[interfaceName][propertyName]);
-        let instance;
-
-        // Extract instance name from interface name if present
-        if (interfaceName.split(':').length === 2) {
-          [interfaceName, instance] = interfaceName.split(':');
-        }
-
+        let component, instance;
+        // Extract instance name from interface name
+        [interfaceName, instance] = interfaceName.split(':');
+        // Extract component from property name
+        [propertyName, component] = propertyName.split(':');
         // Get capability property settings
-        const capability = [interfaceName, propertyName].join('.');
-        const propertySettings = getPropertySettings(capability);
+        const propertySettings = getPropertySettings(interfaceName, propertyName);
+        const propertyReportName = propertySettings.report || propertyName;
         const type = propertySettings.state && propertySettings.state.type;
 
         // Skip property if not reportable, its state or type not defined
@@ -406,8 +440,20 @@ class AlexaPropertyMap {
           }
         }
 
+        // Update state if component defined
+        if (component) {
+          state = [{'name': component.toUpperCase(), 'value': state}];
+          // Concatenate state to property reponse value and go to next property if previously added
+          const property = response.find(property => property.namespace === 'Alexa.' + interfaceName &&
+            property.name === propertyReportName && property.instance === instance);
+          if (property) {
+            property.value = property.value.concat(state);
+            return;
+          }
+        }
+
         // Add property state to response
-        response.push(generateProperty('Alexa.' + interfaceName, propertyName, state, instance));
+        response.push(generateProperty('Alexa.' + interfaceName, propertyReportName, state, instance));
       });
     });
 

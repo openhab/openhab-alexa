@@ -48,6 +48,9 @@ module.exports = {
               "config": {
                 "supportedRange": "0:120:20"
               }
+            },
+            "synonyms": {
+              "value": "Fan Angle,Orientation"
             }
           },
           "groupNames": ["gTowerFan"]
@@ -79,7 +82,7 @@ module.exports = {
       "friendlyName": "Tower Fan",
       "resources": {
         "Alexa.RangeController.TowerFanAngle": {
-          "friendlyNames": ["text:Fan Angle:en-US"]
+          "friendlyNames": ["text:Fan Angle:en-US", "text:Orientation:en-US"]
         },
         "Alexa.RangeController.TowerFanSpeed": {
           "friendlyNames": ["asset:Alexa.Setting.FanSpeed", "text:Air Speed:en-US", "text:Speed:en-US"]
@@ -111,7 +114,7 @@ module.exports = {
             "parameters": {
               "supportedRange": {"minimumValue": 0, "maximumValue": 120, "precision": 20},
               "unitOfMeasure": "Angle.Degrees",
-              "friendlyNames": ["Fan Angle"]
+              "friendlyNames": ["Fan Angle", "Orientation"]
             },
             "item": {"name": "TowerFanAngle", "type": "Number:Angle"},
             "schema": {"name": "rangeValue"}

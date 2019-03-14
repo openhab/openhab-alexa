@@ -40,7 +40,6 @@ module.exports = [
         }
       },
       openhab: []
-    },
-    validate: false
+    }
   }
 ];

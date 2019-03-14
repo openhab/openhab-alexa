@@ -36,8 +36,7 @@ class AlexaDiscovery extends AlexaDirective {
       const discoveredDevices = [];
       const groupItems = [];
 
-      log.debug('Items:', items);
-      log.debug('Settings:', settings);
+      log.debug('Data:', {items: items, settings: settings});
 
       items.forEach((item) => {
         // Skip item if already part of a group
@@ -279,6 +278,18 @@ function convertV2Item(item, config = {}) {
           break;
         case 'EntertainmentInput':
           capabilities = ['InputController.input'];
+          break;
+        case 'EqualizerBass':
+          capabilities = ['EqualizerController.bands:bass'];
+           break;
+        case 'EqualizerMidrange':
+          capabilities = ['EqualizerController.bands:midrange'];
+          break;
+        case 'EqualizerTreble':
+          capabilities = ['EqualizerController.bands:treble'];
+          break;
+        case 'EqualizerMode':
+          capabilities = ['EqualizerController.modes'];
           break;
         case 'MediaPlayer':
           capabilities = ['PlaybackController.playback'];

@@ -118,9 +118,11 @@ module.exports = {
               "value": "ThermostatController.thermostatMode",
               "config": {
                 "OFF": "off",
-                "HEAT": "heat",
-                "binding": "foobar"
+                "HEAT": "heat"
               }
+            },
+            "channel": {
+              "value": "foobar:thermostat:mode"
             }
           },
           "groupNames": ["gThermostat2"]

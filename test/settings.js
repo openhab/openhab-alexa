@@ -60,6 +60,9 @@ var settings = {
       "ContactSensor": [
         "./v3/test_controllerContactSensor.js"
       ],
+      "EqualizerController": [
+        "./v3/test_controllerEqualizer.js"
+      ],
       "InputController": [
         "./v3/test_controllerInput.js"
       ],
