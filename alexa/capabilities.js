@@ -10,7 +10,7 @@
 /**
  * Amazon Smart Home Skill Capabilities for API V3
  */
-const { CAPABILITIES, PROPERTY_SCHEMAS, ASSET_IDENTIFIERS, DISPLAY_CATEGORIES, CAPABILITY_PATTERN } = require('./config.js');
+const { CAPABILITIES, PROPERTY_SCHEMAS, ASSET_IDENTIFIERS, DISPLAY_CATEGORIES } = require('./config.js');
 
 /**
  * Returns alexa capability display category for a given interface
@@ -46,16 +46,13 @@ function getCapabilityCategory(interfaceName) {
  *
  * @param  {String} interfaceName
  * @param  {Object} properties     (optional)
- * @param  {Object} settings       (optional)
+ * @param  {Object} globalSettings (optional)
  * @return {Object}
  */
-function getCapabilityInterface(interfaceName, properties, settings = {}) {
+function getCapabilityInterface(interfaceName, properties, globalSettings = {}) {
   let instance;
-
-  // Extract instance name from interface name if present
-  if (interfaceName.split(':').length === 2) {
-    [interfaceName, instance] = interfaceName.split(':');
-  }
+  // Extract instance name from interface name
+  [interfaceName, instance] = interfaceName.split(':');
 
   // Skip capability if interface not defined
   if (!CAPABILITIES[interfaceName]) {
@@ -64,9 +61,8 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
 
   // Use default capability interface properties if not provided (e.g. EndpointHealth)
   if (!properties) {
-    properties = CAPABILITIES[interfaceName].properties.reduce((map, property) => {
-      return Object.assign(map, {[property.name]: {parameters: {}}});
-    }, {});
+    properties = CAPABILITIES[interfaceName].properties.reduce((map, property) =>
+      Object.assign(map, {[property.name]: {parameters: {}, schema: {}}}), {});
   }
 
   // Initialize capability interface object
@@ -76,9 +72,9 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
     'version': '3'
   };
 
-  // Define locale based on regional settings if defined, otherwise default to 'en-US'
-  const locale = settings.regional && settings.regional.language && settings.regional.region ?
-    [settings.regional.language, settings.regional.region].join('-') : 'en-US';
+  // Define locale based on regional global settings if defined, otherwise default to 'en-US'
+  const locale = globalSettings.regional && globalSettings.regional.language && globalSettings.regional.region ?
+    [globalSettings.regional.language, globalSettings.regional.region].join('-') : 'en-US';
 
   // Initialize capability common properties
   const configuration = {};
@@ -88,11 +84,21 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   // Iterate over interface properties
   Object.keys(properties).forEach((propertyName) => {
     const parameters = properties[propertyName].parameters;
-    // Add property name to supported list
-    supported.push({name: propertyName});
-    // Add specific property-based parameters
-    switch (propertyName) {
-      case 'input':
+    const schema = properties[propertyName].schema.name;
+    let component;
+    // Extract component from property name
+    [propertyName, component] = propertyName.split(':');
+    // Get capability property settings
+    const propertySettings = getPropertySettings(interfaceName, propertyName);
+
+    // Add unique property name to supported list if property is supported
+    if (propertySettings.isSupported !== false && !supported.find(property => property.name === propertyName)) {
+      supported.push({name: propertyName});
+    }
+
+    // Update properties based on schema name
+    switch (schema) {
+      case 'inputs':
         capability.inputs = parameters.supportedInputs.map(input => Object.assign({name: input}));
         break;
       case 'playbackState':
@@ -100,6 +106,22 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
         break;
       case 'scene':
         capability.supportsDeactivation = parameters.supportsDeactivation === false ? false : true;
+        break;
+      case 'equalizerBands':
+        capability.configurations = Object.assign(capability.configurations || {}, {
+          'bands': {
+            'supported': [].concat(capability.configurations && capability.configurations.bands &&
+              capability.configurations.bands.supported || [], {'name': component.toUpperCase()}),
+            'range': parameters.range
+          }
+        });
+        break;
+      case 'equalizerMode':
+        capability.configurations = Object.assign(capability.configurations || {}, {
+          'modes': {
+            'supported': parameters.supportedModes.map(mode => ({'name': mode}))
+          }
+        });
         break;
       case 'thermostatMode':
         Object.assign(configuration, {
@@ -111,9 +133,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
       case 'armState':
         Object.assign(configuration, {
           'supportsArmInstant': parameters.supportsArmInstant === true,
-          'supportedArmStates': parameters.supportedArmStates.reduce((states, state) => states.concat({
-            'value': state
-          }), [])
+          'supportedArmStates': parameters.supportedArmStates.map(state => ({'value': state}))
         }, parameters.supportsPinCodes === true && {
           'supportedAuthorizationTypes': [{
             'type': 'FOUR_DIGIT_PIN'
@@ -125,11 +145,11 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
           labels: parameters.friendlyNames, locale: parameters.locale || locale}));
         Object.assign(configuration, {
           'ordered': parameters.ordered === true,
-          'supportedModes': parameters.supportedModes.reduce((modes, mode) => modes.concat({
+          'supportedModes': parameters.supportedModes.map(mode => ({
             'value': mode.split('=').shift(),
             'modeResources': getResourcesObject({
               labels: mode.split(/[=:]/).slice(1), locale: parameters.locale || locale})
-          }), [])
+          }))
         });
         break;
       case 'rangeValue':
@@ -140,11 +160,11 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
         }, parameters.unitOfMeasure && {
           'unitOfMeasure': 'Alexa.Unit.' + parameters.unitOfMeasure
         }, parameters.presets && {
-          'presets': parameters.presets.reduce((presets, preset) => presets.concat({
+          'presets': parameters.presets.map(preset => ({
             'rangeValue': parseInt(preset.split('=').shift()),
             'presetResources': getResourcesObject({
               labels: preset.split(/[=:]/).slice(1), locale: parameters.locale || locale})
-          }), [])
+          }))
         }));
         break;
       case 'toggleState':
@@ -154,28 +174,25 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
     }
   });
 
-  // Update capability with common properties, if deemed standard (no property added since initialized)
-  if (Object.keys(capability).length === 3) {
-    // Add capability instance if defined
-    if (instance) {
-      capability.instance = instance;
-    }
-    // Add capability resources if not empty
-    if (Object.keys(resources).length > 0) {
-      capability.capabilityResources = resources;
-    }
-    // Add capability properties if supported is not empty,
-    if (supported.length > 0) {
-      capability.properties = {
-        'supported': supported,
-        'proactivelyReported': false,
-        'retrievable': true
-      };
-    }
-    // Add capability configuration if not empty
-    if (Object.keys(configuration).length > 0) {
-      capability.configuration = configuration;
-    }
+  // Add capability instance if defined
+  if (instance) {
+    capability.instance = instance;
+  }
+  // Add capability resources if not empty
+  if (Object.keys(resources).length > 0) {
+    capability.capabilityResources = resources;
+  }
+  // Add capability properties if supported is not empty,
+  if (supported.length > 0) {
+    capability.properties = {
+      'supported': supported,
+      'proactivelyReported': false,
+      'retrievable': true
+    };
+  }
+  // Add capability configuration if not empty
+  if (Object.keys(configuration).length > 0) {
+    capability.configuration = configuration;
   }
 
   return capability;
@@ -234,21 +251,25 @@ function isSupportedAssetId(assetId) {
  * Returns alexa property settings for a given capability
  *
  *  {
- *    'name': <propertyName>
- *    'schema': <propertySchemaName>
- *    'isReportable': <boolean>
+ *    'name': <propertyName>,
+ *    'schema': <propertySchemaName>,
+ *    'report': <propertyReportName>,
+ *    'components': <componentNames>,
+ *    'isReportable': <boolean>,
+ *    'isSupported': <boolean>,
+ *    'multiInstance': <boolean>,
  *    'itemTypes': <itemTypes>,
  *    'state': {
- *      'map': <stateMap>
+ *      'map': <stateMap>,
  *      'type': <stateType>
  *    }
  *  }
  *
- * @param  {String} capability
+ * @param  {String} interfaceName
+ * @param  {String} propertyName
  * @return {Object}
  */
-function getPropertySettings(capability) {
-  const [match, interfaceName, propertyName] = capability.match(CAPABILITY_PATTERN) || [];
+function getPropertySettings(interfaceName, propertyName) {
   const properties = CAPABILITIES[interfaceName] && CAPABILITIES[interfaceName]['properties'] || [];
   const property = properties.find(property => property.name === propertyName) || {};
 
@@ -266,7 +287,6 @@ function getPropertySettings(capability) {
  */
 function getPropertyStateMap(property) {
   const parameters = property.parameters;
-  const supportedModes = parameters.supportedModes || [];
   const schema = PROPERTY_SCHEMAS[property.schema.name] || {};
   const stateMap = schema.state && schema.state.map || {};
   const type = property.item.type;

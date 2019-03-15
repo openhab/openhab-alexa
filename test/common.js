@@ -21,9 +21,8 @@ function generateDirectiveRequest (request) {
     'header': {
       'namespace': null,
       'name': null,
-      'messageId': 'message-id',
-      'correlationToken': 'correlation-token',
-      'payloadVersion': '3'
+      'payloadVersion': '3',
+      'messageId': 'message-id'
     },
     'endpoint': {
       'endpointId': null,
@@ -40,6 +39,10 @@ function generateDirectiveRequest (request) {
     'endpoint': Object.assign(template.endpoint, request.endpoint),
     'payload': Object.assign(template.payload, request.payload)
   };
+  // add header correlation token for request other than discovery
+  if (directive.header.namespace !== 'Alexa.Discovery') {
+    directive.header.correlationToken = 'correlation-token';
+  }
   // remove endpoint if no id defined
   if (directive.endpoint.endpointId === null) {
     // move endpoint scope to payload if defined

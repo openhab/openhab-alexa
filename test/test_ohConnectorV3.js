@@ -81,6 +81,7 @@ describe('ohConnectorV3 Tests', function () {
           setTimeout(function () {
             // console.log('Capture:', JSON.stringify(capture, null, 2));
             assert.discoveredEndpoints(capture.result.event.payload.endpoints, test.expected);
+            assert.validSchema(capture.result, test.validate);
             done();
           }, 1);
         });

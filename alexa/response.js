@@ -64,8 +64,8 @@ class AlexaResponse {
     return Object.assign({
       namespace: parameters.namespace || 'Alexa',
       name: parameters.name || 'Response',
+      payloadVersion: this.directive.header.payloadVersion,
       messageId: uuid(),
-      payloadVersion: this.directive.header.payloadVersion
     }, this.directive.header.correlationToken && {
       // Include correlationToken property if provided in directive header
       correlationToken: this.directive.header.correlationToken

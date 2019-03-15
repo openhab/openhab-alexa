@@ -5,7 +5,7 @@ Alexa is an intelligent personal assistant developed by Amazon and designed to r
 
 <p></p>
 
-This certified Amazon Smart Home Skill allows users to naturally control their openHAB powered smart home with natural voice commands.  Lights, locks, thermostats, AV devices, sensors and many other device types can be controled through a user's Alexa powered device like the Echo or Dot.
+This certified Amazon Smart Home Skill allows users to naturally control their openHAB powered smart home with natural voice commands.  Lights, locks, thermostats, AV devices, sensors and many other device types can be controlled through a user's Alexa powered device like the Echo or Dot.
 
 <p></p>
 
@@ -32,18 +32,18 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
     * [Item State](#Item-State)
     * [Item Unit of Measurement](#Item-Unit-of-Measurement)
     * [Supported Item Metadata](#Supported-Item-Metadata)
-    * [Item Categories](#Item-Categories)
-    * [Asset Catalog](#Asset-Catalog)
-    * [Friendly Names Not Allowed](#Friendly-Names-Not-Allowed)
-    * [Unit of Measurement Catalog](#Unit-of-Measurement-Catalog)
+      * [Display Categories](#Display-Categories)
+      * [Asset Catalog](#Asset-Catalog)
+      * [Friendly Names Not Allowed](#Friendly-Names-Not-Allowed)
+      * [Unit of Measurement Catalog](#Unit-of-Measurement-Catalog)
     * [Supported Group Metadata](#Supported-Group-Metadata)
-    * [Label Support](#Label-Support)
+    * [Supported Labels](#Supported-Labels)
   *  [Version 2 Item mapping](#Version-2-Item-mapping)
 * [Example Voice Commands](#Example-Voice-Commands)
 
 ## Other openHAB Alexa Integrations
 
-openHAB has two other Alexa integrations that can be used in conjunction with or indepently of this skill.
+openHAB has two other Alexa integrations that can be used in conjunction with or independently of this skill.
 
 ### Amazon Echo Control Binding
 
@@ -88,17 +88,17 @@ Here are some of the most common generic errors you may encounter while using th
 #### Server Not Accessible
 * Alexa will respond with "Sorry the hub that _device_ is connected to is not responding, please check its network connection and power supply"
 * It indicates that your openHAB server is not accessible through [myopenHAB](https://myopenhab.org) cloud service.
-* To resolve this error, make sure that your server is running and showing online under your myopenHAB account. For users that have setup their own custom skill, make sure that the proper server base url was added to the lambda function config.js.
+* To resolve this error, make sure that your server is running and showing online under your myopenHAB account. For users that have setup their own custom skill, make sure that the proper server base URL was added to the lambda function config.js.
 
 ## Setup
 
 * NEW Alexa Version 3 API syntax (v3)
   * Version 3 of the Alex Skill API introduces a more rich and complex set of features that required a change in how items are configured by using the new metadata feature introduced in openaHAB 2.3
   * Version 2 tags are still supported and are converted internally to V3 meta data
-  * See [Label Support](#Label-Support) for using labels in item tags and meta data.
-  * Supported [item](#supported-item-metadata) & [group](#supported-group-metadata) V3 meta data
-  * Automatically determine number precision and unit based on [item state presentation](#item-state) and [unit of measurement](#item-unit-of-measurement).
-  * Decoupling between item receiving command and item state via an [item sensor](#item-sensor)
+  * See [supported labels](#Supported-Labels) for using them in item tags and meta data.
+  * Supported [item](#Supported-Item-Metadata) & [group](#Supported-Group-Metadata) V3 meta data
+  * Automatically determine number precision and unit based on [item state presentation](#Item-State) and [unit of measurement](#Item-Unit-of-Measurement).
+  * Decoupling between item receiving command and item state via an [item sensor](#Item-Sensor)
   * Improved Alexa response state accuracy
 
 ### Item Label Recommendation
@@ -137,7 +137,7 @@ While single mapping items works for many use cases, occasionally multiple openH
 
 For this example we will use various use cases, a thermostat, a stereo, a security system, a washer and a fan.
 
-In openHAB a thermostat is modeled as many different items, typically there are items for set points (target, heat, cool), modes, and the current temperature. To map these items to a single endpoint in Alexa, we will add them to a group which also uses "Alexa" metadata. When items are alexa-enabled, but are also a member of a group alexa-enabled, they will be added to the group endpoint and not exposed as their own endpoints.
+In openHAB a thermostat is modeled as many different items, typically there are items for set points (target, heat, cool), modes, and the current temperature. To map these items to a single endpoint in Alexa, we will add them to a group which also uses "Alexa" metadata. When items are Alexa-enabled, but are also a member of a group Alexa-enabled, they will be added to the group endpoint and not exposed as their own endpoints.
 
 ```
 Group  Thermostat    "Bedroom"                                {alexa="Endpoint.Thermostat"}
@@ -169,6 +169,10 @@ Switch Power    "Power"   (Stereo)  {alexa="PowerController.powerState"}
 String Input    "Input"   (Stereo)  {alexa="InputController.input" [supportedInputs="HDMI1,TV"]}
 String Channel  "Channel" (Stereo)  {alexa="ChannelController.channel"}
 Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playbackState"}
+Number Bass     "Bass"    (Stereo)  {alexa="EqualizerController.bands:bass" [range="-10:10"]}
+Number Midrange "Mid"     (Stereo)  {alexa="EqualizerController.bands:midrange" [range="-10:10"]}
+Number Treble   "Treble"  (Stereo)  {alexa="EqualizerController.bands:treble" [range="-10:10"]}
+String Mode     "Mode"    (Stereo)  {alexa="EqualizerController.modes" [supportedModes="MOVIE,MUSIC,TV"]}
 ```
 
 A security system is another example including alarm mode and different alarm states.
@@ -263,7 +267,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * Fahrenheit
         * Kelvin
       * comfortRange=`<number>`
-        * When dual setpoints (upper,lower) are used this is the amount over the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius. Ignored if a targetSetpoint is included in the thermostat group.
+        * When dual setpoints (upper, lower) are used this is the amount over the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius. Ignored if a targetSetpoint is included in the thermostat group.
   * `ThermostatController.lowerSetpoint`
     * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
@@ -277,7 +281,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
       * comfortRange=`<number>`
         * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
   * `ThermostatController.thermostatMode`
-    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=`<value>`). If neither of these settings are provided, for thermostats that only support a subset of the standard modes, a comma delimited list of the Alexa supported modes should be set using the supportedModes parameter, otherwise, the supported list will be compiled based of the configured mapping.
+    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=`<value>`). For the binding parameter, it will be automatically determined if the associated item is using a 2.x addon (via channel metadata). If neither of these settings are provided, for thermostats that only support a subset of the standard modes, a comma delimited list of the Alexa supported modes should be set using the supportedModes parameter, otherwise, the supported list will be compiled based of the default mapping.
     * Supported item type:
       * Number
       * String
@@ -298,7 +302,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * [zwave1](https://www.openhab.org/addons/bindings/zwave1/) [OFF=0, HEAT=1, COOL=2, AUTO=3]
         * defaults to [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=auto] if omitted
       * supportedModes=`<values>`
-        * defaults to, depending on the parameters provided, either user-based, preset-based or default mapping.
+        * defaults to, depending on the parameters provided, either user-based, preset-based or default item type-based mapping.
   * `TemperatureSensor.temperature`
     * Items that represent the current temperature, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
@@ -310,7 +314,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * Fahrenheit
         * Kelvin
   * `LockController.lockState`
-    * Items that represent the state of a lock (ON lock, OFF unlock). When associated to an [item sensor](#item-sensor), the state of that item will be returned instead of the original actionable item. Additionally, when linking to such item, multiple properties to one state can be mapped with column delimiter (e.g. for a zwave lock: [LOCKED="1:3",UNLOCKED="2:4",JAMMED=11]).
+    * Items that represent the state of a lock (ON lock, OFF unlock). When associated to an [item sensor](#item-sensor), the state of that item will be returned instead of the original actionable item. Additionally, when linking to such item, multiple properties to one state can be mapped with column delimiter (e.g. for a Z-Wave lock: [LOCKED="1:3",UNLOCKED="2:4",JAMMED=11]).
     * Supported item type:
       * Switch
     * Supported sensor type:
@@ -396,6 +400,32 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
     * Supported item type:
       * Player
     * Default category: OTHER
+  * `EqualizerController.bands:{bass,midrange,treble}`
+    * Items that represent the different equalizer bands and their ranges supported by an audio system. Use specific capability component (`bass`, `midrange` or `treble`) when configuring a band (e.g. `EqualizerController.bands:bass`). Add the band range values in the `range="-10:10"` parameter. For the reset default value, provide the setting in `default=0` parameter or it will be calculated by using midpoint range spread. Additionally, default adjust increment can be configured in `increment=2` parameter. When configuring multiple bands, make sure to synchronize the range parameter across relevant items as the same range values will be used for all bands due to Alexa restriction. However, the reset and increment default values can be different between bands.
+    * Supported item type:
+      * Dimmer
+      * Number
+    * Default category: SPEAKER
+    * Supports additional properties:
+      * range=`<minValue:maxValue>`
+        * defaults to `[0:100]` for Dimmer and `[-10:10]` for Number item types if omitted
+      * default=`<number>`
+        * defaults to midpoint range spread if omitted
+      * increment=`<number>`
+        * defaults to increment=INCREASE/DECREASE (Dimmer) or increment=1 (Number) if omitted
+  * `EqualizerController.modes`
+    * Items that represent a list of equalizer modes supported by an audio system. Set supported modes using `supportedModes="MOVIE,MUSIC,TV"` parameter. The mode listed in additional properties are the only ones supported by the Alexa API currently. For the mapping, default item type mapping (listed below) can be used or if necessary, add each state to the parameters similar to how it is done with other interfaces.
+    * Supported item type:
+      * Number [MOVIE=1, MUSIC=2, NIGHT=3, SPORT=4, TV=5]
+      * String [MOVIE=movie, MUSIC=music, NIGHT=night, SPORT=sport, TV=tv]
+    * Default category: SPEAKER
+    * Supports additional properties:
+      * MOVIE=`<state>`
+      * MUSIC=`<state>`
+      * NIGHT=`<state>`
+      * SPORT=`<state>`
+      * supportedModes=`<modes>`
+        * defaults to, depending on the parameters provided, either user-based or default item type-based mapping.
   * `ContactSensor.detectionState`
     * Items that represent a contact sensor that can be used to trigger Alexa routines. (Currently not usable as proactive reporting not supported yet)
     * Supported item type:
@@ -434,7 +464,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * error state when system has open zones preventing arming
       * supportedArmStates=`<states>`
         * supported arm states should only be a list of DISARMED and ARMED_* states; do not put error states in that parameter.
-        * defaults to, depending on the parameters provided, either user-based or default item type mapping.
+        * defaults to, depending on the parameters provided, either user-based or default item type-based mapping.
       * supportsArmInstant=`<boolean>` (optional)
         * only supported with String item type and exitDelay parameter provided
         * defaults to false
@@ -519,7 +549,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * each name formatted as `<@assetIdOrName>`
         * defaults to item label name
 
-##### Item Categories
+##### Display Categories
   * Alexa has certain categories that effect how voice control and their mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and associate a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHT" to send the command to.  
   * You can override this default value on items by adding it as a parameter to the metadata, ex:
 
@@ -645,7 +675,7 @@ Weight.Ounces |
 * Child item categories are ignored and only the group category is used on items.
 * Case is ignored on the category part of the metadata and any value will be made all uppercase before its passed to the Alexa API.
 
-#### Label Support
+#### Supported Labels
 Item tags and metadata labels translate to a set of capabilities and can be used as a convenience to using the longer meta data format configuration.  These are the same as v2 tags but add additional functions and provide the ability to add customization through additional properties which take precedence over the default ones. Here are some examples:
 ```
 Switch OutletPlug "Outlet Plug" {alexa="Switchable" [category="SMARTPLUG"]}
@@ -763,9 +793,41 @@ String EntertainmentChannel "Entertainment Channel" {alexa="ChannelController.ch
 ```
 String EntertainmentInput "Entertainment Input" ["EntertainmentInput]
 
-String EntertainmentInput "Entertainment Input" {alexa="EntertainmentInput}
+String EntertainmentInput "Entertainment Input" {alexa="EntertainmentInput"}
 
 String EntertainmentInput "Entertainment Input" {alexa="InputController.input"}
+```
+* EqualizerBass
+```
+Number EqualizerBass "Equalizer Bass" ["EqualizerBass"]
+
+Number EqualizerBass "Equalizer Bass" {alexa="EqualizerBass"}
+
+Number EqualizerBass "Equalizer Bass" {alexa="EqualizerController.bands:bass}
+```
+* EqualizerMidrange
+```
+Number EqualizerMidrange "Equalizer Midrange" ["EqualizerMidrange"]
+
+Number EqualizerMidrange "Equalizer Midrange" {alexa="EqualizerMidrange"}
+
+Number EqualizerMidrange "Equalizer Midrange" {alexa="EqualizerController.bands:midrange"}
+```
+* EqualizerTreble
+```
+Number EqualizerTreble "Equalizer Treble" ["EqualizerTreble"]
+
+Number EqualizerTreble "Equalizer Treble" {alexa="EqualizerTreble"}
+
+Number EqualizerTreble "Equalizer Treble" {alexa="EqualizerController.bands:treble"}
+```
+* EqualizerMode
+```
+String EqualizerMode "Equalizer Mode" ["EqualizerMode"]
+
+String EqualizerMode "Equalizer Mode" {alexa="EqualizerMode"}
+
+String EqualizerMode "Equalizer Mode" {alexa="EqualizerController.modes"}
 ```
 * MediaPlayer
 ```

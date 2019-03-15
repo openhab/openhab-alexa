@@ -22,8 +22,11 @@ module.exports = Object.freeze({
    *        {
    *          'name': <propertyName1>,
    *          'schema': <propertySchemaName1>,
-   *          'isReportable': <boolean>,
-   *          'multiInstance': <boolean>
+   *          'report': <propertyReportName1>,        (Use if report property name different than discovery one)
+   *          'components': [ <componentName1>, ... ] (Use if sub-property components are needed)
+   *          'isReportable': <boolean>,              (Include in context properties response)
+   *          'isSupported': <boolean>,               (Include in capabilities supported properties discovery response)
+   *          'multiInstance': <boolean>              (Support multi-instance)
    *        },
    *        ...
    *      ]
@@ -75,10 +78,17 @@ module.exports = Object.freeze({
         {'name': 'connectivity', 'schema': 'connectivity'}
       ]
     },
+    'EqualizerController': {
+      'category': 'SPEAKER',
+      'properties': [
+        {'name': 'bands', 'schema': 'equalizerBands', 'components': ['bass', 'midrange', 'treble']},
+        {'name': 'modes', 'schema': 'equalizerMode', 'report': 'mode'}
+      ]
+    },
     'InputController': {
       'category': 'TV',
       'properties': [
-        {'name': 'input', 'schema': 'inputs'}
+        {'name': 'input', 'schema': 'inputs', 'isSupported': false}
       ]
     },
     'LockController': {
@@ -108,7 +118,7 @@ module.exports = Object.freeze({
     'PlaybackController': {
       'category': 'OTHER',
       'properties': [
-        {'name': 'playbackState', 'schema': 'playbackState', 'isReportable': false}
+        {'name': 'playbackState', 'schema': 'playbackState', 'isReportable': false, 'isSupported': false}
       ]
     },
     'PowerController': {
@@ -132,7 +142,7 @@ module.exports = Object.freeze({
     'SceneController': {
       'category': 'SCENE_TRIGGER',
       'properties': [
-        {'name': 'scene', 'schema': 'scene', 'isReportable': false}
+        {'name': 'scene', 'schema': 'scene', 'isReportable': false, 'isSupported': false}
       ]
     },
     'SecurityPanelController': {
@@ -155,8 +165,8 @@ module.exports = Object.freeze({
     'StepSpeaker': {
       'category': 'SPEAKER',
       'properties': [
-        {'name': 'muted', 'schema': 'muteState', 'isReportable': false},
-        {'name': 'volume', 'schema': 'volumeLevel', 'isReportable': false}
+        {'name': 'muted', 'schema': 'muteState', 'isReportable': false, 'isSupported': false},
+        {'name': 'volume', 'schema': 'volumeLevel', 'isReportable': false, 'isSupported': false}
       ]
     },
     'TemperatureSensor' : {
@@ -287,6 +297,28 @@ module.exports = Object.freeze({
             'Switch':  {'NOT_DETECTED': 'OFF', 'DETECTED': 'ON'}
           }
         },
+        'type': 'string'
+      }
+    },
+    'equalizerBands': {
+      'itemTypes': ['Dimmer', 'Number'],
+      'state': {
+        'type': 'integer'
+      }
+    },
+    'equalizerMode': {
+      'itemTypes': ['Number', 'String'],
+      'state': {
+        'map': {
+          'default': {
+            'Number': {'MOVIE': '1', 'MUSIC': '2', 'NIGHT': '3', 'SPORT': '4', 'TV': '5'},
+            'String': {'MOVIE': 'movie', 'MUSIC': 'music', 'NIGHT': 'night', 'SPORT': 'sport', 'TV': 'tv'}
+          }
+        },
+        'supported': [
+          // https://developer.amazon.com/docs/device-apis/alexa-equalizercontroller.html#discovery
+          'MOVIE', 'MUSIC', 'NIGHT', 'SPORT', 'TV'
+        ],
         'type': 'string'
       }
     },
@@ -522,7 +554,7 @@ module.exports = Object.freeze({
    * Defines alexa capability namespace format pattern
    * @type {RegExp}
    */
-  CAPABILITY_PATTERN: /^(?:Alexa\.)?(\w+)\.(\w+)$/,
+  CAPABILITY_PATTERN: /^(?:Alexa\.)?(\w+)\.(\w+)[:]?(\w*)$/,
 
   /**
    * Defines alexa endpoint namespace format pattern

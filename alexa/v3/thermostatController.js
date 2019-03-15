@@ -74,7 +74,7 @@ class AlexaThermostatController extends AlexaDirective {
       );
     }
 
-    log.debug('setTargetTemperature to values:', postItems);
+    log.debug('setTargetTemperature to values:', {items: postItems});
     this.postItemsAndReturn(postItems);
   }
 
@@ -102,7 +102,7 @@ class AlexaThermostatController extends AlexaDirective {
       ));
     });
     Promise.all(promises).then((postItems) => {
-      log.debug('adjustTargetTemperature to values:', postItems);
+      log.debug('adjustTargetTemperature to values:', {items: postItems});
       this.postItemsAndReturn(postItems);
     }).catch((error) => {
       log.error('adjustTargetTemperature failed with error:', error);

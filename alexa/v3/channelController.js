@@ -37,10 +37,9 @@ class AlexaChannelController extends AlexaDirective {
     // Determine channel number using channel name if provided and defined in property parameters,
     //    otherwise use provided channel number
     const channelName = this.directive.payload.channelMetadata.name || '';
-    const channelIndex = Object.keys(properties.channel.parameters).findIndex(
+    const channelParam = Object.keys(properties.channel.parameters).find(
       name => name.toUpperCase() === channelName.toUpperCase())
-    const channelNumber = channelIndex !== -1 ?
-      Object.values(properties.channel.parameters)[channelIndex] : this.directive.payload.channel.number;
+    const channelNumber = properties.channel.parameters[channelParam] || this.directive.payload.channel.number;
     const postItem = Object.assign({}, properties.channel.item, {
       state: channelNumber
     });

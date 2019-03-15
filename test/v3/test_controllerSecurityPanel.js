@@ -62,8 +62,7 @@ module.exports = [
       openhab: [
         {"name": "AlarmMode", "value": "away:instant"}
       ]
-    },
-    validate: false
+    }
   },
   {
     description: "arm away delay string item",
@@ -122,8 +121,7 @@ module.exports = [
       openhab: [
         {"name": "AlarmMode", "value": "away"}
       ]
-    },
-    validate: false
+    }
   },
   {
     description: "arm stay no delay number item",
@@ -179,8 +177,7 @@ module.exports = [
       openhab: [
         {"name": "AlarmMode", "value": 1}
       ]
-    },
-    validate: false
+    }
   },
   {
     description: "arm authorization required error",
@@ -227,8 +224,7 @@ module.exports = [
         }
       },
       openhab: []
-    },
-    validate: false
+    }
   },
   {
     description: "disarm with pin code",
@@ -291,8 +287,7 @@ module.exports = [
       openhab: [
         {"name": "AlarmMode", "value": "disarm:1234"}
       ]
-    },
-    validate: false
+    }
   },
   {
     description: "disarm no pin code",
@@ -341,8 +336,7 @@ module.exports = [
       openhab: [
         {"name": "AlarmMode", "value": "disarm"}
       ]
-    },
-    validate: false
+    }
   },
   {
     description: "disarm unauthorized error",
@@ -393,8 +387,7 @@ module.exports = [
       openhab: [
         {"name": "AlarmMode", "value": "disarm:1234"}
       ]
-    },
-    validate: false
+    }
   },
   {
     description: "alarm state report",
@@ -488,7 +481,6 @@ module.exports = [
         }
       },
       openhab: []
-    },
-    validate: false
+    }
   }
 ];
