@@ -37,7 +37,7 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
       * [Friendly Names Not Allowed](#Friendly-Names-Not-Allowed)
       * [Unit of Measurement Catalog](#Unit-of-Measurement-Catalog)
     * [Supported Group Metadata](#Supported-Group-Metadata)
-    * [Supported Labels](#Supported-Labels)
+    * [Supported Metadata Labels](#Supported-Metadata-Labels)
   *  [Version 2 Item mapping](#Version-2-Item-mapping)
 * [Example Voice Commands](#Example-Voice-Commands)
 
@@ -95,7 +95,6 @@ Here are some of the most common generic errors you may encounter while using th
 * NEW Alexa Version 3 API syntax (v3)
   * Version 3 of the Alex Skill API introduces a more rich and complex set of features that required a change in how items are configured by using the new metadata feature introduced in openaHAB 2.3
   * Version 2 tags are still supported and are converted internally to V3 meta data
-  * See [supported labels](#Supported-Labels) for using them in item tags and meta data.
   * Supported [item](#Supported-Item-Metadata) & [group](#Supported-Group-Metadata) V3 meta data
   * Automatically determine number precision and unit based on [item state presentation](#Item-State) and [unit of measurement](#Item-Unit-of-Measurement).
   * Decoupling between item receiving command and item state via an [item sensor](#Item-Sensor)
@@ -122,12 +121,22 @@ Switch LightSwitch "Light Switch" {alexa="PowerController.powerState"}
 ```
 Setting this on a single item will create an Alexa endpoint with the spoken addressable name "Light Switch" and map the powerState property to our item. You can ask Alexa to turn "Light Switch" on or off.
 
+This can also be written using [metadata labels](#Supported-Metadata-Labels), which is a shorthand version of the full Alexa namespace:
+```
+Switch LightSwitch "Light Switch" {alexa="Switchable"}
+```
+
 A slightly more complex example would be a Light Dimmer.  In openHAB a dimmer object responds to both percentage and ON / OFF commands.  In Alexa this is two different interfaces.  To support both types of commands, we need to add both to the item metadata:
 ```
 Dimmer LightSwitch "Light Switch" {alexa="PowerController.powerState,BrightnessController.brightness"}
 ```
 
 You can ask Alexa to "Turn Light Switch .." on or off as well as "Set Light Switch to .." a certain percentage.
+
+Using [metadata labels](#Supported-Metadata-Labels) this would look like:
+```
+Dimmer LightSwitch "Light Switch" {alexa="Lighting"}
+```
 
 NOTE: the Alexa skill has 3 different percentage interfaces, BrightnessController, PowerLevelController and PercentageController.  Your item should only be using one of these that best describes the type of device.  So for lights this would be the BrightnessController, for roller shades this would be PercentageController.   The skill will not prevent adding more then one, but voice control may suffer for that device.
 
@@ -675,8 +684,8 @@ Weight.Ounces |
 * Child item categories are ignored and only the group category is used on items.
 * Case is ignored on the category part of the metadata and any value will be made all uppercase before its passed to the Alexa API.
 
-#### Supported Labels
-Item tags and metadata labels translate to a set of capabilities and can be used as a convenience to using the longer meta data format configuration.  These are the same as v2 tags but add additional functions and provide the ability to add customization through additional properties which take precedence over the default ones. Here are some examples:
+#### Supported Metadata Labels
+Item metadata labels translate to a set of capabilities and can be used as a convenience to using the longer meta data format configuration.  These add additional functions and provide the ability to add customization through additional properties which take precedence over the default ones. Here are some examples:
 ```
 Switch OutletPlug "Outlet Plug" {alexa="Switchable" [category="SMARTPLUG"]}
 Switch TelevisionPower "Television Power" {alexa="Switchable" [category="TV"]}
@@ -684,13 +693,10 @@ Switch TelevisionPower "Television Power" {alexa="Switchable" [category="TV"]}
 Color LightColor "Light Color" {alexa="Lighting"}
 ```
 
-Here are the labels currently supported and what they translate to. Each example shows using the item label, meta data label and the full translated metadata.
+Here are the labels currently supported and what they translate to. Each example shows using the meta data label and the full translated metadata.
 
 * Switchable (capabilities depending on item type)
 ```
-Switch DeviceSwitch "Device Switch" ["Switchable"]
-Rollershutter ShutterSwitch "Shutter Switch" ["Switchable"]
-
 Switch DeviceSwitch "Device Switch" {alexa="Switchable"}
 Rollershutter ShutterSwitch "Shutter Switch" {alexa="Switchable"}
 
@@ -699,9 +705,6 @@ Rollershutter ShutterSwitch "Shutter Switch" {alexa="PowerController.powerState,
 ```
 * Lighting (capabilities depending on item type)
 ```
-Dimmer LightDimmer "Light Dimmer" ["Lighting"]
-Color LightColor "Light Color" ["Lighting"]
-
 Dimmer LightDimmer "Light Dimmer" {alexa="Lighting"}
 Color LightColor "Light Color" {alexa="Lighting"}
 
@@ -711,120 +714,89 @@ Color LightColor "Light Color" {alexa="PowerController.powerState,BrightnessCont
 
 * Lock
 ```
-Switch DoorLock "Door Lock" ["Lock"]
-
 Switch DoorLock "Door Lock" {alexa="Lock"}
 
 Switch DoorLock "Door Lock" {alexa="LockController.lockState"}
 ```
 * CurrentTemperature
-```
-Number CurrentTemperature "Current Temperature" ["CurrentTemperature"]
-
 Number CurrentTemperature "Current Temperature" {alexa="CurrentTemperature"}
 
 Number CurrentTemperature "Current Temperature" {alexa="TemperatureSensor.temperature" [scale="Celsius"]}
 ```
 * TargetTemperature
 ```
-Number TargetTemperature "Target Temperature" ["TargetTemperature]
-
 Number TargetTemperature "Target Temperature" {alexa="TargetTemperature"}
 
 Number TargetTemperature "Target Temperature" {alexa="ThermostatController.targetSetpoint" [scale="Celsius"]}
 ```
 * LowerTemperature
 ```
-Number LowerTemperature "Lower Temperature" ["LowerTemperature"]
-
 Number LowerTemperature "Lower Temperature" {alexa="LowerTemperature"}
 
 Number LowerTemperature "Lower Temperature" {alexa="ThermostatController.lowerSetpoint" [scale="Celsius"]}
 ```
 * UpperTemperature
 ```
-Number UpperTemperature "Upper Temperature" [UpperTemperature"]
-
 Number UpperTemperature "Upper Temperature" alexa="UpperTemperature"}
 
 Number UpperTemperature "Upper Temperature" {alexa="ThermostatController.upperSetpoint" [scale="Celsius"]}
 ```
 * HeatingCoolingMode
 ```
-String HeatingCoolingMode "Thermostat Mode" ["HeatingCoolingMode"]
-
 String HeatingCoolingMode "Thermostat Mode" {alexa="HeatingCoolingMode"}
 
 String HeatingCoolingMode "Thermostat Mode" {alexa="ThermostatController.thermostatMode"}
 ```
 * ColorTemperature
 ```
-Dimmer ColorTemperature "Color Temperature" ["ColorTemperature"]
-
 Dimmer ColorTemperature "Color Temperature" {alexa="ColorTemperature"}
 
 Dimmer ColorTemperature "Color Temperature" {alexa="ColorTemperatureController.colorTemperatureInKelvin"}
 ```
 * Activity
 ```
-Switch Activity "Activity" ["Activity"]
-
 Switch Activity "Activity" {alexa="Activity"}
 
 Switch Activity "Activity" {alexa="SceneController.scene" [category="ACTIVITY_TRIGGER"]}
 ```
 * Scene
 ```
-Switch Scene "Scene" [Scene"]
-
 Switch Scene "Scene" {alexa="Scene"}
 
 Switch Scene "Scene" {alexa="SceneController.scene" [category="SCENE_TRIGGER"]}
 ```
 * EntertainmentChannel
 ```
-String EntertainmentChannel "Entertainment Channel" ["EntertainmentChannel"]
-
 String EntertainmentChannel "Entertainment Channel" {alexa="EntertainmentChannel"}
 
 String EntertainmentChannel "Entertainment Channel" {alexa="ChannelController.channel"}
 ```
 * EntertainmentInput
 ```
-String EntertainmentInput "Entertainment Input" ["EntertainmentInput]
-
 String EntertainmentInput "Entertainment Input" {alexa="EntertainmentInput"}
 
 String EntertainmentInput "Entertainment Input" {alexa="InputController.input"}
 ```
 * EqualizerBass
 ```
-Number EqualizerBass "Equalizer Bass" ["EqualizerBass"]
-
 Number EqualizerBass "Equalizer Bass" {alexa="EqualizerBass"}
 
 Number EqualizerBass "Equalizer Bass" {alexa="EqualizerController.bands:bass}
 ```
 * EqualizerMidrange
 ```
-Number EqualizerMidrange "Equalizer Midrange" ["EqualizerMidrange"]
-
 Number EqualizerMidrange "Equalizer Midrange" {alexa="EqualizerMidrange"}
 
 Number EqualizerMidrange "Equalizer Midrange" {alexa="EqualizerController.bands:midrange"}
 ```
 * EqualizerTreble
 ```
-Number EqualizerTreble "Equalizer Treble" ["EqualizerTreble"]
-
 Number EqualizerTreble "Equalizer Treble" {alexa="EqualizerTreble"}
 
 Number EqualizerTreble "Equalizer Treble" {alexa="EqualizerController.bands:treble"}
 ```
 * EqualizerMode
 ```
-String EqualizerMode "Equalizer Mode" ["EqualizerMode"]
-
 String EqualizerMode "Equalizer Mode" {alexa="EqualizerMode"}
 
 String EqualizerMode "Equalizer Mode" {alexa="EqualizerController.modes"}
@@ -837,96 +809,72 @@ Player MediaPlayer "Media Player" {alexa="PlaybackController.playbackState"}
 ```
 * SpeakerMute
 ```
-Switch SpeakerMute "Speaker Mute" ["SpeakerMute"]
-
 Switch SpeakerMute "Speaker Mute" {alexa="SpeakerMute"}
 
 Switch SpeakerMute "Speaker Mute" {alexa="Speaker.muted"}
 ```
 * SpeakerVolume
 ```
-Number SpeakerVolume "Speaker Volume" ["SpeakerVolume"]
-
 Number SpeakerVolume "Speaker Volume" {alexa="SpeakerVolume"}
 
 Number SpeakerVolume "Speaker Volume" {alexa="Speaker.volume"}
 ```
 * ContactSensor
 ```
-Contact ContactSensor "Contact Sensor" ["ContactSensor"]
-
 Contact ContactSensor "Contact Sensor" {alexa="ContactSensor"}
 
 Contact ContactSensor "Contact Sensor" {alexa="ContactSensor.detectionState"}
 ```
 * MotionSensor
 ```
-Contact MotionSensor "Motion Sensor" ["MotionSensor"]
-
 Contact MotionSensor "Motion Sensor" {alexa="MotionSensor"}
 
 Contact MotionSensor "Motion Sensor" {alexa="MotionSensor.detectionState"}
 ```
 * SecurityAlarmMode
 ```
-String SecurityAlarmMode "Security Alarm Mode" ["SecurityAlarmMode"]
-
 String SecurityAlarmMode "Security Alarm Mode" {alexa="SecurityAlarmMode"}
 
 String SecurityAlarmMode "Security Alarm Mode" {alexa="SecurityPanelController.armState"}
 ```
 * BurglaryAlarm
 ```
-Contact BurglaryAlarm "Burglary Alarm" ["BurglaryAlarm"]
-
 Contact BurglaryAlarm "Burglary Alarm" {alexa="BurglaryAlarm"}
 
 Contact BurglaryAlarm "Burglary Alarm" {alexa="SecurityPanelController.burglaryAlarm"}
 ```
 * FireAlarm
 ```
-Contact FireAlarm "Fire Alarm" ["FireAlarm"]
-
 Contact FireAlarm "Fire Alarm" {alexa="FireAlarm"}
 
 Contact FireAlarm "Fire Alarm" {alexa="SecurityPanelController.fireAlarm"}
 ```
 * CarbonMonoxideAlarm
 ```
-Contact CarbonMonoxideAlarm "Carbon Monoxide Alarm" ["CarbonMonoxideAlarm"]
-
 Contact CarbonMonoxideAlarm "Carbon Monoxide Alarm" {alexa="CarbonMonoxideAlarm"}
 
 Contact CarbonMonoxideAlarm "Carbon Monoxide Alarm" {alexa="SecurityPanelController.carbonMonoxideAlarm"}
 ```
 * WaterAlarm
 ```
-Contact WaterAlarm "Water Alarm" ["WaterAlarm"]
-
 Contact WaterAlarm "Water Alarm" {alexa="WaterAlarm"}
 
 Contact WaterAlarm "Water Alarm" {alexa="SecurityPanelController.waterAlarm"}
 ```
 * ModeComponent
 ```
-String ModeComponent "Mode Component" ["ModeComponent"]
-
 String ModeComponent "Mode Component" {alexa="ModeComponent"}
 
 String ModeComponent "Mode Component" {alexa="ModeController.range"}
 ```
 * RangeComponent
 ```
-Number RangeComponent "Range Component" ["RangeComponent"]
-
 Number RangeComponent "Range Component" {alexa="RangeComponent"}
 
 Number RangeComponent "Range Component" {alexa="RangeController.rangeValue"}
 ```
 * ToggleComponent
 ```
-Switch ToggleComponent "Toggle Component" ["ToggleComponent"]
-
 Switch ToggleComponent "Toggle Component" {alexa="ToggleComponent"}
 
 Switch ToggleComponent "Toggle Component" {alexa="ToggleController.toggleState"}
