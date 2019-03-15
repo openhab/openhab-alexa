@@ -872,7 +872,7 @@ Switch ToggleComponent "Toggle Component" {alexa="ToggleController.toggleState"}
 ### Version 2 Item Tag Support
 
 Version 2 (v2) of the Alexa skill used openHAB [HomeKit](https://www.openhab.org/addons/integrations/homekit/#item-configuration) style tags to expose items to Alexa.
-Version 3 (v3) of the skill supports this by translating v2 style tags to v3 [metadata labels](#Supported-Metadata-Labels) internally.  Below is the translation of v2 tags to v3 labels.
+Version 3 (v3) of the skill supports this by translating v2 style tags to v3 [metadata labels](#Supported-Metadata-Labels) internally.  These tags are still required if the items are being exposed to the [HomeKit](https://www.openhab.org/addons/integrations/homekit/#item-configuration) or [Google Assistant](https://www.openhab.org/docs/ecosystem/google-assistant/) integrations.  Below is the translation of v2 tags to v3 labels.
 
 #### Supported v2 Item Tags
 
