@@ -38,7 +38,7 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
       * [Unit of Measurement Catalog](#Unit-of-Measurement-Catalog)
     * [Supported Group Metadata](#Supported-Group-Metadata)
     * [Supported Metadata Labels](#Supported-Metadata-Labels)
-  *  [Version 2 Item mapping](#Version2-Item-Tag-Support)
+  *  [Version 2 Item Tag Support](#Version-2-Item-Tag-Support)
 * [Example Voice Commands](#Example-Voice-Commands)
 
 ## Other openHAB Alexa Integrations
