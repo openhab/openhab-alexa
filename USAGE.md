@@ -38,7 +38,7 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
       * [Unit of Measurement Catalog](#Unit-of-Measurement-Catalog)
     * [Supported Group Metadata](#Supported-Group-Metadata)
     * [Supported Metadata Labels](#Supported-Metadata-Labels)
-  *  [Version 2 Item mapping](#Version-2-Item-mapping)
+  *  [Version 2 Item mapping](#Version2-Item-Tag-Support)
 * [Example Voice Commands](#Example-Voice-Commands)
 
 ## Other openHAB Alexa Integrations
@@ -719,6 +719,7 @@ Switch DoorLock "Door Lock" {alexa="Lock"}
 Switch DoorLock "Door Lock" {alexa="LockController.lockState"}
 ```
 * CurrentTemperature
+```
 Number CurrentTemperature "Current Temperature" {alexa="CurrentTemperature"}
 
 Number CurrentTemperature "Current Temperature" {alexa="TemperatureSensor.temperature" [scale="Celsius"]}
@@ -880,43 +881,33 @@ Switch ToggleComponent "Toggle Component" {alexa="ToggleComponent"}
 Switch ToggleComponent "Toggle Component" {alexa="ToggleController.toggleState"}
 ```
 
-### Version 2 Item mapping
-  * Items are exposed via Homekit tags, the following is taken from the homekit binding in openHAB2:
+### Version 2 Item Tag Support
 
-  ```
-  Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ]
-  Dimmer BedroomLights "Bedroom Lights" <light> (gBedroom) [ "Lighting" ]
-  Number BedroomTemperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ]
-  Group gDownstairsThermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
-  Number DownstairsThermostatCurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
-  Number DownstairsThermostatTargetTemperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
-  String DownstairsThermostatHeatingCoolingMode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCooling" ]
-  ```
+Version 2 (v2) of the Alexa skill used openHAB [HomeKit](https://www.openhab.org/addons/integrations/homekit/#item-configuration) style tags to expose items to Alexa.
+Version 3 (v3) of skill supports this by translating v2 style tags to v3 [metadata labels](#Supported-Metadata-Labels) internally.  Below is the translation of v2 tags to v3 labels.
 
-  * Thermostats are created by adding the items of a thermostat to a group which has the tag "Thermostat" which follows the HomeKit binding configuration. See the [HomeKit binding documentation](http://docs.openhab.org/addons/ios/homekit/readme.html) for more information on how to configure thermostats. Thermostats can have their target temperature set as well as be asked what the current temperature is.
-  * Channels which are tagged "CurrentTemperature" but NOT part of a thermostat group will be exposed as a Temperature item in Alexa and can be asked what their current value is ("Alex what is the upstairs temperature? ")
-  * By default all temperatures are in Celsius, for Fahrenheit add the tag `Fahrenheit` to the thermostat group item (which should also be tagged with `Thermostat`).  For standalone temperature channels, add it directly to the item.
-  * In addition you can tag Rollershutter items by `[ "Switchable" ]` and get support for `setPercentage`, `incrementPercentage`and `decrementPercentage` commands. Example:
+#### Supported v2 Item Tags
 
-  ```
-  Rollershutter Shutter_GF_Kitchen "Rollershutter Kitchen" [ "Switchable" ]
-  ```
+| v2 Item Tag                     | v3 Metadata Label  |
+|----------------------------|--------------------|
+| Lighting                   | Lighting           |
+| Switchable                 | Switchable         |
+| CurrentTemperature         | CurrentTemperature |
+| Thermostat                 | Thermostat         |
+| CurrentTemperature         | CurrentTemperature |
+| homekit:HeatingCoolingMode | HeatingCoolingMode |
+| TargetTemperature          | TargetTemperature  |
 
-  * With commands like `Alexa, set rollershutter kitchen to 100%` you control the rollershutter in the kitchen.
-  * If your rollershutters or blinds happen not to support aperture by percentage the following rule helps to achieve opening and closing:
-
-  ```
-  rule Rollershutter_Kitchen
-  when
-      Item Shutter_GF_Kitchen received command
-  then
-      if (receivedCommand < 50) { // in germany alexa often recognizes "0" as "9"
-        sendCommand(Shutter_GF_Kitchen, UP)
-      } else {
-        sendCommand(Shutter_GF_Kitchen, DOWN)
-      }
-  end
-  ```
+#### Example v2 Items
+```
+Switch KitchenLights "Kitchen Lights" <light> (gKitchen) [ "Lighting" ]
+Dimmer BedroomLights "Bedroom Lights" <light> (gBedroom) [ "Lighting" ]
+Number BedroomTemperature "Bedroom Temperature" (gBedroom) [ "CurrentTemperature" ]
+Group gDownstairsThermostat "Downstairs Thermostat" (gFF) [ "Thermostat" ]
+Number DownstairsThermostatCurrentTemp "Downstairs Thermostat Current Temperature" (gDownstairsThermostat) [ "CurrentTemperature" ]
+Number DownstairsThermostatTargetTemperature "Downstairs Thermostat Target Temperature" (gDownstairsThermostat) [ "TargetTemperature" ]
+String DownstairsThermostatHeatingCoolingMode "Downstairs Thermostat Heating/Cooling Mode" (gDownstairsThermostat) [ "homekit:HeatingCoolingMode" ]
+```
 
 ## Example Voice Commands
 
