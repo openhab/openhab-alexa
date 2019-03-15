@@ -13,9 +13,6 @@ This page describes how to use the [openHAB Alexa Smart Home Skill](https://www.
 The skill connects your openHAB setup through the [myopenHAB.org](http://myopenHAB.org) cloud service to Amazon Alexa.
 
 ## Table of Contents
-* [Other openHAB Alexa Integrations](#Other-openHAB-Alexa-Integrations)
-  * [Amazon Echo Control Binding](#Amazon-Echo-Control-Binding)
-  * [Hue Emulation Service](#Hue-Emulation-Service)
 * [Requirements](#Requirements)
 * [Troubleshooting](#Troubleshooting)
   * [Command Not Working](#Command-Not-Working)
@@ -40,18 +37,9 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
     * [Supported Metadata Labels](#Supported-Metadata-Labels)
   *  [Version 2 Item Tag Support](#Version-2-Item-Tag-Support)
 * [Example Voice Commands](#Example-Voice-Commands)
-
-## Other openHAB Alexa Integrations
-
-openHAB has two other Alexa integrations that can be used in conjunction with or independently of this skill.
-
-### Amazon Echo Control Binding
-
-Control Amazon Echo devices from your openHAB.  This allows openHAB to send commands to a echo device and control its ability to play music, set alarms, change the volume and use it a Text-To-Speech output device. See the [Amazon Echo Control Binding](https://www.openhab.org/addons/bindings/amazonechocontrol/) for more information..
-
-### Hue Emulation Service
-
-Hue Emulation exposes openHAB items as Hue devices to other Hue HTTP API compatible applications like an Amazon Echo, Google Home or any Hue compatible application. This is done on the local network and does not require the cloud service. See the [Hue Emulation Service](https://www.openhab.org/addons/integrations/hueemulation/) for more information.
+* [Other openHAB Alexa Integrations](#Other-openHAB-Alexa-Integrations)
+  * [Amazon Echo Control Binding](#Amazon-Echo-Control-Binding)
+  * [Hue Emulation Service](#Hue-Emulation-Service)
 
 ## Requirements
 
@@ -919,3 +907,17 @@ Here are some example voice commands:
  * Alexa turn on Home Theater Scene
  * Alexa dim Kitchen Lights to 30 percent
  * Alexa set house temperature to 70 degrees
+
+ 
+## Other openHAB Alexa Integrations
+
+openHAB has two other Alexa integrations that can be used in conjunction with or independently of this skill.
+
+### Amazon Echo Control Binding
+
+Control Amazon Echo devices from your openHAB.  This allows openHAB to send commands to a echo device and control its ability to play music, set alarms, change the volume and use it a Text-To-Speech output device. See the [Amazon Echo Control Binding](https://www.openhab.org/addons/bindings/amazonechocontrol/) for more information..
+
+### Hue Emulation Service
+
+Hue Emulation exposes openHAB items as Hue devices to other Hue HTTP API compatible applications like an Amazon Echo, Google Home or any Hue compatible application. This is done on the local network and does not require the cloud service. See the [Hue Emulation Service](https://www.openhab.org/addons/integrations/hueemulation/) for more information.
+
