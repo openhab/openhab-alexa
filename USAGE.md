@@ -5,7 +5,7 @@ Alexa is an intelligent personal assistant developed by Amazon and designed to r
 
 <p></p>
 
-This certified Amazon Smart Home Skill allows users to naturally control their openHAB powered smart home with natural voice commands.  Lights, locks, thermostats, AV devices, sensors and many other device types can be controlled through a user's Alexa powered device like the Echo or Dot.
+This certified Amazon Smart Home Skill allows users to control their openHAB powered smart home with natural voice commands.  Lights, locks, thermostats, AV devices, sensors and many other device types can be controlled through a user's Alexa powered device like the Echo or Dot.
 
 <p></p>
 

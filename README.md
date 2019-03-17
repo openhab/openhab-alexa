@@ -2,9 +2,15 @@
 
 This is a nodejs / lambda application that connects the Alexa Smart Home API to a user's openHAB instance, either directly or through the openHAB Cloud service (preferred).  The Smart Home API is not a general skill API, it allows the user to bypass using a application wake work and instead ask Alexa to perform a smart home action like "Alexa turn lights on"
 
-This is designed to use the Homekit style tags in openHAB 2 to bind a user's devices to Alexa. This does not work with openHAB 1.x because there is no tagging mechanism. If you want to use the Alexa Smart Home skill with openHAB 1, you may use [this fork](https://github.com/paphko/openhab-alexa/tree/oh1_oh2_groups) which uses a group to bind user's devices to Alexa.
+# General Deployment Instructions
 
-# General Installation Instructions
+## Intended Audience
+
+This document describes how to configure and deploy the skill for development or private hosting purposes and it targeted towards developers and not end users of the skill
+
+## Skill Usage
+
+For end-user documentation and general usage, see the [Usage](USAGE.md) page for examples and instructions on configuring items for Alexa within openHAB.
 
 ## Requirements
 
@@ -54,4 +60,4 @@ https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your
 
 ### Item Configuation
 
-See the [Usage](USAGE.md)  page for examples and instructions on configuring items for Alexa.
+See the [Usage](USAGE.md) page for examples and instructions on configuring items.
