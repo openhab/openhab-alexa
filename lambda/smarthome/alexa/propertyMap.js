@@ -159,8 +159,8 @@ class AlexaPropertyMap {
         const propertySettings = getPropertySettings(matches[1], matches[2]);
         // Append item name, as instance name, if property multi-instance enabled
         const interfaceName = matches[1] + (propertySettings.multiInstance ? ':' + item.name : '');
-        // Append component name if part of capability matches
-        const propertyName = matches[2] + (matches[3] ? ':' + matches[3] : '');
+        // Append component name if property components required
+        const propertyName = matches[2] + (propertySettings.components ? ':' + matches[3] : '');
         const component = matches[3];
         const properties = propertyMap[interfaceName] || {};
         const property = {
