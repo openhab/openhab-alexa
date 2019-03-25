@@ -63,7 +63,7 @@ class AlexaDiscovery extends AlexaDirective {
           item.metadata.alexa.value.split(',').some((capability) => {
             // Find matching Endpoint capability
             let groupMatch;
-            if (groupMatch = capability.match(ENDPOINT_PATTERN)) {
+            if ((groupMatch = capability.match(ENDPOINT_PATTERN))) {
               log.debug(`found group ${groupMatch[0]} for item ${item.name}`);
               isEndpointGroup = true;
               item.members.forEach((member) => {
@@ -153,7 +153,6 @@ class AlexaDiscovery extends AlexaDirective {
       this.returnAlexaGenericErrorResponse(error);
     });
   }
-
 }
 
 /**

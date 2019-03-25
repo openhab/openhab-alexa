@@ -189,7 +189,7 @@ For components of a device, which isn't covered by the existing interfaces, that
 Group Washer       "Washer"               {alexa="Endpoint.Other"}
 String Cycle       "Cycle"       (Washer) {alexa="ModeController.mode" [supportedModes="Normal=Normal:Cottons,Delicate=@Value.Delicate:Knites",friendlyNames="Wash Cycle,Wash Setting",ordered=false]}
 Number Temperature "Temperature" (Washer) {alexa="ModeController.mode" [supportedModes="0=Cold:Cool,1=Warm,2=Hot",friendlyNames="Wash Temperature,@Setting.WaterTemperature",ordered=true]}  
-Switch Power       "Power"       (Washer) {alexa="ToggleController.toggleState" [friendlyNames="DeviceName.Washer"]}
+Switch Power       "Power"       (Washer) {alexa="ToggleController.toggleState" [friendlyNames="@DeviceName.Washer"]}
 ```
 ```
 Group Fan     "Fan"          {alexa="Endpoint.Other"}

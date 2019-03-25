@@ -78,7 +78,7 @@ class AlexaResponse {
    */
   returnAlexaResponse(response) {
     this.callback(null, response);
-  };
+  }
 
   /**
    * Returns Alexa error response

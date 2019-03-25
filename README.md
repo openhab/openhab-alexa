@@ -43,7 +43,7 @@ If you aren't using your own OAuth2 server (e.g. private openHAB Cloud Connector
 
 The openHAB server you are trying to control with the skill needs to be accessible online as an AWS service endpoint. You can either use [myopenHAB.org](http://myopenHAB.org) cloud service or point the skill directly to your server URL. If going with the latter, make sure to use a valid SSL certificate. It is highly recommended to use [Let's Encrypt](https://letsencrypt.org) to validate your certificates.
 
-To configure the server path and credentials, you will need to setup the application configuration in `lambda/smartHome/config.js` using the sample file. The app can access an openHAB installation using two different types of authorization, basic authentication (user/password) or with bearer authentication (OAuth2 token).  Uncomment the "userpass" property for basic authentication, otherwise a bearer token will be used.
+To configure the server path and credentials, you will need to setup the application configuration in `lambda/smarthome/config.js` using the sample file. The app can access an openHAB installation using two different types of authorization, basic authentication (user/password) or with bearer authentication (OAuth2 token).  Uncomment the "userpass" property for basic authentication, otherwise a bearer token will be used.
 
 ## Deployment Steps
 

@@ -86,7 +86,7 @@ function getCapabilitiesConfiguration(capabilities) {
     }
     return result;
   }, {});
-};
+}
 
 /**
  * Returns list of capabilities namespaces
@@ -106,7 +106,7 @@ function getCapabilitiesNamespaces (capabilities) {
     }
     return result;
   }, []);
-};
+}
 
 /**
  * Returns list of capabilities parameters
@@ -125,7 +125,7 @@ function getCapabilitiesParameters(capabilities) {
     });
     return result;
   }, {});
-};
+}
 
 /**
  * Returns list of capabilities resources
@@ -144,7 +144,7 @@ function getCapabilitiesResources(capabilities) {
     }
     return result;
   }, {});
-};
+}
 
 /**
  * Returns initialized schema validator function
@@ -240,8 +240,8 @@ assert.validSchema = function (result, canValidate) {
   //  This is to account for the official alexa schema not supporting latest api changes yet
   //    https://github.com/alexa/alexa-smarthome/wiki/Validation-Schemas
   if (canValidate !== false && typeof validate === 'function') {
-    assert(validate(result),
-      `Schema Validation Failed\nData: ${JSON.stringify(result)}\n\nErrors: ${ajv.errorsText(validate.errors)}`);
+    [].concat(result).forEach(data => assert(validate(data),
+      `Schema Validation Failed\nData: ${JSON.stringify(data)}\n\nErrors: ${ajv.errorsText(validate.errors)}`));
   }
 };
 

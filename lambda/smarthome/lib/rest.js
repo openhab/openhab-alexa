@@ -54,7 +54,7 @@ function getConfigFileSettings() {
 function ohAuthorizationHeader(token) {
   if (config.openhab.userpass) {
     // Basic Authentication
-    return 'Basic ' + new Buffer(config.openhab.userpass).toString('base64');
+    return 'Basic ' + Buffer.from(config.openhab.userpass).toString('base64');
   } else {
     // OAuth2 Authentication
     return 'Bearer ' + token;
@@ -96,7 +96,7 @@ function getItemOrItems(token, itemName, parameters) {
       'Content-Type': 'text/plain'
     },
     json: true
-  }
+  };
   return request(options);
 }
 
@@ -114,7 +114,7 @@ function getRegionalSettings(token) {
       'Content-Type': 'text/plain'
     },
     json: true
-  }
+  };
   return request(options);
 }
 
@@ -134,11 +134,13 @@ function postItemCommand(token, itemName, value) {
       'Content-Type': 'text/plain'
     },
     body: value.toString()
-  }
+  };
   return request(options);
 }
 
-module.exports.getItem = getItem;
-module.exports.getItemsRecursively = getItemsRecursively;
-module.exports.getRegionalSettings = getRegionalSettings;
-module.exports.postItemCommand = postItemCommand;
+module.exports = {
+  getItem: getItem,
+  getItemsRecursively: getItemsRecursively,
+  getRegionalSettings: getRegionalSettings,
+  postItemCommand: postItemCommand
+};

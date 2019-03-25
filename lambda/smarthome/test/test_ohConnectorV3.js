@@ -20,20 +20,20 @@ describe('ohConnectorV3 Tests', function () {
 
   before(function () {
     // mock rest external calls
-    rest.getItem = function (token, itemName) {
+    rest.getItem = function () {
       return Promise.resolve(
         Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.getItemsRecursively = function (token) {
+    rest.getItemsRecursively = function () {
       return Promise.resolve(
         Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.getRegionalSettings = function (token) {
+    rest.getRegionalSettings = function () {
       return Promise.resolve(response.settings && response.settings.regional);
     };
-    rest.postItemCommand = function (token, itemName, value) {
+    rest.postItemCommand = function (undefined, itemName, value) {
       capture.calls.push({'name': itemName, 'value': value});
-      return Promise.resolve({'statusCode': 200});
+      return Promise.resolve();
     };
 
     // mock log error calls
@@ -57,6 +57,7 @@ describe('ohConnectorV3 Tests', function () {
   afterEach(function () {
     // output log errors if test failed
     if (this.currentTest.state === 'failed') {
+      // eslint-disable-next-line no-console
       capture.logs.forEach(message => console.log(message));
     }
   });
