@@ -17,19 +17,6 @@ function date() {
 }
 
 /**
- * Returns JSON object if parseable otherwise text
- * @param  {String} text
- * @return {*}
- */
-function parseJSON(text) {
-  try {
-    return JSON.parse(text);
-  } catch (e) {
-    return text;
-  }
-}
-
-/**
  * Returns time epoch seconds
  * @return {Integer}
  */
@@ -38,6 +25,7 @@ function timeInSeconds() {
   return Math.round(time / 1000);
 }
 
-module.exports.date = date;
-module.exports.parseJSON = parseJSON;
-module.exports.timeInSeconds = timeInSeconds;
+module.exports = {
+  date: date,
+  timeInSeconds: timeInSeconds
+};

@@ -1,5 +1,7 @@
 # Amazon Alexa Smart Home skill for openHAB 2
 
+[![Build Status](https://travis-ci.org/openhab/openhab-alexa.svg?branch=v3)](https://travis-ci.org/openhab/openhab-alexa)
+
 This is a nodejs / lambda application that connects the Alexa Smart Home API to a user's openHAB instance, either directly or through the openHAB Cloud service (preferred).  The Smart Home API is not a general skill API, it allows the user to bypass using a application wake work and instead ask Alexa to perform a smart home action like "Alexa turn lights on"
 
 # General Deployment Instructions
@@ -14,50 +16,96 @@ For end-user documentation and general usage, see the [Usage](USAGE.md) page for
 
 ## Requirements
 
-* Amazon AWS account with Alexa and Lambda access
-* OAUTH2 Provider (Like Amazon Login)
-* A openHAB server that a AWS service endpoint can access
+### Alexa Skills Kit CLI with Amazon AWS and Developer Accounts
 
-## Skill Configuration
+You need an [AWS account](https://aws.amazon.com) and an [Amazon developer account](https://developer.amazon.com) to create an Alexa Skill.
 
-Deployment requires two configuration files, config.js for the application configuration, and .env for the node-lambda deployment app.
+In order to use the ASK CLI features to automatically deploy and manage your Lambda skill, ensure that you have AWS credentials set up with the appropriate permissions on the computer you are installing ASK CLI, as described in [this documentation](https://developer.amazon.com/docs/smapi/manage-credentials-with-ask-cli.html).
 
-### config.js
+Once you have installed [ASK CLI](https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html), you need to initialize it:
+```
+$ ask init
+```
 
-The app can access a openHAB installation using two different types of authorization, basic auth ("user@password") or with bearer auth (OAUTH2 token).  Uncomment the "userpass" property for basic auth, otherwise a bearer token will be used.
+By default, the ASK CLI deploys the lambda function in the us-east-1 region. If you want to change the [default region](https://docs.aws.amazon.com/general/latest/gr/rande.html#lambda_region) to one closer to your location, you need to create/update your AWS general configuration file in your home directory.
+```
+$ cat ~/.aws/config
+[default]
+region=us-east-1
+output=json
+```
 
-### .env
+### OAuth2 Provider
 
-Enter your AWS credentials, specifically AWS_ACCESS_KEY_ID,
-AWS_SECRET_ACCESS_KEY, and AWS_ROLE_ARN.  Other access methods may work as well (AWS_SESSION_TOKEN) but have not been tested.
+If you aren't using your own OAuth2 server (e.g. private openHAB Cloud Connector), it is highly recommended to use [Login with Amazon](https://developer.amazon.com/loginwithamazon/console/site/lwa/overview.html). See [this post](https://developer.amazon.com/public/community/post/Tx3CX1ETRZZ2NPC/Alexa-Account-Linking-5-Steps-to-Seamlessly-Link-Your-Alexa-Skill-with-Login-wit) to set it up for your private skill.
 
-## Install Steps
+### openHAB Server
 
-### Create Smart Home Skill
+The openHAB server you are trying to control with the skill needs to be accessible online as an AWS service endpoint. You can either use [myopenHAB.org](http://myopenHAB.org) cloud service or point the skill directly to your server URL. If going with the latter, make sure to use a valid SSL certificate. It is highly recommended to use [Let's Encrypt](https://letsencrypt.org) to validate your certificates.
 
-Use the following guide to setup amazon, note that the node deployment script publishes to "{AWS_FUNCTION_NAME}-{AWS_ENVIRONMENT}", so you might want to call yours "openhab-development" if your AWS_FUNCTION_NAME = "openhab".  Also choose "nodejs" as the lambda runtime type.  
+To configure the server path and credentials, you will need to setup the application configuration in `lambda/smarthome/config.js` using the sample file. The app can access an openHAB installation using two different types of authorization, basic authentication (user/password) or with bearer authentication (OAuth2 token).  Uncomment the "userpass" property for basic authentication, otherwise a bearer token will be used.
 
-For more in-depth guides on deploying Smart Home Skills see:
+## Deployment Steps
 
-https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/steps-to-create-a-smart-home-skill
+### Create Smart Home Skill and Lambda Function
 
-https://developer.amazon.com/public/community/post/Tx34M7F8Z8U7U8B/Creating-Your-First-Alexa-Smart-Home-Skill
+1. Clone or download this repository:
+    ```
+    $ git clone --single-branch --branch v3 https://github.com/openhab/openhab-alexa.git
+    ```
 
-### Create and Deploy Lambda app
+2. Deploy the skill and the lambda function in one step:
+    ```
+    $ ask deploy
+    Profile for the deployment: [default]
+    -------------------- Update Skill Project --------------------
+    Skill Id: <skillId>
+    Skill deployment finished.
+    [Warn]: No runtime and handler settings found for alexaUsage "smartHome/default" when creating Lambda function. CLI will use "nodejs8.10" and "index.handler" as the Runtime and Handler to create Lambda. You can update the runtime and handler for the target Lambda in the project config and deploy again if you want to set differently.
+    Lambda deployment finished.
+    Lambda function(s) created:
+      [Lambda ARN] <lambdaArn>
+    [Info]: No in-skill product to be deployed.
+    [Warn]: Skill api domain "smartHome" can not be enabled. Skipping the enablement.
+    ```
 
-* run `npm install` to install the nodejs dependencies
-* copy config_sample.js to config.js
-* copy env_sample to .env
-* change config files to match your environment.
-* run "node-lambda deploy"
-* login to the amazon lambda console and select the newly created project,
-* Under "Event Sources"  add a "smart home skill" event source, for Application Id, add the Application Id from the Alexa developer portal
-* copy the ARN value from the very top of the screen.
-* login back to the Alexa console and select "configuration"
-* Paste the ARN value from your Lambda into the "Lambda ARN" Field
-* Fill out OAUTH2 information (from your oauth server or the Amazon Login service. See [this post](https://developer.amazon.com/public/community/post/Tx3CX1ETRZZ2NPC/Alexa-Account-Linking-5-Steps-to-Seamlessly-Link-Your-Alexa-Skill-with-Login-wit) for step-by-step instructions for _Login with Amazon_.)
-* MAKE SURE YOU HAVE VALID SSL CERTS AND CERT CHAINS!!!! I highly recommend using Lets Encrypt.   
+3. Setup skill account linking using the skill id displayed in previous step and your OAuth2 provider configuration:
+    ```
+    $ ask api create-account-linking -s <skillId>
+    ? Authorization URL:  https://www.amazon.com/ap/oa
+    ? Client ID:  <clientId>
+    ? Scopes(separate by comma):  profile
+    ? Domains(separate by comma):
+    ? Authorization Grant Type:  AUTH_CODE
+    ? Access Token URI:  https://api.amazon.com/auth/o2/token
+    ? Client Secret:  [hidden]
+    ? Client Authentication Scheme:  HTTP_BASIC
+    ? Optional* Default Access Token Expiration Time In Seconds:
+    ? Optional* Reciprocal Access Token Url:
+    Account linking created successfully.
+    ```
 
-### Item Configuation
+4. Enable skill with account linking:
+    * Go to your [Alexa skill console](https://alexa.amazon.com/spa/index.html#skills/your-skills/?ref-suffix=ysa_gw)
+    * Click on the "openHAB" skill under the "Dev Skills" tab
+    * Click "Enable" and go through the account linking process
 
-See the [Usage](USAGE.md) page for examples and instructions on configuring items.
+### Update Smart Home Skill and Lambda Function
+
+1. Update the repository to latest commit:
+    ```
+    $ git pull
+    ```
+2. Deploy the skill and the lambda function in one step:
+    ```
+    $ ask deploy [--force] (Force deployment if lambda manual configs were applied)
+    Profile for the deployment: [default]
+    -------------------- Update Skill Project --------------------
+    Skill Id: <skillId>
+    Skill deployment finished.
+    Lambda deployment finished.
+    Lambda function(s) updated:
+      [Lambda ARN] <lambdaArn>
+    [Info]: No in-skill product to be deployed.
+    [Warn]: Skill api domain "smartHome" can not be enabled. Skipping the enablement.
+    ```

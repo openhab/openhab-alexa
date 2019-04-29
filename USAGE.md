@@ -189,7 +189,7 @@ For components of a device, which isn't covered by the existing interfaces, that
 Group Washer       "Washer"               {alexa="Endpoint.Other"}
 String Cycle       "Cycle"       (Washer) {alexa="ModeController.mode" [supportedModes="Normal=Normal:Cottons,Delicate=@Value.Delicate:Knites",friendlyNames="Wash Cycle,Wash Setting",ordered=false]}
 Number Temperature "Temperature" (Washer) {alexa="ModeController.mode" [supportedModes="0=Cold:Cool,1=Warm,2=Hot",friendlyNames="Wash Temperature,@Setting.WaterTemperature",ordered=true]}  
-Switch Power       "Power"       (Washer) {alexa="ToggleController.toggleState" [friendlyNames="DeviceName.Washer"]}
+Switch Power       "Power"       (Washer) {alexa="ToggleController.toggleState" [friendlyNames="@DeviceName.Washer"]}
 ```
 ```
 Group Fan     "Fan"          {alexa="Endpoint.Other"}
@@ -908,7 +908,6 @@ Here are some example voice commands:
  * Alexa dim Kitchen Lights to 30 percent
  * Alexa set house temperature to 70 degrees
 
- 
 ## Other openHAB Alexa Integrations
 
 openHAB has two other Alexa integrations that can be used in conjunction with or independently of this skill.
@@ -920,4 +919,3 @@ Control Amazon Echo devices from your openHAB.  This allows openHAB to send comm
 ### Hue Emulation Service
 
 Hue Emulation exposes openHAB items as Hue devices to other Hue HTTP API compatible applications like an Amazon Echo, Google Home or any Hue compatible application. This is done on the local network and does not require the cloud service. See the [Hue Emulation Service](https://www.openhab.org/addons/integrations/hueemulation/) for more information.
-

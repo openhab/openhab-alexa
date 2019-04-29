@@ -78,7 +78,7 @@ class AlexaResponse {
    */
   returnAlexaResponse(response) {
     this.callback(null, response);
-  };
+  }
 
   /**
    * Returns Alexa error response
@@ -105,6 +105,11 @@ class AlexaResponse {
       message: error.cause || 'Unable to reach device'
     }};
 
+    // Set error status code to not found (404) if request error name
+    if (error.name === 'RequestError') {
+      error.statusCode = 404;
+    }
+
     // Update error response parameters based on request error status code
     switch (error.statusCode) {
       case 400:
@@ -121,7 +126,7 @@ class AlexaResponse {
         break;
       case 404:
         // Set to bridge unreachable when oh rest server not accessible, otherwise no such endpoint for items not found
-        if (!error.response.body || error.response.body.includes('Problem accessing')) {
+        if (!error.response || !error.response.body || error.response.body.includes('Problem accessing')) {
           Object.assign(parameters, {payload: {
             type: 'BRIDGE_UNREACHABLE',
             message: 'Server not accessible'

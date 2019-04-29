@@ -7,6 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
+const log = require('@lib/log.js');
 const AlexaDirective = require('../directive.js');
 
 /**
