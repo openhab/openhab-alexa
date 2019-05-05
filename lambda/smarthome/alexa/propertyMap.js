@@ -39,7 +39,6 @@ const PARAMETER_TYPE_MAPPING = {
   'supportedArmStates': 'list',
   'supportedInputs': 'list',
   'supportedModes': 'list',
-  'supportsArmInstant': 'boolean',
   'supportsDeactivation': 'boolean',
   'supportsPinCodes': 'boolean'
 };
@@ -263,13 +262,8 @@ class AlexaPropertyMap {
             // Update exit delay parameters within alexa supported spread (0-255) if defined
             property.parameters.exitDelay = !isNaN(property.parameters.exitDelay) ? property.parameters.exitDelay > 0 ?
               property.parameters.exitDelay < 255 ? property.parameters.exitDelay : 255 : 0 : undefined;
-            // Remove arm instant support parameter if exit delay not defined
-            if (typeof property.parameters.exitDelay === 'undefined') {
-              delete property.parameters.supportsArmInstant;
-            }
-            // Remove arm instant & pin codes support parameters if item type not string
+            // Remove pin codes support parameters if item type not string
             if (item.type !== 'String') {
-              delete property.parameters.supportsArmInstant;
               delete property.parameters.supportsPinCodes;
             }
             break;

@@ -44,11 +44,6 @@ class AlexaSecurityPanelController extends AlexaDirective {
     if (armState === 'ARMED_AWAY') {
       // Set exit delay to defined parameter value only if arm away request
       exitDelay = parseInt(properties.armState.parameters.exitDelay);
-      // Append 'instant' to post item state and set exit delay to zero if arm away request and arm instant enabled
-      if (this.directive.payload.isArmInstant === true) {
-        postItem.state += ':instant';
-        exitDelay = 0;
-      }
     }
 
     this.getItemState(postItem).then((item) => {

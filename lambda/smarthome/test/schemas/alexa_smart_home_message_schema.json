@@ -3147,9 +3147,6 @@
                       }
                     }
                   },
-                  "supportsArmInstant": {
-                    "type": "boolean"
-                  },
                   "supportedArmStates": {
                     "type": "array",
                     "uniqueItems": true,

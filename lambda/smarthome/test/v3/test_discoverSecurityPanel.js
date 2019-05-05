@@ -14,7 +14,6 @@ module.exports = {
               "config": {
                 "exitDelay": 180,
                 "supportedArmStates": "ARMED_AWAY,ARMED_STAY,DISARMED",
-                "supportsArmInstant": true,
                 "supportsPinCodes": true
               }
             }
@@ -96,7 +95,6 @@ module.exports = {
             "ARMED_STAY": 1,
             "ARMED_AWAY": 2,
             "exitDelay": 300,
-            "supportsArmInstant": true,
             "supportsPinCodes": true
           }
         }
@@ -112,23 +110,6 @@ module.exports = {
       "metadata": {
         "alexa": {
           "value": "SecurityPanelController.armState",
-        }
-      },
-      "groupNames": []
-    },
-    { // No exit delay arm instant enabled
-      "link": "https://myopenhab.org/rest/items/AlarmMode3",
-      "type": "String",
-      "name": "AlarmMode3",
-      "label": "Alarm Mode",
-      "tags": [],
-      "metadata": {
-        "alexa": {
-          "value": "SecurityPanelController.armState",
-          "config": {
-            "supportedArmStates": "ARMED_AWAY,ARMED_STAY,DISARMED",
-            "supportsArmInstant": true
-          }
         }
       },
       "groupNames": []
@@ -149,7 +130,6 @@ module.exports = {
       "friendlyName": "Alarm System",
       "configuration": {
         "Alexa.SecurityPanelController": {
-          "supportsArmInstant": true,
           "supportedArmStates": [
             {'value': 'ARMED_AWAY'}, {'value': 'ARMED_STAY'}, {'value': 'DISARMED'}
           ],
@@ -163,7 +143,7 @@ module.exports = {
           "armState": {
             "parameters": {
               "supportedArmStates": ["ARMED_AWAY", "ARMED_STAY", "DISARMED"],
-              "supportsArmInstant": true, "supportsPinCodes": true, "exitDelay": 180},
+              "supportsPinCodes": true, "exitDelay": 180},
             "item": {"name": "ArmState", "type": "String"},
             "schema": {"name": "armState"}
           },
@@ -200,7 +180,6 @@ module.exports = {
       "friendlyName": "Alarm Mode",
       "configuration": {
         "Alexa.SecurityPanelController": {
-          "supportsArmInstant": false,
           "supportedArmStates": [
             {'value': 'DISARMED'}, {'value': 'ARMED_STAY'}, {'value': 'ARMED_AWAY'}
           ]
@@ -228,7 +207,6 @@ module.exports = {
       "friendlyName": "Alarm Mode",
       "configuration": {
         "Alexa.SecurityPanelController": {
-          "supportsArmInstant": false,
           "supportedArmStates": [
             {'value': 'DISARMED'}, {'value': 'ARMED_STAY'}
           ]
@@ -240,33 +218,6 @@ module.exports = {
             "parameters": {
               "supportedArmStates": ["DISARMED", "ARMED_STAY"]},
             "item": {"name": "AlarmMode2", "type": "Switch"},
-            "schema": {"name": "armState"}
-          }
-        }
-      }
-    },
-    "AlarmMode3": {
-      "capabilities": [
-        "Alexa",
-        "Alexa.SecurityPanelController.armState",
-        "Alexa.EndpointHealth.connectivity"
-      ],
-      "displayCategories": ["SECURITY_PANEL"],
-      "friendlyName": "Alarm Mode",
-      "configuration": {
-        "Alexa.SecurityPanelController": {
-          "supportsArmInstant": false,
-          "supportedArmStates": [
-            {'value': 'ARMED_AWAY'}, {'value': 'ARMED_STAY'}, {'value': 'DISARMED'}
-          ]
-        }
-      },
-      "propertyMap": {
-        "SecurityPanelController": {
-          "armState": {
-            "parameters": {
-              "supportedArmStates": ["ARMED_AWAY", "ARMED_STAY", "DISARMED"]},
-            "item": {"name": "AlarmMode3", "type": "String"},
             "schema": {"name": "armState"}
           }
         }
