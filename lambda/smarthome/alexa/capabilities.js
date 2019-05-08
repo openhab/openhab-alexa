@@ -132,7 +132,6 @@ function getCapabilityInterface(interfaceName, properties, globalSettings = {}) 
         break;
       case 'armState':
         Object.assign(configuration, {
-          'supportsArmInstant': parameters.supportsArmInstant === true,
           'supportedArmStates': parameters.supportedArmStates.map(state => ({'value': state}))
         }, parameters.supportsPinCodes === true && {
           'supportedAuthorizationTypes': [{

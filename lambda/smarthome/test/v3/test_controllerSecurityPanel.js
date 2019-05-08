@@ -1,6 +1,6 @@
 module.exports = [
   {
-    description: "arm away instant string item",
+    description: "arm away no delay string item",
     directive: {
       "header": {
         "namespace": "Alexa.SecurityPanelController",
@@ -14,7 +14,7 @@ module.exports = [
               "armState": {
                 "parameters": {
                   "supportedArmStates": ["ARMED_AWAY", "ARMED_STAY", "DISARMED"],
-                  "supportsArmInstant": true, "supportsPinCodes": true, "exitDelay": 180},
+                  "supportsPinCodes": true},
                 "item": {"name": "AlarmMode", "type": "String"},
                 "schema": {"name": "armState"}
               },
@@ -28,14 +28,13 @@ module.exports = [
         }
       },
       "payload": {
-        "armState": "ARMED_AWAY",
-        "isArmInstant": true
+        "armState": "ARMED_AWAY"
       }
     },
     mocked: {
       openhab: [
         {"name": "AlarmMode", "state": "disarm", "type": "String"},
-        {"name": "AlarmMode", "state": "away:instant", "type": "String"},
+        {"name": "AlarmMode", "state": "away", "type": "String"},
         {"name": "BurglaryAlarm", "state": "OFF", "type": "Switch"}
       ],
       staged: true
@@ -54,13 +53,11 @@ module.exports = [
             "namespace": "Alexa.SecurityPanelController",
             "name": "Arm.Response"
           },
-          "payload": {
-            "exitDelayInSeconds": 0
-          }
+          "payload": {}
         }
       },
       openhab: [
-        {"name": "AlarmMode", "value": "away:instant"}
+        {"name": "AlarmMode", "value": "away"}
       ]
     }
   },
@@ -79,7 +76,7 @@ module.exports = [
               "armState": {
                 "parameters": {
                   "supportedArmStates": ["ARMED_AWAY", "ARMED_STAY", "DISARMED"],
-                  "supportsArmInstant": true, "supportsPinCodes": true, "exitDelay": 180},
+                  "supportsPinCodes": true, "exitDelay": 180},
                 "item": {"name": "AlarmMode", "type": "String"},
                 "schema": {"name": "armState"}
               }
@@ -88,8 +85,7 @@ module.exports = [
         }
       },
       "payload": {
-        "armState": "ARMED_AWAY",
-        "isArmInstant": false
+        "armState": "ARMED_AWAY"
       }
     },
     mocked: {
@@ -194,7 +190,7 @@ module.exports = [
               "armState": {
                 "parameters": {
                   "supportedArmStates": ["ARMED_AWAY", "ARMED_STAY", "DISARMED"],
-                  "supportsArmInstant": true, "supportsPinCodes": true, "exitDelay": 180},
+                  "supportsPinCodes": true, "exitDelay": 180},
                 "item": {"name": "AlarmMode", "type": "String"},
                 "schema": {"name": "armState"}
               }
@@ -203,8 +199,7 @@ module.exports = [
         }
       },
       "payload": {
-        "armState": "ARMED_STAY",
-        "isArmInstant": false
+        "armState": "ARMED_STAY"
       }
     },
     mocked: {
@@ -241,7 +236,7 @@ module.exports = [
               "armState": {
                 "parameters": {
                   "supportedArmStates": ["ARMED_AWAY", "ARMED_STAY", "DISARMED"],
-                  "supportsArmInstant": true, "supportsPinCodes": true, "exitDelay": 180},
+                  "supportsPinCodes": true, "exitDelay": 180},
                 "item": {"name": "AlarmMode", "type": "String"},
                 "schema": {"name": "armState"}
               },
@@ -304,7 +299,7 @@ module.exports = [
               "armState": {
                 "parameters": {
                   "supportedArmStates": ["ARMED_AWAY", "ARMED_STAY", "DISARMED"],
-                  "supportsArmInstant": true, "supportsPinCodes": false, "exitDelay": 180},
+                  "supportsPinCodes": false, "exitDelay": 180},
                 "item": {"name": "AlarmMode", "type": "String"},
                 "schema": {"name": "armState"}
               }
@@ -353,7 +348,7 @@ module.exports = [
               "armState": {
                 "parameters": {
                   "supportedArmStates": ["ARMED_AWAY", "ARMED_STAY", "DISARMED"],
-                  "supportsArmInstant": true, "supportsPinCodes": true, "exitDelay": 180},
+                  "supportsPinCodes": true, "exitDelay": 180},
                 "item": {"name": "AlarmMode", "type": "String"},
                 "schema": {"name": "armState"}
               }
