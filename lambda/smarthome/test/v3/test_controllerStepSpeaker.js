@@ -11,7 +11,7 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "StepSpeaker": {
-              "volume": {"parameters": {}, "item": {"name": "stepSpeakerVolume"}, "schema": {"name": "volumeLevel"}}}
+              "volume": {"parameters": {}, "item": {"name": "stepSpeakerVolumeStep"}, "schema": {"name": "volumeLevel"}}}
           })
         }
       },
@@ -21,7 +21,6 @@ module.exports = [
     },
     mocked: {
       openhab: [
-        {"name": "stepSpeakerVolume", "state": "40", "type": "Dimmer"},
         {"name": "stepSpeakerVolume", "state": "50", "type": "Dimmer"}
       ],
       staged: true
@@ -39,7 +38,7 @@ module.exports = [
         }
       },
       openhab: [
-        {"name": "stepSpeakerVolume", "value": 50}
+        {"name": "stepSpeakerVolumeStep", "value": 10}
       ]
     }
   },
