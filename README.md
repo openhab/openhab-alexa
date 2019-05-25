@@ -51,7 +51,7 @@ To configure the server path and credentials, you will need to setup the applica
 
 1. Clone or download this repository:
     ```
-    $ git clone --single-branch --branch v3 https://github.com/openhab/openhab-alexa.git
+    $ git clone https://github.com/openhab/openhab-alexa.git
     ```
 
 2. Deploy the skill and the lambda function in one step:
