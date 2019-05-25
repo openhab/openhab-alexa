@@ -17,7 +17,7 @@ module.exports = {
         },
         {
           "link": "https://myopenhab.org/rest/items/stepSpeakerVolume",
-          "type": "Dimmer",
+          "type": "Number",
           "name": "stepSpeakerVolume",
           "tags": [],
           "metadata": {
@@ -49,7 +49,21 @@ module.exports = {
         "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["SPEAKER"],
-      "friendlyName": "Speaker"
+      "friendlyName": "Speaker",
+      "propertyMap": {
+        "StepSpeaker": {
+          "muted": {
+            "parameters": {},
+            "item": {"name": "stepSpeakerMute", "type": "Switch"},
+            "schema": {"name": "muteState"}
+          },
+          "volume": {
+            "parameters": {},
+            "item": {"name": "stepSpeakerVolume", "type": "Number"},
+            "schema": {"name": "volumeSteps"}
+          }
+        }
+      }
     }
   }
 };

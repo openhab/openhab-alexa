@@ -22,7 +22,8 @@ class AlexaRangeController extends AlexaDirective {
    */
   constructor(directive, callback) {
     super(directive, callback);
-    this.interface = 'RangeController';
+    // Append instance name to interface name
+    this.interface = 'RangeController:' + directive.header.instance;
     this.map = {
       setRangeValue: 'setRangeValue',
       adjustRangeValue: 'adjustRangeValue'
@@ -33,8 +34,6 @@ class AlexaRangeController extends AlexaDirective {
    * Set range value
    */
   setRangeValue() {
-    // Append instance name to interface property
-    this.interface += ':' + this.directive.header.instance;
     const postItem = Object.assign({}, this.propertyMap[this.interface].rangeValue.item, {
       state: this.directive.payload.rangeValue
     });
@@ -45,8 +44,6 @@ class AlexaRangeController extends AlexaDirective {
    * Adjust range value
    */
   adjustRangeValue() {
-    // Append instance name to interface property
-    this.interface += ':' + this.directive.header.instance;
     const properties = this.propertyMap[this.interface]
     const postItem = Object.assign({}, properties.rangeValue.item);
 

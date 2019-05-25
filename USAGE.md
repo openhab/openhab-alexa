@@ -247,44 +247,43 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
     * Items that represent a target set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
       * Number(:Temperature)
-    * Default category: THERMOSTAT
-    * Supports additional properties:
+    * Supported metadata parameters:
       * scale=`<scale>`
         * Celsius
         * Fahrenheit
         * Kelvin
+    * Default category: THERMOSTAT
   * `ThermostatController.upperSetpoint`
     * Items that represent a upper or HEAT set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
       * Number(:Temperature)
-    * Default category: THERMOSTAT
-    * Supports additional properties:
+    * Supported metadata parameters:
       * scale=`<scale>`
         * Celsius
         * Fahrenheit
         * Kelvin
       * comfortRange=`<number>`
         * When dual setpoints (upper, lower) are used this is the amount over the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius. Ignored if a targetSetpoint is included in the thermostat group.
+    * Default category: THERMOSTAT
   * `ThermostatController.lowerSetpoint`
     * Items that represent a lower or COOL set point for a thermostat, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
       * Number(:Temperature)
-    * Default category: THERMOSTAT
-    * Supports additional properties:
+    * Supported metadata parameters:
       * scale=`<scale>`
         * Celsius
         * Fahrenheit
         * Kelvin
       * comfortRange=`<number>`
         * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
+    * Default category: THERMOSTAT
   * `ThermostatController.thermostatMode`
     * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=`<value>`). For the binding parameter, it will be automatically determined if the associated item is using a 2.x addon (via channel metadata). If neither of these settings are provided, for thermostats that only support a subset of the standard modes, a comma delimited list of the Alexa supported modes should be set using the supportedModes parameter, otherwise, the supported list will be compiled based of the default mapping.
     * Supported item type:
       * Number
       * String
       * Switch (Heating only)
-    * Default category: THERMOSTAT
-    * Supports additional optional properties:
+    * Supported metadata parameters:
       * OFF=`<state>`
       * HEAT=`<state>`
       * COOL=`<state>`
@@ -300,16 +299,17 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * defaults to [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=auto] if omitted
       * supportedModes=`<values>`
         * defaults to, depending on the parameters provided, either user-based, preset-based or default item type-based mapping.
+    * Default category: THERMOSTAT
   * `TemperatureSensor.temperature`
     * Items that represent the current temperature, value may be in Celsius or Fahrenheit depending on how the item is configured (e.g., scale=Fahrenheit). If omitted, the scale will be determined based on: (1) unit of measurement unit if Number:Temperature item type; (2) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (3) defaults to Celsius.
     * Supported item type:
       * Number(:Temperature)
-    * Default category: TEMPERATURE_SENSOR
-    * Supports additional properties:
+    * Supported metadata parameters:
       * scale=`<scale>`
         * Celsius
         * Fahrenheit
         * Kelvin
+    * Default category: TEMPERATURE_SENSOR
   * `LockController.lockState`
     * Items that represent the state of a lock (ON lock, OFF unlock). When associated to an [item sensor](#item-sensor), the state of that item will be returned instead of the original actionable item. Additionally, when linking to such item, multiple properties to one state can be mapped with column delimiter (e.g. for a Z-Wave lock: [LOCKED="1:3",UNLOCKED="2:4",JAMMED=11]).
     * Supported item type:
@@ -319,12 +319,12 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
       * Number [LOCKED=1, UNLOCKED=2, JAMMED=3]
       * String [LOCKED=locked, UNLOCKED=unlocked, JAMMED=jammed]
       * Switch [LOCKED=ON, UNLOCKED=OFF]
-    * Default category: SMARTLOCK
-    * Supports additional properties:
+    * Supported metadata parameters:
       * LOCKED=`<state>`
       * UNLOCKED=`<state>`
       * JAMMED=`<state>`
       * defaults based on item sensor type if omitted
+    * Default category: SMARTLOCK
   * `ColorController.color`
     * Items that represent a color
     * Supported item type:
@@ -335,60 +335,62 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
     * Supported item type:
       * Dimmer: colder (0%) to warmer (100%) based of Alexa color temperature spectrum [Hue and LIFX support]
       * Number: color temperature value in Kelvin [custom integration]
-    * Default category: LIGHT
-    * Supports additional properties:
+    * Supported metadata parameters:
       * increment=`<number>`
         * value in % for dimmer item/in Kelvin for number item
         * defaults to increment=INCREASE/DECREASE (Dimmer) or increment=500 (Number) if omitted
+    * Default category: LIGHT
   * `SceneController.scene`
     * Items that represent a scene or an activity depending on defined category and may be set not to support deactivation requests based on metadata parameters.
     * Supported item type:
       * Switch
-    * Default category: SCENE_TRIGGER
-    * Supports additional properties:
+    * Supported metadata parameters:
       * supportsDeactivation=`<boolean>`
         * true (default if omitted)
         * false
+    * Default category: SCENE_TRIGGER
   * `ChannelController.channel`
     * Items that represent a channel. A channel mapping may be specified in metadata parameters allowing channel request by name.
     * Supported item type:
       * Number
       * String
-    * Default category: TV
-    * Supports additional properties:
+    * Supported metadata parameters:
       * `<channelName1>`=`<channelNumber1>`
       * `<channelName2>`=`<channelNumber2>`
       * ...
+    * Default category: TV
   * `InputController.input`
     * Items that represent a source input (e.g. "HDMI 1", or "TUNER" on a stereo). A list of [supported input values](https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#input-values) needs to be provided using the supportedInputs parameter. The space between the input name and number is not sent to OH (e.g. "HDMI 1" [alexa] => "HDMI1" [OH]). That space can also be omitted in the supported list as well.
     * Supported item type:
       * String
-    * Default category: TV
-    * Supports additional properties:
+    * Supported metadata parameters:
       * supportedInputs=`<inputs>`
         * required list of supported input values (e.g. "HMDI1,TV,XBOX")
+    * Default category: TV
   * `Speaker.volume`
     * Items that represent a volume level, default increment may be specified in metadata parameters
     * Supported item type:
       * Dimmer
       * Number
-    * Default category: SPEAKER
-    * Supports additional properties:
+    * Supported metadata parameters:
       * increment=`<number>`
         * defaults to increment=10 (standard value provided by Alexa) if omitted.
+    * Default category: SPEAKER
   * `Speaker.muted`
     * Items that represent a muted state (ON muted, OFF unmuted)
     * Supported item type:
       * Switch
     * Default category: SPEAKER
   * `StepSpeaker.volume`
-    * Items that represent a volume level controlled in steps only (for example IR controlled, ex: +1, -1)
+    * Items that represent a volume controlled in steps only (e.g. +1, -1), such as a button on a remote control. This should only be used if the current volume level state cannot be tracked in openHAB otherwise just use `Speaker.volume`. Default increment may be specified in metadata parameters.
     * Supported item type:
-      * Dimmer
       * Number
+    * Supported metadata parameters:
+      * increment=`<number>`
+        * defaults to increment=10 (standard value provided by Alexa) if omitted.
     * Default category: SPEAKER
   * `StepSpeaker.muted`
-    * Items that represent a muted state (ON muted, OFF unmuted)
+    * Items that represent a muted state (ON muted, OFF unmuted). This should only be used if the current muted state cannot be tracked in openHAB otherwise just use `Speaker.muted`.
     * Supported item type:
       * Switch
     * Default category: SPEAKER
@@ -402,27 +404,27 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
     * Supported item type:
       * Dimmer
       * Number
-    * Default category: SPEAKER
-    * Supports additional properties:
+    * Supported metadata parameters:
       * range=`<minValue:maxValue>`
         * defaults to `[0:100]` for Dimmer and `[-10:10]` for Number item types if omitted
       * default=`<number>`
         * defaults to midpoint range spread if omitted
       * increment=`<number>`
         * defaults to increment=INCREASE/DECREASE (Dimmer) or increment=1 (Number) if omitted
+    * Default category: SPEAKER
   * `EqualizerController.modes`
     * Items that represent a list of equalizer modes supported by an audio system. Set supported modes using `supportedModes="MOVIE,MUSIC,TV"` parameter. The mode listed in additional properties are the only ones supported by the Alexa API currently. For the mapping, default item type mapping (listed below) can be used or if necessary, add each state to the parameters similar to how it is done with other interfaces.
     * Supported item type:
       * Number [MOVIE=1, MUSIC=2, NIGHT=3, SPORT=4, TV=5]
       * String [MOVIE=movie, MUSIC=music, NIGHT=night, SPORT=sport, TV=tv]
-    * Default category: SPEAKER
-    * Supports additional properties:
+    * Supported metadata parameters:
       * MOVIE=`<state>`
       * MUSIC=`<state>`
       * NIGHT=`<state>`
       * SPORT=`<state>`
       * supportedModes=`<modes>`
         * defaults to, depending on the parameters provided, either user-based or default item type-based mapping.
+    * Default category: SPEAKER
   * `ContactSensor.detectionState`
     * Items that represent a contact sensor that can be used to trigger Alexa routines. (Currently not usable as proactive reporting not supported yet)
     * Supported item type:
@@ -441,8 +443,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
       * Number [DISARMED=0, ARMED_STAY=1, ARMED_AWAY=2, ARMED_NIGHT=3, NOT_READY=4, UNCLEARED_ALARM=5, UNCLEARED_TROUBLE=6, BYPASS_NEEDED=7]
       * String [DISARMED=disarm, ARMED_STAY=stay, ARMED_AWAY=away, ARMED_NIGHT=night, AUTHORIZATION_REQUIRED=authreq, UNAUTHORIZED=unauth, NOT_READY=notrdy, UNCLEARED_ALARM=alarm, UNCLEARED_TROUBLE=trouble, BYPASS_NEEDED=bypass]
       * Switch [DISARMED=OFF, ARMED_STAY=ON]
-    * Default category: SECURITY_PANEL
-    * Supports additional properties:
+    * Supported metadata parameters:
       * DISARMED=`<state>`
       * ARMED_STAY=`<state>`
       * ARMED_AWAY=`<state>`
@@ -468,6 +469,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
       * exitDelay=`<number>` (optional)
         * maximum delay Alexa restriction up to 255 seconds.
         * defaults to no value
+    * Default category: SECURITY_PANEL
   * `SecurityPanelController.burglaryAlarm`
     * Items that represent the current state of the burglary alarm part of a security system
     * Supported item type:
@@ -497,8 +499,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
     * Supported item type:
       * Number
       * String
-    * Default category: OTHER
-    * Supports additional properties:
+    * Supported metadata parameters:
       * friendlyNames=`<names>`
         * each name formatted as `<@assetIdOrName>`
         * defaults to item label name
@@ -507,6 +508,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * defaults to item state description options `supportedModes="value1=label1,..."`, if defined, otherwise no supported modes
       * ordered=`<boolean>`
         * defaults to false
+    * Default category: OTHER
   * `RangeController.rangeValue`
     * Items that represent components of a device that are characterized by numbers within a minimum and maximum range. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#asset-catalog) can be used to label a mode as well  prefixing with an @ sign (e.g. `friendlyNames="@Setting.FanSpeed,Speed"`). To set the supported range, provide a column delimited list including minimum, maximum and precision values. The latter value will be use as default increment when requesting adjusted range values. Optionally, to name specific presets, like fan speeds low [1] & high value [10], can be added in `presets` parameter and provide a comma delimited list of preset mappings composed of range value and the associated names/asset ids they should be called, delimited by equal and column signs (e.g. `presets="1=@Value.Minimum:@Value.Low:Lowest,10=@Value.Maximum:@Value.High:Highest"`). Another optional settings is `unitOfMeasure` parameter which gives a unit of measure to the range values. By default if omitted, it is based on the unit of measurement number item type that have a supported unit, otherwise, a [unit id](#unit-of-measurement-catalog) can be used. (e.g. `unitOfMeasure=Angle.Degrees`)
     * Supported item type:
@@ -519,8 +521,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
       * Number:Temperature
       * Number:Volume
       * Rollershutter
-    * Default category: OTHER
-    * supports additional properties:
+    * Supported metadata parameters:
       * friendlyNames=`<names>`
         * each name formatted as `<@assetIdOrName>`
         * defaults to item label name
@@ -530,6 +531,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * each preset formatted as `<presetValue>=<@assetIdOrName1>:<@assetIdOrName2>:...`
       * unitOfMeasure=`<unitId>` (optional)
         * defaults to item state unit of measurement symbol for Number:* item types
+    * Default category: OTHER
   * `ToggleController.toggleState`
     * Items that represent components of a device that can be turned on or off. Multiple instances can be configured in a group endpoint. By default, to ask for a specific range, the item label will be used as the friendly name. To configure it, use `friendlyNames` parameter and provide a comma delimited list of different labels (Keep in mind that some names are [not allowed](#friendly-names-not-allowed)). Additionally, pre-defined [asset ids](#asset-catalog) can be used to label a mode as well with an @ sign prefix (e.g. `friendlyNames="@Setting.Oscillate,Rotate"`).
     * Supported item type:
@@ -537,11 +539,11 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
       * Dimmer
       * Rollershutter
       * Switch
-    * Default category: OTHER
-    * Supports additional properties:
+    * Supported metadata parameters:
       * friendlyNames=`<names>`
         * each name formatted as `<@assetIdOrName>`
         * defaults to item label name
+    * Default category: OTHER
 
 ##### Display Categories
   * Alexa has certain categories that effect how voice control and their mobile/web UI's display or control endpoints.  An example of this is when you create "Smart Device Groups" in the Alex app and associate a specific Echo or Dot to that Group (typically a room).  When a user asks to turn the lights ON, Alexa looks for devices in that group that have the category "LIGHT" to send the command to.  

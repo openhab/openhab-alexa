@@ -18,6 +18,15 @@ module.exports = [
     mocked: {},
     expected: {
       alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.EndpointHealth",
+            "name": "connectivity",
+            "value": {
+              "value": "OK"
+            }
+          }]
+        },
         "event": {
           "header": {
             "namespace":"Alexa.SceneController",
@@ -54,6 +63,15 @@ module.exports = [
     mocked: {},
     expected: {
       alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.EndpointHealth",
+            "name": "connectivity",
+            "value": {
+              "value": "OK"
+            }
+          }]
+        },
         "event": {
           "header": {
             "namespace":"Alexa.SceneController",

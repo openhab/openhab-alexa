@@ -17,13 +17,17 @@ module.exports = [
         }
       }
     },
-    mocked: {
-      openhab: {"name": "speakerPlayer", "state": "PLAY", "type": "Player"}
-    },
+    mocked: {},
     expected: {
       alexa: {
         "context": {
-          "properties": []
+          "properties": [{
+            "namespace": "Alexa.EndpointHealth",
+            "name": "connectivity",
+            "value": {
+              "value": "OK"
+            }
+          }]
         },
         "event": {
           "header": {

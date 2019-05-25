@@ -228,7 +228,7 @@ module.exports = [
           },
           "payload": {
             "type": "INVALID_DIRECTIVE",
-            "message": "Unsupported directive"
+            "message": "Invalid directive"
           }
         }
       },
@@ -256,7 +256,7 @@ module.exports = [
           },
           "payload": {
             "type": "INVALID_DIRECTIVE",
-            "message": "Unsupported directive"
+            "message": "Invalid directive"
           }
         }
       },
