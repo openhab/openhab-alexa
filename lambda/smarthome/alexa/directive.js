@@ -48,18 +48,18 @@ class AlexaDirective extends AlexaResponse {
     // Determine directive method name using map property if defined, fallback to directive camelcase name
     const method = this.map && this.map[name] || name;
 
-    // Execute directive method if defined, otherwise return error
-    if (typeof this[method] === 'function') {
+    // Execute directive method and return error on exception
+    try {
       this[method]();
-    } else {
-      log.error('Unsupported directive:', {
-        namespace: this.directive.header.namespace,
-        name: this.directive.header.name
-      });
+    } catch (error) {
+      log.error(`Failed to execute directive:\r${error.stack.replace(/\n/g, '\r')}`);
       this.returnAlexaErrorResponse({
-        payload: {
+        payload: error.name === 'TypeError' ? {
           type: 'INVALID_DIRECTIVE',
-          message: 'Unsupported directive'
+          message: 'Invalid directive'
+        } : {
+          type: 'INTERNAL_ERROR',
+          message: 'Internal error'
         }
       });
     }
@@ -71,18 +71,13 @@ class AlexaDirective extends AlexaResponse {
    *
    *
    * @param {Array}  items
-   * @param {Object} parameters     Additional parameters [header, payload, properties, response] (optional)
+   * @param {Object} parameters     Additional parameters [header, payload, properties] (optional)
    */
   postItemsAndReturn(items, parameters = {}) {
     const promises = items.map(item =>
       rest.postItemCommand(this.directive.endpoint.scope.token, item.name, item.state));
     Promise.all(promises).then(() => {
-      if (parameters.response) {
-        log.debug('postItemsAndReturn done with response:', parameters.response);
-        this.returnAlexaResponse(parameters.response);
-      } else {
-        this.getPropertiesResponseAndReturn(parameters);
-      }
+      this.getPropertiesResponseAndReturn(parameters);
     }).catch((error) => {
       log.error('postItemsAndReturn failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
@@ -94,15 +89,15 @@ class AlexaDirective extends AlexaResponse {
    *  based of interface-specific properties latest item state from OH
    *  and then return a formatted response to the Alexa request
    *
-   * @param {Object} parameters     Additional parameters [header, payload, properties, response] (optional)
+   * @param {Object} parameters     Additional parameters [header, payload, properties] (optional)
    */
   getPropertiesResponseAndReturn(parameters = {}) {
     // Use the property map defined interface names if this.interface not defined (e.g. reportState)
     const interfaceNames = this.interface ? [this.interface] : Object.keys(this.propertyMap);
-    // Get list of all unique item objects part of interfaces
-    const interfaceItems = this.propertyMap.getItemsByInterfaces(interfaceNames, parameters.properties);
+    // Get list of all unique reportable properties item objects part of interfaces
+    const items = this.propertyMap.getReportablePropertiesItems(interfaceNames, parameters.properties);
     // Define get item state promises array, excluding items with defined state already
-    const promises = interfaceItems.reduce((promises, item) => promises.concat(
+    const promises = items.reduce((promises, item) => promises.concat(
       typeof item.state !== 'undefined' ? [] : this.getItemState(item).then((result) => {
         // Update item information in propertyMap object for each item capabilities
         item.capabilities.forEach((capability) => {

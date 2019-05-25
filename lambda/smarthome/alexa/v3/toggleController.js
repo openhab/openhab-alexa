@@ -21,7 +21,8 @@ class AlexaToggleController extends AlexaDirective {
    */
   constructor(directive, callback) {
     super(directive, callback);
-    this.interface = 'ToggleController';
+    // Append instance name to interface name
+    this.interface = 'ToggleController:' + directive.header.instance;
     this.map = {
       turnOn: 'setToggleState',
       turnOff: 'setToggleState'
@@ -32,8 +33,6 @@ class AlexaToggleController extends AlexaDirective {
    * Set toggle state
    */
   setToggleState() {
-    // Append instance name to interface property
-    this.interface += ':' + this.directive.header.instance;
     const postItem = Object.assign({}, this.propertyMap[this.interface].toggleState.item, {
       state: this.directive.header.name === 'TurnOn' ? 'ON' : 'OFF'
     });

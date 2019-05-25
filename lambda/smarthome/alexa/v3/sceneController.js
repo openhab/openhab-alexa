@@ -37,7 +37,7 @@ class AlexaSceneController extends AlexaDirective {
     const postItem = Object.assign({}, this.propertyMap.SceneController.scene.item, {
       state: isSceneActivate ? 'ON' : 'OFF'
     });
-    const response = this.generateResponse({
+    this.postItemsAndReturn([postItem], {
       header: {
         namespace: this.directive.header.namespace,
         name: isSceneActivate ? 'ActivationStarted' : 'DeactivationStarted'
@@ -49,7 +49,6 @@ class AlexaSceneController extends AlexaDirective {
         timestamp: utils.date()
       }
     });
-    this.postItemsAndReturn([postItem], {response: response});
   }
 }
 

@@ -7,7 +7,6 @@
  * http://www.eclipse.org/legal/epl-v10.html
  */
 
-const log = require('@lib/log.js');
 const AlexaDirective = require('../directive.js');
 
 /**
@@ -33,20 +32,13 @@ class AlexaStepSpeaker extends AlexaDirective {
    * Adjust volume
    */
   adjustVolume() {
-    const postItem = Object.assign({}, this.propertyMap.StepSpeaker.volume.item);
-
-    this.getItemState(postItem).then((item) => {
-      // Throw error if state not a number
-      if (isNaN(item.state)) {
-        throw {cause: 'Could not get numeric item state', item: item};
-      }
-
-      postItem.state = parseInt(item.state) + this.directive.payload.volumeSteps;
-      this.postItemsAndReturn([postItem]);
-    }).catch((error) => {
-      log.error('adjustVolume failed with error:', error);
-      this.returnAlexaGenericErrorResponse(error);
+    const defaultIncrement = parseInt(this.propertyMap.StepSpeaker.volume.parameters.increment);
+    const volumeSteps = this.directive.payload.volumeSteps;
+    const volumeStepsDefault = this.directive.payload.volumeStepsDefault;
+    const postItem = Object.assign({}, this.propertyMap.StepSpeaker.volume.item, {
+      state: volumeStepsDefault && defaultIncrement > 0 ? (volumeSteps >= 0 ? 1 : -1) * defaultIncrement : volumeSteps
     });
+    this.postItemsAndReturn([postItem]);
   }
 
   /**

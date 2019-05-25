@@ -166,7 +166,7 @@ module.exports = Object.freeze({
       'category': 'SPEAKER',
       'properties': [
         {'name': 'muted', 'schema': 'muteState', 'isReportable': false, 'isSupported': false},
-        {'name': 'volume', 'schema': 'volumeLevel', 'isReportable': false, 'isSupported': false}
+        {'name': 'volume', 'schema': 'volumeSteps', 'isReportable': false, 'isSupported': false}
       ]
     },
     'TemperatureSensor' : {
@@ -451,6 +451,9 @@ module.exports = Object.freeze({
       'state': {
         'type': 'integer'
       }
+    },
+    'volumeSteps': {
+      'itemTypes': ['Number']
     }
   },
 

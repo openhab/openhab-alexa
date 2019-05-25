@@ -22,7 +22,8 @@ class AlexaModeController extends AlexaDirective {
    */
   constructor(directive, callback) {
     super(directive, callback);
-    this.interface = 'ModeController';
+    // Append instance name to interface name
+    this.interface = 'ModeController:' + directive.header.instance;
     this.map = {
       setMode: 'setMode',
       adjustMode: 'adjustMode'
@@ -33,8 +34,6 @@ class AlexaModeController extends AlexaDirective {
    * Set mode
    */
   setMode() {
-    // Append instance name to interface property
-    this.interface += ':' + this.directive.header.instance;
     const postItem = Object.assign(this.propertyMap[this.interface].mode.item, {
       state: this.directive.payload.mode
     });
@@ -45,8 +44,6 @@ class AlexaModeController extends AlexaDirective {
    * Adjust mode
    */
   adjustMode() {
-    // Append instance name to interface property
-    this.interface += ':' + this.directive.header.instance;
     const properties = this.propertyMap[this.interface];
     const postItem = Object.assign({}, properties.mode.item);
 

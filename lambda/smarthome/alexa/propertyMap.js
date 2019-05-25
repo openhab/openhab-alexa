@@ -372,6 +372,7 @@ class AlexaPropertyMap {
    *      {
    *        namespace: 'Alexa.' + <interfaceName1>,
    *        name: <propertyName1>,
+   *        instance: <propertyInstance>,
    *        value: <propertyState>,
    *        timeOfSample: <timeOfSample>,
    *        uncertaintyInMilliseconds: 0
@@ -463,7 +464,7 @@ class AlexaPropertyMap {
   }
 
   /**
-   * Returns list of item objects for a given list of interface names
+   * Returns list of reportable properties item objects for a given list of interface names
    *
    *  Items array return format:
    *    [
@@ -485,7 +486,7 @@ class AlexaPropertyMap {
    * @param  {Array} propertyNames  [property names filter] (optional)
    * @return {Array}
    */
-  getItemsByInterfaces(interfaceNames, propertyNames) {
+  getReportablePropertiesItems(interfaceNames, propertyNames) {
     const propertyMap = this;
 
     return interfaceNames.reduce((items, interfaceName) => {
@@ -493,6 +494,10 @@ class AlexaPropertyMap {
       Object.keys(properties).forEach((propertyName) => {
         // Skip property if not included in property names list
         if (Array.isArray(propertyNames) && !propertyNames.includes(propertyName)) {
+          return;
+        }
+        // Skip property if not reportable
+        if (getPropertySettings(interfaceName, propertyName).isReportable === false) {
           return;
         }
         // Add/update item object with capability to list
