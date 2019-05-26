@@ -32,6 +32,15 @@ const LOCALES = [
 ];
 
 /**
+ * Regions supported list (for production deployment)
+ *  https://developer.amazon.com/docs/smapi/skill-manifest.html#regions
+ * @type {Array}
+ */
+const REGIONS = [
+  'NA', 'EU', 'FE'
+];
+
+/**
  * Load locale resources
  * @param  {Object} schema
  */
@@ -54,6 +63,20 @@ function loadLocaleResources(schema) {
       });
     }
   });
+}
+
+/**
+ * Set api regional endpoints (for production deployment)
+ * @param {Object} schema
+ */
+function setApiRegionalEndpoints(schema) {
+  if (process.env.ASK_ENV === 'production') {
+    schema.manifest.apis.smartHome.regions = {};
+    REGIONS.forEach(region =>
+      schema.manifest.apis.smartHome.regions[region] = schema.manifest.apis.smartHome.endpoint);
+  } else {
+    delete schema.manifest.apis.smartHome.regions;
+  }
 }
 
 /**
@@ -90,6 +113,8 @@ if (require.main === module) {
     const schema = loadSkillSchema();
     // Load locale resources into skill schema
     loadLocaleResources(schema);
+    // Set api regional endpoints
+    setApiRegionalEndpoints(schema);
     // Save skill schema
     saveSkillSchema(schema);
   } catch (e) {
