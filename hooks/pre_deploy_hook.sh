@@ -21,7 +21,12 @@ then
 fi
 
 install_dependencies() {
-    npm install --production --prefix "$1" >/dev/null 2>&1 
+    npm install --production --prefix "$1" >/dev/null 2>&1
+    return $?
+}
+
+update_skill_manifest() {
+    node ./tools/updateSkillManifest.js >/dev/null 2>&1
     return $?
 }
 
@@ -38,6 +43,12 @@ if [[ $TARGET == "all" || $TARGET == "lambda" ]]; then
             exit 1
         fi
     done
+    if update_skill_manifest; then
+        echo "Skill manifest updated successfully."
+    else
+        echo "There was a problem updating the skill manifest."
+        exit 1
+    fi
     echo "###########################"
 fi
 
