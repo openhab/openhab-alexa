@@ -1,14 +1,113 @@
 {
   "manifest": {
+    "apis": {
+      "smartHome": {
+        "regions": {
+          "EU": {
+            "endpoint": {
+              "uri": "openhab-alexa-v3",
+              "sourceDir": "lambda/smarthome"
+            }
+          },
+          "NA": {
+            "endpoint": {
+              "uri": "openhab-alexa-v3",
+              "sourceDir": "lambda/smarthome"
+            }
+          },
+          "FE": {
+            "endpoint": {
+              "uri": "openhab-alexa-v3",
+              "sourceDir": "lambda/smarthome"
+            }
+          }
+        },
+        "endpoint": {
+          "uri": "openhab-alexa-v3",
+          "sourceDir": "lambda/smarthome"
+        },
+        "protocolVersion": "3"
+      }
+    },
     "manifestVersion": "1.0",
+    "permissions": [],
+    "privacyAndCompliance": {
+      "locales": {
+        "it-IT": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "de-DE": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "en-US": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "en-CA": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "en-IN": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "en-AU": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "es-ES": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "fr-FR": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "en-GB": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "fr-CA": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        },
+        "es-MX": {
+          "privacyPolicyUrl": "http://www.openhabfoundation.org/privacy.html"
+        }
+      },
+      "allowsPurchases": false,
+      "usesPersonalInfo": false,
+      "isChildDirected": false,
+      "isExportCompliant": true,
+      "containsAds": false
+    },
     "publishingInformation": {
       "locales": {
+        "it-IT": {
+          "name": "openHAB",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/f9c6/5c7bd156aeb44332bb2005d45718bbb3/APP_ICON?versionId=q6bfzDVq9cMvXS6viqCfq8BbEWkoa1BP&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=862ce1c0d51f6393c700f346d0fc0deffe117665c56be3ee2057e81dd6ecfc00",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/a431/b64ecf4f862a451eaf4a3307f6b9806b/APP_ICON_LARGE?versionId=NoXg.NN1pi0dciUGuMSzgnD.YpsxSSKO&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=b432e95f295ff770b85a1250c527e1c8a6b80939f654e03f1e6f831cf6167b19",
+          "summary": "Controlla il tuo sistema OpenHAB 2 con Alexa e myopenHAB.org",
+          "description": "La skill openHAB Alexa Smart Home ti permette di controllare luci, termostati e altri oggetti connessi ad un sistema openHAB 2 attraverso il servizio cloud myopenHAB.org. \n\nGUIDA INTRODUTTIVA\n\nCome prima cosa, assicurati di aver configurato il tuo sistema openHAB e di averlo connesso al servizio openHAB Cloud.  Gli account openHAB Cloud sono gratuiti. Visita https://myopenhab.org per maggiori informazioni. \n\nIn secondo luogo, nella tua configurazione di openHAB, aggiungi tags vocali per tutti i dispositivi che vuoi gestire tramite Alexa. Sono supportati tutti gli oggetti number, dimmer, switch e thermostat (string o number). \n\nInfine, abilita la skill openHAB su Alexa.  Quando richiesto, utilizza le credenziali del tuo account openHAB Cloud per collegare il tuo sistema ad Alexa. \n\nUna volta fatto ciò, tutti i dispositivi contrassegnati da tag vocali saranno trovabili e automaticamente gestibili da Alexa.  Se aggiungi ulteriori dispositivi dopo aver già effettuato il collegamento, ti basterà chiedere ad Alexa di cercarli dicendo: \"Alexa, trova dispositivi\". Così facendo essi verranno aggiunti al tuo account Alexa.\n\nPuoi controllare i dispositivi del tuo sistema openHAB in modo diretto, ad esempio dicendo:\n - Alexa, accendi Cucina\n\nPuoi anche assegnare i tuoi dispositivi a dei gruppi Alexa, in modo da controllarne più di uno alla volta; ad esempio:\n - Alexa, imposta la camera da letto al 50 per cento\n\nScenari e Routine possono anch'essi essere usati per controllare più di un dispositivo openHAB alla volta; ad esempio:\n - Alexa, accendi Modalità Letto.",
+          "examplePhrases": [
+            "Alexa, accendi la luce della cucina",
+            "Alexa, imposta la camera da letto al 50 per cento",
+            "Alexa, riduci la temperatura della cucina di 5 gradi"
+          ],
+          "keywords": [
+            "openHAB",
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
+          ]
+        },
         "de-DE": {
           "name": "openHAB",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/bd75/6603383600cf4133b6b404b69960edad/APP_ICON?versionId=H7QReMq72i4bQLBLpRYKMig9ha.uYmQO&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=1fe6982ea0d1213aac0110ea2156714468b516d4598dd2daf34a1bcc08151d5d",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/747f/e048376fec034b5c9bbcf8fded73e076/APP_ICON_LARGE?versionId=2oOaPapfPRB68ktkmFPb0EAH.fdhMb2p&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=eabdf3440a3da8fd1ab5c73090166af64d3a0e57df2907fd1cdd26881bd61753",
           "summary": "Steuern Sie Ihr openHAB 2 System mit Alexa und myopenHAB.org",
-          "description": "Der openHAB Alexa Smart Home Skill ermöglicht Ihnen die Steuerung von Lampen, Thermostaten und weiteren vernetzten Geräten des openHAB 2 Systems durch den Internetdienst myopenHAB.org.\n\nDas open Home Automation Bus (openHAB) Projekt stellt eine universale Integrationsplattform für alle Dinge rund um Heimautomatisierung dar. Dabei verfolgt es die Idee der absoluten Herstellerunabhängigkeit, sowie eine strikte Trennung von funktionalen Belangen und Hardware/Protokoll-Spezifika. openHAB bringt zahlreiche Bussysteme, Geräte und Protokolle zusammen. Unterstützte Technologien sind KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, allgemeine serielle Geräte und viele andere. HABDroid unterstützt alle openHAB Features sowie NFC-Tag-basierte Navigation und Kommandoausführung, automatisches Discovery der openHAB-Instanz und Remote-Zugriffe auf openHAB über das Internet. openHAB ist damit DIE Integrations- und Steuerungszentrale für ein Smart Home. Weitere Informationen zu openHAB gibt es unter http://www.openhab.org/\n\nERSTE SCHRITTE\n\nStellen Sie zunächst sicher, dass Ihr OpenHAB-System für den OpenHAB Cloud-Dienst konfiguriert und mit ihm verbunden ist. openHAB Cloud-Konten sind kostenlos, besuchen Sie https://myopenhab.org um weitere Informationen zu erhalten.\n\nFügen Sie in der openHAB-Konfiguration Marker zu den Elementen hinzu, die Sie über Alexa nutzen möchten möchten. Alle Number, Dimmer, Switch Items oder Thermostat Modi (String oder Number) werden unterstützt.\n\nAktiviere den openHAB Alexa Skill. Nach der Aufforderung geben Sie Benutzernamen und Passwort Ihres openHAB Cloud Kontos ein um das System mit Alexa zu verbinden.\n\nNachdem das System erfolgreich verbunden ist stehen alle Items die mit Markern versehen sind zur Erkennung zur Verfügung und können mit Alexa genutzt werden. Wenn Sie nachträglich zusätzliche Items ergänzen möchten, starten Sie erneut die Suche nach Geräten um diese Ihrem Alexa Konto hinzuzufügen.\n\nItems in Ihrem openHAB System können direkt kontrolliert werden, zum Beispiel:\n - Alexa, schalte Küche ein\n\nSie können Ihre Items auch zu Alexa Gruppen hinzufügen um mehrere Items auf einmal zu kontrollieren, z. B:\n - Alexa, setze Schlafzimmer auf 50 Prozent\n\nSzenen und Routinen können ebenfalls genutzt werden um mehrere openHAB Items zu kontrollieren, z. B.:\n - Alexa, starte die Schlafenszeit.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
+          "description": "Der openHAB Alexa Smart Home Skill ermöglicht Ihnen die Steuerung von Lampen, Thermostaten und weiteren vernetzten Geräten des openHAB 2 Systems durch den Internetdienst myopenHAB.org. \n\nDas open Home Automation Bus (openHAB) Projekt stellt eine universale Integrationsplattform für alle Dinge rund um Heimautomatisierung dar. Dabei verfolgt es die Idee der absoluten Herstellerunabhängigkeit, sowie eine strikte Trennung von funktionalen Belangen und Hardware/Protokoll-Spezifika. openHAB bringt zahlreiche Bussysteme, Geräte und Protokolle zusammen. Unterstützte Technologien sind KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, allgemeine serielle Geräte und viele andere. HABDroid unterstützt alle openHAB Features sowie NFC-Tag-basierte Navigation und Kommandoausführung, automatisches Discovery der openHAB-Instanz und Remote-Zugriffe auf openHAB über das Internet. openHAB ist damit DIE Integrations- und Steuerungszentrale für ein Smart Home. Weitere Informationen zu openHAB gibt es unter http://www.openhab.org/\n\nERSTE SCHRITTE\n\nStellen Sie zunächst sicher, dass Ihr OpenHAB-System für den OpenHAB Cloud-Dienst konfiguriert und mit ihm verbunden ist.  openHAB Cloud-Konten sind kostenlos, besuchen Sie https://myopenhab.org um weitere Informationen zu erhalten. \n\nFügen Sie in der openHAB-Konfiguration Marker zu den Elementen hinzu, die Sie über Alexa nutzen möchten möchten. Alle Number, Dimmer, Switch Items oder Thermostat Modi (String oder Number) werden unterstützt. \n\nAktiviere den openHAB Alexa Skill.  Nach der Aufforderung geben Sie Benutzernamen und Passwort Ihres openHAB Cloud Kontos ein um das System mit Alexa zu verbinden. \n\nNachdem das System erfolgreich verbunden ist stehen alle Items die mit Markern versehen sind zur Erkennung zur Verfügung und können mit Alexa genutzt werden.  Wenn Sie nachträglich zusätzliche Items ergänzen möchten, starten Sie erneut die Suche nach Geräten um diese Ihrem Alexa Konto hinzuzufügen.\n\nItems in Ihrem openHAB System können direkt kontrolliert werden, zum Beispiel:\n - Alexa, schalte Küche ein\n\nSie können Ihre Items auch zu Alexa Gruppen hinzufügen um mehrere Items auf einmal zu kontrollieren, z. B:\n - Alexa, setze Schlafzimmer auf 50 Prozent\n\nSzenen und Routinen können ebenfalls genutzt werden um mehrere openHAB Items zu kontrollieren, z. B.:\n - Alexa, starte die Schlafenszeit.",
           "examplePhrases": [
             "Alexa, schalte Küche ein",
             "Alexa, stelle Schlafzimmer auf 50 Prozent",
@@ -16,243 +115,268 @@
           ],
           "keywords": [
             "openHAB",
-            "Heimautomatisierung",
-            "Smart Home"
-          ]
-        },
-        "en-AU": {
-          "name": "openHAB",
-          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org",
-          "description": "The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service.\n\nThe open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service. openHAB Cloud accounts are free, visit https://myopenhab.org for more information.\n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported.\n\nFinally enable the openHAB Alexa skill. When prompted, use your openHAB Cloud account credentials to link your system to Alexa.\n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa. If you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n - Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
-          "examplePhrases": [
-            "Alexa, turn on Kitchen",
-            "Alexa, set Bedroom to 50 percent",
-            "Alexa, decrease Temperature by 5 degrees"
-          ],
-          "keywords": [
-            "openHAB",
-            "Home Automation",
-            "Smart Home",
-            "Connected Home"
-          ]
-        },
-        "en-CA": {
-          "name": "openHAB",
-          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org",
-          "description": "The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service.\n\nThe open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service. openHAB Cloud accounts are free, visit https://myopenhab.org for more information.\n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported.\n\nFinally enable the openHAB Alexa skill. When prompted, use your openHAB Cloud account credentials to link your system to Alexa.\n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa. If you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n - Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
-          "examplePhrases": [
-            "Alexa, turn on Kitchen",
-            "Alexa, set Bedroom to 50 percent",
-            "Alexa, decrease Temperature by 5 degrees"
-          ],
-          "keywords": [
-            "openHAB",
-            "Home Automation",
-            "Smart Home",
-            "Connected Home"
-          ]
-        },
-        "en-GB": {
-          "name": "openHAB",
-          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org",
-          "description": "The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service.\n\nThe open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service. openHAB Cloud accounts are free, visit https://myopenhab.org for more information.\n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported.\n\nFinally enable the openHAB Alexa skill. When prompted, use your openHAB Cloud account credentials to link your system to Alexa.\n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa. If you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n - Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
-          "examplePhrases": [
-            "Alexa, turn on Kitchen",
-            "Alexa, set Bedroom to 50 percent",
-            "Alexa, decrease Temperature by 5 degrees"
-          ],
-          "keywords": [
-            "openHAB",
-            "Home Automation",
-            "Smart Home",
-            "Connected Home"
-          ]
-        },
-        "en-IN": {
-          "name": "openHAB",
-          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org",
-          "description": "The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service.\n\nThe open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service. openHAB Cloud accounts are free, visit https://myopenhab.org for more information.\n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported.\n\nFinally enable the openHAB Alexa skill. When prompted, use your openHAB Cloud account credentials to link your system to Alexa.\n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa. If you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n - Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
-          "examplePhrases": [
-            "Alexa, turn on Kitchen",
-            "Alexa, set Bedroom to 50 percent",
-            "Alexa, decrease Temperature by 5 degrees"
-          ],
-          "keywords": [
-            "openHAB",
-            "Home Automation",
-            "Smart Home",
-            "Connected Home"
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
           ]
         },
         "en-US": {
           "name": "openHAB",
-          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org",
-          "description": "The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service.\n\nThe open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service. openHAB Cloud accounts are free, visit https://myopenhab.org for more information.\n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported.\n\nFinally enable the openHAB Alexa skill. When prompted, use your openHAB Cloud account credentials to link your system to Alexa.\n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa. If you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n - Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/67ee/e515a9e6757d4fd982a4103d4137eea9/APP_ICON?versionId=WvvrORogAmSe_f4Cgd46MDtyLHvfYsXH&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=d4003819e4046fe2f7e9a57c19ac7587fb8b97900440de7232f3a2c18e279c81",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/498d/69c849fc5d6445d5a5bec54672e4648a/APP_ICON_LARGE?versionId=sLGKfKRIq.5PO2DlUGLUIqXWBM1Zza6H&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=f04c83710f7873033f64defa0002c7872f0b6deb7fb852f8e3648df509b787f1",
+          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org.",
+          "description": "The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. \n\nThe open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many, many  others. You can find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. \n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. \n\nFinally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. \n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n -Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
           "examplePhrases": [
             "Alexa, turn on Kitchen",
             "Alexa, set Bedroom to 50 percent",
-            "Alexa, decrease Temperature by 5 degrees"
+            "Alexa, decrease Temperature  by 5 degrees"
           ],
           "keywords": [
             "openHAB",
-            "Home Automation",
-            "Smart Home",
-            "Connected Home"
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
+          ]
+        },
+        "en-CA": {
+          "name": "openHAB",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/180a/7985e69062444f9387fda3640789cef2/APP_ICON?versionId=bBCFjhvXRI6pL.rRC4.xzwdx1b7cLwNR&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=542b98f51a5500dd65003a43bd41db1b5c844f19c2fe62cb0759a8e0875b3b97",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/483f/5394b0c09b3444b490702be3045b05a4/APP_ICON_LARGE?versionId=xKZWOOanOHoXQ0jg76OeAYMgWxQ8CoI1&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=89de2599eba79a90200eb2400a7b4fa39845da6de3b3944065d756d7322d640f",
+          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org",
+          "description": "The open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many, many  others. You can find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. \n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. \n\nFinally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. \n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n -Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
+          "examplePhrases": [
+            "Alexa, turn on Kitchen",
+            "Alexa, set Bedroom to 50 percent",
+            "Alexa, decrease Temperature  by 5 degrees"
+          ],
+          "keywords": [
+            "openHAB",
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
+          ]
+        },
+        "en-IN": {
+          "name": "openHAB",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/dbf2/5c7d47ea2a1d47eda5e0fdffc76925b7/APP_ICON?versionId=9bPSUkCwlBJ5W41Ynj4Zpp1t67QoCOEw&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=23517a9c6d2ca9b3a92a7f2cd2e5ef1381291bb45f86aca3fe8c718d483f582f",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/cad3/555fe9589ec34018a43eebf2964a1654/APP_ICON_LARGE?versionId=KtLdAFHQ8_cTiWNI_mcne9PDe578k9om&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=ffacfdfb3d1f33786f58df8e528d7c8c3d6f4bd411c6e615bbd2a2c58f6cb61d",
+          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org.",
+          "description": "The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. \n\nThe open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many, many  others. You can find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. \n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. \n\nFinally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. \n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n -Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
+          "examplePhrases": [
+            "Alexa, turn on Kitchen",
+            "Alexa, set Bedroom to 50 percent",
+            "Alexa, decrease Temperature  by 5 degrees"
+          ],
+          "keywords": [
+            "openHAB",
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
+          ]
+        },
+        "en-AU": {
+          "name": "openHAB",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/af41/77d53540257d45e5877abf3f5426cd2d/APP_ICON?versionId=89H58N7aHjq2FH7hrnFNgUK87wjN3f5W&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=475f74b5c7fe65922df25af064713bae922886dcd7dcc8fa955a2d496c9e7c12",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/7387/e75d41b589604d97b489161eb4bc3d58/APP_ICON_LARGE?versionId=nuVpnlCCcXeu78lMyvNvciA_rFPc1D4l&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=ac08ce06a5465cd4b6b52a14cb995d4371aa71360b8ba45c421d2c729dd63fe3",
+          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org",
+          "description": "The open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many, many  others. You can find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. \n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. \n\nFinally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. \n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n -Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
+          "examplePhrases": [
+            "Alexa, turn on Kitchen",
+            "Alexa, set Bedroom to 50 percent",
+            "Alexa, decrease Temperature  by 5 degrees"
+          ],
+          "keywords": [
+            "openHAB",
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
           ]
         },
         "es-ES": {
           "name": "openHAB",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/4fbb/8e451646de3046b2accf6390b06c2220/APP_ICON?versionId=3TmRP5Hi42KokH74egJiXFYb65f.j22g&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=15cf8138e64f5fe432123269b74e837c742144262d615052a9da3766abbe1878",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/3dd7/a378abc3a0da45d6834bec0f8cba5e98/APP_ICON_LARGE?versionId=rQV3Dr0oH9pkP3LOn6RcjmDgRXeHhPr0&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=68ee551aca60c54e1a47644c831e150acedc60dff263296b2d10c0a9aa44c322",
           "summary": "Controle su sistema openHAB 2 mediante Alexa y myopenHAB.org",
-          "description": "La skill para hogar digital de Alexa y openHAB, le permite controlar sus luces, termostatos o cualquier otro dispositivo conectado a un sistema openHAB 2 a través del servicio en la nube myopenHAB.org.\n\nEl proyecto de código abierto openHAB (Home Automation Bus), tiene como objetivo la integración universal entre las diferentes plataformas de objetos conectados para la automatización del hogar. Está diseñado para ser totalmente independiente de cualquier fabricante, hardware o protocolo. openHAB une en un sólo entero diferentes sistemas, dispositivos y protocolos de comunicación. Algunas tecnologías soportadas son KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, puerto serie genérico y muchas otras. Puede encontrar más información de openHAB en https://www.openhab.org\n\nCÓMO EMPEZAR\n\nEn primer lugar, asegúrese de tener el sistema openHAB configurado y conectado al servicio openHAB Cloud. Puede crear una cuenta gratuita en https://myopenhab.org. En esa página obtendrá más información.\n\nEn la configuración de openHAB, añada etiquetas (tags) de voz para los items que desee controlar con Alexa. Se puede controlar cualquier elemento númerico, regulador (dimmer), conmutador o termostato, independientemente de si es de tipo numérico o de texto.\n\nPor último active la skill de openHAB para Alexa. Cuando se le solicite, use los credenciales de su cuenta de openHAB Cloud para vincular su sistema a Alexa.\n\nUna vez vinculado, cualquier elemento que haya configurado con etiquetas (tags) de voz, será añadido y estará automáticamente disponible para que Alexa lo descubra. Si añade elementos adicionales después de vincular el skill, simplemente dígale a Alexa \"Descubre Dispositivos\" para añadirlos a su cuenta de Alexa.\n\nPuede controlar elementos en openHAB directamente, por ejemplo:\n - Alexa enciende la Cocina\n\nIgualmente puede añadir elementos a grupos para que Alexa controle múltiples componentes a la vez. Por ejemplo:\n - Alexa, pon el Dormitorio al 50 por ciento\n\nEs posible también emplear escenas y rutinas para controlar múltiples elementos en openHAB. Por ejemplo:\n - Alexa, activa la Hora de Dormir.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
+          "description": "La skill para hogar digital de Alexa y openHAB, le permite controlar sus luces, termostatos o cualquier otro dispositivo conectado a un sistema openHAB 2 a través del servicio en la nube myopenHAB.org. \n\nEl proyecto de código abierto openHAB (Home Automation Bus), tiene como objetivo la integración universal entre las diferentes plataformas de objetos conectados para la automatización del hogar. Está diseñado para ser totalmente independiente de cualquier fabricante, hardware o protocolo. openHAB une en un sólo entero diferentes sistemas, dispositivos y protocolos de comunicación. Algunas tecnologías soportadas son KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, puerto serie genérico y muchas otras. Puede encontrar más información de openHAB en https://www.openhab.org\n\nCÓMO EMPEZAR\n\nEn primer lugar, asegúrese de tener el sistema openHAB configurado y conectado  al servicio openHAB Cloud.  Puede crear una cuenta gratuita en https://myopenhab.org. En esa página obtendrá más información. \n\nEn la configuración de openHAB, añada etiquetas (tags) de voz para los items que desee controlar con Alexa. Se puede controlar cualquier elemento númerico, regulador (dimmer), conmutador o termostato, independientemente de si es de tipo numérico o de texto. \n\nPor último active la skill de openHAB para Alexa.  Cuando se le solicite, use los credenciales de su cuenta de openHAB Cloud para vincular su sistema a Alexa. \n\nUna vez vinculado, cualquier elemento que haya configurado con etiquetas (tags) de voz, será añadido y estará automáticamente disponible para que Alexa lo descubra.  Si añade elementos adicionales después de vincular el skill, simplemente dígale a Alexa \"Descubre Dispositivos\" para añadirlos a su cuenta de Alexa.\n\nPuede controlar elementos en openHAB directamente, por ejemplo:\n - Alexa enciende la Cocina\n\nIgualmente puede añadir elementos a grupos para que Alexa controle múltiples componentes a la vez. Por ejemplo:\n - Alexa, pon el dormitorio al cincuenta por ciento\n\nEs posible también emplear escenas y rutinas para controlar múltiples elementos en openHAB. Por ejemplo:\n - Alexa, activa la Hora de Dormir.",
           "examplePhrases": [
             "Alexa, enciende la Cocina",
             "Alexa, pon el Dormitorio al 50 por ciento",
-            "Alexa, baja la Temperatura 5 grados"
+            "Alexa, baja la Temperatura en 5 grados"
           ],
           "keywords": [
             "openHAB",
-            "Automatización del Hogar",
-            "Casa Inteligente"
-          ]
-        },
-        "es-MX": {
-          "name": "openHAB",
-          "summary": "Controle su sistema openHAB 2 mediante Alexa y myopenHAB.org",
-          "description": "La skill para hogar digital de Alexa y openHAB, le permite controlar sus luces, termostatos o cualquier otro dispositivo conectado a un sistema openHAB 2 a través del servicio en la nube myopenHAB.org.\n\nEl proyecto de código abierto openHAB (Home Automation Bus), tiene como objetivo la integración universal entre las diferentes plataformas de objetos conectados para la automatización del hogar. Está diseñado para ser totalmente independiente de cualquier fabricante, hardware o protocolo. openHAB une en un sólo entero diferentes sistemas, dispositivos y protocolos de comunicación. Algunas tecnologías soportadas son KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, puerto serie genérico y muchas otras. Puede encontrar más información de openHAB en https://www.openhab.org\n\nCÓMO EMPEZAR\n\nEn primer lugar, asegúrese de tener el sistema openHAB configurado y conectado al servicio openHAB Cloud. Puede crear una cuenta gratuita en https://myopenhab.org. En esa página obtendrá más información.\n\nEn la configuración de openHAB, añada etiquetas (tags) de voz para los items que desee controlar con Alexa. Se puede controlar cualquier elemento númerico, regulador (dimmer), conmutador o termostato, independientemente de si es de tipo numérico o de texto.\n\nPor último active la skill de openHAB para Alexa. Cuando se le solicite, use los credenciales de su cuenta de openHAB Cloud para vincular su sistema a Alexa.\n\nUna vez vinculado, cualquier elemento que haya configurado con etiquetas (tags) de voz, será añadido y estará automáticamente disponible para que Alexa lo descubra. Si añade elementos adicionales después de vincular el skill, simplemente dígale a Alexa \"Descubre Dispositivos\" para añadirlos a su cuenta de Alexa.\n\nPuede controlar elementos en openHAB directamente, por ejemplo:\n - Alexa enciende la Cocina\n\nIgualmente puede añadir elementos a grupos para que Alexa controle múltiples componentes a la vez. Por ejemplo:\n - Alexa, pon el Dormitorio al 50 por ciento\n\nEs posible también emplear escenas y rutinas para controlar múltiples elementos en openHAB. Por ejemplo:\n - Alexa, activa la Hora de Dormir.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
-          "examplePhrases": [
-            "Alexa, enciende la Cocina",
-            "Alexa, pon el Dormitorio al 50 por ciento",
-            "Alexa, baja la Temperatura 5 grados"
-          ],
-          "keywords": [
-            "openHAB",
-            "Automatización del Hogar",
-            "Casa Inteligente"
-          ]
-        },
-        "fr-CA": {
-          "name": "openHAB",
-          "summary": "Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org",
-          "description": "Le skill maison connectée openHAB vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système openHAB 2 via le service de cloud myopenHAB.org.\n\nLe projet ouvert Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de la domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Les technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, astérisque, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/\n\nGUIDE DE DÉMARRAGE\n\nAssurez-vous d’abord que vous avez votre système openHAB configuré et connecté à l’openHAB Cloud service. openHAB Cloud comptes sont gratuits, visitez https://myopenhab.org pour plus d’informations.\n\nDans la configuration de votre openHAB, ajouter un tag vocal pour les éléments que vous souhaitez exposer à Alexa. Les éléments de type « Number », « Dimmer », « Switch » ou « Thermostat » (de type string ou number), sont supportés.\n\nPour terminer, activer la skill openHAB pour Alexa. À l'invite, saisir vos identifiants de openHAB Cloud pour associer votre système à Alexa.\n\nUne fois associés, les « items » configurés avec des tags vocaux seront découverts automatiquement et disponibles pour Alexa. Si des « items » supplémentaires sont ajoutés après l'association, il suffit de demander à Alexa de « découvrir les dispositifs » pour qu'ils soient ajoutés à votre compte Alexa.\n\nIl est possible de controller directement des « items » de votre système openHAB, par exemple :\n - Alexa, allume la Cuisine\n\nVous pouvez aussi ajouter vos « items » à des groupes Alexa afin de contrôler plusieurs « items » à la fois, par exemple :\n - Alexa, règle la luminosité du salon à 50 pourcent\n\nLes Scènes et Routines peuvent également être utilisées afin de contrôler plusieurs « items » openHAB, par exemple :\n - Alexa, active le mode nocturne.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
-          "examplePhrases": [
-            "Alexa, allume la Cuisine",
-            "Alexa, règle la luminosité du salon à 50 pourcent",
-            "Alexa, règle la température de la chambre à 25 degrés"
-          ],
-          "keywords": [
-            "openHAB",
-            "Domotique",
-            "Maison Intelligente"
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
           ]
         },
         "fr-FR": {
           "name": "openHAB",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/9f1a/d8632e464e6149f99798b29cf2a9772b/APP_ICON?versionId=yJh..nq6h0A90mNgcqGgWEWCjaceJDOb&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=66aed1900c3799085aa80630b035b132169ed96ad7b71849eb942a6b96691807",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/ee5a/2a0cbf6164134244b815b0b1c1062a23/APP_ICON_LARGE?versionId=Ivn7zKj9dnh4h_jcoE01Uub0IfofNxT0&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=557fd58eab94b2e7ba6785dac713faeaf94a3372837b5240406eefe42a28ef79",
           "summary": "Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org",
-          "description": "Le skill maison connectée openHAB vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système openHAB 2 via le service de cloud myopenHAB.org.\n\nLe projet ouvert Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de la domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Les technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, astérisque, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/\n\nGUIDE DE DÉMARRAGE\n\nAssurez-vous d’abord que vous avez votre système openHAB configuré et connecté à l’openHAB Cloud service. openHAB Cloud comptes sont gratuits, visitez https://myopenhab.org pour plus d’informations.\n\nDans la configuration de votre openHAB, ajouter un tag vocal pour les éléments que vous souhaitez exposer à Alexa. Les éléments de type « Number », « Dimmer », « Switch » ou « Thermostat » (de type string ou number), sont supportés.\n\nPour terminer, activer la skill openHAB pour Alexa. À l'invite, saisir vos identifiants de openHAB Cloud pour associer votre système à Alexa.\n\nUne fois associés, les « items » configurés avec des tags vocaux seront découverts automatiquement et disponibles pour Alexa. Si des « items » supplémentaires sont ajoutés après l'association, il suffit de demander à Alexa de « découvrir les dispositifs » pour qu'ils soient ajoutés à votre compte Alexa.\n\nIl est possible de controller directement des « items » de votre système openHAB, par exemple :\n - Alexa, allume la Cuisine\n\nVous pouvez aussi ajouter vos « items » à des groupes Alexa afin de contrôler plusieurs « items » à la fois, par exemple :\n - Alexa, règle la luminosité du salon à 50 pourcent\n\nLes Scènes et Routines peuvent également être utilisées afin de contrôler plusieurs « items » openHAB, par exemple :\n - Alexa, active le mode nocturne.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
+          "description": "La skill maison connectée openHAB vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système openHAB 2 via le service de cloud myopenHAB.org. \n\nLe projet ouvert Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de la domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Les technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, astérisque, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/\n\nGUIDE DE DÉMARRAGE\n\nAssurez-vous d’abord que vous avez votre système openHAB configuré et connecté à l’openHAB Cloud service.  Les comptes openHAB Cloud sont gratuits, visitez https://myopenhab.org pour plus d’informations. \n\nDans la configuration de votre openHAB, ajoutez un tag vocal pour les éléments que vous souhaitez exposer à Alexa.  Les appareils de type « Number », « Dimmer », « Switch » ou « Thermostat » (de type string ou number), sont pris en charge. \n\nPour terminer, activez la skill openHAB pour Alexa.  Saisissez vos identifiants de openHAB Cloud pour associer votre système à Alexa.\n\nUne fois associés, les « items » configurés avec des tags vocaux seront découverts automatiquement et disponibles pour Alexa.  Si des « items » supplémentaires sont ajoutés après l'association, il suffit de demander à Alexa de « découvrir les dispositifs » pour qu'ils soient ajoutés à votre compte Alexa.\n\nIl est possible de controller directement des « items » de votre système openHAB, par exemple :\n - Alexa, allume la Cuisine\n\nVous pouvez aussi ajouter vos « items » à des groupes Alexa afin de contrôler plusieurs « items » à la fois, par exemple :\n - Alexa, règle la luminosité du salon à 50 pourcent\n\nLes Scènes et Routines peuvent également être utilisées afin de contrôler plusieurs « items » openHAB, par exemple :\n - Alexa, active le mode nocturne.",
           "examplePhrases": [
-            "Alexa, allume la Cuisine",
+            "Alexa, allume la cuisine",
             "Alexa, règle la luminosité du salon à 50 pourcent",
             "Alexa, règle la température de la chambre à 25 degrés"
           ],
           "keywords": [
             "openHAB",
-            "Domotique",
-            "Maison Intelligente"
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
           ]
         },
-        "it-IT": {
+        "en-GB": {
           "name": "openHAB",
-          "summary": "Controlla il tuo sistema OpenHAB 2 con Alexa e myopenHAB.org",
-          "description": "La skill openHAB Alexa Smart Home ti permette di controllare luci, termostati e altri oggetti connessi ad openHAB 2 attraverso il servizio cloud myopenHAB.org.\n\nIl progetto open Home Automation Bus (openHAB) ha l'obiettivo di fornire una piattaforma universale di integrazione per qualunque oggetto dedicato alla domotica. E' progettato per essere assolutamente indipendente venditore di prodotti, hardware o protocolli. openHAB integra sistemi bus, dispositivi hardware e protocolli di interfaccia differenti. Le tecnologie supportate includono KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, dispositivi seriali generici e molto altro ancora. Puoi trovare ulteriori informazioni su openHAB qui: http://www.openhab.org/\n\nGUIDA INTRODUTTIVA\n\nCome prima cosa, assicurati di aver configurato il tuo sistema openHAB e di averlo connesso al servizio openHAB Cloud. Gli account openHAB Cloud sono gratuiti. Visita https://myopenhab.org per maggiori informazioni.\n\nIn secondo luogo, nella tua configurazione di openHAB, aggiungi tags vocali per tutti i dispositivi che vuoi gestire tramite Alexa. Sono supportati tutti gli oggetti number, dimmer, switch e thermostat (string o number).\n\nInfine, abilita la skill openHAB su Alexa. Quando richiesto, utilizza le credenziali del tuo account openHAB Cloud per collegare il tuo sistema ad Alexa.\n\nUna volta fatto ciò, tutti i dispositivi contrassegnati da tag vocali saranno trovabili e automaticamente gestibili da Alexa. Se aggiungi ulteriori dispositivi dopo aver già effettuato il collegamento, ti basterà chiedere ad Alexa di cercarli dicendo: \"Alexa, trova dispositivi\". Così facendo essi verranno aggiunti al tuo account Alexa.\n\nPuoi controllare i dispositivi del tuo sistema openHAB in modo diretto, ad esempio dicendo:\n - Alexa, accendi Cucina\n\nPuoi anche assegnare i tuoi dispositivi a dei gruppi Alexa, in modo da controllarne più di uno alla volta; ad esempio:\n - Alexa, imposta la camera da letto al 50 per cento\n\nScenari e Routine possono anch'essi essere usati per controllare più di un dispositivo openHAB alla volta; ad esempio:\n - Alexa, accendi Modalità Letto.",
-          "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-108.png",
-          "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/res/openhablogo-512.png",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/41be/6e889fe513b14635966d610b3d804202/APP_ICON?versionId=qCrBtR7REilj816rc_U_sh6JYnkV6pkJ&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=0466884837d5318a241669990bcad101a37a1213700819ae7d2a4fbf6ee472f2",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/b657/f1379e0d2f094af29b324917464e4863/APP_ICON_LARGE?versionId=XE_cfrfOqPCJtibGc4wQOkpS5Rucw9qD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=5c7a252a98ed8a85489f5b6b0047201beb8417ff1d83340c5479321fbe96e29d",
+          "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org",
+          "description": "The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. \n\nThe open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many others. You will find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. \n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. \n\nFinally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. \n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n -Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
           "examplePhrases": [
-            "Alexa, accendi la luce della cucina",
-            "Alexa, regola la camera da letto al 50 per cento",
-            "Alexa, riduci la temperatura della cucina di 5 gradi"
+            "Alexa, turn on Kitchen",
+            "Alexa, set Bedroom to 50 percent",
+            "Alexa, decrease Temperature  by 5 degrees"
           ],
           "keywords": [
             "openHAB",
-            "Domotica",
-            "Casa intelligente"
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
+          ]
+        },
+        "fr-CA": {
+          "name": "openHAB",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/9186/02e66ebcf47b405f8ceb06c5f611e43b/APP_ICON?versionId=1zzcqWzZaMx0ZUdnV4wV5JmCIbnMDwTc&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=5c235f841742a700a7e4d9ff639b74b57ebbda3332a69bf31654c2bf0ad658b0",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/a4c6/f5a1218ae0cd4741a401850daa39c3ea/APP_ICON_LARGE?versionId=kD1U37YslgfALPQ_YmN1cDnNmCi3gc0H&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=6756ee7fca60e40b0d6509d9be7f93f44b6df8be320d7b1efd110709b9a8a3fa",
+          "summary": "Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org",
+          "description": "La skill maison connectée openHAB vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système openHAB 2 via le service de cloud myopenHAB.org. \n\nLe projet ouvert Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de la domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Les technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/\n\nGUIDE DE DÉMARRAGE\n\nAssurez-vous d’abord que vous avez votre système openHAB configuré et connecté à l’openHAB Cloud service.   Les comptes openHAB Cloud sont gratuits, visitez https://myopenhab.org pour plus d’informations. \n\nDans la configuration de votre openHAB, ajoutez une étiquette vocale pour les éléments que vous souhaitez exposer à Alexa. Tous les appareils supportant les modes de type  « Nombre», « Variateur», « Interrupteur» ou « Thermostat », sont pris en charge. Ces modes peuvent être invoqués par un nom ou un chiffre. \n\nPour terminer, activez la skill openHAB pour Alexa.  Saisissez vos identifiants openHAB Cloud dans la page d'authentification pour associer votre système à Alexa. \n\nUne fois associés, les appareils configurés avec des étiquettes vocales seront découverts automatiquement et disponibles pour Alexa. Si des appareils supplémentaires sont ajoutés après l'association, il suffit de demander à Alexa de « découvrir les dispositifs » pour qu'ils soient ajoutés à votre compte Alexa.\n\nIl est possible de contrôler directement des appareils de votre système openHAB , par exemple :\n - Alexa, allume la Cuisine\n\nVous pouvez aussi ajouter vos appareils à des groupes Alexa afin d'en contrôler plusieurs à la fois , par exemple :\n - Alexa, règle la luminosité du salon à 50 pourcent\n\nLes Scènes et Routines peuvent également être utilisées afin de contrôler plusieurs appareils openHAB, par exemple :\n - Alexa, active le mode nocturne.",
+          "examplePhrases": [
+            "Alexa, allume la cuisine",
+            "Alexa, règle la luminosité du salon à 50 pourcent",
+            "Alexa, règle la température de la chambre à 25 degrés"
+          ],
+          "keywords": [
+            "openHAB",
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
+          ]
+        },
+        "es-MX": {
+          "name": "openHAB",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/16ac/c5de66ef216d469cab6a8f68e2a0f71e/APP_ICON?versionId=RgVnBVxRfDdfoIZw8D5qJZohfH0ZtwPz&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=dac96726ce0b374239bb5202dbbc8d69451efdeb62ea5499c5ac1cc7d3a4c54e",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/8601/84722f4893a74f469ac0164053588be5/APP_ICON_LARGE?versionId=o_K0_AvA.nHQzc9kOzNa63_VSc8oF_sB&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20190525T235205Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=AKIAJFEYRBGIHK2BBYKA%2F20190525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=5fbf6fbd2685e417fff03126f9b9c87a782430c4062a662f5851829e18908178",
+          "summary": "Controle su sistema openHAB 2 mediante Alexa y myopenHAB.org",
+          "description": "La skill para hogar digital de Alexa y openHAB, le permite controlar sus luces, termostatos o cualquier otro dispositivo conectado a un sistema openHAB 2 a través del servicio en la nube myopenHAB.org. \n\nEl proyecto de código abierto openHAB (Home Automation Bus), tiene como objetivo la integración universal entre las diferentes plataformas de objetos conectados para la automatización del hogar. Está diseñado para ser totalmente independiente de cualquier fabricante, hardware o protocolo. openHAB une en un sólo entero diferentes sistemas, dispositivos y protocolos de comunicación. Algunas tecnologías soportadas son KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, puerto serie genérico y muchas otras. Puede encontrar más información de openHAB en https://www.openhab.org\n\nCÓMO EMPEZAR\n\nEn primer lugar, asegúrese de tener el sistema openHAB configurado y conectado  al servicio openHAB Cloud.  Puede crear una cuenta gratuita en https://myopenhab.org. En esa página obtendrá más información. \n\nEn la configuración de openHAB, añada etiquetas (tags) de voz para los items que desee controlar con Alexa. Se puede controlar cualquier elemento númerico, regulador (dimmer), conmutador o termostato, independientemente de si es de tipo numérico o de texto. \n\nPor último active la skill de openHAB para Alexa.  Cuando se le solicite, use los credenciales de su cuenta de openHAB Cloud para vincular su sistema a Alexa. \n\nUna vez vinculado, cualquier elemento que haya configurado con etiquetas (tags) de voz, será añadido y estará automáticamente disponible para que Alexa lo descubra.  Si añade elementos adicionales después de vincular el skill, simplemente dígale a Alexa \"Descubre Dispositivos\" para añadirlos a su cuenta de Alexa.\n\nPuede controlar elementos en openHAB directamente, por ejemplo:\n - Alexa enciende la Cocina\n\nIgualmente puede añadir elementos a grupos para que Alexa controle múltiples componentes a la vez. Por ejemplo:\n - Alexa, pon el Dormitorio al 50 por ciento\n\nEs posible también emplear escenas y rutinas para controlar múltiples elementos en openHAB. Por ejemplo:\n - Alexa, activa la Hora de Dormir.",
+          "examplePhrases": [
+            "Alexa, enciende la Cocina",
+            "Alexa, pon el Dormitorio al 50 por ciento",
+            "Alexa, baja la Temperatura en 5 grados"
+          ],
+          "keywords": [
+            "openHAB",
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "home",
+            "automation",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "hue"
           ]
         }
       },
-      "distributionCountries": [],
       "isAvailableWorldwide": true,
-      "distributionMode": "PUBLIC",
-      "testingInstructions": "Provision an openHAB 2.x Server, install the 'demo items', configure, enable the openHAB Cloud Connector binding, create a myopenhab.org account and set your servers UUID & secret, say 'Alexa, Discover my devices'. You can then see the demo device states being controlled by Amazon Echo via the openHAB Web UI.",
-      "category": "SMART_HOME"
-    },
-    "privacyAndCompliance": {
-      "allowsPurchases": false,
-      "usesPersonalInfo": false,
-      "isChildDirected": false,
-      "isExportCompliant": true,
-      "containsAds": false,
-      "locales": {
-        "de-DE": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "en-AU": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "en-CA": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "en-GB": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "en-IN": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "en-US": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "es-ES": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "es-MX": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "fr-CA": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "fr-FR": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        },
-        "it-IT": {
-          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
-        }
-      }
-    },
-    "permissions": [],
-    "apis": {
-      "smartHome": {
-        "endpoint": {
-          "uri": "alexa-openhab",
-          "sourceDir": "lambda/smarthome"
-        },
-        "protocolVersion": "3"
-      }
+      "testingInstructions": "A demo account has been setup on our cloud service myopenhab.org for this skill:\n\nuser: demo@openhab.org\npass: 8PcHDdrYedHA\n\nOnce the skill is linked to our cloud service and discovery is run it should find a few lights as well as a thermostat.",
+      "category": "SMART_HOME",
+      "distributionCountries": []
     }
   }
 }
