@@ -1,0 +1,7 @@
+{
+  "extends": ["eslint:recommended", "plugin:node/recommended"],
+  "rules": {
+    "no-console": "warn",
+    "node/no-missing-require": "off"
+  }
+}
