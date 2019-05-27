@@ -1,13 +1,13 @@
 {
   "name": "openHAB",
-  "summary": "Control your openHAB 2 system with Alexa and myopenHAB.org.",
-  "description": "The openHAB Alexa Smart Home Skill allows you to control lights, thermostats and other connected items on a openHAB 2 system through the myopenHAB.org cloud service. \n\nThe open Home Automation Bus (openHAB) project aims at providing a universal integration platform for all things around home automation. It is designed to be absolutely vendor-neutral as well as hardware/protocol-agnostic. openHAB brings together different bus systems, hardware devices and interface protocols. Supported technologies include KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generic serial devices and many, many  others. You can find openHAB at http://www.openhab.org/\n\nGETTING STARTED\n\nFirst make sure you have your openHAB system configured and connected to the openHAB Cloud service.  openHAB Cloud accounts are free, visit https://myopenhab.org for more information. \n\nIn your openHAB configuration, add voice tags to the items you wish to expose to Alexa. Any number, dimmer, switch or thermostat mode (string or number) is supported. \n\nFinally enable the openHAB Alexa skill.  When prompted, use your openHAB Cloud account credentials to link your system to Alexa. \n\nOnce linked, any items you have configured with voice tags will be discoverable and automatically available to Alexa.  IF you add additional items after linking, just ask Alexa to \"Discover Devices\" to add them to your Alexa account.\n\nYou can control items in your openHAB system directly, for example:\n - Alexa, turn on Kitchen\n\nYou can also add your items to Alexa groups to control multiple items at once, for example:\n -Alexa, set Bedroom to 50 percent\n\nScenes and Routines can also be used to control multiple openHAB items, for example:\n - Alexa, turn on Bed Time.",
+  "summary": "Contrôlez votre système openHAB 2 avec Alexa et myopenHAB.org",
+  "description": "La skill maison connectée openHAB vous permet de contrôler les lumières, les thermostats et les autres éléments connectés sur un système openHAB 2 via le service de cloud myopenHAB.org. \n\nLe projet ouvert Home Automation Bus (openHAB) vise à fournir une plate-forme d’intégration universelle pour toutes les choses autour de la domotique. Il est conçu pour être absolument neutre et indépendant du matériel/protocole. openHAB regroupe des systèmes de bus différents, les périphériques matériels et protocoles d’interface. Les technologies prises en charge incluent KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, astérisque, équipements de série génériques et bien d’autres. Vous trouverez openHAB sur http://www.openhab.org/\n\nGUIDE DE DÉMARRAGE\n\nAssurez-vous d’abord que vous avez votre système openHAB configuré et connecté à l’openHAB Cloud service.  Les comptes openHAB Cloud sont gratuits, visitez https://myopenhab.org pour plus d’informations. \n\nDans la configuration de votre openHAB, ajoutez un tag vocal pour les éléments que vous souhaitez exposer à Alexa.  Les appareils de type « Number », « Dimmer », « Switch » ou « Thermostat » (de type string ou number), sont pris en charge. \n\nPour terminer, activez la skill openHAB pour Alexa.  Saisissez vos identifiants de openHAB Cloud pour associer votre système à Alexa.\n\nUne fois associés, les « items » configurés avec des tags vocaux seront découverts automatiquement et disponibles pour Alexa.  Si des « items » supplémentaires sont ajoutés après l'association, il suffit de demander à Alexa de « découvrir les dispositifs » pour qu'ils soient ajoutés à votre compte Alexa.\n\nIl est possible de controller directement des « items » de votre système openHAB, par exemple :\n - Alexa, allume la Cuisine\n\nVous pouvez aussi ajouter vos « items » à des groupes Alexa afin de contrôler plusieurs « items » à la fois, par exemple :\n - Alexa, règle la luminosité du salon à 50 pourcent\n\nLes Scènes et Routines peuvent également être utilisées afin de contrôler plusieurs « items » openHAB, par exemple :\n - Alexa, active le mode nocturne.",
   "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/resources/icons/openhablogo-108.png",
   "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/resources/icons/openhablogo-512.png",
   "examplePhrases": [
-    "Alexa, turn on Kitchen",
-    "Alexa, set bedroom to 50 percent",
-    "Alexa, decrease temperature by 5 degrees"
+    "Alexa, allume la cuisine",
+    "Alexa, règle la luminosité du salon à 50 pourcent",
+    "Alexa, règle la température de la chambre à 25 degrés"
   ],
   "keywords": [
     "openHAB",
@@ -23,8 +23,8 @@
     "Bluetooth",
     "smarthome",
     "hue",
-    "Home Automation",
-    "Smart Home",
+    "Domotique",
+    "Maison Intelligente",
     "Connected Home"
   ]
 }
