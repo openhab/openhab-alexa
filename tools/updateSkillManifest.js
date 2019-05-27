@@ -41,6 +41,12 @@ const REGIONS = [
 ];
 
 /**
+ * Placeholder format pattern
+ * @type {RegExp}
+ */
+const PLACEHOLDER_PATTERN = /%(\w+)[:]?(.*?)%/g;
+
+/**
  * Load locale resources
  * @param  {Object} schema
  */
@@ -80,6 +86,21 @@ function setApiRegionalEndpoints(schema) {
 }
 
 /**
+ * Format skill schema
+ * @param {Object} schema
+ */
+function formatSkillSchema(schema) {
+  Object.keys(schema).forEach((key) => {
+    if (typeof schema[key] === 'object') {
+      formatSkillSchema(schema[key]);
+    } else if (typeof schema[key] === 'string') {
+      schema[key] = schema[key].replace(PLACEHOLDER_PATTERN,
+        (placeholder, variable, fallback) => process.env[`ASK_${variable}`] || fallback || placeholder);
+    }
+  });
+}
+
+/**
  * Load skill schema
  * @return {Object}
  */
@@ -115,6 +136,8 @@ if (require.main === module) {
     loadLocaleResources(schema);
     // Set api regional endpoints
     setApiRegionalEndpoints(schema);
+    // Format skill schema
+    formatSkillSchema(schema);
     // Save skill schema
     saveSkillSchema(schema);
   } catch (e) {

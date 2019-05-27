@@ -10,7 +10,7 @@
       "distributionCountries": [],
       "isAvailableWorldwide": true,
       "distributionMode": "PUBLIC",
-      "testingInstructions": "Provision an openHAB 2.x Server, install the 'demo items', configure, enable the openHAB Cloud Connector binding, create a myopenhab.org account and set your servers UUID & secret, say 'Alexa, Discover my devices'. You can then see the demo device states being controlled by Amazon Echo via the openHAB Web UI.",
+      "testingInstructions": "A demo account has been setup on our cloud service myopenhab.org for this skill:\n\nuser: %TESTING_USER:demo@openhab.org%\npass: %TESTING_PASS%\n\nOnce the skill is linked to our cloud service and discovery is run it should find a few lights as well as a thermostat.",
       "category": "SMART_HOME"
     },
     "privacyAndCompliance": {
