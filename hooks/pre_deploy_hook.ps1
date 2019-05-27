@@ -24,6 +24,11 @@ function install_dependencies ($CWD, $SOURCE_DIR) {
     return $EXEC_RESULT
 }
 
+function update_skill_manifest () {
+    Invoke-Expression "node ./tools/updateSkillManifest.js" 2>&1 | Out-Null
+    return $?
+}
+
 if ($DO_DEBUG) {
     Write-Output "###########################"
     Write-Output "##### pre-deploy hook #####"
@@ -45,6 +50,16 @@ if ($TARGET -eq "all" -Or $TARGET -eq "lambda") {
             }
             exit 1
         }
+    }
+    if (update_skill_manifest) {
+        if ($DO_DEBUG) {
+            Write-Output "Skill manifest updated successfully."
+        }
+    } else {
+        if ($DO_DEBUG) {
+            Write-Output "There was a problem updating the skill manifest."
+        }
+        exit 1
     }
     if ($DO_DEBUG) {
         Write-Output "###########################"
