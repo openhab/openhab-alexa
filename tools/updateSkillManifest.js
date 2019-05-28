@@ -86,6 +86,18 @@ function setApiRegionalEndpoints(schema) {
 }
 
 /**
+ * Set publishing distribution settings (for production deployment)
+ * @param {Object} schema
+ */
+function setPublishingDistributionSettings(schema) {
+  if (process.env.ASK_ENV === 'production') {
+    schema.manifest.publishingInformation.distributionMode = 'PUBLIC';
+  } else {
+    schema.manifest.publishingInformation.distributionMode = 'PRIVATE';
+  }
+}
+
+/**
  * Format skill schema
  * @param {Object} schema
  */
@@ -136,6 +148,8 @@ if (require.main === module) {
     loadLocaleResources(schema);
     // Set api regional endpoints
     setApiRegionalEndpoints(schema);
+    // Set publishing distribution settings
+    setPublishingDistributionSettings(schema);
     // Format skill schema
     formatSkillSchema(schema);
     // Save skill schema
