@@ -27,7 +27,7 @@ const RESOURCES_PATH = '../resources';
  * @type {Array}
  */
 const LOCALES = [
-  'de-DE', 'en-AU', 'en-CA', 'en-GB', 'en-IN', 'en-US', 'es-ES', 'es-MX',
+  'de-DE', 'en-AU', 'en-CA', 'en-GB', 'en-IN', 'en-US', 'es-ES', 'es-MX', 'es-US',
   'fr-CA', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR'
 ];
 
