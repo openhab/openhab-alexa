@@ -223,7 +223,6 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
     * Supported item type:
       * Color
       * Dimmer
-      * Rollershutter
       * Switch
     * Default category: SWITCH
   * `BrightnessController.brightness`
@@ -537,7 +536,6 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
     * Supported item type:
       * Color
       * Dimmer
-      * Rollershutter
       * Switch
     * Supported metadata parameters:
       * friendlyNames=`<names>`
@@ -688,7 +686,7 @@ Switch DeviceSwitch "Device Switch" {alexa="Switchable"}
 Rollershutter ShutterSwitch "Shutter Switch" {alexa="Switchable"}
 
 Switch DeviceSwitch "Device Switch" {alexa="PowerController.powerState" [category="SWITCH"]}
-Rollershutter ShutterSwitch "Shutter Switch" {alexa="PowerController.powerState,PercentageController.percentage" [category="SWITCH"]}
+Rollershutter ShutterSwitch "Shutter Switch" {alexa="PercentageController.percentage" [category="SWITCH"]}
 ```
 * Lighting (capabilities depending on item type)
 ```
