@@ -93,6 +93,9 @@ module.exports = {
       "PowerController": [
         "./v3/test_controllerPower.js"
       ],
+      "PlaybackStateReporter": [
+        "./v3/test_controllerPlaybackStateReporter.js"
+      ],
       "PowerLevelController": [
         "./v3/test_controllerPowerLevel.js"
       ],
