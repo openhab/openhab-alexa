@@ -34,7 +34,7 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "PlaybackController.playbackState"
+              "value": "PlaybackController.playback,PlaybackStateReporter.playbackState"
             }
           },
           "groupNames": ["gSpeaker"]
@@ -135,6 +135,7 @@ module.exports = {
         "Alexa.Speaker.muted",
         "Alexa.Speaker.volume",
         "Alexa.PlaybackController",
+        "Alexa.PlaybackStateReporter.playbackState",
         "Alexa.EqualizerController.bands",
         "Alexa.EqualizerController.modes",
         "Alexa.EndpointHealth.connectivity"
@@ -150,7 +151,10 @@ module.exports = {
           "modes": {
             "supported": [{"name": "MOVIE"}, {"name": "TV"}]
           }
-        }
+        },
+        "Alexa.PlaybackController.supportedOperations": [
+          'Play', 'Pause', 'Next', 'Previous', 'Rewind', 'FastForward'
+        ]
       },
       "propertyMap": {
         "EqualizerController": {

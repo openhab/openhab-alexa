@@ -38,7 +38,7 @@ class AlexaPlaybackController extends AlexaDirective {
    * Sends a playback command (PLAY, PASUE, REWIND, etc..) to a string or player item
    */
   setPlayback() {
-    const postItem = Object.assign({}, this.propertyMap.PlaybackController.playbackState.item, {
+    const postItem = Object.assign({}, this.propertyMap.PlaybackController.playback.item, {
       state: this.directive.header.name.toUpperCase()
     });
     this.postItemsAndReturn([postItem]);

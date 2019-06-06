@@ -165,7 +165,7 @@ Switch Mute     "Mute"    (Stereo)  {alexa="Speaker.muted"}
 Switch Power    "Power"   (Stereo)  {alexa="PowerController.powerState"}
 String Input    "Input"   (Stereo)  {alexa="InputController.input" [supportedInputs="HDMI1,TV"]}
 String Channel  "Channel" (Stereo)  {alexa="ChannelController.channel"}
-Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playbackState"}
+Player Player   "Player"  (Stereo)  {alexa="PlaybackController.playback,PlaybackStateReporter.playbackState"}
 Number Bass     "Bass"    (Stereo)  {alexa="EqualizerController.bands:bass" [range="-10:10"]}
 Number Midrange "Mid"     (Stereo)  {alexa="EqualizerController.bands:midrange" [range="-10:10"]}
 Number Treble   "Treble"  (Stereo)  {alexa="EqualizerController.bands:treble" [range="-10:10"]}
@@ -393,11 +393,16 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
     * Supported item type:
       * Switch
     * Default category: SPEAKER
-  * `PlaybackController.playbackState`
-    * Items that represent the playback of a AV device. (Supported commands: Play, Pause, Next, Previous, Rewind, Fast Forward)
+  * `PlaybackController.playback`
+    * Items that represent the playback controls of a AV device. (Supported commands: Play, Pause, Next, Previous, Rewind, Fast Forward)
     * Supported item type:
       * Player
     * Default category: OTHER
+  * `PlaybackStateReporter.playbackState`
+    * Items that represent the playback state of a AV device. It should be used in combination with `PlaybackController.playback` to provide state back to Alexa.
+    * Supported item type:
+      * Player
+    * Default category: OTHER  
   * `EqualizerController.bands:{bass,midrange,treble}`
     * Items that represent the different equalizer bands and their ranges supported by an audio system. Use specific capability component (`bass`, `midrange` or `treble`) when configuring a band (e.g. `EqualizerController.bands:bass`). Add the band range values in the `range="-10:10"` parameter. For the reset default value, provide the setting in `default=0` parameter or it will be calculated by using midpoint range spread. Additionally, default adjust increment can be configured in `increment=2` parameter. When configuring multiple bands, make sure to synchronize the range parameter across relevant items as the same range values will be used for all bands due to Alexa restriction. However, the reset and increment default values can be different between bands.
     * Supported item type:
@@ -791,7 +796,7 @@ String EqualizerMode "Equalizer Mode" {alexa="EqualizerController.modes"}
 ```
 Player MediaPlayer "Media Player" ["MediaPlayer"]
 
-Player MediaPlayer "Media Player" {alexa="PlaybackController.playbackState"}
+Player MediaPlayer "Media Player" {alexa="PlaybackController.playback,PlaybackStateReporter.playbackState"}
 ```
 * SpeakerMute
 ```
