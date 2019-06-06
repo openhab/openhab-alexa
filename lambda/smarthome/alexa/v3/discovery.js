@@ -182,7 +182,6 @@ function convertV2Item(item, config = {}) {
         ];
       case 'Rollershutter':
         return [
-          'PowerController.powerState',
           'PercentageController.percentage'
         ];
       default:

@@ -394,7 +394,7 @@ module.exports = Object.freeze({
       }
     },
     'powerState': {
-      'itemTypes': ['Color', 'Dimmer', 'Rollershutter', 'Switch'],
+      'itemTypes': ['Color', 'Dimmer', 'Switch'],
       'state': {
         'type': 'string'
       }
@@ -441,7 +441,7 @@ module.exports = Object.freeze({
       }
     },
     'toggleState': {
-      'itemTypes': ['Color', 'Dimmer', 'Rollershutter', 'Switch'],
+      'itemTypes': ['Color', 'Dimmer', 'Switch'],
       'state': {
         'type': 'string'
       }
