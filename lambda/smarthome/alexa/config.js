@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2014-2019 by the respective copyright holders.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 
 /**
@@ -118,7 +122,13 @@ module.exports = Object.freeze({
     'PlaybackController': {
       'category': 'OTHER',
       'properties': [
-        {'name': 'playbackState', 'schema': 'playbackState', 'isReportable': false, 'isSupported': false}
+        {'name': 'playback', 'schema': 'playbackCommand', 'isReportable': false, 'isSupported': false}
+      ]
+    },
+    'PlaybackStateReporter': {
+      'category': 'OTHER',
+      'properties': [
+        {'name': 'playbackState', 'schema': 'playbackState'}
       ]
     },
     'PowerController': {
@@ -285,7 +295,7 @@ module.exports = Object.freeze({
     },
     'connectivity': {
       'state': {
-        'type': 'string'
+        'type': 'object'
       }
     },
     'detectionState': {
@@ -376,15 +386,13 @@ module.exports = Object.freeze({
         'type': 'integer'
       }
     },
+    'playbackCommand': {
+      'itemTypes': ['Player']
+    },
     'playbackState': {
       'itemTypes': ['Player'],
       'state': {
-        'map': {
-          'default': {
-            'Player': {'PLAYING': 'PLAY', 'PAUSED': 'PAUSE'}
-          }
-        },
-        'type': 'string'
+        'type': 'object'
       }
     },
     'powerLevel': {
@@ -394,7 +402,7 @@ module.exports = Object.freeze({
       }
     },
     'powerState': {
-      'itemTypes': ['Color', 'Dimmer', 'Rollershutter', 'Switch'],
+      'itemTypes': ['Color', 'Dimmer', 'Switch'],
       'state': {
         'type': 'string'
       }
@@ -441,7 +449,7 @@ module.exports = Object.freeze({
       }
     },
     'toggleState': {
-      'itemTypes': ['Color', 'Dimmer', 'Rollershutter', 'Switch'],
+      'itemTypes': ['Color', 'Dimmer', 'Switch'],
       'state': {
         'type': 'string'
       }

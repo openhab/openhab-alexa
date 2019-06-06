@@ -1,10 +1,14 @@
 /**
- * Copyright (c) 2014-2019 by the respective copyright holders.
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
 
 const fs = require('fs');
@@ -27,7 +31,7 @@ const RESOURCES_PATH = '../resources';
  * @type {Array}
  */
 const LOCALES = [
-  'de-DE', 'en-AU', 'en-CA', 'en-GB', 'en-IN', 'en-US', 'es-ES', 'es-MX',
+  'de-DE', 'en-AU', 'en-CA', 'en-GB', 'en-IN', 'en-US', 'es-ES', 'es-MX', 'es-US',
   'fr-CA', 'fr-FR', 'it-IT', 'ja-JP', 'pt-BR'
 ];
 
@@ -39,6 +43,12 @@ const LOCALES = [
 const REGIONS = [
   'NA', 'EU', 'FE'
 ];
+
+/**
+ * Placeholder format pattern
+ * @type {RegExp}
+ */
+const PLACEHOLDER_PATTERN = /%(\w+)[:]?(.*?)%/g;
 
 /**
  * Load locale resources
@@ -80,6 +90,21 @@ function setApiRegionalEndpoints(schema) {
 }
 
 /**
+ * Format skill schema
+ * @param {Object} schema
+ */
+function formatSkillSchema(schema) {
+  Object.keys(schema).forEach((key) => {
+    if (typeof schema[key] === 'object') {
+      formatSkillSchema(schema[key]);
+    } else if (typeof schema[key] === 'string') {
+      schema[key] = schema[key].replace(PLACEHOLDER_PATTERN,
+        (placeholder, variable, fallback) => process.env[`ASK_${variable}`] || fallback || placeholder);
+    }
+  });
+}
+
+/**
  * Load skill schema
  * @return {Object}
  */
@@ -115,6 +140,8 @@ if (require.main === module) {
     loadLocaleResources(schema);
     // Set api regional endpoints
     setApiRegionalEndpoints(schema);
+    // Format skill schema
+    formatSkillSchema(schema);
     // Save skill schema
     saveSkillSchema(schema);
   } catch (e) {

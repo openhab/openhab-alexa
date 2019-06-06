@@ -96,7 +96,25 @@ To configure the server path and credentials, you will need to setup the applica
     ```
     $ git pull
     ```
-2. Deploy the skill and the lambda function in one step:
+
+2. If updating from v2 version:
+    1. Copy relevant settings from `config.js` (v2) to `lambda/smarthome/config.js` (v3).
+
+    2. Add current skill id to ask config by using the skill id listed under your [Alexa developer console](https://developer.amazon.com/alexa/console/ask).
+        ```
+        $ cat .ask/config
+        {
+          "deploy_settings": {
+            "default": {
+              "skill_id": "<skillId>",
+              "was_cloned": false,
+              "merge": {}
+            }
+          }
+        }
+        ```
+
+3. Deploy the skill and the lambda function in one step:
     ```
     $ ask deploy [--force] (Force deployment if lambda manual configs were applied)
     Profile for the deployment: [default]

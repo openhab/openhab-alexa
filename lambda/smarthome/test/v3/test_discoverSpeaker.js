@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2010-2019 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
+
 module.exports = {
   description: "speaker player enabled group",
   mocked: [
@@ -34,7 +47,7 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "PlaybackController.playbackState"
+              "value": "PlaybackController.playback,PlaybackStateReporter.playbackState"
             }
           },
           "groupNames": ["gSpeaker"]
@@ -135,6 +148,7 @@ module.exports = {
         "Alexa.Speaker.muted",
         "Alexa.Speaker.volume",
         "Alexa.PlaybackController",
+        "Alexa.PlaybackStateReporter.playbackState",
         "Alexa.EqualizerController.bands",
         "Alexa.EqualizerController.modes",
         "Alexa.EndpointHealth.connectivity"
@@ -150,7 +164,10 @@ module.exports = {
           "modes": {
             "supported": [{"name": "MOVIE"}, {"name": "TV"}]
           }
-        }
+        },
+        "Alexa.PlaybackController.supportedOperations": [
+          'Play', 'Pause', 'Next', 'Previous', 'Rewind', 'FastForward'
+        ]
       },
       "propertyMap": {
         "EqualizerController": {
