@@ -118,7 +118,13 @@ module.exports = Object.freeze({
     'PlaybackController': {
       'category': 'OTHER',
       'properties': [
-        {'name': 'playbackState', 'schema': 'playbackState', 'isReportable': false, 'isSupported': false}
+        {'name': 'playback', 'schema': 'playbackCommand', 'isReportable': false, 'isSupported': false}
+      ]
+    },
+    'PlaybackStateReporter': {
+      'category': 'OTHER',
+      'properties': [
+        {'name': 'playbackState', 'schema': 'playbackState'}
       ]
     },
     'PowerController': {
@@ -285,7 +291,7 @@ module.exports = Object.freeze({
     },
     'connectivity': {
       'state': {
-        'type': 'string'
+        'type': 'object'
       }
     },
     'detectionState': {
@@ -376,15 +382,13 @@ module.exports = Object.freeze({
         'type': 'integer'
       }
     },
+    'playbackCommand': {
+      'itemTypes': ['Player']
+    },
     'playbackState': {
       'itemTypes': ['Player'],
       'state': {
-        'map': {
-          'default': {
-            'Player': {'PLAYING': 'PLAY', 'PAUSED': 'PAUSE'}
-          }
-        },
-        'type': 'string'
+        'type': 'object'
       }
     },
     'powerLevel': {
@@ -394,7 +398,7 @@ module.exports = Object.freeze({
       }
     },
     'powerState': {
-      'itemTypes': ['Color', 'Dimmer', 'Rollershutter', 'Switch'],
+      'itemTypes': ['Color', 'Dimmer', 'Switch'],
       'state': {
         'type': 'string'
       }
@@ -441,7 +445,7 @@ module.exports = Object.freeze({
       }
     },
     'toggleState': {
-      'itemTypes': ['Color', 'Dimmer', 'Rollershutter', 'Switch'],
+      'itemTypes': ['Color', 'Dimmer', 'Switch'],
       'state': {
         'type': 'string'
       }

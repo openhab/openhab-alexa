@@ -30,7 +30,6 @@ module.exports = {
     "switch1": {
       "capabilities": [
         "Alexa",
-        "Alexa.PowerController.powerState",
         "Alexa.PercentageController.percentage",
         "Alexa.EndpointHealth.connectivity"
       ],
@@ -40,7 +39,6 @@ module.exports = {
     "switch2": {
       "capabilities": [
         "Alexa",
-        "Alexa.PowerController.powerState",
         "Alexa.PercentageController.percentage",
         "Alexa.EndpointHealth.connectivity"
       ],

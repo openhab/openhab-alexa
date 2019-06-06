@@ -182,7 +182,6 @@ function convertV2Item(item, config = {}) {
         ];
       case 'Rollershutter':
         return [
-          'PowerController.powerState',
           'PercentageController.percentage'
         ];
       default:
@@ -291,7 +290,7 @@ function convertV2Item(item, config = {}) {
           capabilities = ['EqualizerController.modes'];
           break;
         case 'MediaPlayer':
-          capabilities = ['PlaybackController.playback'];
+          capabilities = ['PlaybackController.playback', 'PlaybackStateReporter.playbackState'];
           break;
         case 'SpeakerMute':
           capabilities = ['Speaker.muted'];

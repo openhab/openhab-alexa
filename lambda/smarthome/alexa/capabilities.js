@@ -101,7 +101,7 @@ function getCapabilityInterface(interfaceName, properties, globalSettings = {}) 
       case 'inputs':
         capability.inputs = parameters.supportedInputs.map(input => Object.assign({name: input}));
         break;
-      case 'playbackState':
+      case 'playbackCommand':
         capability.supportedOperations = ['Play', 'Pause', 'Next', 'Previous', 'Rewind', 'FastForward'];
         break;
       case 'scene':

@@ -11,8 +11,8 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "PlaybackController": {
-              "playbackState": {
-                "parameters": {}, "item": {"name": "speakerPlayer"}, "schema": {"name": "playbackState"}}}
+              "playback": {
+                "parameters": {}, "item": {"name": "speakerPlayer"}, "schema": {"name": "playbackCommand"}}}
           })
         }
       }
