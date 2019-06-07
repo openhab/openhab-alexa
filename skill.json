@@ -9,7 +9,7 @@
       },
       "distributionCountries": [],
       "isAvailableWorldwide": true,
-      "distributionMode": "PUBLIC",
+      "distributionMode": "PRIVATE",
       "testingInstructions": "A demo account has been setup on our cloud service myopenhab.org for this skill:\n\nuser: %TESTING_USER:demo@openhab.org%\npass: %TESTING_PASS%\n\nOnce the skill is linked to our cloud service and discovery is run it should find a few lights as well as a thermostat.",
       "category": "SMART_HOME"
     },
