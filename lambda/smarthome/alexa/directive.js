@@ -131,7 +131,7 @@ class AlexaDirective extends AlexaResponse {
             properties: properties
           }
         }));
-        log.debug('getPropertiesResponseAndReturn done with response:', response);
+        log.info('getPropertiesResponseAndReturn done with response:', response);
         this.returnAlexaResponse(response);
       } else {
         this.returnAlexaErrorResponse(error);
