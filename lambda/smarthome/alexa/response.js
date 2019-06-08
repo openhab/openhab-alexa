@@ -94,7 +94,7 @@ class AlexaResponse {
       payload: parameters.payload
     });
 
-    log.debug('returnAlexaErrorResponse done with response:', response);
+    log.info('returnAlexaErrorResponse done with response:', response);
     this.returnAlexaResponse(response);
   }
 

@@ -100,7 +100,7 @@ class AlexaDiscovery extends AlexaDirective {
           const capability = getCapabilityInterface(interfaceName, properties, settings);
           // Skip if capability not defined
           if (!capability) {
-            log.error('Unsupported capability:', {name: interfaceName, properties: properties});
+            log.warn('Unsupported capability:', {name: interfaceName, properties: properties});
             return;
           }
           // Add capability to list
@@ -150,7 +150,7 @@ class AlexaDiscovery extends AlexaDirective {
         }
       });
 
-      log.debug('discover done with response:', response);
+      log.info('discover done with response:', response);
       this.returnAlexaResponse(response);
     }).catch((error) => {
       log.error('discover failed with error:', error);
