@@ -13,7 +13,7 @@
 
 const { createLogger, format, transports } = require('winston');
 
-let setLevel = typeof (process.env.LOG_LEVEL) !== 'undefined' ? process.env.LOG_LEVEL.toLowerCase() : 'debug';
+let setLevel = typeof (process.env.LOG_LEVEL) !== 'undefined' ? process.env.LOG_LEVEL.toLowerCase() : 'info';
 
 const logger = createLogger({
     level: process.env.NODE_ENV === 'test' ? 'error' : setLevel,
