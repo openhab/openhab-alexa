@@ -34,6 +34,12 @@ echo "###########################"
 echo "##### pre-deploy hook #####"
 echo "###########################"
 
+if [ -f .env ]; then
+    set -o allexport
+    source .env
+    set +o allexport
+fi
+
 if [[ $TARGET == "all" || $TARGET == "lambda" ]]; then
     grep "sourceDir" ./skill.json | cut -d: -f2 |  sed 's/"//g' | sed 's/,//g' | while read -r SOURCE_DIR; do
         if install_dependencies $SOURCE_DIR; then
