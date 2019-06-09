@@ -76,10 +76,13 @@ function loadLocaleResources(schema) {
 }
 
 /**
- * Set api regional endpoints (for production deployment)
+ * Set api endpoints
  * @param {Object} schema
  */
-function setApiRegionalEndpoints(schema) {
+function setApiEndpoints(schema) {
+  if (process.env.ASK_FUNCTION_NAME) {
+    schema.manifest.apis.smartHome.endpoint.uri = process.env.ASK_FUNCTION_NAME;
+  }
   if (process.env.ASK_ENV === 'production') {
     schema.manifest.apis.smartHome.regions = {};
     REGIONS.forEach(region =>
@@ -90,7 +93,7 @@ function setApiRegionalEndpoints(schema) {
 }
 
 /**
- * Set publishing distribution settings (for production deployment)
+ * Set publishing distribution settings
  * @param {Object} schema
  */
 function setPublishingDistributionSettings(schema) {
@@ -150,8 +153,8 @@ if (require.main === module) {
     const schema = loadSkillSchema();
     // Load locale resources into skill schema
     loadLocaleResources(schema);
-    // Set api regional endpoints
-    setApiRegionalEndpoints(schema);
+    // Set api endpoints
+    setApiEndpoints(schema);
     // Set publishing distribution settings
     setPublishingDistributionSettings(schema);
     // Format skill schema
