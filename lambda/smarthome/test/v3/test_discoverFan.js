@@ -72,11 +72,13 @@ module.exports = {
       "link": "https://myopenhab.org/rest/items/gTowerFan",
       "type": "Group",
       "name": "gTowerFan",
-      "label": "Tower Fan",
       "tags": [],
       "metadata": {
         "alexa": {
           "value": "Endpoint.Other"
+        },
+        "synonyms": {
+          "value": "Tower Fan,Floor Fan"
         }
       },
       "groupNames": []

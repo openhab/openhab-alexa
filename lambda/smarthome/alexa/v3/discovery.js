@@ -122,7 +122,7 @@ class AlexaDiscovery extends AlexaDirective {
         discoveredDevices.push({
           endpointId: item.name,
           manufacturerName: 'openHAB',
-          friendlyName: item.label,
+          friendlyName: item.metadata.synonyms && item.metadata.synonyms.value.split(',').shift() || item.label,
           description: item.type + ' ' + item.name + ' via openHAB',
           displayCategories: displayCategories,
           cookie: {
