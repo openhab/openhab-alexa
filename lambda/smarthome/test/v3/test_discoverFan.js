@@ -63,7 +63,7 @@ module.exports = {
               }
             },
             "synonyms": {
-              "value": "Fan Angle,Orientation"
+              "value": "Orientation"
             }
           },
           "groupNames": ["gTowerFan"]

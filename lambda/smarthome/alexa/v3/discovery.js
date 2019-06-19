@@ -43,8 +43,10 @@ class AlexaDiscovery extends AlexaDirective {
       log.debug('Data:', {items: items, settings: settings});
 
       items.forEach((item) => {
-        // Skip item if already part of a group
-        if (groupItems.includes(item.name)) {
+        // Set endpoint friendly name using item label or first synonyms metadata value
+        const friendlyName = item.label || item.metadata.synonyms && item.metadata.synonyms.value.split(',').shift();
+        // Skip item if friendly name empty or if already part of a group
+        if (!friendlyName || groupItems.includes(item.name)) {
           return;
         }
 
@@ -122,7 +124,7 @@ class AlexaDiscovery extends AlexaDirective {
         discoveredDevices.push({
           endpointId: item.name,
           manufacturerName: 'openHAB',
-          friendlyName: item.metadata.synonyms && item.metadata.synonyms.value.split(',').shift() || item.label,
+          friendlyName: friendlyName,
           description: item.type + ' ' + item.name + ' via openHAB',
           displayCategories: displayCategories,
           cookie: {
