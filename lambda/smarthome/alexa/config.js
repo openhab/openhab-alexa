@@ -216,12 +216,23 @@ module.exports = Object.freeze({
    *              <alexaState1>: { '<value1>,<value2>,...', ... },
    *              ...
    *            },
+   *            ...
    *          },
    *          'default': {
    *            <itemType1>: {
    *              <alexaState1>: { '<value1>,<value2>,...', ... },
    *              ...
    *            },
+   *            ...
+   *          }
+   *        },
+   *        'range': {
+   *          'custom:<parameterName>': {
+   *            <parameterValue1>: [ <minimumValue>, <maximumValue>, <optionalPrecisionValue> ],
+   *            ...
+   *          },
+   *          'default': {
+   *            <itemType1>: [ <minimumValue>, <maximumValue>, <optionalPrecisionValue> ],
    *            ...
    *          }
    *        },
@@ -290,6 +301,25 @@ module.exports = Object.freeze({
     'colorTemperatureInKelvin': {
       'itemTypes': ['Dimmer', 'Number'],
       'state': {
+        'range': {
+          'custom:binding': {
+            // use binding name and thing type to differentiate white & color ranges
+            'hue': (type) =>
+              ['white', '0220'].includes(type) ? [2200, 6500] : [2000, 6500],
+            'lifx': (type) =>
+              ['white', 'whitelight'].includes(type) ? [2700, 6500] : [2500, 9000],
+            'milight': (type) =>
+              ['white', 'whiteLed'].includes(type) ? [2700, 6500] : [2700, 6500],
+            'tradfri': (type) =>
+              ['white', '0220'].includes(type) ? [2200, 4000] : [1780, 6000],
+            'yeelight': (type) =>
+              ['white', 'ceiling', 'dolphin'].includes(type) ? [2700, 6500] : [1700, 6500]
+          },
+          'default': {
+            'Dimmer': [1000, 10000],
+            'Number': [1000, 10000]
+          }
+        },
         'type': 'integer'
       }
     },
@@ -313,6 +343,12 @@ module.exports = Object.freeze({
     'equalizerBands': {
       'itemTypes': ['Dimmer', 'Number'],
       'state': {
+        'range': {
+          'default': {
+            'Dimmer': [0, 100],
+            'Number': [-10, 10]
+          }
+        },
         'type': 'integer'
       }
     },
@@ -411,6 +447,13 @@ module.exports = Object.freeze({
       'itemTypes': ['Dimmer', 'Number', 'Number:Angle', 'Number:Dimensionless', 'Number:Length', 'Number:Mass',
         'Number:Temperature', 'Number:Volume', 'Rollershutter'],
       'state': {
+        'range': {
+          'default': {
+            'Dimmer': [0, 100, 1],
+            'Number': [0, 10, 1],
+            'Rollershutter': [0, 100, 1]
+          }
+        },
         'type': 'integer'
       }
     },

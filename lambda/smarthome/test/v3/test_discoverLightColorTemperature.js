@@ -35,7 +35,10 @@ module.exports = {
           "tags": [],
           "metadata": {
             "alexa": {
-              "value": "ColorTemperatureController.colorTemperatureInKelvin"
+              "value": "ColorTemperatureController.colorTemperatureInKelvin",
+              "config": {
+                "binding": "hue"
+              }
             }
           },
           "groupNames": ["gColorLight"]
@@ -65,7 +68,16 @@ module.exports = {
         "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["LIGHT"],
-      "friendlyName": "Color Light"
-    },
+      "friendlyName": "Color Light",
+      "propertyMap": {
+        "ColorTemperatureController": {
+          "colorTemperatureInKelvin": {
+            "parameters": {"binding": "hue", "range": [2000, 6500]},
+            "item": {"name": "colorTemperature", "type": "Dimmer"},
+            "schema": {"name": "colorTemperatureInKelvin"}
+          }
+        }
+      }
+    }
   }
 };
