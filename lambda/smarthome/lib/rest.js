@@ -11,58 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+const fs = require('fs');
 const request = require('request-promise-native');
 const qs = require('querystring');
 
-const config = getConfig();
-
-/**
- * Returns config settings
- * @return {Object}
- */
-function getConfig() {
-  // Default configuration
-  const config = {
-    openhab: {
-      baseURL: process.env.OPENHAB_BASE_URL || 'https://localhost:8443/rest',
-      user: process.env.OPENHAB_USERNAME || null,
-      pass: process.env.OPENHAB_PASSWORD || null
-    }
-  };
-  // Merge config file settings with default ones
-  Object.assign(config, getConfigFileSettings());
-  // Merge username & password if specified
-  if (config.openhab.user && config.openhab.pass) {
-    config.openhab.userpass = `${config.openhab.user}:${config.openhab.pass}`;
-  }
-  return config;
-}
-
-/**
- * Returns config file settings
- * @return {Object}
- */
-function getConfigFileSettings() {
-  try {
-    return require('@root/config.js');
-  } catch (e) {
-    return {};
-  }
-}
-
-/**
- * Returns openHAB authorization header value
- * @param  {String}   token
- * @return {String}
- */
-function ohAuthorizationHeader(token) {
-  if (config.openhab.userpass) {
-    // Basic Authentication
-    return 'Basic ' + Buffer.from(config.openhab.userpass).toString('base64');
-  } else {
-    // OAuth2 Authentication
-    return 'Bearer ' + token;
-  }
+var config = require('@root/config.js');
+var certAuth = {
+  key: fs.readFileSync(config.openhab.key),
+  cert: fs.readFileSync(config.openhab.cert),
+  passphrase: config.openhab.passphrase
 }
 
 /**
@@ -96,10 +53,10 @@ function getItemOrItems(token, itemName, parameters) {
     method: 'GET',
     uri: `${config.openhab.baseURL}/items${itemName ? '/' + itemName : ''}${parameters ? '?' + qs.stringify(parameters) : ''}`,
     headers: {
-      'Authorization': ohAuthorizationHeader(token),
       'Content-Type': 'text/plain'
     },
-    json: true
+    json: true,
+    agentOptions: certAuth
   };
   return request(options);
 }
@@ -114,10 +71,10 @@ function getRegionalSettings(token) {
     method: "GET",
     uri: `${config.openhab.baseURL}/services/org.eclipse.smarthome.core.i18nprovider/config`,
     headers: {
-      'Authorization': ohAuthorizationHeader(token),
       'Content-Type': 'text/plain'
     },
-    json: true
+    json: true,
+    agentOptions: certAuth
   };
   return request(options);
 }
@@ -134,10 +91,10 @@ function postItemCommand(token, itemName, value) {
     method: 'POST',
     uri: `${config.openhab.baseURL}/items/${itemName}`,
     headers: {
-      'Authorization': ohAuthorizationHeader(token),
       'Content-Type': 'text/plain'
     },
-    body: value.toString()
+    body: value.toString(),
+    agentOptions: certAuth
   };
   return request(options);
 }
