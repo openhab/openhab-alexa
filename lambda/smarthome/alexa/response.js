@@ -109,13 +109,8 @@ class AlexaResponse {
       message: error.cause || 'Unable to reach device'
     }};
 
-    // Set error status code to not found (404) if request error name
-    if (error.name === 'RequestError') {
-      error.statusCode = 404;
-    }
-
-    // Update error response parameters based on request error status code
-    switch (error.statusCode) {
+    // Update error response parameters based on error name or status code when applicable
+    switch (error.statusCode || error.name) {
       case 400:
         Object.assign(parameters, {payload: {
           type: 'INVALID_VALUE',
@@ -129,18 +124,21 @@ class AlexaResponse {
         }});
         break;
       case 404:
-        // Set to bridge unreachable when oh rest server not accessible, otherwise no such endpoint for items not found
-        if (!error.response || !error.response.body) {
-          Object.assign(parameters, {payload: {
-            type: 'BRIDGE_UNREACHABLE',
-            message: 'Server not accessible'
-          }});
-        } else {
-          Object.assign(parameters, {payload: {
-            type: 'NO_SUCH_ENDPOINT',
-            message: 'Item not found'
-          }});
-        }
+      case 'RequestError':
+        // Set to bridge unreachable if no error response, otherwise no such endpoint for items not found
+        Object.assign(parameters, {payload: !error.response || !error.response.body ? {
+          type: 'BRIDGE_UNREACHABLE',
+          message: 'Server not accessible'
+        } : {
+          type: 'NO_SUCH_ENDPOINT',
+          message: 'Item not found'
+        }});
+        break;
+      case 'TypeError':
+        Object.assign(parameters, {payload: {
+          type: 'INTERNAL_ERROR',
+          message: 'Internal error'
+        }});
         break;
     }
 
