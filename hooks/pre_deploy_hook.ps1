@@ -25,7 +25,7 @@ function install_dependencies ($CWD, $SOURCE_DIR) {
 }
 
 function update_skill_manifest () {
-    Invoke-Expression "node ./tools/updateSkillManifest.js" 2>&1 | Out-Null
+    Invoke-Expression "node tools\updateSkillManifest.js" 2>&1 | Out-Null
     return $?
 }
 
@@ -33,6 +33,14 @@ if ($DO_DEBUG) {
     Write-Output "###########################"
     Write-Output "##### pre-deploy hook #####"
     Write-Output "###########################"
+}
+
+if (Test-Path .env) {
+    Get-Content -Path ".env" `
+        | Select-String -Pattern "^[^#]\w+" `
+        | ForEach-Object {$_.ToString().Replace("`"", "")} `
+        | ConvertFrom-String -Delimiter "=" -PropertyNames key, value `
+        | ForEach-Object {[Environment]::SetEnvironmentVariable($_.key, $_.value)}
 }
 
 if ($TARGET -eq "all" -Or $TARGET -eq "lambda") {
