@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+const fs = require('fs');
 const request = require('request-promise-native');
 const qs = require('querystring');
 
@@ -24,9 +25,11 @@ function getConfig() {
   // Default configuration
   const config = {
     openhab: {
-      baseURL: process.env.OPENHAB_BASE_URL || 'https://localhost:8443/rest',
+      baseURL: process.env.OPENHAB_BASE_URL || 'https://myopenhab.org/rest',
       user: process.env.OPENHAB_USERNAME || null,
-      pass: process.env.OPENHAB_PASSWORD || null
+      pass: process.env.OPENHAB_PASSWORD || null,
+      certFile: process.env.OPENHAB_CERT_FILE || 'ssl/client.pfx',
+      certPass: process.env.OPENHAB_CERT_PASSPHRASE || null
     }
   };
   // Merge config file settings with default ones
@@ -34,6 +37,10 @@ function getConfig() {
   // Merge username & password if specified
   if (config.openhab.user && config.openhab.pass) {
     config.openhab.userpass = `${config.openhab.user}:${config.openhab.pass}`;
+  }
+  // Load ssl client certificate if available
+  if (fs.existsSync(config.openhab.certFile)) {
+    config.openhab.cert = fs.readFileSync(config.openhab.certFile);
   }
   return config;
 }
@@ -51,18 +58,29 @@ function getConfigFileSettings() {
 }
 
 /**
- * Returns openHAB authorization header value
+ * Returns request options object with openHAB authentication settings
  * @param  {String}   token
- * @return {String}
+ * @param  {Object}   options
+ * @return {Object}
  */
-function ohAuthorizationHeader(token) {
-  if (config.openhab.userpass) {
-    // Basic Authentication
-    return 'Basic ' + Buffer.from(config.openhab.userpass).toString('base64');
-  } else {
-    // OAuth2 Authentication
-    return 'Bearer ' + token;
+function getAuthenticationSettings(token, options) {
+  if (config.openhab.cert) {
+    // SSL Certificate Authentication
+    options.agentOptions = Object.assign({}, options.agentOptions, {
+      'pfx': config.openhab.cert
+    }, config.openhab.certPass && {
+      'passphrase': config.openhab.certPass
+    });
+  } else if (config.openhab.userpass || token) {
+    options.headers = Object.assign({}, options.headers, {
+      'Authorization': config.openhab.userpass ?
+        // Basic Authentication
+        'Basic ' + Buffer.from(config.openhab.userpass).toString('base64') :
+        // OAuth2 Authentication
+        'Bearer ' + token
+    });
   }
+  return options;
 }
 
 /**
@@ -92,15 +110,14 @@ function getItemsRecursively(token) {
  * @return {Promise}
  */
 function getItemOrItems(token, itemName, parameters) {
-  const options = {
+  const options = getAuthenticationSettings(token, {
     method: 'GET',
     uri: `${config.openhab.baseURL}/items${itemName ? '/' + itemName : ''}${parameters ? '?' + qs.stringify(parameters) : ''}`,
     headers: {
-      'Authorization': ohAuthorizationHeader(token),
       'Content-Type': 'text/plain'
     },
     json: true
-  };
+  });
   return request(options);
 }
 
@@ -110,15 +127,14 @@ function getItemOrItems(token, itemName, parameters) {
  * @return {Promise}
  */
 function getRegionalSettings(token) {
-  const options = {
+  const options = getAuthenticationSettings(token, {
     method: "GET",
     uri: `${config.openhab.baseURL}/services/org.eclipse.smarthome.core.i18nprovider/config`,
     headers: {
-      'Authorization': ohAuthorizationHeader(token),
       'Content-Type': 'text/plain'
     },
     json: true
-  };
+  });
   return request(options);
 }
 
@@ -130,15 +146,14 @@ function getRegionalSettings(token) {
  * @return {Promise}
  **/
 function postItemCommand(token, itemName, value) {
-  const options = {
+  const options = getAuthenticationSettings(token, {
     method: 'POST',
     uri: `${config.openhab.baseURL}/items/${itemName}`,
     headers: {
-      'Authorization': ohAuthorizationHeader(token),
       'Content-Type': 'text/plain'
     },
     body: value.toString()
-  };
+  });
   return request(options);
 }
 
