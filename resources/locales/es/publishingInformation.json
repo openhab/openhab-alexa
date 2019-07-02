@@ -26,5 +26,5 @@
     "Casa inteligente",
     "Casa conectada"
   ],
-  "updatesDescription": "Alexa Skill API V3 introduces a more rich and complex set of features combining with the new metadata feature introduced in openaHAB 2.3. Please check the latest documentation for more information: https://www.openhab.org/docs/ecosystem/alexa/"
+  "updatesDescription": "Alexa Skill API V3 introduce un conjunto de características más rico y complejo que combina con la nueva característica de metadatos introducida en openaHAB 2.3. Por favor, compruebe la última documentación para más información: https://www.openhab.org/docs/ecosystem/alexa/"
 }
