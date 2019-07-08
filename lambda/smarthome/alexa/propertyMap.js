@@ -187,9 +187,10 @@ class AlexaPropertyMap {
           return;
         }
 
-        // Set friendly names parameter on multi-instance property to use item synonyms metadata or label if not defined
+        // Set friendly names parameter on multi-instance property to use item label & synonyms, if not already defined
         if (propertySettings.multiInstance && !property.parameters.friendlyNames) {
-          property.parameters.friendlyNames = item.metadata.synonyms && item.metadata.synonyms.value || item.label;
+          property.parameters.friendlyNames = [
+            item.label, item.metadata.synonyms && item.metadata.synonyms.value].filter(Boolean).join(',');
         }
 
         // Iterate over parameters

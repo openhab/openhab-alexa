@@ -23,14 +23,14 @@ const ohv3 = require('./ohConnectorV3.js');
  * @param  {Function} callback
  */
 exports.handler = function (event, context, callback) {
-  log.debug('Input:', event);
+  log.info('Input:', event);
   const version = parseInt(event.directive ? event.directive.header.payloadVersion : event.header.payloadVersion);
   switch (version) {
     case 3:
       ohv3.handleRequest(event.directive, callback);
       break;
     default:
-      log.error('No supported payloadVersion: ' + event.header.payloadVersion);
+      log.error(`No supported payloadVersion: ${event.header.payloadVersion}`);
       callback('No supported payloadVersion.');
       break;
   }

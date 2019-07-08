@@ -50,6 +50,14 @@ module.exports = {
           }
         }
       }
+    },
+    {
+      "link": "https://localhost:8443/rest/items/light4",
+      "type": "Color",
+      "name": "light4",
+      "label": "", // Item skipped because no label or synonyms metadata value
+      "category": "lightbulb",
+      "tags": ["Lighting"]
     }
   ],
   expected: {
