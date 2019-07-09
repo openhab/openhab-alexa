@@ -25,5 +25,6 @@
     "ホームオートメーション",
     "Smart Home",
     "コネクティッドホーム"
-  ]
+  ],
+  "updatesDescription": "Alexa Skill API V3 は、openaHAB 2.3で導入された新しいメタデータ機能と組み合わせて、より豊富で複雑な機能のセットを導入します。 詳細については、最新のドキュメントを確認してください。https://www.openhab.org/docs/ecosystem/alexa/"
 }
