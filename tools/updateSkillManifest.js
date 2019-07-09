@@ -86,8 +86,7 @@ function setApiEndpoints(schema) {
   if (process.env.ASK_ENV === 'production') {
     schema.manifest.apis.smartHome.regions = {};
     REGIONS.forEach(region => {
-      schema.manifest.apis.smartHome.regions[region] = {};
-      schema.manifest.apis.smartHome.regions[region].endpoint = schema.manifest.apis.smartHome.endpoint
+      schema.manifest.apis.smartHome.regions[region].endpoint = {endpoint: schema.manifest.apis.smartHome.endpoint}
     });
   } else {
     delete schema.manifest.apis.smartHome.regions;
