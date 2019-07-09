@@ -73,7 +73,6 @@ class AlexaDirective extends AlexaResponse {
    * Generic method to post list of items to OH
    *  and then return a formatted response to the Alexa request
    *
-   *
    * @param {Array}  items
    * @param {Object} parameters     Additional parameters [header, payload, properties] (optional)
    */
@@ -111,10 +110,8 @@ class AlexaDirective extends AlexaResponse {
       })
     ), []);
     Promise.all(promises).then((items) => {
-      // Define endpoint health status based on every retrieved item states being defined
-      const isEndpointHealthy = items.every(item => typeof item.state !== 'undefined');
       // Get context properties response
-      const properties = this.propertyMap.getContextPropertiesResponse(interfaceNames, isEndpointHealthy);
+      const properties = this.propertyMap.getContextPropertiesResponse(interfaceNames, items);
       // Throw error if no context properties found
       if (properties.length === 0) {
         throw {cause: 'Unable to get context properties response', properties: this.propertyMap};
@@ -163,7 +160,6 @@ const ITEM_STATE_FORMATTER_PATTERN = /%(?:[.0]\d+)?[dfs]/;
 
 /**
  * Returns OH item state formatted based on its state description pattern
- *
  * @param  {Object} item
  * @return {String}
  */

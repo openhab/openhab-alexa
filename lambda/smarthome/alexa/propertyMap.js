@@ -16,7 +16,7 @@
  */
 const camelcase = require('camelcase');
 const utils = require('@lib/utils.js');
-const { getPropertySettings, getPropertyStateMap, isSupportedDisplayCategory } = require('./capabilities.js');
+const { getPropertySettings, getPropertyStateMap, isInColorMode, isSupportedDisplayCategory } = require('./capabilities.js');
 const { CAPABILITY_PATTERN, UNIT_OF_MEASUREMENT } = require('./config.js');
 const { normalize } = require('./propertyState.js');
 
@@ -222,6 +222,22 @@ class AlexaPropertyMap {
 
         // Update specific parameters based on schema name
         switch (property.schema.name) {
+          case 'colorTemperatureInKelvin': {
+            // Use binding parameter or item channel metadata value to determine binding name & thing type
+            const [binding, thingType] = property.parameters.binding && property.parameters.binding.split(':') ||
+              item.metadata.channel && item.metadata.channel.value && item.metadata.channel.value.split(':') || [];
+            // Use range parameter to determine color temperature range ([0] => minimum; [1] => maximum)
+            let temperatureRange = (property.parameters.range || '').split(':').map(value => parseInt(value));
+            // Update range values if not valid (min >= max) using custom values based on binding name & thing type
+            if (temperatureRange.length !== 2 || temperatureRange.some(value => isNaN(value)) ||
+              temperatureRange[0] >= temperatureRange[1]) {
+              temperatureRange = propertySettings.state.range['custom:binding'][binding] &&
+                propertySettings.state.range['custom:binding'][binding](thingType);
+            }
+            // Set range parameter
+            property.parameters.range = temperatureRange;
+            break;
+          }
           case 'inputs': {
             // Normalize supported input names removing invalid values in the process
             property.parameters.supportedInputs = (property.parameters.supportedInputs || []).reduce(
@@ -279,7 +295,7 @@ class AlexaPropertyMap {
             // Update range values if not valid (min >= max) using default based on item type
             if (equalizerRange.length !== 2 || equalizerRange.some(value => isNaN(value)) ||
               equalizerRange[0] >= equalizerRange[1]) {
-              equalizerRange = item.type === 'Dimmer' ? [0, 100] : [-10, 10];
+              equalizerRange = propertySettings.state.range.default[item.type.split(':').shift()];
             }
             // Define equalizer default based on parameter
             const equalizerDefault = parseInt(property.parameters.default);
@@ -318,7 +334,7 @@ class AlexaPropertyMap {
             // Update range values if not valid (min >= max; max - min <= precision) using default based on item type
             if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) ||
               rangeValues[0] >= rangeValues[1] || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
-              rangeValues = ['Dimmer', 'Rollershutter'].includes(item.type) ? [0, 100, 1] : [0, 10, 1];
+              rangeValues = propertySettings.state.range.default[item.type.split(':').shift()];
             }
             // Set supported range object
             property.parameters.supportedRange = {
@@ -370,7 +386,7 @@ class AlexaPropertyMap {
   }
 
   /**
-   * Returns alexa context properties response for a given list of interface names
+   * Returns alexa context properties response for a given list of interface names and reportable properties items
    *
    *  Properties array return format:
    *    [
@@ -386,10 +402,10 @@ class AlexaPropertyMap {
    *    ]
    *
    * @param  {Array}   interfaceNames
-   * @param  {Boolean} isEndpointHealthy  [endpoint health status] (optional)
+   * @param  {Array}   items
    * @return {Object}
    */
-  getContextPropertiesResponse(interfaceNames, isEndpointHealthy = true) {
+  getContextPropertiesResponse(interfaceNames, items) {
     const propertyMap = this;
     const response = [];
 
@@ -407,8 +423,8 @@ class AlexaPropertyMap {
       });
     };
 
-    // Iterate over interface and property names
-    interfaceNames.forEach((interfaceName) => {
+    // Iterate over reportable interface and property names
+    this.getReportablePropertiesInterfaces(interfaceNames).forEach((interfaceName) => {
       Object.keys(propertyMap[interfaceName]).forEach((propertyName) => {
         // Get normalized property state
         let state = normalize(propertyMap[interfaceName][propertyName]);
@@ -459,6 +475,9 @@ class AlexaPropertyMap {
       });
     });
 
+    // Define endpoint health status based on every reportable properties item states being defined
+    const isEndpointHealthy = items.every(item => typeof item.state !== 'undefined');
+
     // Add connectivity property state to response if endpoint healthly or at least one property response present
     if (isEndpointHealthy || response.length > 0) {
       response.push(generateProperty('Alexa.EndpointHealth', 'connectivity', {
@@ -466,6 +485,33 @@ class AlexaPropertyMap {
     }
 
     return response;
+  }
+
+  /**
+   * Returns list of reportable properties interface names for a given list of interface names
+   *   based on alexa api interface-specific properties requirements
+   * @param  {Array} interfaceNames
+   * @return {Array}
+   */
+  getReportablePropertiesInterfaces(interfaceNames) {
+    const propertyMap = this;
+
+    // ColorController & ColorTemperatureController interface properties requirements:
+    //  - exclude temperature property if in color mode, otherwise exclude color property
+    if (interfaceNames.includes('ColorController') && interfaceNames.includes('ColorTemperatureController')) {
+      const colorItem = propertyMap.ColorController.color.item;
+      const temperatureItem = propertyMap.ColorTemperatureController.colorTemperatureInKelvin.item;
+
+      // Update interfaceNames list based on color mode
+      if (isInColorMode(colorItem, temperatureItem)) {
+        interfaceNames.splice(interfaceNames.indexOf('ColorTemperatureController'), 1);
+        temperatureItem.state = 0; // set state to zero to exclude item from health check
+      } else {
+        interfaceNames.splice(interfaceNames.indexOf('ColorController'), 1);
+      }
+    }
+
+    return interfaceNames;
   }
 
   /**

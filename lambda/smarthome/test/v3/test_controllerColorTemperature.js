@@ -25,17 +25,17 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "ColorTemperatureController": {
               "colorTemperatureInKelvin": {
-                "parameters": {}, "item": {"name": "colorTemperature", "type": "Dimmer"},
+                "parameters": {"range": [2700, 6500]}, "item": {"name": "colorTemperature", "type": "Dimmer"},
                 "schema": {"name": "colorTemperatureInKelvin"}}}
           })
         }
       },
       "payload": {
-        "colorTemperatureInKelvin": 5500
+        "colorTemperatureInKelvin": 2700
       }
     },
     mocked: {
-      openhab: {"name": "colorTemperature", "state": "50", "type": "Dimmer"}
+      openhab: {"name": "colorTemperature", "state": "100", "type": "Dimmer"}
     },
     expected: {
       alexa: {
@@ -43,7 +43,7 @@ module.exports = [
           "properties": [{
             "namespace": "Alexa.ColorTemperatureController",
             "name": "colorTemperatureInKelvin",
-            "value": 5500
+            "value": 2700
           }]
         },
         "event": {
@@ -54,8 +54,51 @@ module.exports = [
         }
       },
       openhab: [
-        {"name": "colorTemperature", "value": 50}
+        {"name": "colorTemperature", "value": 100}
       ]
+    }
+  },
+  {
+    description: "set color temperature out of range error",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ColorTemperatureController",
+        "name": "SetColorTemperature"
+      },
+      "endpoint": {
+        "endpointId": "gColorLight",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ColorTemperatureController": {
+              "colorTemperatureInKelvin": {
+                "parameters": {"range": [2200, 4000]}, "item": {"name": "colorTemperature", "type": "Dimmer"},
+                "schema": {"name": "colorTemperatureInKelvin"}}}
+          })
+        }
+      },
+      "payload": {
+        "colorTemperatureInKelvin": 5500
+      }
+    },
+    mocked: {},
+    expected: {
+      alexa: {
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "ErrorResponse"
+          },
+          "payload": {
+            "type": "VALUE_OUT_OF_RANGE",
+            "message": "The color temperature cannot be set to 5500K.",
+            "validRange": {
+              "minimumValue": 2200,
+              "maximumValue": 4000
+            }
+          }
+        }
+      },
+      openhab: []
     }
   },
   {
@@ -221,7 +264,11 @@ module.exports = [
       }
     },
     mocked: {
-      openhab: {"name": "colorTemperature", "state": "0", "type": "Number"}
+      openhab: [
+        {"name": "colorTemperature", "state": "0", "type": "Number"},
+        {"name": "colorLight", "state": "180,50,50", "type": "Color"}
+      ],
+      staged: true
     },
     expected: {
       alexa: {
@@ -235,6 +282,53 @@ module.exports = [
             "message": "The light is currently set to a color.",
             "currentDeviceMode": "COLOR"
           }
+        }
+      },
+      openhab: []
+    }
+  },
+  {
+    description: "report state color temperature in white mode",
+    directive: {
+      "header": {
+        "namespace": "Alexa",
+        "name": "ReportState"
+      },
+      "endpoint": {
+        "endpointId": "gColorLight",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ColorController": {"color": {
+              "parameters": {}, "item": {"name": "colorLight"}, "schema": {"name": "color"}}},
+            "ColorTemperatureController": {
+              "colorTemperatureInKelvin": {
+                "parameters": {"increment": 900}, "item": {"name": "colorTemperature", "type": "Dimmer"},
+                "schema": {"name": "colorTemperatureInKelvin"}}}
+          })
+        }
+      }
+    },
+    mocked: {
+      openhab: [
+        {"name": "colorLight", "state": "0,0,100", "type": "Color"},
+        {"name": "colorTemperature", "state": "50", "type": "Dimmer"}
+      ],
+      staged: true
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.ColorTemperatureController",
+            "name": "colorTemperatureInKelvin",
+            "value": 5500
+          }]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "StateReport"
+          },
         }
       },
       openhab: []

@@ -12,6 +12,7 @@
  */
 
 const log = require('@lib/log.js');
+const { isInColorMode } = require('../capabilities.js');
 const AlexaDirective = require('../directive.js');
 const { normalize } = require('../propertyState.js');
 
@@ -40,10 +41,27 @@ class AlexaColorTemperatureController extends AlexaDirective {
    */
   setColorTemperature() {
     const properties = this.propertyMap.ColorTemperatureController;
+    const range = properties.colorTemperatureInKelvin.parameters.range || [];
+    const offset = 500; // offset to alleviate advertised manufacturer temperature discrepancies
+    const temperature = this.directive.payload.colorTemperatureInKelvin;
     const postItem = Object.assign({}, properties.colorTemperatureInKelvin.item, {
-      state: normalize(properties.colorTemperatureInKelvin, this.directive.payload.colorTemperatureInKelvin)
+      state: normalize(properties.colorTemperatureInKelvin, temperature)
     });
-    this.postItemsAndReturn([postItem]);
+
+    if (range.length !== 2 || temperature >= range[0] - offset && temperature <= range[1] + offset) {
+      this.postItemsAndReturn([postItem]);
+    } else {
+      this.returnAlexaErrorResponse({
+        payload: {
+          type: 'VALUE_OUT_OF_RANGE',
+          message: `The color temperature cannot be set to ${temperature}K.`,
+          validRange: {
+            minimumValue: range[0],
+            maximumValue: range[1]
+          }
+        }
+      });
+    }
   }
 
   /**
@@ -52,10 +70,14 @@ class AlexaColorTemperatureController extends AlexaDirective {
   adjustColorTemperature() {
     const properties = this.propertyMap.ColorTemperatureController;
     const postItem = Object.assign({}, properties.colorTemperatureInKelvin.item);
+    const promises = [].concat(this.getItemState(postItem),
+      this.propertyMap.ColorController ? this.getItemState(this.propertyMap.ColorController.color.item) : []);
 
-    this.getItemState(postItem).then((item) => {
-      // Generate error if in color mode (color controller property defined & empty state)
-      if (this.propertyMap.ColorController && !parseInt(item.state)) {
+    Promise.all(promises).then((items) => {
+      const [temperatureItem, colorItem] = items;
+
+      // Generate error if in color mode
+      if (isInColorMode(colorItem, temperatureItem)) {
         this.returnAlexaErrorResponse({
           namespace: this.directive.header.namespace,
           payload: {
@@ -67,27 +89,27 @@ class AlexaColorTemperatureController extends AlexaDirective {
         return;
       }
       // Throw error if state not a number
-      if (isNaN(item.state)) {
-        throw {cause: 'Could not get numeric item state', item: item};
+      if (isNaN(temperatureItem.state)) {
+        throw {cause: 'Could not get numeric item state', item: temperatureItem};
       }
 
       const isIncreaseRequest = this.directive.header.name === 'IncreaseColorTemperature';
       const increment = parseInt(properties.colorTemperatureInKelvin.parameters.increment);
       let state;
 
-      switch (item.type) {
+      switch (temperatureItem.type) {
         case 'Dimmer':
           // Send reverse command/value to OH since cold (0%) and warm (100%), depending if increment defined
           if (isNaN(increment)) {
             state = isIncreaseRequest ? 'DECREASE' : 'INCREASE';
           } else {
-            state = parseInt(item.state) + (isIncreaseRequest ? -1 : 1) * increment;
+            state = parseInt(temperatureItem.state) + (isIncreaseRequest ? -1 : 1) * increment;
             state = state < 0 ? 0 : state < 100 ? state : 100;
           }
           break;
         case 'Number':
           // Increment current state by defined value as Number doesn't support IncreaseDecreaseType commands
-          state = parseInt(item.state) + (isIncreaseRequest ? 1 : -1) * (increment || 500);
+          state = parseInt(temperatureItem.state) + (isIncreaseRequest ? 1 : -1) * (increment || 500);
           state = normalize(properties.colorTemperatureInKelvin, state);
           break;
       }

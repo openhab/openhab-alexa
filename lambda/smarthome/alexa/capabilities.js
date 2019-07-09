@@ -309,6 +309,27 @@ function getPropertyStateMap(property) {
 }
 
 /**
+ * Determines if light endpoint is in color mode
+ * @param  {Object}  colorItem
+ * @param  {Object}  temperatureItem
+ * @return {Boolean}
+ */
+function isInColorMode(colorItem, temperatureItem) {
+  if (typeof colorItem !== 'undefined' && typeof temperatureItem !== 'undefined') {
+    const saturation = colorItem.state && colorItem.state.split(',')[1];
+    const temperature = temperatureItem.state;
+    const type = temperatureItem.type;
+
+    switch (type) {
+      case 'Dimmer':
+        return typeof temperature === 'undefined' || saturation > 0;
+      case 'Number':
+        return typeof temperature === 'undefined' || temperature === '0';
+    }
+  }
+}
+
+/**
  * Determines if display category is supported
  * @param  {String} category
  * @return {Boolean}
@@ -322,5 +343,6 @@ module.exports = {
   getCapabilityInterface: getCapabilityInterface,
   getPropertySettings: getPropertySettings,
   getPropertyStateMap: getPropertyStateMap,
+  isInColorMode: isInColorMode,
   isSupportedDisplayCategory: isSupportedDisplayCategory
 };

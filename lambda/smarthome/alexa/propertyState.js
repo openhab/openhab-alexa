@@ -71,7 +71,7 @@ const normalizeFunctions = {
    *   Alexa colorTemperature api property spectrum from 1000K (warmer) to 10000K (colder)
    *
    *   Two item types:
-   *     - Dimmer: colder (0%) to warmer (100%) based of Alexa color temperature spectrum [hue and lifx support]
+   *     - Dimmer: colder (0%) to warmer (100%) [bindings integration]
    *     - Number: color temperature value in K [custom integration]
    *
    * @param  {String} value
@@ -80,8 +80,11 @@ const normalizeFunctions = {
    */
   colorTemperatureInKelvin: function (value, property) {
     const type = property.item.type;
-    const minValue = 1000;
-    const maxValue = 10000;
+    const defaultRange = PROPERTY_SCHEMAS.colorTemperatureInKelvin.state.range.default[type];
+    const temperatureRange = property.parameters.range || defaultRange;
+    const minValue = Math.max(temperatureRange[0], defaultRange[0]);
+    const maxValue = Math.min(temperatureRange[1], defaultRange[1]);
+    const clamp = (value) => Math.min(Math.max(value, minValue), maxValue);
 
     // Return if value not numeric
     if (isNaN(value)) {
@@ -91,13 +94,13 @@ const normalizeFunctions = {
     switch (type) {
       case 'Dimmer':
         if (value > 100) {  // Convert Alexa to OH
-          return (maxValue - value) / (maxValue - minValue) * 100;
+          return (maxValue - clamp(value)) / (maxValue - minValue) * 100;
         } else {            // Convert OH to Alexa
           return maxValue - (value * (maxValue - minValue) / 100);
         }
       case 'Number':
         // No convertion needed between Alexa & OH
-        return value < minValue ? minValue : value < maxValue ? value : maxValue;
+        return clamp(value);
     }
   },
 
