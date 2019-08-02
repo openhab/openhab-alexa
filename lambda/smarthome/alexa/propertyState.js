@@ -14,8 +14,7 @@
 /**
  * Amazon Smart Home Skill Property State for API V3
  */
-const { getPropertyStateMap } = require('./capabilities.js');
-const { PROPERTY_SCHEMAS } = require('./config.js');
+const { getPropertySchema, getPropertyStateMap } = require('./capabilities.js');
 
 /**
  * Defines normalize functions
@@ -80,7 +79,7 @@ const normalizeFunctions = {
    */
   colorTemperatureInKelvin: function (value, property) {
     const type = property.item.type;
-    const defaultRange = PROPERTY_SCHEMAS.colorTemperatureInKelvin.state.range.default[type];
+    const defaultRange = getPropertySchema('colorTemperatureInKelvin', '.state.range.default');
     const temperatureRange = property.parameters.range || defaultRange;
     const minValue = Math.max(temperatureRange[0], defaultRange[0]);
     const maxValue = Math.min(temperatureRange[1], defaultRange[1]);
@@ -112,7 +111,7 @@ const normalizeFunctions = {
   inputs: function (value) {
     const input = value.replace(/(\S)(\d+)$/, '$1 $2').toUpperCase();
 
-    if (PROPERTY_SCHEMAS.inputs.state.supported.includes(input)) {
+    if (getPropertySchema('inputs', '.state.supported').includes(input)) {
       return input;
     }
   },
@@ -164,7 +163,7 @@ const normalizeFunctions = {
    */
   temperature: function (temperature, property, options = {}) {
     const isDelta = options.isDelta === true;
-    const scale = property.parameters.scale || 'CELSIUS';
+    const scale = property.parameters.scale;
 
     // Convert OH to Alexa
     if (typeof temperature !== 'object') {
