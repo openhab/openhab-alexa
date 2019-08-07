@@ -76,37 +76,22 @@ function loadLocaleResources(schema) {
 }
 
 /**
- * Set api endpoints
- * @param {Object} schema
+ * Set environment settings
+ * @param  {Object} schema
  */
-function setApiEndpoints(schema) {
-  if (process.env.ASK_FUNCTION_NAME) {
-    schema.manifest.apis.smartHome.endpoint.uri = process.env.ASK_FUNCTION_NAME;
-  }
-  if (process.env.ASK_ENV === 'production') {
-    schema.manifest.apis.smartHome.regions = {};
-    REGIONS.forEach(region =>
-      schema.manifest.apis.smartHome.regions[region] = {endpoint: schema.manifest.apis.smartHome.endpoint});
-  } else {
-    delete schema.manifest.apis.smartHome.regions;
-  }
-}
-
-/**
- * Set publishing distribution settings
- * @param {Object} schema
- */
-function setPublishingDistributionSettings(schema) {
-  if (process.env.ASK_ENV === 'production') {
-    schema.manifest.publishingInformation.distributionMode = 'PUBLIC';
-  } else {
-    schema.manifest.publishingInformation.distributionMode = 'PRIVATE';
-  }
+function setEnvironmentSettings(schema) {
+  // Set api function name if specified
+  schema.manifest.apis.smartHome.endpoint.uri = process.env.ASK_FUNCTION_NAME || 'alexa-openhab';
+  // Set api regional endpoints for production deployment
+  schema.manifest.apis.smartHome.regions = process.env.ASK_ENV !== 'production' ? undefined : REGIONS.reduce(
+    (regions, region) => Object.assign(regions, {[region]: {endpoint: schema.manifest.apis.smartHome.endpoint}}), {});
+  // Set publishing distribution mode based on deployment environment
+  schema.manifest.publishingInformation.distributionMode = process.env.ASK_ENV !== 'production' ? 'PRIVATE' : 'PUBLIC';
 }
 
 /**
  * Format skill schema
- * @param {Object} schema
+ * @param  {Object} schema
  */
 function formatSkillSchema(schema) {
   Object.keys(schema).forEach((key) => {
@@ -153,10 +138,8 @@ if (require.main === module) {
     const schema = loadSkillSchema();
     // Load locale resources into skill schema
     loadLocaleResources(schema);
-    // Set api endpoints
-    setApiEndpoints(schema);
-    // Set publishing distribution settings
-    setPublishingDistributionSettings(schema);
+    // Set environment settings
+    setEnvironmentSettings(schema);
     // Format skill schema
     formatSkillSchema(schema);
     // Save skill schema
