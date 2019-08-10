@@ -84,7 +84,7 @@ module.exports = [
           "propertyMap": JSON.stringify({
             "TemperatureSensor": {
               "temperature": {
-                "parameters": {"scale": "Fahrenheit"},
+                "parameters": {"scale": "FAHRENHEIT"},
                 "item": {"name": "temperature1", "type": "Number:Temperature"},
                 "schema": {"name": "temperature"}
               }
@@ -133,11 +133,11 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "ThermostatController": {
-              "targetSetpoint": {"parameters": {"scale": "Fahrenheit"},
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
                 "item": {"name": "targetTemperature", "type": "Number"}, "schema": {"name": "temperature"}},
-              "upperSetpoint": {"parameters": {"scale": "Fahrenheit"},
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
                 "item": {"name": "highTargetTemperature", "type": "Number"}, "schema": {"name": "temperature"}},
-              "lowerSetpoint": {"parameters": {"scale": "Fahrenheit"},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
                 "item": {"name": "lowTargetTemperature", "type": "Number"}, "schema": {"name": "temperature"}}
             }
           })

@@ -297,6 +297,58 @@ module.exports = [
     }
   },
   {
+    description: "set target temperature out of range error",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ThermostatController",
+        "name": "SetTargetTemperature"
+      },
+      "endpoint": {
+        "endpointId": "gThermostat",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ThermostatController": {
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "targetTemperature"}, "schema": {"name": "temperature"}}
+            }
+          })
+        }
+      },
+      "payload": {
+        "targetSetpoint": {
+          "value": 40,
+          "scale": "FAHRENHEIT"
+        },
+      }
+    },
+    mocked: {},
+    expected: {
+      alexa: {
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "ErrorResponse"
+          },
+          "payload": {
+            "type": "TEMPERATURE_VALUE_OUT_OF_RANGE",
+            "message": "The target setpoint temperature cannot be set to 40°F.",
+            "validRange": {
+              "minimumValue": {
+                "value": 50,
+                "scale": "FAHRENHEIT"
+              },
+              "maximumValue": {
+                "value": 90,
+                "scale": "FAHRENHEIT"
+              }
+            }
+          }
+        }
+      },
+      openhab: []
+    }
+  },
+  {
     description: "adjust target temperature",
     directive: {
       "header": {
@@ -481,6 +533,64 @@ module.exports = [
       },
       openhab: [
         {"name": "targetTemperature", "value": 75.6}
+      ]
+    }
+  },
+  {
+    description: "adjust target temperature with capping",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ThermostatController",
+        "name": "AdjustTargetTemperature"
+      },
+      "endpoint": {
+        "endpointId": "gThermostat",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ThermostatController": {
+              "targetSetpoint": {"parameters": {"scale": "FAHRENHEIT", "setpointRange": [60, 90]},
+                "item": {"name": "targetTemperature"}, "schema": {"name": "temperature"}}
+            }
+          })
+        }
+      },
+      "payload": {
+        "targetSetpointDelta": {
+          "value": -2.0,
+          "scale": "FAHRENHEIT"
+        }
+      }
+    },
+    mocked: {
+      openhab: [
+        {"name": "targetTemperature", "state": "60", "type": "Number"},
+        {"name": "targetTemperature", "state": "60", "type": "Number"}
+      ],
+      staged: true
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [
+            {
+              "namespace": "Alexa.ThermostatController",
+              "name": "targetSetpoint",
+              "value": {
+                "value": 60,
+                "scale": "FAHRENHEIT"
+              }
+            }
+          ]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
+          }
+        }
+      },
+      openhab: [
+        {"name": "targetTemperature", "value": 60}
       ]
     }
   }

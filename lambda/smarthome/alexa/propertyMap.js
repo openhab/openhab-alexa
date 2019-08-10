@@ -245,17 +245,26 @@ class AlexaPropertyMap {
             break;
           }
           case 'temperature': {
-            // Use unit of measurement item state symbol to determine scale parameter if not already defined
-            if (item.type === 'Number:Temperature' && !property.parameters.scale) {
+            // Use scale parameter uppercased to determine temperature scale
+            let temperatureScale = (property.parameters.scale || '').toUpperCase();
+            // Use unit of measurement item state symbol to determine temperature scale if not already defined
+            if (item.type === 'Number:Temperature' && !temperatureScale) {
               const symbol = item.state.split(' ').pop();
               const measurement = UNIT_OF_MEASUREMENT['Temperature'].find(meas => meas.symbol === symbol) || {};
-              property.parameters.scale = measurement.unit;
+              temperatureScale = measurement.unit;
             }
-            // Use regional settings measurementSystem or region to determine scale parameter if not already defined
-            if (globalSettings.regional && !property.parameters.scale) {
+            // Use regional settings measurementSystem or region to determine temperature scale if not already defined
+            if (globalSettings.regional && !temperatureScale) {
               const setting = globalSettings.regional.measurementSystem || globalSettings.regional.region;
-              property.parameters.scale = setting === 'US' ? 'FAHRENHEIT' : setting === 'SI' ? 'CELSIUS' : undefined;
+              temperatureScale = setting === 'US' ? 'FAHRENHEIT' : setting === 'SI' ? 'CELSIUS' : undefined;
             }
+            // Set scale parameter if valid, otherwise default to Celsius
+            property.parameters.scale =
+              ['CELSIUS', 'FAHRENHEIT'].includes(temperatureScale) ? temperatureScale : 'CELSIUS';
+            // Use setpoint range parameter to determine thermostat temperature range ([0] => minimum; [1] => maximum)
+            const setpointRange = (property.parameters.setpointRange || '').split(':').map(value => parseInt(value));
+            // Set setpoint range parameter if valid (min < max)
+            property.parameters.setpointRange = setpointRange[0] < setpointRange[1] ? setpointRange : undefined;
             break;
           }
           case 'thermostatMode': {

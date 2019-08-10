@@ -315,10 +315,7 @@ module.exports = Object.freeze({
             'yeelight': (type) =>
               ['white', 'ceiling', 'dolphin'].includes(type) ? [2700, 6500] : [1700, 6500]
           },
-          'default': {
-            'Dimmer': [1000, 10000],
-            'Number': [1000, 10000]
-          }
+          'default': [1000, 10000]
         },
         'type': 'integer'
       }
@@ -463,6 +460,12 @@ module.exports = Object.freeze({
     'temperature': {
       'itemTypes': ['Number', 'Number:Temperature'],
       'state': {
+        'range': {
+          'default': {
+            'comfort': {'CELSIUS': .5, 'FAHRENHEIT': 1},
+            'setpoint': {'CELSIUS': [10, 32], 'FAHRENHEIT': [50, 90]}
+          }
+        },
         'type': 'object'
       }
     },

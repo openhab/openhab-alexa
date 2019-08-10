@@ -194,7 +194,8 @@ module.exports = {
             "alexa": {
               "value": "ThermostatController.targetSetpoint",
               "config": {
-                "scale": "Fahrenheit"
+                "scale": "Fahrenheit",
+                "setpointRange": "60:90"
               }
             }
           },
@@ -259,7 +260,7 @@ module.exports = {
     },
     {
       "link": "https://myopenhab.org/rest/items/temperature2",
-      "state": "295 K",
+      "state": "20 °C",
       "type": "Number:Temperature",
       "name": "temperature2",
       "label": "Temperature 2",
@@ -312,24 +313,24 @@ module.exports = {
       "propertyMap": {
         "TemperatureSensor": {
           "temperature": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "currentTemperature1", "type": "Number"},
             "schema": {"name": "temperature"}
           }
         },
         "ThermostatController": {
           "targetSetpoint": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "targetTemperature1", "type": "Number"},
             "schema": {"name": "temperature"}
           },
           "upperSetpoint": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "highTargetTemperature1", "type": "Number"},
             "schema": {"name": "temperature"}
           },
           "lowerSetpoint": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "lowTargetTemperature1", "type": "Number"},
             "schema": {"name": "temperature"}
           },
@@ -362,24 +363,24 @@ module.exports = {
       "propertyMap": {
         "TemperatureSensor": {
           "temperature": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "currentTemperature2", "type": "Number"},
             "schema": {"name": "temperature"}
           }
         },
         "ThermostatController": {
           "targetSetpoint": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "targetTemperature2", "type": "Number"},
             "schema": {"name": "temperature"}
           },
           "upperSetpoint": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "highTargetTemperature2", "type": "Number"},
             "schema": {"name": "temperature"}
           },
           "lowerSetpoint": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "lowTargetTemperature2", "type": "Number"},
             "schema": {"name": "temperature"}
           },
@@ -417,7 +418,7 @@ module.exports = {
       "propertyMap": {
         "ThermostatController": {
           "targetSetpoint": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT", "setpointRange": [60, 90]},
             "item": {"name": "targetTemperature4", "type": "Number"},
             "schema": {"name": "temperature"}
           }
@@ -450,7 +451,7 @@ module.exports = {
       "propertyMap": {
         "TemperatureSensor": {
           "temperature": {
-            "parameters": {"scale": "Fahrenheit"},
+            "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "temperature1", "type": "Number"},
             "schema": {"name": "temperature"}
           }
@@ -468,7 +469,7 @@ module.exports = {
       "propertyMap": {
         "TemperatureSensor": {
           "temperature": {
-            "parameters": {"scale": "KELVIN"},
+            "parameters": {"scale": "CELSIUS"},
             "item": {"name": "temperature2", "type": "Number:Temperature"},
             "schema": {"name": "temperature"}
           }

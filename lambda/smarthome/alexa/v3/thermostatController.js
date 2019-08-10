@@ -11,7 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+const decamelize = require('decamelize');
 const log = require('@lib/log.js');
+const { getPropertySchema } = require('../capabilities.js');
 const AlexaDirective = require('../directive.js');
 const { normalize } = require('../propertyState.js');
 
@@ -37,7 +39,7 @@ class AlexaThermostatController extends AlexaDirective {
   }
 
   /**
-   * Sets the taget temperature, this can include upper, lower and target setpoints
+   * Sets the target temperature, this can include upper, lower and target setpoints
    * in the same request.
    */
   setTargetTemperature() {
@@ -57,16 +59,11 @@ class AlexaThermostatController extends AlexaDirective {
     // Only works if the user has no defined targetSetpoint, but does define a upper and lower (dual mode)
     if (directive.payload.targetSetpoint && !directive.payload.upperSetpoint && !directive.payload.lowerSetpoint &&
       !properties.targetSetpoint && properties.upperSetpoint && properties.lowerSetpoint) {
-      // default range if not set
-      let upperRange = properties.upperSetpoint.parameters.scale === 'FAHRENHEIT' ? 1 : .5;
-      let lowerRange = properties.lowerSetpoint.parameters.scale === 'FAHRENHEIT' ? 1 : .5;
-      // use user defined comfort range if set
-      if (typeof properties.upperSetpoint.parameters.comfortRange !== 'undefined') {
-        upperRange = parseFloat(properties.upperSetpoint.parameters.comfortRange);
-      }
-      if (typeof properties.lowerSetpoint.parameters.comfortRange !== 'undefined') {
-        lowerRange = parseFloat(properties.lowerSetpoint.parameters.comfortRange);
-      }
+      // define upper/lower comfort ranges
+      const upperRange = parseFloat(properties.upperSetpoint.parameters.comfortRange) ||
+        getPropertySchema('temperature', `.state.range.default.comfort.${properties.upperSetpoint.parameters.scale}`);
+      const lowerRange = parseFloat(properties.lowerSetpoint.parameters.comfortRange) ||
+        getPropertySchema('temperature', `.state.range.default.comfort.${properties.lowerSetpoint.parameters.scale}`);
       // set dual setpoints
       postItems.push(
         Object.assign({}, properties.upperSetpoint.item, {
@@ -78,10 +75,42 @@ class AlexaThermostatController extends AlexaDirective {
       );
     }
 
-    log.debug('setTargetTemperature to values:', {items: postItems});
-    this.postItemsAndReturn(postItems);
-  }
+    // Determine if one of the target temperatures is out of range
+    const rangeError = postItems.reduce((error, item) => {
+      const propertyName = Object.keys(properties).find(
+        propertyName => properties[propertyName].item.name === item.name);
+      const scale = properties[propertyName].parameters.scale;
+      const range = properties[propertyName].parameters.setpointRange ||
+        getPropertySchema('temperature', `.state.range.default.setpoint.${scale}`);
 
+      return item.state >= range[0] && item.state <= range[1] ? error : {
+        message: `The ${decamelize(propertyName, ' ')} temperature cannot be set to ${item.state}°${scale.charAt(0)}.`,
+        validRange: {
+          minimumValue: {
+            value: range[0],
+            scale: scale
+          },
+          maximumValue: {
+            value: range[1],
+            scale: scale
+          }
+        }
+      };
+    }, undefined);
+
+    if (typeof rangeError === 'undefined') {
+      log.debug('setTargetTemperature to values:', {items: postItems});
+      this.postItemsAndReturn(postItems);
+    } else {
+      this.returnAlexaErrorResponse({
+        payload: {
+          type: 'TEMPERATURE_VALUE_OUT_OF_RANGE',
+          message: rangeError.message,
+          validRange: rangeError.validRange
+        }
+      });
+    }
+  }
 
   /**
    * Adjusts the target setpoint + or - the targetSetpointDelta
@@ -98,10 +127,15 @@ class AlexaThermostatController extends AlexaDirective {
       propertyNames.push('upperSetpoint', 'lowerSetpoint');
     }
     propertyNames.forEach((propertyName) => {
+      const scale = properties[propertyName].parameters.scale;
+      const range = properties[propertyName].parameters.setpointRange ||
+        getPropertySchema('temperature', `.state.range.default.setpoint.${scale}`);
+      const clamp = (value) => Math.min(Math.max(value, range[0]), range[1]);
+
       promises.push(this.getItemState(properties[propertyName].item).then(item =>
         Object.assign({}, properties[propertyName].item, {
-          state: parseFloat(item.state) + normalize(properties[propertyName],
-            this.directive.payload.targetSetpointDelta, {isDelta: true})
+          state: clamp(parseFloat(item.state) + normalize(properties[propertyName],
+            this.directive.payload.targetSetpointDelta, {isDelta: true}))
         })
       ));
     });

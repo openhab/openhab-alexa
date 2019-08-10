@@ -251,6 +251,17 @@ function isSupportedAssetId(assetId) {
 }
 
 /**
+ * Returns alexa property schema values for a given schema name and optional object path
+ * @param  {Object} schema
+ * @param  {String} path    (optional)
+ * @return {*}
+ */
+function getPropertySchema(schema, path = '') {
+  return path.split('.').slice(1).reduce(
+    (values, key) => typeof values === 'object' ? values[key] : undefined, PROPERTY_SCHEMAS[schema]);
+}
+
+/**
  * Returns alexa property settings for a given capability
  *
  *  {
@@ -276,7 +287,7 @@ function getPropertySettings(interfaceName, propertyName) {
   const properties = CAPABILITIES[interfaceName] && CAPABILITIES[interfaceName]['properties'] || [];
   const property = properties.find(property => property.name === propertyName) || {};
 
-  return Object.assign({}, property, PROPERTY_SCHEMAS[property.schema]);
+  return Object.assign({}, property, getPropertySchema(property.schema));
 }
 
 /**
@@ -290,8 +301,7 @@ function getPropertySettings(interfaceName, propertyName) {
  */
 function getPropertyStateMap(property) {
   const parameters = property.parameters;
-  const schema = PROPERTY_SCHEMAS[property.schema.name] || {};
-  const stateMap = schema.state && schema.state.map || {};
+  const stateMap = getPropertySchema(property.schema.name, '.state.map') || {};
   const type = property.item.type;
 
   // Define custom map if defined in schema state map
@@ -341,6 +351,7 @@ function isSupportedDisplayCategory(category) {
 module.exports = {
   getCapabilityCategory: getCapabilityCategory,
   getCapabilityInterface: getCapabilityInterface,
+  getPropertySchema: getPropertySchema,
   getPropertySettings: getPropertySettings,
   getPropertyStateMap: getPropertyStateMap,
   isInColorMode: isInColorMode,
