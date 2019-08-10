@@ -48,6 +48,209 @@ const PARAMETER_TYPE_MAPPING = {
 };
 
 /**
+ * Defines normalize parameters functions
+ * @type {Object}
+ */
+const normalizeParameters = {
+  /**
+   * Normalizes arm state parameters
+   * @param  {Object} property
+   * @param  {Object} item
+   * @param  {Object} settings
+   */
+  armState: function (property, item, settings) {
+    // Use property state map to determine security panel supported arm states if not defined
+    const armStates = property.parameters.supportedArmStates || Object.keys(getPropertyStateMap(property));
+    // Update supported arm states parameter removing invalid values based on alexa supported arm states
+    property.parameters.supportedArmStates = armStates.reduce(
+      (states, value) => states.concat(settings.property.state.supported.includes(value) ? value : []), []);
+    // Update exit delay parameters within alexa supported spread (0-255) if defined
+    property.parameters.exitDelay = !isNaN(property.parameters.exitDelay) ? property.parameters.exitDelay > 0 ?
+      property.parameters.exitDelay < 255 ? property.parameters.exitDelay : 255 : 0 : undefined;
+    // Remove pin codes support parameters if item type not string
+    if (item.type !== 'String') {
+      delete property.parameters.supportsPinCodes;
+    }
+  },
+
+  /**
+   * Normalizes arm state parameters
+   * @param  {Object} property
+   * @param  {Object} item
+   * @param  {Object} settings
+   */
+  colorTemperatureInKelvin: function (property, item, settings) {
+    // Use binding parameter or item channel metadata value to determine binding name & thing type
+    const [binding, thingType] = property.parameters.binding && property.parameters.binding.split(':') ||
+      item.metadata.channel && item.metadata.channel.value && item.metadata.channel.value.split(':') || [];
+    // Use range parameter to determine color temperature range ([0] => minimum; [1] => maximum)
+    let temperatureRange = (property.parameters.range || '').split(':').map(value => parseInt(value));
+    // Update range values if not valid (min >= max) using custom values based on binding name & thing type
+    if (temperatureRange.length !== 2 || temperatureRange.some(value => isNaN(value)) ||
+      temperatureRange[0] >= temperatureRange[1]) {
+      temperatureRange = settings.property.state.range['custom:binding'][binding] &&
+        settings.property.state.range['custom:binding'][binding](thingType);
+    }
+    // Set range parameter
+    property.parameters.range = temperatureRange;
+  },
+
+  /**
+   * Normalizes equalizer bands parameters
+   * @param  {Object} property
+   * @param  {Object} item
+   * @param  {Object} settings
+   */
+  equalizerBands: function (property, item, settings) {
+    // Define equalizer range based on range parameter ([0] => minimum; [1] => maximum)
+    let equalizerRange = (property.parameters.range || '').split(':').map(value => parseInt(value));
+    // Update range values if not valid (min >= max) using default based on item type
+    if (equalizerRange.length !== 2 || equalizerRange.some(value => isNaN(value)) ||
+      equalizerRange[0] >= equalizerRange[1]) {
+      equalizerRange = settings.property.state.range.default[item.type.split(':').shift()];
+    }
+    // Define equalizer default based on parameter
+    const equalizerDefault = parseInt(property.parameters.default);
+    // Update default parameter if out of range or not defined using equalizer range midpoint spread
+    property.parameters.default = equalizerRange[0] <= equalizerDefault &&
+      equalizerDefault <= equalizerRange[1] ? equalizerDefault : (equalizerRange[0] + equalizerRange[1]) / 2;
+    // Set range object
+    property.parameters.range = {'minimum': equalizerRange[0], 'maximum': equalizerRange[1]};
+  },
+
+  /**
+   * Normalizes equalizer mode parameters
+   * @param  {Object} property
+   * @param  {Object} item
+   * @param  {Object} settings
+   */
+  equalizerMode: function (property, item, settings) {
+    // Use property state map to determine equalizer supported modes if not defined
+    const equalizerModes = property.parameters.supportedModes || Object.keys(getPropertyStateMap(property));
+    // Update supported modes parameter removing invalid values based on alexa equalizer supported modes
+    property.parameters.supportedModes = equalizerModes.reduce(
+      (modes, value) => modes.concat(settings.property.state.supported.includes(value) ? value : []), []);
+  },
+
+  /**
+   * Normalizes inputs parameters
+   * @param  {Object} property
+   */
+  inputs: function (property) {
+    // Normalize supported input names removing invalid values in the process
+    property.parameters.supportedInputs = (property.parameters.supportedInputs || []).reduce(
+      (inputs, value) => inputs.concat(normalize(property, value) || []), []);
+  },
+
+  /**
+   * Normalizes mode parameters
+   * @param  {Object} property
+   * @param  {Object} item
+   */
+  mode: function (property, item) {
+    // Use item state description options to determine supported modes and its mapping if not already defined
+    if (item.stateDescription && item.stateDescription.options && !property.parameters.supportedModes) {
+      property.parameters.supportedModes = item.stateDescription.options.reduce((modes, option) =>
+        modes.concat(`${option.value}=${option.label}`), []);
+    }
+    // Update supported modes using mode as labels if not defined or first element empty
+    property.parameters.supportedModes = (property.parameters.supportedModes || []).reduce((modes, value) => {
+      // eslint-disable-next-line no-unused-vars
+      const [match, mode, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
+      return modes.concat(mode ? `${mode}=${labels.match(/^(:|$)/) ? mode : ''}${labels}` : []);
+    }, []);
+  },
+
+  /**
+   * Normalizes range value parameters
+   * @param  {Object} property
+   * @param  {Object} item
+   * @param  {Object} settings
+   */
+  rangeValue: function (property, item, settings) {
+    // Define range values based on supported range parameter ([0] => minimum; [1] => maximum; [2] => precision)
+    let rangeValues = (property.parameters.supportedRange || '').split(':').map(value => parseInt(value));
+    // Update range values if not valid (min >= max; max - min <= precision) using default based on item type
+    if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) ||
+      rangeValues[0] >= rangeValues[1] || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
+      rangeValues = settings.property.state.range.default[item.type.split(':').shift()];
+    }
+    // Set supported range object
+    property.parameters.supportedRange = {
+      'minimumValue': rangeValues[0], 'maximumValue': rangeValues[1], 'precision': Math.abs(rangeValues[2])};
+    // Update presets parameter removing out of range values
+    property.parameters.presets = (property.parameters.presets || []).reduce((presets, value) => {
+      const [match, preset, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
+      return rangeValues[0] <= preset && preset <= rangeValues[1] && labels ?
+        [].concat(presets || [], match) : presets;
+    }, undefined);
+    // Use unit of measurement item state symbol and type dimension to determine unitOfMeasure if not defined
+    if (item.type.startsWith('Number:') && !property.parameters.unitOfMeasure) {
+      const symbol = item.state.split(' ').pop();
+      const dimension = item.type.split(':').pop();
+      const measurement = UNIT_OF_MEASUREMENT[dimension].find(meas => meas.symbol === symbol) || {};
+      property.parameters.unitOfMeasure = measurement.id;
+    }
+    // Remove unitOfMeasure parameter if not found in supported unit of measurement
+    if (property.parameters.unitOfMeasure && !Object.keys(UNIT_OF_MEASUREMENT).some(dimension =>
+      UNIT_OF_MEASUREMENT[dimension].find(meas => meas.id === property.parameters.unitOfMeasure))) {
+      delete property.parameters.unitOfMeasure;
+    }
+  },
+
+  /**
+   * Normalizes temperature parameters
+   * @param  {Object} property
+   * @param  {Object} item
+   * @param  {Object} settings
+   */
+  temperature: function (property, item, settings) {
+    // Use scale parameter uppercased to determine temperature scale
+    let temperatureScale = (property.parameters.scale || '').toUpperCase();
+    // Use unit of measurement item state symbol to determine temperature scale if not already defined
+    if (item.type === 'Number:Temperature' && !temperatureScale) {
+      const symbol = item.state.split(' ').pop();
+      const measurement = UNIT_OF_MEASUREMENT['Temperature'].find(meas => meas.symbol === symbol) || {};
+      temperatureScale = measurement.unit;
+    }
+    // Use regional settings measurementSystem or region to determine temperature scale if not already defined
+    if (settings.regional && !temperatureScale) {
+      const setting = settings.regional.measurementSystem || settings.regional.region;
+      temperatureScale = setting === 'US' ? 'FAHRENHEIT' : setting === 'SI' ? 'CELSIUS' : undefined;
+    }
+    // Set scale parameter if valid, otherwise default to Celsius
+    property.parameters.scale =
+      ['CELSIUS', 'FAHRENHEIT'].includes(temperatureScale) ? temperatureScale : 'CELSIUS';
+    // Use setpoint range parameter to determine thermostat temperature range ([0] => minimum; [1] => maximum)
+    const setpointRange = (property.parameters.setpointRange || '').split(':').map(value => parseInt(value));
+    // Set setpoint range parameter if valid (min < max)
+    property.parameters.setpointRange = setpointRange[0] < setpointRange[1] ? setpointRange : undefined;
+  },
+
+  /**
+   * Normalizes thermostat mode parameters
+   * @param  {Object} property
+   * @param  {Object} item
+   * @param  {Object} settings
+   */
+  thermostatMode: function (property, item, settings) {
+    // Use item channel metadata value to determine binding parameter if not defined
+    if (item.metadata.channel && item.metadata.channel.value && !property.parameters.binding) {
+      property.parameters.binding = item.metadata.channel.value.split(':').shift();
+    }
+    // Use property state map to determine thermostat supported modes if not defined
+    const thermostatModes = property.parameters.supportedModes || Object.keys(getPropertyStateMap(property));
+    // Update supported modes parameter removing invalid values based on alexa thermostat supported modes
+    property.parameters.supportedModes = thermostatModes.reduce(
+      (modes, value) => modes.concat(settings.property.state.supported.includes(value) ? value : []), []);
+    // Remove supported modes parameter if includes every alexa thermostat supported modes
+    if (settings.property.state.supported.every(mode => property.parameters.supportedModes.includes(mode))) {
+      delete property.parameters.supportedModes;
+    }
+  }
+};
+
+/**
  * Defines property map class to associate items to an endpoint from metadata, per the description below:
  *
  * openHAB Metadata
@@ -151,19 +354,20 @@ class AlexaPropertyMap {
   /**
    * Adds item to property map object
    * @param  {Object} item
-   * @param  {Object} globalSettings
+   * @param  {Object} settings
    */
-  addItem(item, globalSettings = {}) {
+  addItem(item, settings = {}) {
     const propertyMap = this;
     let matches;
 
     item.metadata.alexa.value.split(',').forEach((capability) => {
       if ((matches = capability.match(CAPABILITY_PATTERN))) {
-        const propertySettings = getPropertySettings(matches[1], matches[2]);
+        // Get capability property settings
+        settings = Object.assign({}, settings, {property: getPropertySettings(matches[1], matches[2])});
         // Append item name, as instance name, if property multi-instance enabled
-        const interfaceName = matches[1] + (propertySettings.multiInstance ? ':' + item.name : '');
+        const interfaceName = matches[1] + (settings.property.multiInstance ? ':' + item.name : '');
         // Append component name if property components required
-        const propertyName = matches[2] + (propertySettings.components ? ':' + matches[3] : '');
+        const propertyName = matches[2] + (settings.property.components ? ':' + matches[3] : '');
         const component = matches[3];
         const properties = propertyMap[interfaceName] || {};
         const property = {
@@ -172,23 +376,23 @@ class AlexaPropertyMap {
             name: item.name,
             type: item.type
           },
-          schema:{
-            name: propertySettings.schema
+          schema: {
+            name: settings.property.schema
           }
         };
 
         // Skip property if its item (group)type not supported by capability
-        if (!propertySettings.itemTypes || !propertySettings.itemTypes.includes(item.groupType || item.type)) {
+        if (!settings.property.itemTypes || !settings.property.itemTypes.includes(item.groupType || item.type)) {
           return;
         }
 
         // Skip property if component-enabled and not valid
-        if (propertySettings.components && !propertySettings.components.includes(component)) {
+        if (settings.property.components && !settings.property.components.includes(component)) {
           return;
         }
 
         // Set friendly names parameter on multi-instance property to use item label & synonyms, if not already defined
-        if (propertySettings.multiInstance && !property.parameters.friendlyNames) {
+        if (settings.property.multiInstance && !property.parameters.friendlyNames) {
           property.parameters.friendlyNames = [
             item.label, item.metadata.synonyms && item.metadata.synonyms.value].filter(Boolean).join(',');
         }
@@ -203,7 +407,8 @@ class AlexaPropertyMap {
                 value = ['0', 'false', 'no'].includes(value.toString().toLowerCase()) ? false : true;
                 break;
               case 'list':
-                value = value.split(',').map(value => value.trim());
+                value = value.split(',').map(value => value.trim()).filter(
+                  (value, index, array) => array.indexOf(value) === index);
                 break;
               case 'map':
                 value = JSON.parse(value);
@@ -220,154 +425,9 @@ class AlexaPropertyMap {
           }
         });
 
-        // Update specific parameters based on schema name
-        switch (property.schema.name) {
-          case 'colorTemperatureInKelvin': {
-            // Use binding parameter or item channel metadata value to determine binding name & thing type
-            const [binding, thingType] = property.parameters.binding && property.parameters.binding.split(':') ||
-              item.metadata.channel && item.metadata.channel.value && item.metadata.channel.value.split(':') || [];
-            // Use range parameter to determine color temperature range ([0] => minimum; [1] => maximum)
-            let temperatureRange = (property.parameters.range || '').split(':').map(value => parseInt(value));
-            // Update range values if not valid (min >= max) using custom values based on binding name & thing type
-            if (temperatureRange.length !== 2 || temperatureRange.some(value => isNaN(value)) ||
-              temperatureRange[0] >= temperatureRange[1]) {
-              temperatureRange = propertySettings.state.range['custom:binding'][binding] &&
-                propertySettings.state.range['custom:binding'][binding](thingType);
-            }
-            // Set range parameter
-            property.parameters.range = temperatureRange;
-            break;
-          }
-          case 'inputs': {
-            // Normalize supported input names removing invalid values in the process
-            property.parameters.supportedInputs = (property.parameters.supportedInputs || []).reduce(
-              (inputs, value) => inputs.concat(normalize(property, value) || []), []);
-            break;
-          }
-          case 'temperature': {
-            // Use scale parameter uppercased to determine temperature scale
-            let temperatureScale = (property.parameters.scale || '').toUpperCase();
-            // Use unit of measurement item state symbol to determine temperature scale if not already defined
-            if (item.type === 'Number:Temperature' && !temperatureScale) {
-              const symbol = item.state.split(' ').pop();
-              const measurement = UNIT_OF_MEASUREMENT['Temperature'].find(meas => meas.symbol === symbol) || {};
-              temperatureScale = measurement.unit;
-            }
-            // Use regional settings measurementSystem or region to determine temperature scale if not already defined
-            if (globalSettings.regional && !temperatureScale) {
-              const setting = globalSettings.regional.measurementSystem || globalSettings.regional.region;
-              temperatureScale = setting === 'US' ? 'FAHRENHEIT' : setting === 'SI' ? 'CELSIUS' : undefined;
-            }
-            // Set scale parameter if valid, otherwise default to Celsius
-            property.parameters.scale =
-              ['CELSIUS', 'FAHRENHEIT'].includes(temperatureScale) ? temperatureScale : 'CELSIUS';
-            // Use setpoint range parameter to determine thermostat temperature range ([0] => minimum; [1] => maximum)
-            const setpointRange = (property.parameters.setpointRange || '').split(':').map(value => parseInt(value));
-            // Set setpoint range parameter if valid (min < max)
-            property.parameters.setpointRange = setpointRange[0] < setpointRange[1] ? setpointRange : undefined;
-            break;
-          }
-          case 'thermostatMode': {
-            // Use item channel metadata value to determine binding parameter if not defined
-            if (item.metadata.channel && item.metadata.channel.value && !property.parameters.binding) {
-              property.parameters.binding = item.metadata.channel.value.split(':').shift();
-            }
-            // Use property state map to determine thermostat supported modes if not defined
-            const thermostatModes = property.parameters.supportedModes || Object.keys(getPropertyStateMap(property));
-            // Update supported modes parameter removing invalid values based on alexa thermostat supported modes
-            property.parameters.supportedModes = thermostatModes.reduce(
-              (modes, value) => modes.concat(propertySettings.state.supported.includes(value) ? value : []), []);
-            // Remove supported modes parameter if includes every alexa thermostat supported modes
-            if (propertySettings.state.supported.every(mode => property.parameters.supportedModes.includes(mode))) {
-              delete property.parameters.supportedModes;
-            }
-            break;
-          }
-          case 'armState': {
-            // Use property state map to determine security panel supported arm states if not defined
-            const armStates = property.parameters.supportedArmStates || Object.keys(getPropertyStateMap(property));
-            // Update supported arm states parameter removing invalid values based on alexa supported arm states
-            property.parameters.supportedArmStates = armStates.reduce(
-              (states, value) => states.concat(propertySettings.state.supported.includes(value) ? value : []), []);
-            // Update exit delay parameters within alexa supported spread (0-255) if defined
-            property.parameters.exitDelay = !isNaN(property.parameters.exitDelay) ? property.parameters.exitDelay > 0 ?
-              property.parameters.exitDelay < 255 ? property.parameters.exitDelay : 255 : 0 : undefined;
-            // Remove pin codes support parameters if item type not string
-            if (item.type !== 'String') {
-              delete property.parameters.supportsPinCodes;
-            }
-            break;
-          }
-          case 'equalizerBands': {
-            // Define equalizer range based on range parameter ([0] => minimum; [1] => maximum)
-            let equalizerRange = (property.parameters.range || '').split(':').map(value => parseInt(value));
-            // Update range values if not valid (min >= max) using default based on item type
-            if (equalizerRange.length !== 2 || equalizerRange.some(value => isNaN(value)) ||
-              equalizerRange[0] >= equalizerRange[1]) {
-              equalizerRange = propertySettings.state.range.default[item.type.split(':').shift()];
-            }
-            // Define equalizer default based on parameter
-            const equalizerDefault = parseInt(property.parameters.default);
-            // Update default parameter if out of range or not defined using equalizer range midpoint spread
-            property.parameters.default = equalizerRange[0] <= equalizerDefault &&
-              equalizerDefault <= equalizerRange[1] ? equalizerDefault : (equalizerRange[0] + equalizerRange[1]) / 2;
-            // Set range object
-            property.parameters.range = {'minimum': equalizerRange[0], 'maximum': equalizerRange[1]};
-            break;
-          }
-          case 'equalizerMode': {
-            // Use property state map to determine equalizer supported modes if not defined
-            const equalizerModes = property.parameters.supportedModes || Object.keys(getPropertyStateMap(property));
-            // Update supported modes parameter removing invalid values based on alexa equalizer supported modes
-            property.parameters.supportedModes = equalizerModes.reduce(
-              (modes, value) => modes.concat(propertySettings.state.supported.includes(value) ? value : []), []);
-            break;
-          }
-          case 'mode': {
-            // Use item state description options to determine supported modes and its mapping if not already defined
-            if (item.stateDescription && item.stateDescription.options && !property.parameters.supportedModes) {
-              property.parameters.supportedModes = item.stateDescription.options.reduce((modes, option) =>
-                modes.concat(`${option.value}=${option.label}`), []);
-            }
-            // Update supported modes using mode as labels if not defined or first element empty
-            property.parameters.supportedModes = (property.parameters.supportedModes || []).reduce((modes, value) => {
-              // eslint-disable-next-line no-unused-vars
-              const [match, mode, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
-              return modes.concat(mode ? `${mode}=${labels.match(/^(:|$)/) ? mode : ''}${labels}` : []);
-            }, []);
-            break;
-          }
-          case 'rangeValue': {
-            // Define range values based on supported range parameter ([0] => minimum; [1] => maximum; [2] => precision)
-            let rangeValues = (property.parameters.supportedRange || '').split(':').map(value => parseInt(value));
-            // Update range values if not valid (min >= max; max - min <= precision) using default based on item type
-            if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) ||
-              rangeValues[0] >= rangeValues[1] || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
-              rangeValues = propertySettings.state.range.default[item.type.split(':').shift()];
-            }
-            // Set supported range object
-            property.parameters.supportedRange = {
-              'minimumValue': rangeValues[0], 'maximumValue': rangeValues[1], 'precision': Math.abs(rangeValues[2])};
-            // Update presets parameter removing out of range values
-            property.parameters.presets = (property.parameters.presets || []).reduce((presets, value) => {
-              const [match, preset, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
-              return rangeValues[0] <= preset && preset <= rangeValues[1] && labels ?
-                [].concat(presets || [], match) : presets;
-            }, undefined);
-            // Use unit of measurement item state symbol and type dimension to determine unitOfMeasure if not defined
-            if (item.type.startsWith('Number:') && !property.parameters.unitOfMeasure) {
-              const symbol = item.state.split(' ').pop();
-              const dimension = item.type.split(':').pop();
-              const measurement = UNIT_OF_MEASUREMENT[dimension].find(meas => meas.symbol === symbol) || {};
-              property.parameters.unitOfMeasure = measurement.id;
-            }
-            // Remove unitOfMeasure parameter if not found in supported unit of measurement
-            if (property.parameters.unitOfMeasure && !Object.keys(UNIT_OF_MEASUREMENT).some(dimension =>
-              UNIT_OF_MEASUREMENT[dimension].find(meas => meas.id === property.parameters.unitOfMeasure))) {
-              delete property.parameters.unitOfMeasure;
-            }
-            break;
-          }
+        // Normalize property parameters based on schema name if method defined
+        if (typeof normalizeParameters[property.schema.name] === 'function') {
+          normalizeParameters[property.schema.name](property, item, settings);
         }
 
         // Add property to map object

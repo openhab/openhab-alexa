@@ -50,10 +50,10 @@ function getCapabilityCategory(interfaceName) {
  *
  * @param  {String} interfaceName
  * @param  {Object} properties     (optional)
- * @param  {Object} globalSettings (optional)
+ * @param  {Object} settings       (optional)
  * @return {Object}
  */
-function getCapabilityInterface(interfaceName, properties, globalSettings = {}) {
+function getCapabilityInterface(interfaceName, properties, settings = {}) {
   let instance;
   // Extract instance name from interface name
   [interfaceName, instance] = interfaceName.split(':');
@@ -76,9 +76,9 @@ function getCapabilityInterface(interfaceName, properties, globalSettings = {}) 
     'version': '3'
   };
 
-  // Define locale based on regional global settings if defined, otherwise default to 'en-US'
-  const locale = globalSettings.regional && globalSettings.regional.language && globalSettings.regional.region ?
-    [globalSettings.regional.language, globalSettings.regional.region].join('-') : 'en-US';
+  // Define locale based on regional settings if defined, otherwise default to 'en-US'
+  const locale = settings.regional && settings.regional.language && settings.regional.region ?
+    [settings.regional.language, settings.regional.region].join('-') : 'en-US';
 
   // Initialize capability common properties
   const configuration = {};
@@ -93,30 +93,37 @@ function getCapabilityInterface(interfaceName, properties, globalSettings = {}) 
     // Extract component from property name
     [propertyName, component] = propertyName.split(':');
     // Get capability property settings
-    const propertySettings = getPropertySettings(interfaceName, propertyName);
+    settings = Object.assign({}, settings, {property: getPropertySettings(interfaceName, propertyName)});
 
     // Add unique property name to supported list if property is supported
-    if (propertySettings.isSupported !== false && !supported.find(property => property.name === propertyName)) {
+    if (settings.property.isSupported !== false && !supported.find(property => property.name === propertyName)) {
       supported.push({name: propertyName});
+    }
+
+    // Get capability resources if friendly names parameter defined
+    if (parameters.friendlyNames) {
+      Object.assign(resources, getResourcesObject({
+        labels: parameters.friendlyNames, locale: parameters.locale || locale}));
     }
 
     // Update properties based on schema name
     switch (schema) {
-      case 'inputs':
-        capability.inputs = parameters.supportedInputs.map(input => Object.assign({name: input}));
-        break;
-      case 'playbackCommand':
-        capability.supportedOperations = ['Play', 'Pause', 'Next', 'Previous', 'Rewind', 'FastForward'];
-        break;
-      case 'scene':
-        capability.supportsDeactivation = parameters.supportsDeactivation === false ? false : true;
+      case 'armState':
+        Object.assign(configuration, {
+          'supportedArmStates': parameters.supportedArmStates.map(state => ({'value': state}))
+        }, parameters.supportsPinCodes === true && {
+          'supportedAuthorizationTypes': [{
+            'type': 'FOUR_DIGIT_PIN'
+          }]
+        });
         break;
       case 'equalizerBands':
         capability.configurations = Object.assign(capability.configurations || {}, {
           'bands': {
             'supported': [].concat(capability.configurations && capability.configurations.bands &&
               capability.configurations.bands.supported || [], {'name': component.toUpperCase()}),
-            'range': parameters.range
+            'range': capability.configurations && capability.configurations.bands &&
+              capability.configurations.bands.range || parameters.range
           }
         });
         break;
@@ -127,25 +134,10 @@ function getCapabilityInterface(interfaceName, properties, globalSettings = {}) 
           }
         });
         break;
-      case 'thermostatMode':
-        Object.assign(configuration, {
-          'supportsScheduling': false
-        }, parameters.supportedModes && {
-          'supportedModes': parameters.supportedModes
-        });
-        break;
-      case 'armState':
-        Object.assign(configuration, {
-          'supportedArmStates': parameters.supportedArmStates.map(state => ({'value': state}))
-        }, parameters.supportsPinCodes === true && {
-          'supportedAuthorizationTypes': [{
-            'type': 'FOUR_DIGIT_PIN'
-          }]
-        });
+      case 'inputs':
+        capability.inputs = parameters.supportedInputs.map(input => Object.assign({name: input}));
         break;
       case 'mode':
-        Object.assign(resources, parameters.friendlyNames && getResourcesObject({
-          labels: parameters.friendlyNames, locale: parameters.locale || locale}));
         Object.assign(configuration, {
           'ordered': parameters.ordered === true,
           'supportedModes': parameters.supportedModes.map(mode => ({
@@ -155,9 +147,10 @@ function getCapabilityInterface(interfaceName, properties, globalSettings = {}) 
           }))
         });
         break;
+      case 'playbackCommand':
+        capability.supportedOperations = ['Play', 'Pause', 'Next', 'Previous', 'Rewind', 'FastForward'];
+        break;
       case 'rangeValue':
-        Object.assign(resources, parameters.friendlyNames && getResourcesObject({
-          labels: parameters.friendlyNames, locale: parameters.locale || locale}));
         Object.assign(configuration, Object.assign({
           'supportedRange': parameters.supportedRange
         }, parameters.unitOfMeasure && {
@@ -170,9 +163,15 @@ function getCapabilityInterface(interfaceName, properties, globalSettings = {}) 
           }))
         }));
         break;
-      case 'toggleState':
-        Object.assign(resources, parameters.friendlyNames && getResourcesObject({
-          labels: parameters.friendlyNames, locale: parameters.locale || locale}));
+      case 'scene':
+        capability.supportsDeactivation = parameters.supportsDeactivation === false ? false : true;
+        break;
+      case 'thermostatMode':
+        Object.assign(configuration, {
+          'supportsScheduling': false
+        }, parameters.supportedModes && {
+          'supportedModes': parameters.supportedModes
+        });
         break;
     }
   });
