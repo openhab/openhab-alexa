@@ -321,17 +321,21 @@ function getPropertyStateMap(property) {
  * Determines if light endpoint is in color mode
  * @param  {Object}  colorItem
  * @param  {Object}  temperatureItem
+ * @param  {String}  binding
  * @return {Boolean}
  */
-function isInColorMode(colorItem, temperatureItem) {
+function isInColorMode(colorItem, temperatureItem, binding) {
   if (typeof colorItem !== 'undefined' && typeof temperatureItem !== 'undefined') {
     const saturation = colorItem.state && colorItem.state.split(',')[1];
     const temperature = temperatureItem.state;
     const type = temperatureItem.type;
+    // Determine omit saturation color mode property based on binding name
+    const omitSaturationColorMode = getPropertySchema(
+      'colorTemperatureInKelvin', `.state.map.custom:omitSaturationColorMode.${binding}`);
 
     switch (type) {
       case 'Dimmer':
-        return typeof temperature === 'undefined' || saturation > 0;
+        return typeof temperature === 'undefined' || saturation > 0 && !omitSaturationColorMode;
       case 'Number':
         return typeof temperature === 'undefined' || temperature === '0';
     }

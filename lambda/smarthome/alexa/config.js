@@ -301,6 +301,11 @@ module.exports = Object.freeze({
     'colorTemperatureInKelvin': {
       'itemTypes': ['Dimmer', 'Number'],
       'state': {
+        'map': {
+          'custom:omitSaturationColorMode': {
+            'hue': true
+          }
+        },
         'range': {
           'custom:binding': {
             // use binding name and thing type to differentiate white & color ranges

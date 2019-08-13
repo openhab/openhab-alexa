@@ -302,7 +302,8 @@ module.exports = [
               "parameters": {}, "item": {"name": "colorLight"}, "schema": {"name": "color"}}},
             "ColorTemperatureController": {
               "colorTemperatureInKelvin": {
-                "parameters": {"increment": 900}, "item": {"name": "colorTemperature", "type": "Dimmer"},
+                "parameters": {"binding": "hue", "increment": 900},
+                "item": {"name": "colorTemperature", "type": "Dimmer"},
                 "schema": {"name": "colorTemperatureInKelvin"}}}
           })
         }
@@ -310,7 +311,7 @@ module.exports = [
     },
     mocked: {
       openhab: [
-        {"name": "colorLight", "state": "0,0,100", "type": "Color"},
+        {"name": "colorLight", "state": "0,50,100", "type": "Color"},
         {"name": "colorTemperature", "state": "50", "type": "Dimmer"}
       ],
       staged: true
