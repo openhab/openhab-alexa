@@ -570,9 +570,10 @@ class AlexaPropertyMap {
     if (interfaceNames.includes('ColorController') && interfaceNames.includes('ColorTemperatureController')) {
       const colorItem = propertyMap.ColorController.color.item;
       const temperatureItem = propertyMap.ColorTemperatureController.colorTemperatureInKelvin.item;
+      const binding = propertyMap.ColorTemperatureController.colorTemperatureInKelvin.parameters.binding;
 
       // Update interfaceNames list based on color mode
-      if (isInColorMode(colorItem, temperatureItem)) {
+      if (isInColorMode(colorItem, temperatureItem, binding)) {
         interfaceNames.splice(interfaceNames.indexOf('ColorTemperatureController'), 1);
         temperatureItem.state = 0; // set state to zero to exclude item from health check
       } else {

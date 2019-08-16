@@ -75,9 +75,10 @@ class AlexaColorTemperatureController extends AlexaDirective {
 
     Promise.all(promises).then((items) => {
       const [temperatureItem, colorItem] = items;
+      const binding = properties.colorTemperatureInKelvin.parameters.binding;
 
       // Generate error if in color mode
-      if (isInColorMode(colorItem, temperatureItem)) {
+      if (isInColorMode(colorItem, temperatureItem, binding)) {
         this.returnAlexaErrorResponse({
           namespace: this.directive.header.namespace,
           payload: {
