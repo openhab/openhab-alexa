@@ -125,7 +125,7 @@ class AlexaResponse {
         break;
       case 404:
       case 'RequestError':
-        // Set to bridge unreachable if no error response, otherwise no such endpoint for items not found
+        // Set to bridge unreachable if error response undefined, otherwise no such endpoint for items not found
         Object.assign(parameters, {payload: !error.response || !error.response.body ? {
           type: 'BRIDGE_UNREACHABLE',
           message: 'Server not accessible'
@@ -134,8 +134,14 @@ class AlexaResponse {
           message: 'Item not found'
         }});
         break;
+      case 500:
+      case 502:
       case 'TypeError':
-        Object.assign(parameters, {payload: {
+        // Set to bridge unreachable if error response defined, otherwise internal error
+        Object.assign(parameters, {payload: error.response && error.response.body ? {
+          type: 'BRIDGE_UNREACHABLE',
+          message: 'Server not accessible'
+        } : {
           type: 'INTERNAL_ERROR',
           message: 'Internal error'
         }});
