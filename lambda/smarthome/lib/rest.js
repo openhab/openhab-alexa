@@ -94,12 +94,16 @@ function getItem(token, itemName) {
 }
 
 /**
- * Returns all items recursively with alexa, channel and synonyms metadata
+ * Returns all items with alexa, channel and synonyms metadata
  * @param  {String}   token
  * @return {Promise}
  */
-function getItemsRecursively(token) {
-  return getItemOrItems(token, null, {'metadata': 'alexa,channel,synonyms', 'recursive': true});
+function getItems(token) {
+  const parameters = {
+    fields: 'groupNames,groupType,name,label,metadata,state,stateDescription,tags,type',
+    metadata: 'alexa,channel,synonyms'
+  };
+  return getItemOrItems(token, null, parameters);
 }
 
 /**
@@ -159,7 +163,7 @@ function postItemCommand(token, itemName, value) {
 
 module.exports = {
   getItem: getItem,
-  getItemsRecursively: getItemsRecursively,
+  getItems: getItems,
   getRegionalSettings: getRegionalSettings,
   postItemCommand: postItemCommand
 };

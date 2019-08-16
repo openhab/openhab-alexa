@@ -32,7 +32,7 @@ class AlexaDiscovery extends AlexaDirective {
     //  - all items recursively (including group members)
     //  - regional settings
     Promise.all([
-      rest.getItemsRecursively(this.directive.payload.scope.token),
+      rest.getItems(this.directive.payload.scope.token),
       rest.getRegionalSettings(this.directive.payload.scope.token)
     ]).then((data) => {
       const items = data[0];
@@ -73,7 +73,9 @@ class AlexaDiscovery extends AlexaDirective {
             if ((groupMatch = capability.match(ENDPOINT_PATTERN))) {
               log.debug(`found group ${groupMatch[0]} for item ${item.name}`);
               isEndpointGroup = true;
-              item.members.forEach((member) => {
+              // Get group members and add them to property map
+              items.filter(member => member.groupNames.includes(item.name)).forEach((member) => {
+                convertV2Item(member, item.metadata.alexa.config);
                 log.debug(`adding  ${member.name} to group ${item.name}`);
                 groupItems.push(member.name);
                 propertyMap.addItem(member, settings);
@@ -338,20 +340,13 @@ function convertV2Item(item, config = {}) {
       }
     }
 
-    // Push all capabilities to metadata values if not already included
+    // Push all unique capabilities to metadata values
     //  and merge parameters into metadata config
     capabilities.forEach((capability) => {
-      if (!metadata.values.find(value => value === capability)) {
-        metadata.values.push(capability);
-        metadata.config = Object.assign(parameters, metadata.config);
-      }
+      metadata.values = [...new Set(metadata.values).add(capability)];
+      metadata.config = Object.assign(parameters, metadata.config);
     });
   });
-
-  // Update recursively members of group item with endpoint capability
-  if (item.type === 'Group' && metadata.values.find(value => value.match(ENDPOINT_PATTERN))) {
-    item.members.forEach(member => convertV2Item(member, metadata.config));
-  }
 
   // Update item alexa metadata information
   Object.assign(item.metadata, {

@@ -15,120 +15,109 @@ module.exports = {
   description: "speaker player enabled group",
   mocked: [
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/speakerMute",
-          "type": "Switch",
-          "name": "speakerMute",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "Speaker.muted"
-            }
-          },
-          "groupNames": ["gSpeaker"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/speakerVolume",
-          "type": "Dimmer",
-          "name": "speakerVolume",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "Speaker.volume"
-            }
-          },
-          "groupNames": ["gSpeaker"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/speakerPlayer",
-          "type": "Player",
-          "name": "speakerPlayer",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "PlaybackController.playback,PlaybackStateReporter.playbackState"
-            }
-          },
-          "groupNames": ["gSpeaker"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/equalizerBass",
-          "type": "Number",
-          "name": "equalizerBass",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "EqualizerController.bands:bass",
-              "config": {
-                "range": "-5:5"
-              }
-            }
-          },
-          "groupNames": ["gSpeaker"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/equalizerMidrange",
-          "type": "Number",
-          "name": "equalizerMidrange",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "EqualizerController.bands:midrange",
-              "config": {
-                "range": "-5:5"
-              }
-            }
-          },
-          "groupNames": ["gSpeaker"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/equalizerTreble",
-          "type": "Number",
-          "name": "equalizerTreble",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "EqualizerController.bands:treble",
-              "config": {
-                "range": "-5:5"
-              }
-            }
-          },
-          "groupNames": ["gSpeaker"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/equalizerInvalid",
-          "type": "Number",
-          "name": "equalizerInvalid",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "EqualizerController.bands:invalid",
-              "config": {
-                "range": "-5:5"
-              }
-            }
-          },
-          "groupNames": ["gSpeaker"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/equalizerMode",
-          "type": "String",
-          "name": "equalizerMode",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "EqualizerController.modes",
-              "config": {
-                "supportedModes": "MOVIE,TV,FOOBAR"
-              }
-            }
-          },
-          "groupNames": ["gSpeaker"]
+      "type": "Switch",
+      "name": "speakerMute",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "Speaker.muted"
         }
-      ],
-      "link": "https://myopenhab.org/rest/items/gSpeaker",
+      },
+      "groupNames": ["gSpeaker"]
+    },
+    {
+      "type": "Dimmer",
+      "name": "speakerVolume",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "Speaker.volume"
+        }
+      },
+      "groupNames": ["gSpeaker"]
+    },
+    {
+      "type": "Player",
+      "name": "speakerPlayer",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "PlaybackController.playback,PlaybackStateReporter.playbackState"
+        }
+      },
+      "groupNames": ["gSpeaker"]
+    },
+    {
+      "type": "Number",
+      "name": "equalizerBass",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "EqualizerController.bands:bass",
+          "config": {
+            "range": "-5:5"
+          }
+        }
+      },
+      "groupNames": ["gSpeaker"]
+    },
+    {
+      "type": "Number",
+      "name": "equalizerMidrange",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "EqualizerController.bands:midrange",
+          "config": {
+            "range": "-5:5"
+          }
+        }
+      },
+      "groupNames": ["gSpeaker"]
+    },
+    {
+      "type": "Number",
+      "name": "equalizerTreble",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "EqualizerController.bands:treble",
+          "config": {
+            "range": "-5:5"
+          }
+        }
+      },
+      "groupNames": ["gSpeaker"]
+    },
+    {
+      "type": "Number",
+      "name": "equalizerInvalid",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "EqualizerController.bands:invalid",
+          "config": {
+            "range": "-5:5"
+          }
+        }
+      },
+      "groupNames": ["gSpeaker"]
+    },
+    {
+      "type": "String",
+      "name": "equalizerMode",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "EqualizerController.modes",
+          "config": {
+            "supportedModes": "MOVIE,TV,FOOBAR"
+          }
+        }
+      },
+      "groupNames": ["gSpeaker"]
+    },
+    {
       "type": "Group",
       "name": "gSpeaker",
       "label": "Speaker",

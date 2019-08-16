@@ -15,33 +15,28 @@ module.exports = {
   description: "step speaker enabled group",
   mocked: [
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/stepSpeakerMute",
-          "type": "Switch",
-          "name": "stepSpeakerMute",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "StepSpeaker.muted"
-            }
-          },
-          "groupNames": ["gStepSpeaker"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/stepSpeakerVolume",
-          "type": "Number",
-          "name": "stepSpeakerVolume",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "StepSpeaker.volume"
-            }
-          },
-          "groupNames": ["gStepSpeaker"]
+      "type": "Switch",
+      "name": "stepSpeakerMute",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "StepSpeaker.muted"
         }
-      ],
-      "link": "https://myopenhab.org/rest/items/gStepSpeaker",
+      },
+      "groupNames": ["gStepSpeaker"]
+    },
+    {
+      "type": "Number",
+      "name": "stepSpeakerVolume",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "StepSpeaker.volume"
+        }
+      },
+      "groupNames": ["gStepSpeaker"]
+    },
+    {
       "type": "Group",
       "name": "gStepSpeaker",
       "label": "Speaker",

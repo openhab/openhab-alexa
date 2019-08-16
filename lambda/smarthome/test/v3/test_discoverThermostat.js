@@ -15,44 +15,36 @@ module.exports = {
   description: "thermostat enabled group",
   mocked: [
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/currentTemperature1",
-          "type": "Number",
-          "name": "currentTemperature1",
-          "tags": ["CurrentTemperature"],
-          "groupNames": ["gThermostat1"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/targetTemperature1",
-          "type": "Number",
-          "name": "targetTemperature1",
-          "tags": ["TargetTemperature"],
-          "groupNames": ["gThermostat1"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/highTargetTemperature1",
-          "type": "Number",
-          "name": "highTargetTemperature1",
-          "tags": ["UpperTemperature"],
-          "groupNames": ["gThermostat1"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/lowTargetTemperature1",
-          "type": "Number",
-          "name": "lowTargetTemperature1",
-          "tags": ["LowerTemperature"],
-          "groupNames": ["gThermostat1"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/thermostatMode1",
-          "type": "String",
-          "name": "thermostatMode1",
-          "tags": ["homekit:HeatingCoolingMode"],
-          "groupNames": ["gThermostat1"]
-        }
-      ],
-      "link": "https://myopenhab.org/rest/items/gThermostat1",
+      "type": "Number",
+      "name": "currentTemperature1",
+      "tags": ["CurrentTemperature"],
+      "groupNames": ["gThermostat1"]
+    },
+    {
+      "type": "Number",
+      "name": "targetTemperature1",
+      "tags": ["TargetTemperature"],
+      "groupNames": ["gThermostat1"]
+    },
+    {
+      "type": "Number",
+      "name": "highTargetTemperature1",
+      "tags": ["UpperTemperature"],
+      "groupNames": ["gThermostat1"]
+    },
+    {
+      "type": "Number",
+      "name": "lowTargetTemperature1",
+      "tags": ["LowerTemperature"],
+      "groupNames": ["gThermostat1"]
+    },
+    {
+      "type": "String",
+      "name": "thermostatMode1",
+      "tags": ["homekit:HeatingCoolingMode"],
+      "groupNames": ["gThermostat1"]
+    },
+    {
       "type": "Group",
       "name": "gThermostat1",
       "label": "Thermostat 1",
@@ -60,88 +52,80 @@ module.exports = {
       "groupNames": []
     },
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/currentTemperature2",
-          "type": "Number",
-          "name": "currentTemperature2",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "TemperatureSensor.temperature",
-              "config": {
-                "scale": "Fahrenheit"
-              }
-            }
-          },
-          "groupNames": ["gThermostat2"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/targetTemperature2",
-          "type": "Number",
-          "name": "targetTemperature2",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.targetSetpoint",
-              "config": {
-                "scale": "Fahrenheit"
-              }
-            }
-          },
-          "groupNames": ["gThermostat2"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/highTargetTemperature2",
-          "type": "Number",
-          "name": "highTargetTemperature2",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.upperSetpoint",
-              "config": {
-                "scale": "Fahrenheit"
-              }
-            }
-          },
-          "groupNames": ["gThermostat2"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/lowTargetTemperature2",
-          "type": "Number",
-          "name": "lowTargetTemperature2",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.lowerSetpoint",
-              "config": {
-                "scale": "Fahrenheit"
-              }
-            }
-          },
-          "groupNames": ["gThermostat2"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/thermostatMode2",
-          "type": "String",
-          "name": "thermostatMode2",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.thermostatMode",
-              "config": {
-                "OFF": "off",
-                "HEAT": "heat"
-              }
-            },
-            "channel": {
-              "value": "foobar:thermostat:mode"
-            }
-          },
-          "groupNames": ["gThermostat2"]
+      "type": "Number",
+      "name": "currentTemperature2",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "TemperatureSensor.temperature",
+          "config": {
+            "scale": "Fahrenheit"
+          }
         }
-      ],
-      "link": "https://myopenhab.org/rest/items/gThermostat2",
+      },
+      "groupNames": ["gThermostat2"]
+    },
+    {
+      "type": "Number",
+      "name": "targetTemperature2",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.targetSetpoint",
+          "config": {
+            "scale": "Fahrenheit"
+          }
+        }
+      },
+      "groupNames": ["gThermostat2"]
+    },
+    {
+      "type": "Number",
+      "name": "highTargetTemperature2",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.upperSetpoint",
+          "config": {
+            "scale": "Fahrenheit"
+          }
+        }
+      },
+      "groupNames": ["gThermostat2"]
+    },
+    {
+      "type": "Number",
+      "name": "lowTargetTemperature2",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.lowerSetpoint",
+          "config": {
+            "scale": "Fahrenheit"
+          }
+        }
+      },
+      "groupNames": ["gThermostat2"]
+    },
+    {
+      "type": "String",
+      "name": "thermostatMode2",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.thermostatMode",
+          "config": {
+            "OFF": "off",
+            "HEAT": "heat"
+          }
+        },
+        "channel": {
+          "value": "foobar:thermostat:mode"
+        }
+      },
+      "groupNames": ["gThermostat2"]
+    },
+    {
       "type": "Group",
       "name": "gThermostat2",
       "label": "Thermostat 2",
@@ -154,24 +138,20 @@ module.exports = {
       "groupNames": []
     },
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/thermostatMode3",
-          "type": "String",
-          "name": "thermostatMode3",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.thermostatMode",
-              "config": {
-                "supportedModes" : "AUTO,OFF,FOOBAR"
-              }
-            }
-          },
-          "groupNames": ["gThermostat3"]
+      "type": "String",
+      "name": "thermostatMode3",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.thermostatMode",
+          "config": {
+            "supportedModes" : "AUTO,OFF,FOOBAR"
+          }
         }
-      ],
-      "link": "https://myopenhab.org/rest/items/gThermostat3",
+      },
+      "groupNames": ["gThermostat3"]
+    },
+    {
       "type": "Group",
       "name": "gThermostat3",
       "label": "Thermostat 3",
@@ -184,25 +164,21 @@ module.exports = {
       "groupNames": []
     },
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/targetTemperature4",
-          "type": "Number",
-          "name": "targetTemperature4",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.targetSetpoint",
-              "config": {
-                "scale": "Fahrenheit",
-                "setpointRange": "60:90"
-              }
-            }
-          },
-          "groupNames": ["gThermostat4"]
-        },
-      ],
-      "link": "https://myopenhab.org/rest/items/gThermostat4",
+      "type": "Number",
+      "name": "targetTemperature4",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.targetSetpoint",
+          "config": {
+            "scale": "Fahrenheit",
+            "setpointRange": "60:90"
+          }
+        }
+      },
+      "groupNames": ["gThermostat4"]
+    },
+    {
       "type": "Group",
       "name": "gThermostat4",
       "label": "Thermostat 4",
@@ -215,22 +191,18 @@ module.exports = {
       "groupNames": []
     },
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/thermostatMode5",
-          "type": "Switch",
-          "name": "thermostatMode5",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ThermostatController.thermostatMode",
-              "config": {}
-            }
-          },
-          "groupNames": ["gThermostat5"]
+      "type": "Switch",
+      "name": "thermostatMode5",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.thermostatMode",
+          "config": {}
         }
-      ],
-      "link": "https://myopenhab.org/rest/items/gThermostat5",
+      },
+      "groupNames": ["gThermostat5"]
+    },
+    {
       "type": "Group",
       "name": "gThermostat5",
       "label": "Thermostat 5",
@@ -243,7 +215,6 @@ module.exports = {
       "groupNames": []
     },
     {
-      "link": "https://myopenhab.org/rest/items/temperature1",
       "type": "Number",
       "name": "temperature1",
       "label": "Temperature 1",
@@ -259,7 +230,6 @@ module.exports = {
       "groupNames": []
     },
     {
-      "link": "https://myopenhab.org/rest/items/temperature2",
       "state": "20 °C",
       "type": "Number:Temperature",
       "name": "temperature2",
@@ -273,7 +243,6 @@ module.exports = {
       "groupNames": []
     },
     {
-      "link": "https://myopenhab.org/rest/items/temperature3",
       "type": "Number",
       "name": "temperature3",
       "label": "Temperature 3",
