@@ -34,8 +34,10 @@ const logger = createLogger({
         setImmediate(() => this.emit('logged', info));
 
         if (this.stderrLevels[info[LEVEL]]) {
+          // eslint-disable-next-line no-console
           console.error(info[MESSAGE]);
         } else {
+          // eslint-disable-next-line no-console
           console.log(info[MESSAGE]);
         }
 
