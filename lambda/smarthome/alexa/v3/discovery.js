@@ -66,7 +66,7 @@ class AlexaDiscovery extends AlexaDirective {
         const propertyMap = new AlexaPropertyMap();
         let isEndpointGroup = false;
         // OH Goups can act as a single Endpoint using its children for capabilities
-        if (item.type === 'Group') {
+        if (item.type === 'Group' && !item.groupType) {
           item.metadata.alexa.value.split(',').some((capability) => {
             // Find matching Endpoint capability
             let groupMatch;
