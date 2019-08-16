@@ -15,74 +15,66 @@ module.exports = {
   description: "security panel enabled group",
   mocked: [
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/ArmState",
-          "type": "String",
-          "name": "ArmState",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "SecurityPanelController.armState",
-              "config": {
-                "exitDelay": 180,
-                "supportedArmStates": "ARMED_AWAY,ARMED_STAY,DISARMED",
-                "supportsPinCodes": true
-              }
-            }
-          },
-          "groupNames": ["gAlarmSystem"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/BurglaryAlarm",
-          "type": "Switch",
-          "name": "BurglaryAlarm",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "SecurityPanelController.burglaryAlarm"
-            }
-          },
-          "groupNames": ["gAlarmSystem"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/FireAlarm",
-          "type": "Switch",
-          "name": "FireAlarm",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "SecurityPanelController.fireAlarm"
-            }
-          },
-          "groupNames": ["gAlarmSystem"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/CarbonMonoxideAlarm",
-          "type": "Switch",
-          "name": "CarbonMonoxideAlarm",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "SecurityPanelController.carbonMonoxideAlarm"
-            }
-          },
-          "groupNames": ["gAlarmSystem"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/WaterAlarm",
-          "type": "Switch",
-          "name": "WaterAlarm",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "SecurityPanelController.waterAlarm"
-            }
-          },
-          "groupNames": ["gAlarmSystem"]
+      "type": "String",
+      "name": "ArmState",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "SecurityPanelController.armState",
+          "config": {
+            "exitDelay": 180,
+            "supportedArmStates": "ARMED_AWAY,ARMED_STAY,DISARMED",
+            "supportsPinCodes": true
+          }
         }
-      ],
-      "link": "https://myopenhab.org/rest/items/gAlarmSystem",
+      },
+      "groupNames": ["gAlarmSystem"]
+    },
+    {
+      "type": "Switch",
+      "name": "BurglaryAlarm",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "SecurityPanelController.burglaryAlarm"
+        }
+      },
+      "groupNames": ["gAlarmSystem"]
+    },
+    {
+      "type": "Switch",
+      "name": "FireAlarm",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "SecurityPanelController.fireAlarm"
+        }
+      },
+      "groupNames": ["gAlarmSystem"]
+    },
+    {
+      "type": "Switch",
+      "name": "CarbonMonoxideAlarm",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "SecurityPanelController.carbonMonoxideAlarm"
+        }
+      },
+      "groupNames": ["gAlarmSystem"]
+    },
+    {
+      "type": "Switch",
+      "name": "WaterAlarm",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "SecurityPanelController.waterAlarm"
+        }
+      },
+      "groupNames": ["gAlarmSystem"]
+    },
+    {
       "type": "Group",
       "name": "gAlarmSystem",
       "label": "Alarm System",
@@ -95,7 +87,6 @@ module.exports = {
       "groupNames": []
     },
     { // Number item type state mapping no supportedArmStates
-      "link": "https://myopenhab.org/rest/items/AlarmMode1",
       "type": "Number",
       "name": "AlarmMode1",
       "label": "Alarm Mode",
@@ -115,7 +106,6 @@ module.exports = {
       "groupNames": []
     },
     { // Switch item type default config
-      "link": "https://myopenhab.org/rest/items/AlarmMode2",
       "type": "Switch",
       "name": "AlarmMode2",
       "label": "Alarm Mode",

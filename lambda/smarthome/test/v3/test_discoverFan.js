@@ -15,61 +15,55 @@ module.exports = {
   description: "fan range/toggle components",
   mocked: [
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/TowerFanSpeed",
-          "type": "Number",
-          "name": "TowerFanSpeed",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "RangeController.rangeValue",
-              "config": {
-                "supportedRange": "1:10:1",
-                "presets": "1=@Value.Minimum:@Value.Low:Lowest,10=@Value.Maximum:@Value.High:Highest,99=invalid",
-                "friendlyNames": "@Setting.FanSpeed,Air Speed,Speed"
-              }
-            }
-          },
-          "groupNames": ["gTowerFan"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/TowerFanOscillate",
-          "type": "Switch",
-          "name": "TowerFanOscillate",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ToggleController.toggleState",
-              "config": {
-                "friendlyNames": "@Setting.Oscillate,Rotate"
-              }
-            }
-          },
-          "groupNames": ["gTowerFan"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/TowerFanAngle",
-          "state": "80 °",
-          "type": "Number:Angle",
-          "name": "TowerFanAngle",
-          "label": "Fan Angle",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "RangeController.rangeValue",
-              "config": {
-                "supportedRange": "0:120:20"
-              }
-            },
-            "synonyms": {
-              "value": "Orientation"
-            }
-          },
-          "groupNames": ["gTowerFan"]
+      "type": "Number",
+      "name": "TowerFanSpeed",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "RangeController.rangeValue",
+          "config": {
+            "supportedRange": "1:10:1",
+            "presets": "1=@Value.Minimum:@Value.Low:Lowest,10=@Value.Maximum:@Value.High:Highest,99=invalid",
+            "friendlyNames": "@Setting.FanSpeed,Air Speed,Speed"
+          }
         }
-      ],
-      "link": "https://myopenhab.org/rest/items/gTowerFan",
+      },
+      "groupNames": ["gTowerFan"]
+    },
+    {
+      "type": "Switch",
+      "name": "TowerFanOscillate",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ToggleController.toggleState",
+          "config": {
+            "friendlyNames": "@Setting.Oscillate,Rotate"
+          }
+        }
+      },
+      "groupNames": ["gTowerFan"]
+    },
+    {
+      "state": "80 °",
+      "type": "Number:Angle",
+      "name": "TowerFanAngle",
+      "label": "Fan Angle",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "RangeController.rangeValue",
+          "config": {
+            "supportedRange": "0:120:20"
+          }
+        },
+        "synonyms": {
+          "value": "Orientation"
+        }
+      },
+      "groupNames": ["gTowerFan"]
+    },
+    {
       "type": "Group",
       "name": "gTowerFan",
       "tags": [],

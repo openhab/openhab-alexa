@@ -28,7 +28,7 @@ describe('ohConnectorV3 Tests', function () {
       return Promise.resolve(
         Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.getItemsRecursively = function () {
+    rest.getItems = function () {
       return Promise.resolve(
         Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };

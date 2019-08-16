@@ -369,9 +369,9 @@ class AlexaPropertyMap {
         // Append component name if property components required
         const propertyName = matches[2] + (settings.property.components ? ':' + matches[3] : '');
         const component = matches[3];
-        const properties = propertyMap[interfaceName] || {};
+        const properties = Object.assign({}, propertyMap[interfaceName]);
         const property = {
-          parameters: item.metadata.alexa.config || {},
+          parameters: Object.assign({}, item.metadata.alexa.config),
           item: {
             name: item.name,
             type: item.type

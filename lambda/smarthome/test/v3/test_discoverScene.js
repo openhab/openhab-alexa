@@ -15,14 +15,12 @@ module.exports = {
   description: "multiple scene/activity items",
   mocked: [
     {
-      "link": "https://localhost:8443/rest/items/scene1",
       "type": "Switch",
       "name": "scene1",
       "label": "Scene 1",
       "tags": ["Scene"]
     },
     {
-      "link": "https://localhost:8443/rest/items/scene2",
       "type": "Switch",
       "name": "scene2",
       "label": "Scene 2",
@@ -37,7 +35,6 @@ module.exports = {
       }
     },
     {
-      "link": "https://localhost:8443/rest/items/activity1",
       "type": "Switch",
       "name": "activity1",
       "label": "Activity 1",

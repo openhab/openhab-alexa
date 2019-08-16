@@ -15,19 +15,15 @@ module.exports = {
   description: "single color light",
   mocked: [
     {
-      "link": "https://localhost:8443/rest/items/light1",
       "type": "Color",
       "name": "light1",
       "label": "Color Light 1",
-      "category": "lightbulb",
       "tags": ["Lighting"]
     },
     {
-      "link": "https://localhost:8443/rest/items/light2",
       "type": "Color",
       "name": "light2",
       "label": "Color Light 2",
-      "category": "lightbulb",
       "tags": [],
       "metadata": {
         "alexa": {
@@ -36,11 +32,9 @@ module.exports = {
       }
     },
     {
-      "link": "https://localhost:8443/rest/items/light3",
       "type": "Color",
       "name": "light3",
       "label": "Color Light 3",
-      "category": "lightbulb",
       "tags": [],
       "metadata": {
         "alexa": {
@@ -52,11 +46,9 @@ module.exports = {
       }
     },
     {
-      "link": "https://localhost:8443/rest/items/light4",
       "type": "Color",
       "name": "light4",
       "label": "", // Item skipped because no label or synonyms metadata value
-      "category": "lightbulb",
       "tags": ["Lighting"]
     }
   ],

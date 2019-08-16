@@ -15,63 +15,57 @@ module.exports = {
   description: "washer mode components enabled group",
   mocked: [
     {
-      "members": [
-        {
-          "link": "https://myopenhab.org/rest/items/WashCycle",
-          "type": "String",
-          "name": "WashCycle",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ModeController.mode",
-              "config": {
-                "supportedModes": "Normal=:Cottons,Delicate=@Value.Delicate:Knites,Whites",
-                "friendlyNames": "Wash Cycle,Wash Setting"
-              }
-            }
-          },
-          "groupNames": ["gWasher"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/WashTemperature",
-          "type": "Number",
-          "name": "WashTemperature",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ModeController.mode",
-              "config": {
-                "supportedModes": "0=Cold:Cool,1=Warm,2=Hot",
-                "friendlyNames": "Wash Temperature,@Setting.WaterTemperature",
-                "ordered": true
-              }
-            }
-          },
-          "groupNames": ["gWasher"]
-        },
-        {
-          "link": "https://myopenhab.org/rest/items/WashSpinSpeed",
-          "stateDescription": {
-            "options": [
-              {"value": "off", "label": "No Spin"},
-              {"value": "low", "label": "Low"},
-              {"value": "medium", "label": "Medium"},
-              {"value": "high", "label": "High"},
-            ]
-          },
-          "type": "String",
-          "name": "WashSpinSpeed",
-          "label": "Wash Spin Speed",
-          "tags": [],
-          "metadata": {
-            "alexa": {
-              "value": "ModeController.mode"
-            }
-          },
-          "groupNames": ["gWasher"]
+      "type": "String",
+      "name": "WashCycle",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ModeController.mode",
+          "config": {
+            "supportedModes": "Normal=:Cottons,Delicate=@Value.Delicate:Knites,Whites",
+            "friendlyNames": "Wash Cycle,Wash Setting"
+          }
         }
-      ],
-      "link": "https://myopenhab.org/rest/items/gWasher",
+      },
+      "groupNames": ["gWasher"]
+    },
+    {
+      "type": "Number",
+      "name": "WashTemperature",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ModeController.mode",
+          "config": {
+            "supportedModes": "0=Cold:Cool,1=Warm,2=Hot",
+            "friendlyNames": "Wash Temperature,@Setting.WaterTemperature",
+            "ordered": true
+          }
+        }
+      },
+      "groupNames": ["gWasher"]
+    },
+    {
+      "stateDescription": {
+        "options": [
+          {"value": "off", "label": "No Spin"},
+          {"value": "low", "label": "Low"},
+          {"value": "medium", "label": "Medium"},
+          {"value": "high", "label": "High"},
+        ]
+      },
+      "type": "String",
+      "name": "WashSpinSpeed",
+      "label": "Wash Spin Speed",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ModeController.mode"
+        }
+      },
+      "groupNames": ["gWasher"]
+    },
+    {
       "type": "Group",
       "name": "gWasher",
       "label": "Washer",
