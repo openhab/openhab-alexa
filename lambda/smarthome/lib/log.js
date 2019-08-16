@@ -13,18 +13,38 @@
 
 const { createLogger, format, transports } = require('winston');
 
-let setLevel = typeof (process.env.LOG_LEVEL) !== 'undefined' ? process.env.LOG_LEVEL.toLowerCase() : 'info';
+const LEVEL = Symbol.for('level');
+const MESSAGE = Symbol.for('message');
+
+const setLevel = typeof process.env.LOG_LEVEL !== 'undefined' ? process.env.LOG_LEVEL.toLowerCase() : 'info';
+
+const logLevelFormat = format(info => Object.assign(info, {level: info.level.toUpperCase()}));
 
 const logger = createLogger({
-    level: process.env.NODE_ENV === 'test' ? 'error' : setLevel,
-    levels : { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, trace: 5 },
-    format: format.combine(
-      format.splat(),
-      format.simple()
-    ),
-    transports: [
-        new transports.Console()
-    ]
-  });
+  level: process.env.NODE_ENV === 'test' ? 'error' : setLevel,
+  levels : { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, trace: 5 },
+  format: format.combine(
+    logLevelFormat(),
+    format.splat(),
+    format.simple()
+  ),
+  transports: [
+    new transports.Console({
+      log(info, callback) {
+        setImmediate(() => this.emit('logged', info));
+
+        if (this.stderrLevels[info[LEVEL]]) {
+          console.error(info[MESSAGE]);
+        } else {
+          console.log(info[MESSAGE]);
+        }
+
+        if (callback) {
+          callback();
+        }
+      }
+    })
+  ]
+});
 
 module.exports = logger;
