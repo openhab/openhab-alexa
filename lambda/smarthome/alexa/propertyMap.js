@@ -207,9 +207,12 @@ const normalizeParameters = {
   temperature: function (property, item, settings) {
     // Use scale parameter uppercased to determine temperature scale
     let temperatureScale = (property.parameters.scale || '').toUpperCase();
-    // Use unit of measurement item state symbol to determine temperature scale if not already defined
-    if (item.type === 'Number:Temperature' && !temperatureScale) {
-      const symbol = item.state.split(' ').pop();
+    // Use item state description pattern or unit of measurement item-typed state to determine state presentation
+    const statePresentation = item.stateDescription && item.stateDescription.pattern ||
+      item.type === 'Number:Temperature' && item.state;
+    // Use item state presentation symbol to determine temperature scale if not already defined
+    if (statePresentation && !temperatureScale) {
+      const symbol = statePresentation.split(' ').pop();
       const measurement = UNIT_OF_MEASUREMENT['Temperature'].find(meas => meas.symbol === symbol) || {};
       temperatureScale = measurement.unit;
     }
