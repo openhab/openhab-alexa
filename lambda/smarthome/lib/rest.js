@@ -100,7 +100,7 @@ function getItem(token, itemName) {
  */
 function getItems(token) {
   const parameters = {
-    fields: 'groupNames,groupType,name,label,metadata,state,stateDescription,tags,type',
+    fields: 'editable,groupNames,groupType,name,label,metadata,state,stateDescription,tags,type',
     metadata: 'alexa,channel,synonyms'
   };
   return getItemOrItems(token, null, parameters);
