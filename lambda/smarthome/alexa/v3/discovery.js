@@ -29,11 +29,11 @@ class AlexaDiscovery extends AlexaDirective {
    */
   discover() {
     // Request following data from openHAB:
-    //  - all items recursively (including group members)
+    //  - all items
     //  - regional settings
     Promise.all([
-      rest.getItems(this.directive.payload.scope.token),
-      rest.getRegionalSettings(this.directive.payload.scope.token)
+      rest.getItems(this.directive.payload.scope.token, this.timeout),
+      rest.getRegionalSettings(this.directive.payload.scope.token, this.timeout)
     ]).then((data) => {
       const items = data[0];
       const settings = {regional: data[1]};

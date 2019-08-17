@@ -35,7 +35,7 @@ describe('ohConnectorV3 Tests', function () {
     rest.getRegionalSettings = function () {
       return Promise.resolve(response.settings && response.settings.regional);
     };
-    rest.postItemCommand = function (undefined, itemName, value) {
+    rest.postItemCommand = function (token, timeout, itemName, value) {
       capture.calls.push({'name': itemName, 'value': value});
       return Promise.resolve();
     };

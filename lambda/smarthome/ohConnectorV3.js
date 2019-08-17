@@ -20,7 +20,7 @@ const Directives = require('./alexa/v3');
 /**
  * Main entry point for all requests
  * @param {Object}   directive
- * @param {Object}   callback
+ * @param {Function} callback
  */
 exports.handleRequest = function (directive, callback) {
   // Convert directive namespace to pascalcase format

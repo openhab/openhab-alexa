@@ -15,6 +15,10 @@ const fs = require('fs');
 const request = require('request-promise-native');
 const qs = require('querystring');
 
+/**
+ * Defines configuration settings object
+ * @type {Object}
+ */
 const config = getConfig();
 
 /**
@@ -86,78 +90,89 @@ function getAuthenticationSettings(token, options) {
 /**
  * Returns a single item
  * @param  {String}   token
+ * @param  {Number}   timeout
  * @param  {String}   itemName
  * @return {Promise}
  */
-function getItem(token, itemName) {
-  return getItemOrItems(token, itemName);
+function getItem(token, timeout, itemName) {
+  return getItemOrItems(token, timeout, itemName);
 }
 
 /**
  * Returns all items with alexa, channel and synonyms metadata
  * @param  {String}   token
+ * @param  {Number}   timeout
  * @return {Promise}
  */
-function getItems(token) {
+function getItems(token, timeout) {
   const parameters = {
     fields: 'editable,groupNames,groupType,name,label,metadata,state,stateDescription,tags,type',
     metadata: 'alexa,channel,synonyms'
   };
-  return getItemOrItems(token, null, parameters);
+  return getItemOrItems(token, timeout, null, parameters);
 }
 
 /**
  * Returns get item(s) result
  * @param  {String}   token
+ * @param  {Number}   timeout
  * @param  {String}   itemName
  * @param  {Object}   parameters
  * @return {Promise}
  */
-function getItemOrItems(token, itemName, parameters) {
-  const options = getAuthenticationSettings(token, {
+function getItemOrItems(token, timeout, itemName, parameters) {
+  const options = getAuthenticationSettings(token, Object.assign({
     method: 'GET',
     uri: `${config.openhab.baseURL}/items${itemName ? '/' + itemName : ''}${parameters ? '?' + qs.stringify(parameters) : ''}`,
     headers: {
       'Content-Type': 'text/plain'
     },
     json: true
-  });
+  }, parseInt(timeout) && {
+    timeout: parseInt(timeout)
+  }));
   return request(options);
 }
 
 /**
  * Returns openHAB regional settings
  * @param  {String}   token
+ * @param  {Number}   timeout
  * @return {Promise}
  */
-function getRegionalSettings(token) {
-  const options = getAuthenticationSettings(token, {
+function getRegionalSettings(token, timeout) {
+  const options = getAuthenticationSettings(token, Object.assign({
     method: "GET",
     uri: `${config.openhab.baseURL}/services/org.eclipse.smarthome.core.i18nprovider/config`,
     headers: {
       'Content-Type': 'text/plain'
     },
     json: true
-  });
+  }, parseInt(timeout) && {
+    timeout: parseInt(timeout)
+  }));
   return request(options);
 }
 
 /**
  * POST a command to a item
  * @param  {String}   token
+ * @param  {Number}   timeout
  * @param  {String}   itemName
  * @param  {String}   value
  * @return {Promise}
- **/
-function postItemCommand(token, itemName, value) {
-  const options = getAuthenticationSettings(token, {
+ */
+function postItemCommand(token, timeout, itemName, value) {
+  const options = getAuthenticationSettings(token, Object.assign({
     method: 'POST',
     uri: `${config.openhab.baseURL}/items/${itemName}`,
     headers: {
       'Content-Type': 'text/plain'
     },
     body: value.toString()
-  });
+  }, parseInt(timeout) && {
+    timeout: parseInt(timeout)
+  }));
   return request(options);
 }
 
