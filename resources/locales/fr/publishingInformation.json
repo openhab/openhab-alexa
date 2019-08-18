@@ -6,17 +6,17 @@
   "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/resources/icons/openhablogo-512.png",
   "examplePhrases": [
     "Alexa, allume la cuisine",
-    "Alexa, règle la luminosité du salon à 50 pourcent",
-    "Alexa, règle la température de la chambre à 25 degrés"
+    "Alexa, règle la luminosité de la chambre à 50 pourcent",
+    "Alexa, diminue la température de 5 degrés"
   ],
   "keywords": [
     "openHAB",
     "KNX",
-    "hue",
+    "Hue",
     "z-wave",
     "zwave",
-    "insteon",
-    "homematic",
+    "Insteon",
+    "Homematic",
     "home",
     "automation",
     "1-wire",
