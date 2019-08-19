@@ -30,7 +30,7 @@ exports.handler = function (event, context, callback) {
       ohv3.handleRequest(event.directive, callback);
       break;
     default:
-      log.error(`No supported payloadVersion: ${event.header.payloadVersion}`);
+      log.error(`No supported payloadVersion: ${version}`);
       callback('No supported payloadVersion.');
       break;
   }
