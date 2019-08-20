@@ -126,18 +126,6 @@ const normalizeFunctions = {
   },
 
   /**
-   * Normalizes playback state value
-   * @param  {String} value
-   * @return {Object}
-   */
-  playbackState: function (value) {
-    const map = {'PLAY': 'PLAYING', 'PAUSE': 'PAUSED', 'REWIND': 'PLAYING', 'FASTFORWARD': 'PLAYING'};
-    return {
-      state: map[value]
-    };
-  },
-
-  /**
    * Normalizes power state value
    * @param  {*}      value
    * @return {String}
