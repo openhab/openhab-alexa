@@ -118,6 +118,7 @@ function getItemOrItems(token, itemName, parameters) {
     method: 'GET',
     uri: `${config.openhab.baseURL}/items${itemName ? '/' + itemName : ''}${parameters ? '?' + qs.stringify(parameters) : ''}`,
     headers: {
+      'Connection': 'keep-alive',
       'Content-Type': 'text/plain'
     },
     json: true
@@ -135,6 +136,7 @@ function getRegionalSettings(token) {
     method: "GET",
     uri: `${config.openhab.baseURL}/services/org.eclipse.smarthome.core.i18nprovider/config`,
     headers: {
+      'Connection': 'keep-alive',
       'Content-Type': 'text/plain'
     },
     json: true
@@ -154,6 +156,7 @@ function postItemCommand(token, itemName, value) {
     method: 'POST',
     uri: `${config.openhab.baseURL}/items/${itemName}`,
     headers: {
+      'Connection': 'keep-alive',
       'Content-Type': 'text/plain'
     },
     body: value.toString()
