@@ -147,7 +147,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
           }))
         });
         break;
-      case 'playbackCommand':
+      case 'playback':
         capability.supportedOperations = ['Play', 'Pause', 'Next', 'Previous', 'Rewind', 'FastForward'];
         break;
       case 'rangeValue':

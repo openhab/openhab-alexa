@@ -122,13 +122,7 @@ module.exports = Object.freeze({
     'PlaybackController': {
       'category': 'OTHER',
       'properties': [
-        {'name': 'playback', 'schema': 'playbackCommand', 'isReportable': false, 'isSupported': false}
-      ]
-    },
-    'PlaybackStateReporter': {
-      'category': 'OTHER',
-      'properties': [
-        {'name': 'playbackState', 'schema': 'playbackState'}
+        {'name': 'playback', 'schema': 'playback', 'isReportable': false, 'isSupported': false}
       ]
     },
     'PowerController': {
@@ -424,14 +418,8 @@ module.exports = Object.freeze({
         'type': 'integer'
       }
     },
-    'playbackCommand': {
+    'playback': {
       'itemTypes': ['Player']
-    },
-    'playbackState': {
-      'itemTypes': ['Player'],
-      'state': {
-        'type': 'object'
-      }
     },
     'powerLevel': {
       'itemTypes': ['Dimmer'],

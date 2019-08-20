@@ -299,7 +299,7 @@ function convertV2Item(item, config = {}) {
           capabilities = ['EqualizerController.modes'];
           break;
         case 'MediaPlayer':
-          capabilities = ['PlaybackController.playback', 'PlaybackStateReporter.playbackState'];
+          capabilities = ['PlaybackController.playback'];
           break;
         case 'SpeakerMute':
           capabilities = ['Speaker.muted'];
