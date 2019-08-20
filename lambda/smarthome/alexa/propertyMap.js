@@ -170,9 +170,9 @@ const normalizeParameters = {
   rangeValue: function (property, item, settings) {
     // Define range values based on supported range parameter ([0] => minimum; [1] => maximum; [2] => precision)
     let rangeValues = (property.parameters.supportedRange || '').split(':').map(value => parseInt(value));
-    // Update range values if not valid (min >= max; max - min <= precision) using default based on item type
-    if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) ||
-      rangeValues[0] >= rangeValues[1] || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
+    // Update range values if not valid (min >= max; prec = 0; max - min <= prec) using default based on item type
+    if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) || rangeValues[0] >= rangeValues[1] ||
+      rangeValues[2] === 0 || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
       rangeValues = settings.property.state.range.default[item.type.split(':').shift()];
     }
     // Set supported range object
