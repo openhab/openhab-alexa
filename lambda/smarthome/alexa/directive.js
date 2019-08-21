@@ -18,6 +18,7 @@ const camelcase = require('camelcase');
 const { sprintf } = require('sprintf-js');
 const log = require('@lib/log.js');
 const rest = require('@lib/rest.js');
+const { RESPONSE_TIMEOUT } = require('./config.js');
 const AlexaPropertyMap = require('./propertyMap.js');
 const AlexaResponse = require('./response.js');
 
@@ -35,6 +36,8 @@ class AlexaDirective extends AlexaResponse {
     super(directive, callback);
     this.directive = directive;
     this.propertyMap = new AlexaPropertyMap();
+    // Set default request timeout to 80% of Alexa response timeout
+    this.timeout = parseInt(RESPONSE_TIMEOUT * 0.8);
 
     // if we have a JSON cookie, parse it and set on endpoint
     if (directive.endpoint && directive.endpoint.cookie && directive.endpoint.cookie.propertyMap) {
@@ -78,7 +81,7 @@ class AlexaDirective extends AlexaResponse {
    */
   postItemsAndReturn(items, parameters = {}) {
     const promises = items.map(item =>
-      rest.postItemCommand(this.directive.endpoint.scope.token, item.name, item.state));
+      rest.postItemCommand(this.directive.endpoint.scope.token, this.timeout, item.name, item.state));
     Promise.all(promises).then(() => {
       this.getPropertiesResponseAndReturn(parameters);
     }).catch((error) => {
@@ -146,7 +149,7 @@ class AlexaDirective extends AlexaResponse {
    */
   getItemState(item) {
     const itemName = item.sensor || item.name;
-    return rest.getItem(this.directive.endpoint.scope.token, itemName).then((result) =>
+    return rest.getItem(this.directive.endpoint.scope.token, this.timeout, itemName).then((result) =>
       // Set state to undefined if uninitialized or undefined in oh, otherwise get formatted item state
       Object.assign(result, {state: ['NULL', 'UNDEF'].includes(result.state) ? undefined : formatItemState(result)}));
   }

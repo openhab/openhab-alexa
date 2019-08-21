@@ -16,6 +16,7 @@
  */
 const uuid = require('uuid/v4');
 const log = require('@lib/log.js');
+const { RESPONSE_TIMEOUT } = require('./config');
 
 /**
  * Defines Alexa response class
@@ -29,6 +30,8 @@ class AlexaResponse {
   constructor(directive, callback) {
     this.directive = directive;
     this.callback = callback;
+    // Start Alexa response timeout timer
+    this.timer = this.setAlexaResponseTimer();
   }
 
   /**
@@ -81,7 +84,14 @@ class AlexaResponse {
    * @param  {Object} response
    */
   returnAlexaResponse(response) {
-    this.callback(null, response);
+    // Send response once, otherwise discard subsequent calls
+    if (!this.called) {
+      // Stop response timeout timer
+      clearTimeout(this.timer);
+      // Use callback function to send response
+      this.callback(null, response);
+      this.called = true;
+    }
   }
 
   /**
@@ -150,6 +160,21 @@ class AlexaResponse {
 
     // Return alexa error response
     this.returnAlexaErrorResponse(parameters);
+  }
+
+  /**
+   * Sets Alexa response timeout timer
+   * @return {Object}
+   */
+  setAlexaResponseTimer() {
+    const timeoutHandler = () => {
+      log.error('Response timed out');
+      this.returnAlexaErrorResponse({payload: {
+        type: 'INTERNAL_ERROR',
+        message: 'Response timed out'
+      }});
+    };
+    return setTimeout(timeoutHandler, RESPONSE_TIMEOUT - 100);
   }
 }
 

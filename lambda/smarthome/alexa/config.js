@@ -612,4 +612,10 @@ module.exports = Object.freeze({
    */
   ENDPOINT_PATTERN: /^(?:Alexa\.)?Endpoint\.(\w+)$/,
 
+  /**
+   * Defines alexa response timeout in milliseconds
+   * @type {Number}
+   */
+  RESPONSE_TIMEOUT: 10000,
+
 });
