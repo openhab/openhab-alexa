@@ -290,6 +290,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
       * ECO=`<state>`
       * AUTO=`<state>`
       * binding=`<value>`
+        * [daikin](https://www.openhab.org/addons/bindings/daikin/) [HEAT=HEAT, COOL=COLD, AUTO=AUTO]
         * [ecobee1](https://www.openhab.org/addons/bindings/ecobee1/) [OFF=off, HEAT=heat, COOL=cool, AUTO=auto]
         * [max](https://www.openhab.org/addons/bindings/max/) [HEAT=MANUAL, ECO=VACATION, AUTO=AUTOMATIC]
         * [nest](https://www.openhab.org/addons/bindings/nest/) [OFF=OFF, HEAT=HEAT, COOL=COOL, ECO=ECO, AUTO=HEAT_COOL]

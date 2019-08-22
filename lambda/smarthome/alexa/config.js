@@ -467,6 +467,7 @@ module.exports = Object.freeze({
       'state': {
         'map': {
           'custom:binding': {
+            'daikin':  {'AUTO': 'AUTO', 'COOL': 'COLD', 'HEAT': 'HEAT'},
             'ecobee1': {'AUTO': 'auto', 'COOL': 'cool', 'HEAT': 'heat', 'OFF': 'off'},
             'max':     {'AUTO': 'AUTOMATIC', 'HEAT': 'MANUAL', 'ECO': 'VACATION'},
             'nest':    {'AUTO': 'HEAT_COOL', 'COOL': 'COOL', 'HEAT': 'HEAT', 'ECO': 'ECO', 'OFF': 'OFF'},
