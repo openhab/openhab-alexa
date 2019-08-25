@@ -15,7 +15,7 @@
  * Amazon Echo Smart Home Skill API implementation for openHAB (v3)
  */
 const camelcase = require('camelcase');
-const Directives = require('./alexa/v3');
+const Directives = require('./directives');
 
 /**
  * Main entry point for all requests

@@ -89,12 +89,12 @@ function ohAuthenticationSettings(token, options = {}) {
 /**
  * Returns a single item
  * @param  {String}   token
- * @param  {Number}   timeout
  * @param  {String}   itemName
+ * @param  {Number}   timeout
  * @return {Promise}
  */
-function getItem(token, timeout, itemName) {
-  return getItemOrItems(token, timeout, itemName);
+function getItem(token, itemName, timeout) {
+  return getItemOrItems(token, itemName, timeout);
 }
 
 /**
@@ -108,18 +108,18 @@ function getItems(token, timeout) {
     fields: 'editable,groupNames,groupType,name,label,metadata,stateDescription,tags,type',
     metadata: 'alexa,channel,synonyms'
   };
-  return getItemOrItems(token, timeout, null, parameters);
+  return getItemOrItems(token, null, timeout, parameters);
 }
 
 /**
  * Returns get item(s) result
  * @param  {String}   token
- * @param  {Number}   timeout
  * @param  {String}   itemName
+ * @param  {Number}   timeout
  * @param  {Object}   parameters
  * @return {Promise}
  */
-function getItemOrItems(token, timeout, itemName, parameters) {
+function getItemOrItems(token, itemName, timeout, parameters) {
   const options = ohAuthenticationSettings(token, {
     method: 'GET',
     uri: `${config.openhab.baseURL}/items/${itemName || ''}`,
@@ -147,12 +147,12 @@ function getRegionalSettings(token, timeout) {
 /**
  * POST a command to a item
  * @param  {String}   token
- * @param  {Number}   timeout
  * @param  {String}   itemName
  * @param  {String}   value
+ * @param  {Number}   timeout
  * @return {Promise}
  */
-function postItemCommand(token, timeout, itemName, value) {
+function postItemCommand(token, itemName, value, timeout) {
   const options = ohAuthenticationSettings(token, {
     method: 'POST',
     uri: `${config.openhab.baseURL}/items/${itemName}`,

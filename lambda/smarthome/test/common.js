@@ -47,6 +47,12 @@ function generateDirectiveRequest (request) {
   if (directive.header.namespace !== 'Alexa.Discovery') {
     directive.header.correlationToken = 'correlation-token';
   }
+  // update directive if payloadVersion set to 2
+  if (directive.header.payloadVersion === '2') {
+    directive.payload.accessToken = directive.endpoint.scope.token;
+    delete directive.header.correlationToken;
+    delete directive.endpoint.scope;
+  }
   // remove endpoint if no id defined
   if (directive.endpoint.endpointId === null) {
     // move endpoint scope to payload if defined
@@ -193,6 +199,34 @@ assert.capturedResult = function (result, expected) {
       }
     });
   }
+};
+
+/**
+ * Assert discovered appliances (v2)
+ * @param {Array}  appliances
+ * @param {Object} results
+ */
+assert.discoveredAppliances = function (appliances, results) {
+  assert.equal(appliances.length, Object.keys(results).length);
+
+  appliances.forEach((appliance) => {
+    const expected = results[appliance.applianceId];
+    assert.isDefined(expected);
+
+    Object.keys(expected).forEach((key) => {
+      switch (key) {
+        case 'actions':
+        case 'applianceTypes':
+          assert.sameMembers(appliance[key], expected[key]);
+          break;
+        case 'additionalApplianceDetails':
+          assert.include(appliance[key], expected[key]);
+          break;
+        default:
+          assert.equal(appliance[key], expected[key]);
+      }
+    });
+  });
 };
 
 /**

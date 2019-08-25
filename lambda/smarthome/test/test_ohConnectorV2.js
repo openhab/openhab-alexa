@@ -14,13 +14,13 @@
 require('module-alias/register');
 const log = require('@lib/log.js');
 const rest = require('@lib/rest.js');
-const ohv3 = require('@root/alexa/v3/ohConnector.js');
+const ohv2 = require('@root/alexa/v2/ohConnector.js');
 const settings = require('./settings.js');
 const { assert, utils } = require('./common.js');
 
-describe('ohConnectorV3 Tests', function () {
+describe('ohConnectorV2 Tests', function () {
 
-  let callback, capture, response;
+  let capture, context, response;
 
   before(function () {
     // mock rest external calls
@@ -31,9 +31,6 @@ describe('ohConnectorV3 Tests', function () {
     rest.getItems = function () {
       return Promise.resolve(
         Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
-    };
-    rest.getRegionalSettings = function () {
-      return Promise.resolve(response.settings && response.settings.regional);
     };
     rest.postItemCommand = function (token, itemName, value) {
       capture.calls.push({'name': itemName, 'value': value});
@@ -46,9 +43,10 @@ describe('ohConnectorV3 Tests', function () {
         args.map(arg => typeof arg === 'object' ? arg.stack || JSON.stringify(arg) : arg).join(' '));
     };
 
-    // mock aws lambda callback calls
-    callback = function (error, result) {
-      capture.result = capture.result ? [].concat(capture.result, result) : result;
+    // mock aws lambda context calls
+    context = {
+      'succeed': (result) => capture.result = result,
+      'done': (error, result) => capture.result = result
     };
   });
 
@@ -67,26 +65,26 @@ describe('ohConnectorV3 Tests', function () {
   });
 
   // Discovery Tests
-  describe('Discovery Interface', function () {
+  describe('Discovery Messages', function () {
     const directive = utils.generateDirectiveRequest({
       'header': {
-        'namespace': 'Alexa.Discovery',
-        'name': 'Discover'
+        'name': 'DiscoverAppliancesRequest',
+        'namespace': 'Alexa.ConnectedHome.Discovery',
+        'payloadVersion': '2'
       }
     });
 
-    Object.keys(settings.testCasesV3.discovery).forEach(function (name) {
-      settings.testCasesV3.discovery[name].forEach(function (path) {
+    Object.keys(settings.testCasesV2.discovery).forEach(function (name) {
+      settings.testCasesV2.discovery[name].forEach(function (path) {
         const test = require(path);
 
         it(test.description, function (done) {
-          response = {'openhab': test.mocked, 'settings': test.settings};
-          ohv3.handleRequest(directive, callback);
+          response = {'openhab': test.mocked};
+          ohv2.handleRequest(directive, context);
           // wait for async responses
           setTimeout(function () {
-            // console.log('Capture:', JSON.stringify(capture, null, 2));
-            assert.discoveredEndpoints(capture.result.event.payload.endpoints, test.expected);
-            assert.validSchema(capture.result, test.validate);
+            // console.log('Appliances: ' + JSON.stringify(capture.result.payload.discoveredAppliances, null, 2));
+            assert.discoveredAppliances(capture.result.payload.discoveredAppliances, test.expected);
             done();
           }, 1);
         });
@@ -95,21 +93,20 @@ describe('ohConnectorV3 Tests', function () {
   });
 
   // Controller Tests
-  Object.keys(settings.testCasesV3.controllers).forEach(function (name){
-    describe(name + ' Interface', function () {
-      settings.testCasesV3.controllers[name].forEach(function (path){
+  Object.keys(settings.testCasesV2.controllers).forEach(function (name){
+    describe(name + ' Messages', function () {
+      settings.testCasesV2.controllers[name].forEach(function (path){
         const tests = require(path);
 
         tests.forEach(function (test) {
           it(test.description, function (done) {
             response = test.mocked;
-            ohv3.handleRequest(utils.generateDirectiveRequest(test.directive), callback);
-            // wait for async responses
+            ohv2.handleRequest(utils.generateDirectiveRequest(test.directive), context);
+            // wait for async functions
             setTimeout(function () {
-              // console.log('Capture:', JSON.stringify(capture, null, 2));
+              // console.log('Capture: ' + JSON.stringify(capture, null, 2));
               assert.capturedCalls(capture.calls, test.expected.openhab);
               assert.capturedResult(capture.result, test.expected.alexa);
-              assert.validSchema(capture.result, test.validate);
               done();
             }, 5);
           });
