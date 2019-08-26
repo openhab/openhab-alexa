@@ -278,7 +278,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * defaults to defined scale range listed above if omitted
     * Default category: THERMOSTAT
   * `ThermostatController.thermostatMode`
-    * Items that represent the mode for a thermostat, default string values are "OFF=off,HEAT=heat,COOL=cool,ECO=eco,AUTO=auto", but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=`<value>`). For the binding parameter, it will be automatically determined if the associated item is using a 2.x addon (via channel metadata). If neither of these settings are provided, for thermostats that only support a subset of the standard modes, a comma delimited list of the Alexa supported modes should be set using the supportedModes parameter, otherwise, the supported list will be compiled based of the default mapping.
+    * Items that represent the mode for a thermostat, default string values are `OFF="off",HEAT="heat",COOL="cool",ECO="eco",AUTO="auto"`, but these can be mapped to other values in the metadata. The mapping can be, in order of precedence, user-defined (AUTO=3,...) or preset-based related to the thermostat binding used (binding=`<value>`). For the binding parameter, it will be automatically determined if the associated item is using a 2.x addon (via channel metadata). If neither of these settings are provided, for thermostats that only support a subset of the standard modes, a comma delimited list of the Alexa supported modes should be set using the supportedModes parameter, otherwise, the supported list will be compiled based of the default mapping.
     * Supported item type:
       * Number
       * String
@@ -290,14 +290,14 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
       * ECO=`<state>`
       * AUTO=`<state>`
       * binding=`<value>`
-        * [daikin](https://www.openhab.org/addons/bindings/daikin/) [HEAT=HEAT, COOL=COLD, AUTO=AUTO]
-        * [ecobee1](https://www.openhab.org/addons/bindings/ecobee1/) [OFF=off, HEAT=heat, COOL=cool, AUTO=auto]
-        * [max](https://www.openhab.org/addons/bindings/max/) [HEAT=MANUAL, ECO=VACATION, AUTO=AUTOMATIC]
-        * [nest](https://www.openhab.org/addons/bindings/nest/) [OFF=OFF, HEAT=HEAT, COOL=COOL, ECO=ECO, AUTO=HEAT_COOL]
-        * [nest1](https://www.openhab.org/addons/bindings/nest1/) [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=heat-cool]
+        * [daikin](https://www.openhab.org/addons/bindings/daikin/) [HEAT="HEAT", COOL="COLD", AUTO="AUTO"]
+        * [ecobee1](https://www.openhab.org/addons/bindings/ecobee1/) [OFF="off", HEAT="heat", COOL="cool", AUTO="auto"]
+        * [max](https://www.openhab.org/addons/bindings/max/) [HEAT="MANUAL", ECO="VACATION", AUTO="AUTOMATIC"]
+        * [nest](https://www.openhab.org/addons/bindings/nest/) [OFF="OFF", HEAT="HEAT", COOL="COOL", ECO="ECO", AUTO="HEAT_COOL"]
+        * [nest1](https://www.openhab.org/addons/bindings/nest1/) [OFF="off", HEAT="heat", COOL="cool", ECO="eco", AUTO="heat-cool"]
         * [zwave](https://www.openhab.org/addons/bindings/zwave/) [OFF=0, HEAT=1, COOL=2, AUTO=3]
         * [zwave1](https://www.openhab.org/addons/bindings/zwave1/) [OFF=0, HEAT=1, COOL=2, AUTO=3]
-        * defaults to [OFF=off, HEAT=heat, COOL=cool, ECO=eco, AUTO=auto] if omitted
+        * defaults to [OFF="off", HEAT="heat", COOL="cool", ECO="eco", AUTO="auto"] if omitted
       * supportedModes=`<values>`
         * defaults to, depending on the parameters provided, either user-based, preset-based or default item type-based mapping.
     * Default category: THERMOSTAT
