@@ -14,7 +14,7 @@
 /**
  * Amazon Smart Home Skill Capabilities for API V3
  */
-const { CAPABILITIES, PROPERTY_SCHEMAS, ASSET_IDENTIFIERS, DISPLAY_CATEGORIES } = require('./config.js');
+const { CAPABILITIES, PROPERTY_SCHEMAS, ASSET_IDENTIFIERS, DISPLAY_CATEGORIES, UNIT_OF_MEASUREMENT } = require('./config.js');
 
 /**
  * Returns alexa capability display category for a given interface
@@ -318,6 +318,37 @@ function getPropertyStateMap(property) {
 }
 
 /**
+ * Returns unit of measurement based on given query
+ * @param  {Object} query
+ * @return {*}
+ */
+function getUnitOfMeasure(query) {
+  let result;
+  // Find unit of measurement matching query
+  Object.keys(UNIT_OF_MEASUREMENT).some(dimension => {
+    if (!query.dimension || query.dimension === dimension) {
+      const values = UNIT_OF_MEASUREMENT[dimension].filter(measurement =>
+        query.id && measurement.id === query.id ||
+        query.symbol && measurement.symbol === query.symbol ||
+        query.unit && measurement.unit === query.unit
+      );
+      // Search based on query system fallback to first value
+      result = values.find(measurement => measurement.system === query.system) || values.shift();
+      return result;
+    }
+  });
+  // Find unit of measurement default value if result empty and query dimension defined
+  if (!result && UNIT_OF_MEASUREMENT[query.dimension]) {
+    const values = UNIT_OF_MEASUREMENT[query.dimension].filter(measurement => measurement.default);
+    // Search based on query system fallback to international system (SI)
+    result = values.find(measurement => measurement.system === query.system) ||
+      values.find(measurement => measurement.system === 'SI');
+  }
+  // Return result property if defined, otherwise whole object
+  return result && query.property ? result[query.property] : result;
+}
+
+/**
  * Determines if light endpoint is in color mode
  * @param  {Object}  colorItem
  * @param  {Object}  temperatureItem
@@ -357,6 +388,7 @@ module.exports = {
   getPropertySchema: getPropertySchema,
   getPropertySettings: getPropertySettings,
   getPropertyStateMap: getPropertyStateMap,
+  getUnitOfMeasure: getUnitOfMeasure,
   isInColorMode: isInColorMode,
   isSupportedDisplayCategory: isSupportedDisplayCategory
 };

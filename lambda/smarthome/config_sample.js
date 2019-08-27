@@ -15,10 +15,14 @@
 * Default options, copy to config.js for deployment
 * baseURL [https://myopenhab.org/rest]
 *    REST base URL, uncomment this to connect directly to a openHAB server.
-* userpass
-*    Optional username:password for the REST server
+* user
+*    Optional username for the REST server
 *    by default oauth2 tokens will be used for authentication, uncomment this
-*    to use standard BASIC auth when talking directly to a openHAB server.
+*    to use standard basic auth when talking directly to a openHAB server.
+* pass
+*    Optional password for the REST server
+*    by default oauth2 tokens will be used for authentication, uncomment this
+*    to use standard basic auth when talking directly to a openHAB server.
 * certFile [ssl/client.pfx]
 *    Optional SSL client certificate file path for the REST server
 *    use this for certificate auth when talking directly to a openHAB server.
@@ -30,6 +34,7 @@
 module.exports = {
   openhab: {
     //baseURL: 'https://openhab.example.com/rest',
-    //userpass: 'user@foo.com:Password1'
+    //user: 'user@foo.com',
+    //pass: 'Password1'
   }
 };

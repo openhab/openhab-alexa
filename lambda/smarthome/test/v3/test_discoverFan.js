@@ -15,15 +15,18 @@ module.exports = {
   description: "fan range/toggle components",
   mocked: [
     {
-      "type": "Number",
+      "type": "Dimmer",
       "name": "TowerFanSpeed",
+      "stateDescription": {
+        "pattern": "%d %%"
+      },
       "tags": [],
       "metadata": {
         "alexa": {
           "value": "RangeController.rangeValue",
           "config": {
-            "supportedRange": "1:10:1",
-            "presets": "1=@Value.Minimum:@Value.Low:Lowest,10=@Value.Maximum:@Value.High:Highest,99=invalid",
+            "supportedRange": "0:100:10",
+            "presets": "10=@Value.Minimum:@Value.Low:Lowest,100=@Value.Maximum:@Value.High:Highest,999=invalid",
             "friendlyNames": "@Setting.FanSpeed,Air Speed,Speed"
           }
         }
@@ -45,7 +48,6 @@ module.exports = {
       "groupNames": ["gTowerFan"]
     },
     {
-      "state": "80 °",
       "type": "Number:Angle",
       "name": "TowerFanAngle",
       "label": "Fan Angle",
@@ -106,12 +108,13 @@ module.exports = {
           "unitOfMeasure": "Alexa.Unit.Angle.Degrees"
         },
         "Alexa.RangeController.TowerFanSpeed": {
-          "supportedRange": {"minimumValue": 1, "maximumValue": 10, "precision": 1},
+          "supportedRange": {"minimumValue": 0, "maximumValue": 100, "precision": 10},
+          "unitOfMeasure": "Alexa.Unit.Percent",
           "presets": {
-            1: {
+            10: {
               "friendlyNames": ["asset:Alexa.Value.Minimum", "asset:Alexa.Value.Low", "text:Lowest:en-US"]
             },
-            10: {
+            100: {
               "friendlyNames": ["asset:Alexa.Value.Maximum", "asset:Alexa.Value.High", "text:Highest:en-US"]
             }
           }
@@ -132,11 +135,12 @@ module.exports = {
         "RangeController:TowerFanSpeed": {
           "rangeValue": {
             "parameters": {
-              "supportedRange": {"minimumValue": 1, "maximumValue": 10, "precision": 1},
-              "presets": ["1=@Value.Minimum:@Value.Low:Lowest", "10=@Value.Maximum:@Value.High:Highest"],
+              "supportedRange": {"minimumValue": 0, "maximumValue": 100, "precision": 10},
+              "unitOfMeasure": "Percent",
+              "presets": ["10=@Value.Minimum:@Value.Low:Lowest", "100=@Value.Maximum:@Value.High:Highest"],
               "friendlyNames": ["@Setting.FanSpeed", "Air Speed", "Speed"]
             },
-            "item": {"name": "TowerFanSpeed", "type": "Number"},
+            "item": {"name": "TowerFanSpeed", "type": "Dimmer"},
             "schema": {"name": "rangeValue"}
           }
         },

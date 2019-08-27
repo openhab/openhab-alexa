@@ -15,9 +15,10 @@
  * Amazon Smart Home Skill Property Map for API V3
  */
 const camelcase = require('camelcase');
+const { sprintf } = require('sprintf-js');
 const utils = require('@lib/utils.js');
-const { getPropertySettings, getPropertyStateMap, isInColorMode, isSupportedDisplayCategory } = require('./capabilities.js');
-const { CAPABILITY_PATTERN, UNIT_OF_MEASUREMENT } = require('./config.js');
+const { getPropertySettings, getPropertyStateMap, getUnitOfMeasure, isInColorMode, isSupportedDisplayCategory } = require('./capabilities.js');
+const { CAPABILITY_PATTERN } = require('./config.js');
 const { normalize } = require('./propertyState.js');
 
 /**
@@ -184,17 +185,16 @@ const normalizeParameters = {
       return rangeValues[0] <= preset && preset <= rangeValues[1] && labels ?
         [].concat(presets || [], match) : presets;
     }, undefined);
-    // Use unit of measurement item state symbol and type dimension to determine unitOfMeasure if not defined
-    if (item.type.startsWith('Number:') && !property.parameters.unitOfMeasure) {
-      const symbol = item.state.split(' ').pop();
-      const dimension = item.type.split(':').pop();
-      const measurement = UNIT_OF_MEASUREMENT[dimension].find(meas => meas.symbol === symbol) || {};
-      property.parameters.unitOfMeasure = measurement.id;
-    }
-    // Remove unitOfMeasure parameter if not found in supported unit of measurement
-    if (property.parameters.unitOfMeasure && !Object.keys(UNIT_OF_MEASUREMENT).some(dimension =>
-      UNIT_OF_MEASUREMENT[dimension].find(meas => meas.id === property.parameters.unitOfMeasure))) {
-      delete property.parameters.unitOfMeasure;
+    // Use item state presentation symbol and type dimension to determine unitOfMeasure if not defined or valid
+    if (!property.parameters.unitOfMeasure || !getUnitOfMeasure({id: property.parameters.unitOfMeasure})) {
+      property.parameters.unitOfMeasure = getUnitOfMeasure({
+        dimension: item.type.split(':')[1],
+        symbol: sprintf(item.stateDescription && item.stateDescription.pattern, '42')
+          .split(/\d+\s*(?=\S)/).pop().trim(),
+        system: settings.regional &&
+          (settings.regional.measurementSystem || settings.regional.region),
+        property: 'id'
+      });
     }
   },
 
@@ -207,23 +207,19 @@ const normalizeParameters = {
   temperature: function (property, item, settings) {
     // Use scale parameter uppercased to determine temperature scale
     let temperatureScale = (property.parameters.scale || '').toUpperCase();
-    // Use item state description pattern or unit of measurement item-typed state to determine state presentation
-    const statePresentation = item.stateDescription && item.stateDescription.pattern ||
-      item.type === 'Number:Temperature' && item.state;
-    // Use item state presentation symbol to determine temperature scale if not already defined
-    if (statePresentation && !temperatureScale) {
-      const symbol = statePresentation.split(' ').pop();
-      const measurement = UNIT_OF_MEASUREMENT['Temperature'].find(meas => meas.symbol === symbol) || {};
-      temperatureScale = measurement.unit;
+    // Use item state presentation symbol and regional settings to determine temperature scale if not already defined
+    if (!temperatureScale) {
+      temperatureScale = getUnitOfMeasure({
+        dimension: 'Temperature',
+        symbol: sprintf(item.stateDescription && item.stateDescription.pattern, '42')
+          .split(/\d+\s*(?=\S)/).pop().trim(),
+        system: settings.regional &&
+          (settings.regional.measurementSystem || settings.regional.region),
+        property: 'unit'
+      });
     }
-    // Use regional settings measurementSystem or region to determine temperature scale if not already defined
-    if (settings.regional && !temperatureScale) {
-      const setting = settings.regional.measurementSystem || settings.regional.region;
-      temperatureScale = setting === 'US' ? 'FAHRENHEIT' : setting === 'SI' ? 'CELSIUS' : undefined;
-    }
-    // Set scale parameter if valid, otherwise default to Celsius
-    property.parameters.scale =
-      ['CELSIUS', 'FAHRENHEIT'].includes(temperatureScale) ? temperatureScale : 'CELSIUS';
+    // Set scale parameter
+    property.parameters.scale = temperatureScale === 'FAHRENHEIT' ? 'FAHRENHEIT' : 'CELSIUS';
     // Use setpoint range parameter to determine thermostat temperature range ([0] => minimum; [1] => maximum)
     const setpointRange = (property.parameters.setpointRange || '').split(':').map(value => parseInt(value));
     // Set setpoint range parameter if valid (min < max)
@@ -395,9 +391,11 @@ class AlexaPropertyMap {
         }
 
         // Set friendly names parameter on multi-instance property to use item label & synonyms, if not already defined
-        if (settings.property.multiInstance && !property.parameters.friendlyNames) {
-          property.parameters.friendlyNames = [
-            item.label, item.metadata.synonyms && item.metadata.synonyms.value].filter(Boolean).join(',');
+        if (settings.property.multiInstance) {
+          property.parameters.friendlyNames = property.parameters.friendlyNames ||
+            [item.label, item.metadata.synonyms && item.metadata.synonyms.value].filter(Boolean).join(',');
+        } else {
+          delete property.parameters.friendlyNames;
         }
 
         // Iterate over parameters
