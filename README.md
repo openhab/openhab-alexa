@@ -27,12 +27,23 @@ Once you have installed [ASK CLI](https://developer.amazon.com/docs/smapi/quick-
 $ ask init
 ```
 
-By default, the ASK CLI deploys the lambda function in the us-east-1 region. If you want to change the [default region](https://docs.aws.amazon.com/general/latest/gr/rande.html#lambda_region) to one closer to your location, you need to create/update your AWS general configuration file in your home directory.
+By default, the ASK CLI deploys the lambda function in the `us-east-1` region. You will need to change your [default region](https://docs.aws.amazon.com/general/latest/gr/rande.html#lambda_region) based on the skill language you are planning to use. You should refer to the table below, based on the [smart home multi-languages development guidelines](https://developer.amazon.com/docs/smarthome/develop-smart-home-skills-in-multiple-languages.html#deploy):
+
+| Skill Language | Endpoint Region | Lambda Region |
+| -------------- | --------------- | ------------- |
+| English (US), English (CA) | North America | us-east-1 |
+| English (UK), French (FR), German, Italian, Spanish (ES) | Europe | eu-west-1 |
+| English (IN) | India | eu-west-1 |
+| English (AU), Japanese | Far East | us-west-2 |
+
+To change your default region, you will need to add the `region` parameter to the AWS credentials file located in your home directory, under the AWS profile name associated during the ASK CLI profile initialization. The default profile name is `ask_cli_default`.
+
 ```
-$ cat ~/.aws/config
-[default]
+$ cat ~/.aws/credentials
+[ask_cli_default]
+aws_access_key_id=<accessKeyId>
+aws_secret_access_key=<secretAccessKey>
 region=us-east-1
-output=json
 ```
 
 ### OAuth2 Provider
