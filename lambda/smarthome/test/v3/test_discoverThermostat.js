@@ -230,10 +230,12 @@ module.exports = {
       "groupNames": []
     },
     {
-      "state": "20 °C",
       "type": "Number:Temperature",
       "name": "temperature2",
       "label": "Temperature 2",
+      "stateDescription": {
+        "pattern": "%.1f °C"
+      },
       "tags": [],
       "metadata": {
         "alexa": {
@@ -246,21 +248,6 @@ module.exports = {
       "type": "Number",
       "name": "temperature3",
       "label": "Temperature 3",
-      "tags": [],
-      "metadata": {
-        "alexa": {
-          "value": "TemperatureSensor.temperature"
-        }
-      },
-      "groupNames": []
-    },
-    {
-      "type": "Number",
-      "name": "temperature4",
-      "label": "Temperature 4",
-      "stateDescription": {
-        "pattern": "%.1f °C"
-      },
       "tags": [],
       "metadata": {
         "alexa": {
@@ -473,24 +460,6 @@ module.exports = {
           "temperature": {
             "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "temperature3", "type": "Number"},
-            "schema": {"name": "temperature"}
-          }
-        }
-      }
-    },
-    "temperature4": {
-      "capabilities": [
-        "Alexa",
-        "Alexa.TemperatureSensor.temperature",
-        "Alexa.EndpointHealth.connectivity"
-      ],
-      "displayCategories": ["TEMPERATURE_SENSOR"],
-      "friendlyName": "Temperature 4",
-      "propertyMap": {
-        "TemperatureSensor": {
-          "temperature": {
-            "parameters": {"scale": "CELSIUS"},
-            "item": {"name": "temperature4", "type": "Number"},
             "schema": {"name": "temperature"}
           }
         }
