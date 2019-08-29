@@ -38,23 +38,26 @@ if ($DO_DEBUG) {
 if (Test-Path .env) {
     Get-Content -Path ".env" `
         | Select-String -Pattern "^[^#]\w+" `
-        | ForEach-Object {$_.ToString().Replace("`"", "")} `
+        | ForEach-Object {$_ -replace "`"", ""} `
         | ConvertFrom-String -Delimiter "=" -PropertyNames key, value `
         | ForEach-Object {[Environment]::SetEnvironmentVariable($_.key, $_.value)}
 }
 
 if ($TARGET -eq "all" -Or $TARGET -eq "lambda") {
-    $ALL_SOURCE_DIRS = Get-Content -Path "skill.json" | select-string  -Pattern "sourceDir" -CaseSensitive
+    $ALL_SOURCE_DIRS = Get-Content -Path "skill.json" `
+        | Select-String -Pattern "sourceDir" -CaseSensitive `
+        | ForEach-Object {$_ -replace ".*:\s*`"([^`"]+)`".*", "`$1" -replace "/", "\"} `
+        | Sort `
+        | Get-Unique
     Foreach ($SOURCE_DIR in $ALL_SOURCE_DIRS) {
-        $FILTER_SOURCE_DIR = $SOURCE_DIR -replace "`"", "" -replace "\s", "" -replace ",","" -replace "sourceDir:", ""
         $CWD = (Get-Location).Path
-        if (install_dependencies $CWD $FILTER_SOURCE_DIR) {
+        if (install_dependencies $CWD $SOURCE_DIR) {
             if ($DO_DEBUG) {
-                Write-Output "Codebase ($FILTER_SOURCE_DIR) built successfully."
+                Write-Output "Codebase ($SOURCE_DIR) built successfully."
             }
         } else {
             if ($DO_DEBUG) {
-                Write-Output "There was a problem installing dependencies for ($FILTER_SOURCE_DIR)."
+                Write-Output "There was a problem installing dependencies for ($SOURCE_DIR)."
             }
             exit 1
         }
