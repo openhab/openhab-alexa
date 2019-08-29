@@ -146,6 +146,7 @@ class AlexaResponse {
         break;
       case 500:
       case 502:
+      case 'SyntaxError':
       case 'TypeError':
         // Set to bridge unreachable if error response defined, otherwise internal error
         Object.assign(parameters, {payload: error.response && error.response.body ? {
