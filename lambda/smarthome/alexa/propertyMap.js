@@ -189,8 +189,7 @@ const normalizeParameters = {
     if (!property.parameters.unitOfMeasure || !getUnitOfMeasure({id: property.parameters.unitOfMeasure})) {
       property.parameters.unitOfMeasure = getUnitOfMeasure({
         dimension: item.type.split(':')[1],
-        symbol: sprintf(item.stateDescription && item.stateDescription.pattern, '42')
-          .split(/\d+\s*(?=\S)/).pop().trim(),
+        symbol: getStatePresentationSymbol(item.stateDescription && item.stateDescription.pattern),
         system: settings.regional &&
           (settings.regional.measurementSystem || settings.regional.region),
         property: 'id'
@@ -211,8 +210,7 @@ const normalizeParameters = {
     if (!temperatureScale) {
       temperatureScale = getUnitOfMeasure({
         dimension: 'Temperature',
-        symbol: sprintf(item.stateDescription && item.stateDescription.pattern, '42')
-          .split(/\d+\s*(?=\S)/).pop().trim(),
+        symbol: getStatePresentationSymbol(item.stateDescription && item.stateDescription.pattern),
         system: settings.regional &&
           (settings.regional.measurementSystem || settings.regional.region),
         property: 'unit'
@@ -248,6 +246,26 @@ const normalizeParameters = {
     }
   }
 };
+
+/**
+ * Defines item state presentation pattern
+ * @type {RegExp}
+ */
+const STATE_PRESENTATION_PATTERN = /[\d.]+\s*(?=.{1,4}$)([%'"]|°[CF]?|[a-zA-Z/]+\d?)$/;
+
+/**
+ * Returns item state presentation symbol
+ * @param  {String} format
+ * @return {String}
+ */
+function getStatePresentationSymbol(format) {
+  try {
+    // Use a random number to format the state presentation
+    return sprintf(format, Math.random()).match(STATE_PRESENTATION_PATTERN)[1];
+  } catch (e) {
+    return '';
+  }
+}
 
 /**
  * Defines property map class to associate items to an endpoint from metadata, per the description below:
