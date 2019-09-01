@@ -12,11 +12,8 @@
  */
 
 const fs = require('fs');
-// Import request module and set default options
-const request = require('request-promise-native').defaults({
-  forever: true,    // Connection: keep-alive
-  gzip: true,       // Accept-Encoding: gzip
-});
+const request = require('request-promise-native');
+const Agent = require('agentkeepalive');
 
 /**
  * Defines configuration settings object
@@ -73,10 +70,10 @@ function getConfigFileSettings() {
 function ohAuthenticationSettings(token, options = {}) {
   if (config.openhab.cert) {
     // SSL Certificate Authentication
-    options.agentOptions = {
+    options.agentOptions = Object.assign({}, options.agentOptions, {
       pfx: config.openhab.cert,
       passphrase: config.openhab.certPass
-    };
+    });
   } else {
     options.headers = Object.assign({}, options.headers, {
       'Authorization': config.openhab.userpass ?
@@ -127,10 +124,9 @@ function getItemOrItems(token, timeout, itemName, parameters) {
     method: 'GET',
     uri: `${config.openhab.baseURL}/items/${itemName || ''}`,
     qs: parameters,
-    json: true,
-    timeout: parseInt(timeout)
+    json: true
   });
-  return request(options);
+  return handleRequest(options, timeout);
 }
 
 /**
@@ -143,10 +139,9 @@ function getRegionalSettings(token, timeout) {
   const options = ohAuthenticationSettings(token, {
     method: 'GET',
     uri: `${config.openhab.baseURL}/services/org.eclipse.smarthome.core.i18nprovider/config`,
-    json: true,
-    timeout: parseInt(timeout)
+    json: true
   });
-  return request(options);
+  return handleRequest(options, timeout);
 }
 
 /**
@@ -164,7 +159,29 @@ function postItemCommand(token, timeout, itemName, value) {
     headers: {
       'Content-Type': 'text/plain'
     },
-    body: value.toString(),
+    body: value.toString()
+  });
+  return handleRequest(options, timeout);
+}
+
+/**
+ * Handles http request
+ * @param  {Object}   options
+ * @param  {Number}   timeout
+ * @return {Promise}
+ */
+function handleRequest(options, timeout) {
+  // Add default request options
+  Object.assign(options, {
+    agentClass: options.uri.startsWith('https') ? Agent.HttpsAgent : Agent,
+    agentOptions: Object.assign({}, options.agentOptions, {
+      // Set keep-alive free socket to timeout after 45s of inactivity
+      freeSocketTimeout: 45000
+    }),
+    headers: Object.assign({}, options.headers, {
+      'Cache-Control': 'no-cache'
+    }),
+    gzip: true,
     timeout: parseInt(timeout)
   });
   return request(options);
