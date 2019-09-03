@@ -19,6 +19,7 @@
     "test": "NODE_ENV=test mocha"
   },
   "dependencies": {
+    "agentkeepalive": "^4.0.2",
     "camelcase": "^5.0.0",
     "decamelize": "^2.0.0",
     "module-alias": "^2.2.0",
