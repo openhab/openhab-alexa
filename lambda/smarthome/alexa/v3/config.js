@@ -28,9 +28,10 @@ module.exports = Object.freeze({
    *          'schema': <propertySchemaName1>,
    *          'report': <propertyReportName1>,        (Use if report property name different than discovery one)
    *          'components': [ <componentName1>, ... ] (Use if sub-property components are needed)
+   *          'links': [ <propertyLink1>, ... ],      (Use if property requires other linked properties to exist)
    *          'isReportable': <boolean>,              (Include in context properties response)
    *          'isSupported': <boolean>,               (Include in capabilities supported properties discovery response)
-   *          'multiInstance': <boolean>              (Support multi-instance)
+   *          'multiInstance': <boolean>,             (Support multi-instance)
    *        },
    *        ...
    *      ]
@@ -183,8 +184,8 @@ module.exports = Object.freeze({
       'category': 'THERMOSTAT',
       'properties': [
         {'name': 'targetSetpoint', 'schema': 'temperature'},
-        {'name': 'lowerSetpoint', 'schema': 'temperature'},
-        {'name': 'upperSetpoint', 'schema': 'temperature'},
+        {'name': 'lowerSetpoint', 'schema': 'temperature', 'links': ['upperSetpoint']},
+        {'name': 'upperSetpoint', 'schema': 'temperature', 'links': ['lowerSetpoint']},
         {'name': 'thermostatMode', 'schema': 'thermostatMode'}
       ]
     },
@@ -455,8 +456,8 @@ module.exports = Object.freeze({
       'state': {
         'range': {
           'default': {
-            'comfort': {'CELSIUS': .5, 'FAHRENHEIT': 1},
-            'setpoint': {'CELSIUS': [10, 32], 'FAHRENHEIT': [50, 90]}
+            'comfort': {'CELSIUS': 1, 'FAHRENHEIT': 2},
+            'setpoint': {'CELSIUS': [4, 32], 'FAHRENHEIT': [40, 90]}
           }
         },
         'type': 'object'

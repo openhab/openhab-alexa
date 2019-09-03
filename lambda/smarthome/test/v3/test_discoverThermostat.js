@@ -184,6 +184,20 @@ module.exports = {
       },
       "groupNames": ["gThermostat4"]
     },
+    { // Ignored due to no lowerSetpoint item defined
+      "type": "Number",
+      "name": "upperTemperature4",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.upperSetpoint",
+          "config": {
+            "scale": "Fahrenheit",
+          }
+        }
+      },
+      "groupNames": ["gThermostat4"]
+    },
     {
       "type": "Group",
       "name": "gThermostat4",

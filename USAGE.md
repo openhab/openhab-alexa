@@ -112,21 +112,21 @@ In openHAB a thermostat is modeled as many different items, typically there are 
 
 ```
 Group  Thermostat    "Bedroom"                                {alexa="Endpoint.Thermostat"}
-Number Temperature   "Temperature [%.0f F]"    (Thermostat)   {alexa="TemperatureSensor.temperature"}
-Number HeatSetpoint  "Heat Setpoint [%.0f F]"  (Thermostat)   {alexa="ThermostatController.upperSetpoint"}
-Number CoolSetpoint  "Cool Setpoint [%.0f F]"  (Thermostat)   {alexa="ThermostatController.lowerSetpoint"}
+Number Temperature   "Temperature [%.0f °F]"   (Thermostat)   {alexa="TemperatureSensor.temperature"}
+Number CoolSetpoint  "Cool Setpoint [%.0f °F]" (Thermostat)   {alexa="ThermostatController.upperSetpoint"}
+Number HeatSetpoint  "Heat Setpoint [%.0f °F]" (Thermostat)   {alexa="ThermostatController.lowerSetpoint"}
 Number Mode          "Mode [%s]"               (Thermostat)   {alexa="ThermostatController.thermostatMode"}
 ```
 
-The group metadata also describes the category for the endpoint, in this case a "Thermostat".  See the section below on supported [group metadata](#supported-group-metadata) and [categories](#display-categories) for a complete list.  In this example a single endpoint is created called "Bedroom", its various interfaces are mapped to different openHAB items.  You can ask Alexa "Set the Bedroom heat to 72" and the 'HeatSetpoint' will receive the command, likewise you can ask Alexa "What's the temperature of the Bedroom" and Alexa will query the 'Temperature' items for its value.
+The group metadata also describes the category for the endpoint, in this case a "Thermostat".  See the section below on supported [group metadata](#supported-group-metadata) and [categories](#display-categories) for a complete list.  In this example a single endpoint is created called "Bedroom", its various interfaces are mapped to different openHAB items.  You can ask Alexa "Set the Bedroom thermostat to 72" and the 'HeatSetpoint' will receive the command, if currently in heating mode, likewise you can ask Alexa "What's the temperature of the Bedroom" and Alexa will query the "Temperature" items for its value.
 
 When mapping items, sometime we need to pass additional parameters to Alexa to set things like what scale to use (Fahrenheit) or what values our items expect for certain states (thermostat modes). These parameters can be passed in the metadata properties, if they are omitted, then reasonable defaults are used.  In our above example we may wish to use Fahrenheit as our temperature scale, and map the mode strings to numbers.  This would look like:
 
 ```
 Group  Thermostat    "Thermostat"                             {alexa="Endpoint.Thermostat"}
-Number Temperature   "Temperature [%.0f F]"    (Thermostat)   {alexa="TemperatureSensor.temperature" [scale="Fahrenheit"]}
-Number HeatSetpoint  "Heat Setpoint [%.0f F]"  (Thermostat)   {alexa="ThermostatController.upperSetpoint" [scale="Fahrenheit"]}
-Number CoolSetpoint  "Cool Setpoint [%.0f F]"  (Thermostat)   {alexa="ThermostatController.lowerSetpoint" [scale="Fahrenheit"]}
+Number Temperature   "Temperature [%.0f °F]"   (Thermostat)   {alexa="TemperatureSensor.temperature" [scale="Fahrenheit"]}
+Number CoolSetpoint  "Cool Setpoint [%.0f °F]" (Thermostat)   {alexa="ThermostatController.upperSetpoint" [scale="Fahrenheit"]}
+Number HeatSetpoint  "Heat Setpoint [%.0f °F]" (Thermostat)   {alexa="ThermostatController.lowerSetpoint" [scale="Fahrenheit"]}
 Number Mode          "Mode [%s]"               (Thermostat)   {alexa="ThermostatController.thermostatMode" [OFF=0,HEAT=1,COOL=2,AUTO=3]}
 ```
 
@@ -231,36 +231,42 @@ The following are a list of supported metadata. It is important to note that not
   * Number(:Temperature)
 * Supported metadata parameters:
   * scale=`<scale>`
-    * Celsius [10°C -> 32°C]
-    * Fahrenheit [50°F -> 90°F]
+    * Celsius [4°C -> 32°C]
+    * Fahrenheit [40°F -> 90°F]
   * setpointRange=`<minValue:maxValue>`
     * defaults to defined scale range listed above if omitted
 * Default category: THERMOSTAT
 
 #### `ThermostatController.upperSetpoint`
-* Items that represent a upper or HEAT setpoint for a thermostat. The scale is determined based on: (1) value set in parameter `scale="Fahrenheit"`; (2) unit of item state presentation (`°F`=Fahrenheit; `°C`=Celsius); (3) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (4) defaults to Celsius. By default, the temperature range is limited to predefined setpoint values based on the scale parameter. If necessary, the temperature range can be customized using parameter `setpointRange="60:90"`.
+* Items that represent a upper or COOL setpoint for a thermostat. This needs to be paired with `ThermostatController.lowerSetpoint`. The scale is determined based on: (1) value set in parameter `scale="Fahrenheit"`; (2) unit of item state presentation (`°F`=Fahrenheit; `°C`=Celsius); (3) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (4) defaults to Celsius. By default, the temperature range is limited to predefined setpoint values based on the scale parameter. If necessary, the temperature range can be customized using parameter `setpointRange="60:90"`. When paired with `ThermostatController.thermostatMode`, setpoint requests and responses will be limited based on the current thermostat mode as follows: (1) thermostat mode cannot be off to set/adjust a setpoint temperature; (2) set/adjust upper or lower setpoint to single point target temperature in dual mode with, respectively, thermostat cooling or heating mode. (3) thermostat auto and eco mode will be considered in dual mode if setpoints defined, otherwise in single mode. It is important to note that this feature doesn't support triple mode. If you need that setpoint mode, no action necessary if thermostat mode not defined in group endpoint, otherwise the automation can be disabled in the thermostat mode metadata parameters `supportsSetpointMode=false`.
 * Supported item type:
   * Number(:Temperature)
 * Supported metadata parameters:
   * scale=`<scale>`
-    * Celsius [10°C -> 32°C]
-    * Fahrenheit [50°F -> 90°F]
+    * Celsius [4°C -> 32°C]
+    * Fahrenheit [40°F -> 90°F]
   * comfortRange=`<number>`
-    * When dual setpoints (upper, lower) are used this is the amount over the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to comfortRange=1 if using Fahrenheit and comfortRange=.5 if using Celsius. Ignored if a targetSetpoint is included in the thermostat group.
-    * setpointRange=`<minValue:maxValue>`
-      * defaults to defined scale range listed above if omitted
+    * used in dual setpoint mode to determine:
+      * the new upper/lower setpoints spread based on target setpoint
+      * the minimum temperature delta between requested upper/lower setpoints by adding relevant comfort range values
+    * defaults to `2°F` or `1°C`
+  * setpointRange=`<minValue:maxValue>`
+    * defaults to defined scale range listed above if omitted
 * Default category: THERMOSTAT
 
 #### `ThermostatController.lowerSetpoint`
-* Items that represent a lower or COOL setpoint for a thermostat. The scale is determined based on: (1) value set in parameter `scale="Fahrenheit"`; (2) unit of item state presentation (`°F`=Fahrenheit; `°C`=Celsius); (3) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (4) defaults to Celsius. By default, the temperature range is limited to predefined setpoint values based on the scale parameter. If necessary, the temperature range can be customized using parameter `setpointRange="60:90"`.
+* Items that represent a lower or HEAT setpoint for a thermostat. This needs to be paired with `ThermostatController.upperSetpoint`. The scale is determined based on: (1) value set in parameter `scale="Fahrenheit"`; (2) unit of item state presentation (`°F`=Fahrenheit; `°C`=Celsius); (3) your openHAB server regional measurement system or region settings (US=Fahrenheit; SI=Celsius); (4) defaults to Celsius. By default, the temperature range is limited to predefined setpoint values based on the scale parameter. If necessary, the temperature range can be customized using parameter `setpointRange="60:90"`. When paired with `ThermostatController.thermostatMode`, setpoint requests and responses will be limited based on the current thermostat mode as follows: (1) thermostat mode cannot be off to set/adjust a setpoint temperature; (2) set/adjust upper or lower setpoint to single point target temperature in dual mode with, respectively, thermostat cooling or heating mode. (3) thermostat auto and eco mode will be considered in dual mode if setpoints defined, otherwise in single mode. It is important to note that this feature doesn't support triple mode. If you need that setpoint mode, no action necessary if thermostat mode not defined in group endpoint, otherwise the automation can be disabled in the thermostat mode metadata parameters `supportsSetpointMode=false`.
 * Supported item type:
   * Number(:Temperature)
 * Supported metadata parameters:
   * scale=`<scale>`
-    * Celsius [10°C -> 32°C]
-    * Fahrenheit [50°F -> 90°F]
+    * Celsius [4°C -> 32°C]
+    * Fahrenheit [40°F -> 90°F]
   * comfortRange=`<number>`
-    * When dual setpoints (upper,lower) are used this is the amount under the requested temperature when requesting Alexa to set or adjust the current temperature.  Defaults to `comfortRange=1` if using Fahrenheit and `comfortRange=.5` if using Celsius.  Ignored if a targetSetpoint is included in the thermostat group.
+    * used in dual setpoint mode to determine:
+      * the new upper/lower setpoints spread based on target setpoint
+      * the minimum temperature delta between requested upper/lower setpoints by adding relevant comfort range values
+    * defaults to `2°F` or `1°C`
   * setpointRange=`<minValue:maxValue>`
     * defaults to defined scale range listed above if omitted
 * Default category: THERMOSTAT
@@ -288,6 +294,9 @@ The following are a list of supported metadata. It is important to note that not
     * defaults to [OFF="off", HEAT="heat", COOL="cool", ECO="eco", AUTO="auto"] if omitted
   * supportedModes=`<values>`
     * defaults to, depending on the parameters provided, either user-based, preset-based or default item type-based mapping.
+  * supportsSetpointMode=`<boolean>`
+    * set to false to disable the thermostat setpoint mode-aware feature (Refer to upper/lower setpoints documentation for more information)
+    * defaults to true
 * Default category: THERMOSTAT
 
 #### `TemperatureSensor.temperature`

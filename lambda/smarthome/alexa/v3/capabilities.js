@@ -15,8 +15,9 @@
  * Amazon Smart Home Skill Capabilities for API V3
  */
 const catalog = require('@lib/catalog.js');
-const { CAPABILITIES, PROPERTY_SCHEMAS, ASSET_IDENTIFIERS, DISPLAY_CATEGORIES,
-  FRIENDLY_NAMES_FORBIDDEN, LOCALES, UNIT_OF_MEASUREMENT } = require('./config.js');
+const { CAPABILITIES, PROPERTY_SCHEMAS, INTERFACE_PATTERN, PROPERTY_PATTERN,
+  ASSET_IDENTIFIERS, DISPLAY_CATEGORIES, FRIENDLY_NAMES_FORBIDDEN, LOCALES,
+  UNIT_OF_MEASUREMENT } = require('./config.js');
 
 /**
  * Returns alexa capability display category for a given interface
@@ -58,7 +59,7 @@ function getCapabilityCategory(interfaceName) {
 function getCapabilityInterface(interfaceName, properties, settings = {}) {
   let instance;
   // Extract instance name from interface name
-  [interfaceName, instance] = interfaceName.split(':');
+  [interfaceName, instance] = interfaceName.match(INTERFACE_PATTERN).slice(1);
 
   // Skip capability if interface not defined
   if (!CAPABILITIES[interfaceName]) {
@@ -94,15 +95,20 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
     const item = properties[propertyName].item;
     const parameters = properties[propertyName].parameters;
     const schema = properties[propertyName].schema.name;
-    let component;
-    // Extract component from property name
-    [propertyName, component] = propertyName.split(':');
+    // Extract component and tag from property name
+    const [name, component, tag] = propertyName.match(PROPERTY_PATTERN).slice(1);
     // Get capability property settings
     settings = Object.assign({}, settings, {property: getPropertySettings(interfaceName, propertyName)});
 
+    // Delete and skip property if any of its property links not present in interface properties
+    if (settings.property.links && settings.property.links.some(name => !properties[name + (tag ? '#' + tag : '')])) {
+      delete properties[propertyName];
+      return;
+    }
+
     // Add unique property name to supported list if property is supported
-    if (settings.property.isSupported !== false && !supported.find(property => property.name === propertyName)) {
-      supported.push({name: propertyName});
+    if (settings.property.isSupported !== false && !supported.find(property => property.name === name)) {
+      supported.push({name: name});
     }
 
     // Update properties retrievable if item state retrievable is set to false
@@ -325,8 +331,11 @@ function getPropertySchema(schema, path = '') {
  * @return {Object}
  */
 function getPropertySettings(interfaceName, propertyName) {
-  const properties = CAPABILITIES[interfaceName] && CAPABILITIES[interfaceName]['properties'] || [];
-  const property = properties.find(property => property.name === propertyName) || {};
+  // Get capability properties, based on interface name without instance
+  const capability = CAPABILITIES[interfaceName.split(':').shift()];
+  const properties = capability && capability.properties || [];
+  // Get property settings, based on property name without component or tag
+  const property = properties.find(property => property.name === propertyName.split(/[:#]/).shift()) || {};
 
   return Object.assign({}, property, getPropertySchema(property.schema));
 }
@@ -357,6 +366,46 @@ function getPropertyStateMap(property) {
     Object.assign(map, typeof parameters[state] !== 'undefined' && {[state]: parameters[state]}), {});
 
   return Object.keys(userMap).length > 0 ? userMap : customMap || defaultMap;
+}
+
+/**
+ * Returns thermostat setpoint mode properties list
+ * @param  {String} thermostatMode
+ * @param  {Object} properties
+ * @return {Array}
+ */
+function getThermostatSetpointProperties(thermostatMode, properties) {
+  // Determine setpoint properties based on thermostat mode and specific setpoint-named configured properties
+  if (thermostatMode === 'AUTO' || thermostatMode === 'ECO') {
+    const taggedProperties = Object.keys(properties).filter(name => name.toUpperCase().endsWith('#' + thermostatMode));
+    // Use tagged properties setpoints if defined, otherwise upper/lower setpoints, fallback to target setpoint
+    if (taggedProperties.length === 2) {
+      return taggedProperties.map(name => name + '@' + name.split('#').shift());
+    } else if (properties.upperSetpoint && properties.lowerSetpoint) {
+      return ['upperSetpoint', 'lowerSetpoint'];
+    } else if (properties.targetSetpoint) {
+      return ['targetSetpoint'];
+    }
+  } else if (thermostatMode === 'COOL') {
+    // Use target setpoint if defined, otherwise fallback to upper setpoint mapped as target setpoint
+    if (properties.targetSetpoint) {
+      return ['targetSetpoint'];
+    } else if (properties.upperSetpoint) {
+      return ['upperSetpoint@targetSetpoint'];
+    }
+  } else if (thermostatMode === 'HEAT') {
+    // Use target setpoint if defined, otherwise fallback to lower setpoint mapped as target setpoint
+    if (properties.targetSetpoint) {
+      return ['targetSetpoint'];
+    } else if (properties.lowerSetpoint) {
+      return ['lowerSetpoint@targetSetpoint'];
+    }
+  } else if (thermostatMode === 'OFF') {
+    // No setpoint
+    return [];
+  }
+  // Return all setpoint-named configured properties as fallback
+  return Object.keys(properties).filter(name => name.endsWith('Setpoint'));
 }
 
 /**
@@ -430,6 +479,7 @@ module.exports = {
   getPropertySchema: getPropertySchema,
   getPropertySettings: getPropertySettings,
   getPropertyStateMap: getPropertyStateMap,
+  getThermostatSetpointProperties: getThermostatSetpointProperties,
   getUnitOfMeasure: getUnitOfMeasure,
   isInColorMode: isInColorMode,
   isSupportedDisplayCategory: isSupportedDisplayCategory
