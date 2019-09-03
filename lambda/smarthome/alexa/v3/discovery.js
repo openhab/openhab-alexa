@@ -25,6 +25,16 @@ const AlexaPropertyMap = require('../propertyMap.js');
  */
 class AlexaDiscovery extends AlexaDirective {
   /**
+   * Constructor
+   * @param {Object}   directive
+   * @param {Function} callback
+   */
+  constructor(directive, callback) {
+    super(directive, callback);
+    this.tries = 0;
+  }
+
+  /**
    *  Discover devices
    */
   discover() {
@@ -41,6 +51,15 @@ class AlexaDiscovery extends AlexaDirective {
       const groupItems = [];
 
       log.debug('Data:', {items: items, settings: settings});
+
+      // Retry retrieving all items if not an array, up to 3 tries, otherwise throw error
+      if (!Array.isArray(items)) {
+        if (++this.tries <= 3) {
+          log.debug(`Retry #${this.tries}`);
+          return this.discover();
+        }
+        throw new TypeError(`Discover items retrieved not an array [type: ${typeof items}]`);
+      }
 
       items.forEach((item) => {
         // Set endpoint friendly name using item label or first synonyms metadata value
