@@ -13,7 +13,8 @@
 
 require('module-alias/register');
 const log = require('@lib/log.js');
-const ohv3 = require('./ohConnectorV3.js');
+const ohv2 = require('./alexa/v2/ohConnector.js');
+const ohv3 = require('./alexa/v3/ohConnector.js');
 
 /**
  * Main entry point.
@@ -28,6 +29,9 @@ exports.handler = function (event, context, callback) {
   switch (version) {
     case 3:
       ohv3.handleRequest(event.directive, callback);
+      break;
+    case 2:
+      ohv2.handleRequest(event, context);
       break;
     default:
       log.error(`No supported payloadVersion: ${version}`);

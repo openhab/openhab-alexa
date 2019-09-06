@@ -81,7 +81,7 @@ class AlexaDirective extends AlexaResponse {
    */
   postItemsAndReturn(items, parameters = {}) {
     const promises = items.map(item =>
-      rest.postItemCommand(this.directive.endpoint.scope.token, this.timeout, item.name, item.state));
+      rest.postItemCommand(this.directive.endpoint.scope.token, item.name, item.state, this.timeout));
     Promise.all(promises).then(() => {
       this.getPropertiesResponseAndReturn(parameters);
     }).catch((error) => {
@@ -149,7 +149,7 @@ class AlexaDirective extends AlexaResponse {
    */
   getItemState(item) {
     const itemName = item.sensor || item.name;
-    return rest.getItem(this.directive.endpoint.scope.token, this.timeout, itemName).then((result) =>
+    return rest.getItem(this.directive.endpoint.scope.token, itemName, this.timeout).then((result) =>
       // Set state to undefined if uninitialized or undefined in oh, otherwise get formatted item state
       Object.assign(result, {state: ['NULL', 'UNDEF'].includes(result.state) ? undefined : formatItemState(result)}));
   }

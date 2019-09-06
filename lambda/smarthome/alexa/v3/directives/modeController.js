@@ -38,7 +38,7 @@ class AlexaModeController extends AlexaDirective {
    * Set mode
    */
   setMode() {
-    const postItem = Object.assign(this.propertyMap[this.interface].mode.item, {
+    const postItem = Object.assign({}, this.propertyMap[this.interface].mode.item, {
       state: this.directive.payload.mode
     });
     this.postItemsAndReturn([postItem]);
@@ -58,7 +58,7 @@ class AlexaModeController extends AlexaDirective {
       const index = supportedModes.findIndex(mode => mode === item.state);
 
       // Throw error if current mode not found
-      if (index === -1 ) {
+      if (index === -1) {
         throw {cause: 'Current mode not found in supported list', item: item, supported: supportedModes};
       }
 
