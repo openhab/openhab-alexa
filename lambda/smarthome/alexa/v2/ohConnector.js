@@ -66,15 +66,16 @@ exports.handleRequest = function (_directive, _context) {
           namespace: directive.header.namespace,
           payloadVersion: directive.header.payloadVersion
         };
-        const payloads = {
+        const payload = {
           description: 'The system is currently healthy',
           isHealthy: true
         };
         const result = {
           header: headers,
-          payload: payloads
+          payload: payload
         };
 
+        log.info('healthCheck done with result:', result);
         context.succeed(result);
       }
       break;
@@ -123,10 +124,10 @@ exports.handleDiscovery = function () {
       payload: payload
     };
 
-    log.debug('Discovery: ' + JSON.stringify(result));
+    log.info('discoverDevices done with result:', result);
     context.succeed(result);
   }, function (error) {
-    log.error('discoverDevices failed: ' + error.message);
+    log.error('discoverDevices failed with error:', error);
     context.done(null,
       generateGenericErrorResponse(error.message));
   });
@@ -196,12 +197,12 @@ function turnOnOff() {
       payload: payload
     };
 
-    log.debug('turnOnOff done with result' + JSON.stringify(result));
-
+    log.info('turnOnOff done with result:', result);
     context.succeed(result);
   };
 
   const failure = function (error) {
+    log.error('turnOnOff failed with error:', error);
     context.done(null,
       generateGenericErrorResponse(error.message));
   };
@@ -239,7 +240,7 @@ function adjustPercentage() {
       payload: payload
     };
 
-    log.debug('adjustPercentage done with result ' + JSON.stringify(result));
+    log.info('adjustPercentage done with result:', result);
     context.succeed(result);
   };
 
@@ -248,8 +249,8 @@ function adjustPercentage() {
    */
   const itemGetSuccess = function (item) {
 
-    log.debug('itemGetSuccess: item state ' +
-    item.state + ' delta ' + directive.payload.deltaPercentage.value);
+    log.debug('adjustPercentage: item state ' +
+      item.state + ' delta ' + directive.payload.deltaPercentage.value);
 
     //inc/dec command
     //skip this if we don't have a number to start with
@@ -283,6 +284,7 @@ function adjustPercentage() {
    * Failure Function used for both retieveing items and posting item commands.
    */
   const failure = function (error) {
+    log.error('adjustPercentage failed with error:', error);
     context.done(null,
       generateGenericErrorResponse(error.message));
   };
@@ -319,10 +321,12 @@ function adjustColor() {
       payload: payload
     };
 
+    log.info('adjustColor done with result:', result);
     context.succeed(result);
   };
 
   const failure = function (error) {
+    log.error('adjustColor failed with error:', error);
     context.done(null,
       generateGenericErrorResponse(error.message));
   };
@@ -348,8 +352,9 @@ function getCurrentTemperature() {
     }
 
     if (!item || isNaN(item.state)) {
-      context.done(null,
-        generateGenericErrorResponse('thermostat missing current temperature'));
+      failure({
+        message: 'thermostat missing current temperature'
+      });
       return;
     }
 
@@ -375,11 +380,13 @@ function getCurrentTemperature() {
       header: header,
       payload: payload
     };
-    log.debug('getCurrentTemperature done with result: ' + JSON.stringify(result));
+
+    log.info('getCurrentTemperature done with result:', result);
     context.succeed(result);
   };
 
   const failure = function (error) {
+    log.error('getCurrentTemperature failed with error:', error);
     context.done(null,
       generateGenericErrorResponse(error.message));
   };
@@ -398,8 +405,9 @@ function getTargetTemperature() {
     const items = getThermostatItems(thermostatGroup.members);
 
     if (!items.targetTemperature || isNaN(items.targetTemperature.state)) {
-      context.done(null,
-        generateGenericErrorResponse('thermostat missing current temperature'));
+      failure({
+        message: 'thermostat missing current temperature'
+      });
       return;
     }
 
@@ -432,10 +440,12 @@ function getTargetTemperature() {
       payload: payload
     };
 
+    log.info('getTargetTemperature done with result:', result);
     context.succeed(result);
   };
 
   const failure = function (error) {
+    log.error('getTargetTemperature failed with error:', error);
     context.done(null,
       generateGenericErrorResponse(error.message));
   };
@@ -467,38 +477,11 @@ function adjustTemperature() {
  * Adjust a thermostat's temperature based on its current actual readings.
  **/
 function adjustTemperatureWithItems(currentTemperature, targetTemperature, heatingCoolingMode) {
-  if (!targetTemperature) {
-    context.done(null,
-      generateGenericErrorResponse('Missing target temperature!'));
-    return;
-  }
-
-  const curValue = parseFloat(targetTemperature.state);
-  const scale = directive.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit' ?
-    'FAHRENHEIT' : 'CELSIUS';
-
-  /**
-   * Alexa needs everything in Celsius, we will need to respect what a user has set
-   */
-  let setValue;
-  switch (directive.header.name) {
-    case 'SetTargetTemperatureRequest':
-      setValue = scale === 'FAHRENHEIT' ?
-        directive.payload.targetTemperature.value * 9 / 5 + 32 : directive.payload.targetTemperature.value;
-      break;
-    case 'IncrementTargetTemperatureRequest':
-      setValue = curValue + directive.payload.deltaTemperature.value;
-      break;
-    case 'DecrementTargetTemperatureRequest':
-      setValue = curValue - directive.payload.deltaTemperature.value;
-      break;
-  }
-
-  log.debug('adjustTemperatureWithItems setValue: ' + setValue);
-
-  const curMode = heatingCoolingMode ? normalizeThermostatMode(heatingCoolingMode.state) : 'AUTO';
 
   const success = function () {
+
+    const curMode = heatingCoolingMode ? normalizeThermostatMode(heatingCoolingMode.state) : 'AUTO';
+
     const header = {
       messageId: directive.header.messageId,
       name: directive.header.name.replace('Request', 'Confirmation'),
@@ -530,14 +513,45 @@ function adjustTemperatureWithItems(currentTemperature, targetTemperature, heati
       payload: payload
     };
 
-    log.debug('Done with result: ' + JSON.stringify(result));
+    log.info('adjustTemperature done with result:', result);
     context.succeed(result);
   };
 
-  const failure = function () {
+  const failure = function (error) {
+    log.error('adjustTemperature failed with error:', error);
     context.done(null,
-      generateGenericErrorResponse('Unable to connect to server'));
+      generateGenericErrorResponse(error.message));
   };
+
+  if (!targetTemperature) {
+    failure({
+      message: 'Missing target temperature!'
+    });
+    return;
+  }
+
+  const curValue = parseFloat(targetTemperature.state);
+  const scale = directive.payload.appliance.additionalApplianceDetails.temperatureFormat === 'fahrenheit' ?
+    'FAHRENHEIT' : 'CELSIUS';
+
+  /**
+   * Alexa needs everything in Celsius, we will need to respect what a user has set
+   */
+  let setValue;
+  switch (directive.header.name) {
+    case 'SetTargetTemperatureRequest':
+      setValue = scale === 'FAHRENHEIT' ?
+        directive.payload.targetTemperature.value * 9 / 5 + 32 : directive.payload.targetTemperature.value;
+      break;
+    case 'IncrementTargetTemperatureRequest':
+      setValue = curValue + directive.payload.deltaTemperature.value;
+      break;
+    case 'DecrementTargetTemperatureRequest':
+      setValue = curValue - directive.payload.deltaTemperature.value;
+      break;
+  }
+
+  log.debug('adjustTemperature setValue: ' + setValue);
 
   rest.postItemCommand(directive.payload.accessToken, targetTemperature.name,
     setValue.toString()).then(success, failure);
@@ -561,10 +575,11 @@ function getLockState() {
       header: header,
       payload: payload
     };
-    log.debug('getLockState done with result: ' + JSON.stringify(result));
+    log.info('getLockState done with result:', result);
     context.succeed(result);
   };
   const failure = function (error) {
+    log.error('getLockState failed with error:', error);
     context.done(null,
       generateGenericErrorResponse(error.message));
   };
@@ -593,11 +608,12 @@ function setLockState() {
       payload: payload
     };
 
-    log.debug('setLockState done with result' + JSON.stringify(result));
+    log.info('setLockState done with result:', result);
     context.succeed(result);
   };
 
   const failure = function (error) {
+    log.error('setLockState failed with error:', error);
     context.done(null,
       generateGenericErrorResponse(error.message));
   };
@@ -648,7 +664,7 @@ function discoverDevices(token, success, failure) {
 
   //callback for successfully getting items from rest call
   const getSuccess = function (items) {
-    log.debug('discoverDevices getSuccess: ' + JSON.stringify(items));
+    log.debug('discoverDevices data:', {items: items});
     const discoverdDevices = [];
 
     items.forEach((item) => {
