@@ -80,7 +80,7 @@ class AlexaThermostatController extends AlexaDirective {
         });
       }
       // Return error response if thermostat not currently in dual/triple mode while request is
-      if (requestProperties.length > 1 && requestProperties.some(property => !setpointProperties.includes(property))) {
+      if (requestProperties.length > 1 && requestProperties.length > setpointProperties.length) {
         const mode = requestProperties.length === 2 ? 'dual' : 'triple';
         return this.returnAlexaErrorResponse({
           namespace: this.directive.header.namespace,

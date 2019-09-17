@@ -29,6 +29,7 @@ module.exports = Object.freeze({
    *          'report': <propertyReportName1>,        (Use if report property name different than discovery one)
    *          'components': [ <componentName1>, ... ] (Use if sub-property components are needed)
    *          'links': [ <propertyLink1>, ... ],      (Use if property requires other linked properties to exist)
+   *          'tags': [ <propertyTag1>, ... ],        (Use if property supports tagging)
    *          'isReportable': <boolean>,              (Include in context properties response)
    *          'isSupported': <boolean>,               (Include in capabilities supported properties discovery response)
    *          'multiInstance': <boolean>,             (Support multi-instance)
@@ -184,8 +185,8 @@ module.exports = Object.freeze({
       'category': 'THERMOSTAT',
       'properties': [
         {'name': 'targetSetpoint', 'schema': 'temperature'},
-        {'name': 'lowerSetpoint', 'schema': 'temperature', 'links': ['upperSetpoint']},
-        {'name': 'upperSetpoint', 'schema': 'temperature', 'links': ['lowerSetpoint']},
+        {'name': 'lowerSetpoint', 'schema': 'temperature', 'links': ['upperSetpoint'], 'tags': ['auto', 'eco']},
+        {'name': 'upperSetpoint', 'schema': 'temperature', 'links': ['lowerSetpoint'], 'tags': ['auto', 'eco']},
         {'name': 'thermostatMode', 'schema': 'thermostatMode'}
       ]
     },
@@ -632,13 +633,25 @@ module.exports = Object.freeze({
    * Defines alexa capability namespace format pattern
    * @type {RegExp}
    */
-  CAPABILITY_PATTERN: /^(?:Alexa\.)?(\w+)\.(\w+)[:]?(\w*)$/,
+  CAPABILITY_PATTERN: /^(?:Alexa\.)?(\w+)\.(\w+)(?::(\w+))?(?:#(\w+))?$/,
 
   /**
    * Defines alexa endpoint namespace format pattern
    * @type {RegExp}
    */
   ENDPOINT_PATTERN: /^(?:Alexa\.)?Endpoint\.(\w+)$/,
+
+  /**
+   * Defines alexa capability interface name format pattern
+   * @type {RegExp}
+   */
+  INTERFACE_PATTERN: /^(\w+)(?::(\w+))?$/,
+
+  /**
+   * Defines alexa capability property name format pattern
+   * @type {RegExp}
+   */
+  PROPERTY_PATTERN: /^(\w+)(?::(\w+))?(?:#(\w+))?$/,
 
   /**
    * Defines alexa response timeout in milliseconds

@@ -235,11 +235,13 @@ function convertV2Item(item, config = {}) {
   };
 
   // Convert metadata v2 style label values to capabilities
-  metadata.values.forEach((label) => {
+  metadata.values.forEach((value) => {
+    // Extract tag from label value
+    const [label, tag] = value.split('#');
     let capabilities = [];
-    let parameters = {}
+    let parameters = {};
 
-    // define endpoint tag for group item with no group type
+    // Define endpoint tag for group item with no group type
     if (item.type === 'Group' && !item.groupType) {
       switch (label) {
         case 'Lighting':
@@ -372,10 +374,10 @@ function convertV2Item(item, config = {}) {
       }
     }
 
-    // Push all unique capabilities to metadata values
+    // Push all unique capabilities with tag to metadata values
     //  and merge parameters into metadata config
     capabilities.forEach((capability) => {
-      metadata.values = [...new Set(metadata.values).add(capability)];
+      metadata.values = [...new Set(metadata.values).add(capability + (tag ? '#' + tag : ''))];
       metadata.config = Object.assign(parameters, metadata.config);
     });
   });

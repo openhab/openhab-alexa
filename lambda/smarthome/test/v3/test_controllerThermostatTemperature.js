@@ -240,6 +240,94 @@ module.exports = [
     }
   },
   {
+    description: "set target temperature dual mode with tagged setpoints",
+    directive: {
+      "header": {
+        "namespace": "Alexa.ThermostatController",
+        "name": "SetTargetTemperature"
+      },
+      "endpoint": {
+        "endpointId": "gThermostat",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "ThermostatController": {
+              "thermostatMode": {
+                "parameters": {"OFF": "0", "HEAT": "1", "COOL": "2", "AUTO":"3", "ECO":"4"},
+                "item": {"name": "thermostatMode", "type": "Number"},
+                "schema": {"name": "thermostatMode"}
+              },
+              "upperSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "highTargetTemperature"}, "schema": {"name": "temperature"}},
+              "lowerSetpoint": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "lowTargetTemperature"}, "schema": {"name": "temperature"}},
+              "upperSetpoint#eco": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "ecoHighTargetTemperature"}, "schema": {"name": "temperature"}},
+              "lowerSetpoint#eco": {"parameters": {"scale": "FAHRENHEIT"},
+                "item": {"name": "ecoLowTargetTemperature"}, "schema": {"name": "temperature"}},
+            }
+          })
+        }
+      },
+      "payload": {
+        "upperSetpoint": {
+          "value": 82.0,
+          "scale": "FAHRENHEIT"
+        },
+        "lowerSetpoint": {
+          "value": 64.0,
+          "scale": "FAHRENHEIT"
+        }
+      }
+    },
+    mocked: {
+      openhab: [
+        {"name": "thermostatMode", "state": "4", "type": "Number"},
+        {"name": "ecoHighTargetTemperature", "state": "82", "type": "Number"},
+        {"name": "ecoLowTargetTemperature", "state": "64", "type": "Number"}
+      ],
+      staged: true
+    },
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [
+            {
+              "namespace": "Alexa.ThermostatController",
+              "name": "thermostatMode",
+              "value": "ECO"
+            },
+            {
+              "namespace": "Alexa.ThermostatController",
+              "name": "upperSetpoint",
+              "value": {
+                "value": 82.0,
+                "scale": "FAHRENHEIT"
+              }
+            },
+            {
+              "namespace": "Alexa.ThermostatController",
+              "name": "lowerSetpoint",
+              "value": {
+                "value": 64.0,
+                "scale": "FAHRENHEIT"
+              }
+            }
+          ]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
+          },
+        }
+      },
+      openhab: [
+        {"name": "ecoHighTargetTemperature", "value": 82},
+        {"name": "ecoLowTargetTemperature", "value": 64}
+      ]
+    }
+  },
+  {
     description: "set target temperature dual mode in cooling mode",
     directive: {
       "header": {
