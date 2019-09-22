@@ -86,8 +86,7 @@ class AlexaEqualizerController extends AlexaDirective {
       log.debug('adjustBands to values:', {items: postItems});
       this.postItemsAndReturn(postItems);
     }).catch((error) => {
-      log.error('adjustBands failed with error:', error);
-      this.returnAlexaGenericErrorResponse();
+      this.returnAlexaGenericErrorResponse(error);
     });
   }
 

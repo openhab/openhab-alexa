@@ -75,8 +75,7 @@ exports.handleRequest = function (_directive, _context) {
           payload: payload
         };
 
-        log.info('healthCheck done with result:', result);
-        context.succeed(result);
+        returnAlexaResponse(result);
       }
       break;
 
@@ -84,9 +83,9 @@ exports.handleRequest = function (_directive, _context) {
      * We received an unexpected message
      */
     default:
-      log.error('namespace not supported: ' + namespace);
-      context.done(null,
-        generateGenericErrorResponse('namespace not supported.'));
+      returnAlexaGenericErrorResponse({
+        message: 'namespace not supported.'
+      });
       break;
   }
 }
@@ -124,12 +123,9 @@ exports.handleDiscovery = function () {
       payload: payload
     };
 
-    log.info('discoverDevices done with result:', result);
-    context.succeed(result);
+    returnAlexaResponse(result);
   }, function (error) {
-    log.error('discoverDevices failed with error:', error);
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   });
 };
 
@@ -197,14 +193,11 @@ function turnOnOff() {
       payload: payload
     };
 
-    log.info('turnOnOff done with result:', result);
-    context.succeed(result);
+    returnAlexaResponse(result);
   };
 
   const failure = function (error) {
-    log.error('turnOnOff failed with error:', error);
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   };
 
   const state = directive.header.name === 'TurnOnRequest' ? 'ON' : 'OFF';
@@ -240,8 +233,7 @@ function adjustPercentage() {
       payload: payload
     };
 
-    log.info('adjustPercentage done with result:', result);
-    context.succeed(result);
+    returnAlexaResponse(result);
   };
 
   /**
@@ -284,9 +276,7 @@ function adjustPercentage() {
    * Failure Function used for both retieveing items and posting item commands.
    */
   const failure = function (error) {
-    log.error('adjustPercentage failed with error:', error);
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   };
 
   if (isSetCommand) {
@@ -321,14 +311,11 @@ function adjustColor() {
       payload: payload
     };
 
-    log.info('adjustColor done with result:', result);
-    context.succeed(result);
+    returnAlexaResponse(result);
   };
 
   const failure = function (error) {
-    log.error('adjustColor failed with error:', error);
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   };
 
   const h = directive.payload.color.hue;
@@ -381,14 +368,11 @@ function getCurrentTemperature() {
       payload: payload
     };
 
-    log.info('getCurrentTemperature done with result:', result);
-    context.succeed(result);
+    returnAlexaResponse(result);
   };
 
   const failure = function (error) {
-    log.error('getCurrentTemperature failed with error:', error);
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   };
 
   rest.getItem(directive.payload.accessToken, directive.payload.appliance.applianceId).then(
@@ -440,14 +424,11 @@ function getTargetTemperature() {
       payload: payload
     };
 
-    log.info('getTargetTemperature done with result:', result);
-    context.succeed(result);
+    returnAlexaResponse(result);
   };
 
   const failure = function (error) {
-    log.error('getTargetTemperature failed with error:', error);
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   };
 
   rest.getItem(directive.payload.accessToken, directive.payload.appliance.applianceId).then(
@@ -465,8 +446,7 @@ function adjustTemperature() {
   };
 
   const failure = function (error) {
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   };
 
   rest.getItem(directive.payload.accessToken, directive.payload.appliance.applianceId).then(
@@ -513,14 +493,11 @@ function adjustTemperatureWithItems(currentTemperature, targetTemperature, heati
       payload: payload
     };
 
-    log.info('adjustTemperature done with result:', result);
-    context.succeed(result);
+    returnAlexaResponse(result);
   };
 
   const failure = function (error) {
-    log.error('adjustTemperature failed with error:', error);
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   };
 
   if (!targetTemperature) {
@@ -575,13 +552,11 @@ function getLockState() {
       header: header,
       payload: payload
     };
-    log.info('getLockState done with result:', result);
-    context.succeed(result);
+
+    returnAlexaResponse(result);
   };
   const failure = function (error) {
-    log.error('getLockState failed with error:', error);
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   };
   rest.getItem(directive.payload.accessToken, directive.payload.appliance.applianceId).then(
     success, failure);
@@ -608,14 +583,11 @@ function setLockState() {
       payload: payload
     };
 
-    log.info('setLockState done with result:', result);
-    context.succeed(result);
+    returnAlexaResponse(result);
   };
 
   const failure = function (error) {
-    log.error('setLockState failed with error:', error);
-    context.done(null,
-      generateGenericErrorResponse(error.message));
+    returnAlexaGenericErrorResponse(error);
   };
 
   const state = directive.payload.lockState === 'LOCKED' ? 'ON' : 'OFF';
@@ -647,14 +619,28 @@ function generateControlError(name, payload) {
 }
 
 /**
- * Generate Generic Error Response
- * @param  {String} error
- * @return {Object}
+ * Returns Alexa response
+ * @param  {Object} response
  */
-function generateGenericErrorResponse(error) {
-  return generateControlError('DependentServiceUnavailableError', {
-    dependentServiceName: error
-  });
+function returnAlexaResponse(response) {
+  log.info('Response:', response);
+  context.succeed(response);
+}
+
+/**
+ * Returns Alexa generic error response
+ * @param  {Object} error
+ */
+function returnAlexaGenericErrorResponse(error) {
+  log.debug('Error:', error);
+  log.error(error.message, {directive: {
+    namespace: directive.header.namespace,
+    name: directive.header.name,
+    payload: directive.payload
+  }});
+  context.done(null, generateControlError('DependentServiceUnavailableError', {
+    dependentServiceName: error.message
+  }));
 }
 
 /**
@@ -664,7 +650,7 @@ function discoverDevices(token, success, failure) {
 
   //callback for successfully getting items from rest call
   const getSuccess = function (items) {
-    log.debug('discoverDevices data:', {items: items});
+    log.debug('Data:', {items: items});
     const discoverdDevices = [];
 
     items.forEach((item) => {

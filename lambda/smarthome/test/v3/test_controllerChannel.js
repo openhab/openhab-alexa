@@ -153,7 +153,7 @@ module.exports = [
           },
           "payload": {
             "type": "INVALID_VALUE",
-            "message": "Invalid channel",
+            "message": "The channel cannot be changed to BAZ.",
           }
         }
       },

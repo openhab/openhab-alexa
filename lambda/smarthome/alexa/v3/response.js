@@ -86,6 +86,7 @@ class AlexaResponse {
   returnAlexaResponse(response) {
     // Send response once, otherwise discard subsequent calls
     if (!this.called) {
+      log.info('Response:', response);
       // Stop response timeout timer
       clearTimeout(this.timer);
       // Use callback function to send response
@@ -96,15 +97,45 @@ class AlexaResponse {
 
   /**
    * Returns Alexa error response
-   * @param  {Object} parameters  [namespace, payload]
+   * @param  {Object} parameters  [error, namespace, payload]
    */
   returnAlexaErrorResponse(parameters = {}) {
+    // Log error if parameter defined
+    if (parameters.error) {
+      const error = parameters.error;
+      // Define essential directive properties
+      const directive = Object.assign({
+        namespace: this.directive.header.namespace,
+        name: this.directive.header.name
+      }, this.directive.endpoint ? {
+        endpointId: this.directive.endpoint.endpointId,
+        payload: this.directive.payload,
+        propertyMap: JSON.parse(this.directive.endpoint.cookie.propertyMap || '{}'),
+        token: this.directive.endpoint.scope.token
+      } : {
+        token: this.directive.payload.scope.token
+      });
+      // Define log level channel as warn if not instance of Error or is StatusCodeError, otherwise error
+      const level = error instanceof Error === false || error.name === 'StatusCodeError' ? 'warn' : 'error';
+      // Define error message using cause property if not instance of Error,
+      //  otherwise specific error property for request and status code errors, fallback to stack trace property
+      const message = error instanceof Error === false ? error.cause :
+        error.name === 'RequestError' ? 'Request' + error.message :
+        error.name === 'StatusCodeError' ? 'StatusCodeError: ' + error.statusCode :
+        error.stack.split(/\n\s+/).slice(0, 2).join(' ');
+
+      // Log error object in debug channel
+      log.debug('Error:', error);
+      // Log error message with essential directive properties in defined log level channel
+      log[level](message, {directive: directive});
+    }
+
+    // Generate response object
     const response = this.generateResponse({
       header: {name: 'ErrorResponse', namespace: parameters.namespace},
       payload: parameters.payload
     });
 
-    log.info('returnAlexaErrorResponse done with response:', response);
     this.returnAlexaResponse(response);
   }
 
@@ -114,10 +145,13 @@ class AlexaResponse {
    */
   returnAlexaGenericErrorResponse(error = {}) {
     // Set default error response parameters
-    const parameters = {payload: {
-      type: 'ENDPOINT_UNREACHABLE',
-      message: error.cause || 'Unable to reach device'
-    }};
+    const parameters = {
+      error: error,
+      payload: {
+        type: 'ENDPOINT_UNREACHABLE',
+        message: error.cause || 'Unable to reach device'
+      }
+    };
 
     // Update error response parameters based on error name or status code when applicable
     switch (error.statusCode || error.name) {
@@ -134,25 +168,24 @@ class AlexaResponse {
         }});
         break;
       case 404:
-      case 'RequestError':
-        // Set to bridge unreachable if error response undefined, otherwise no such endpoint for items not found
-        Object.assign(parameters, {payload: !error.response || !error.response.body ? {
-          type: 'BRIDGE_UNREACHABLE',
-          message: 'Server not accessible'
-        } : {
+        Object.assign(parameters, {payload: {
           type: 'NO_SUCH_ENDPOINT',
-          message: 'Item not found'
+          message: 'Endpoint not found'
         }});
         break;
       case 500:
       case 502:
-      case 'SyntaxError':
-      case 'TypeError':
-        // Set to bridge unreachable if error response defined, otherwise internal error
-        Object.assign(parameters, {payload: error.response && error.response.body ? {
+      case 503:
+      case 504:
+      case 'RequestError':
+        Object.assign(parameters, {payload: {
           type: 'BRIDGE_UNREACHABLE',
           message: 'Server not accessible'
-        } : {
+        }});
+        break;
+      case 'SyntaxError':
+      case 'TypeError':
+        Object.assign(parameters, {payload: {
           type: 'INTERNAL_ERROR',
           message: 'Internal error'
         }});
@@ -169,11 +202,15 @@ class AlexaResponse {
    */
   setAlexaResponseTimer() {
     const timeoutHandler = () => {
-      log.error('Response timed out');
-      this.returnAlexaErrorResponse({payload: {
-        type: 'INTERNAL_ERROR',
-        message: 'Response timed out'
-      }});
+      this.returnAlexaErrorResponse({
+        error: {
+          cause: 'Response timed out'
+        },
+        payload: {
+          type: 'INTERNAL_ERROR',
+          message: 'Response timed out'
+        }
+      });
     };
     return setTimeout(timeoutHandler, RESPONSE_TIMEOUT - 100);
   }

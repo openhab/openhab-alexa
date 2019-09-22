@@ -16,7 +16,7 @@ const { createLogger, format, transports } = require('winston');
 const LEVEL = Symbol.for('level');
 const MESSAGE = Symbol.for('message');
 
-const setLevel = typeof process.env.LOG_LEVEL !== 'undefined' ? process.env.LOG_LEVEL.toLowerCase() : 'info';
+const setLevel = typeof process.env.LOG_LEVEL !== 'undefined' ? process.env.LOG_LEVEL.toLowerCase() : 'error';
 
 const logLevelFormat = format(info => Object.assign(info, {level: info.level.toUpperCase()}));
 
