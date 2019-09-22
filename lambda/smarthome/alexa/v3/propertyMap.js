@@ -391,7 +391,7 @@ class AlexaPropertyMap {
           parameters: Object.assign({}, item.metadata.alexa.config),
           item: {
             name: item.name,
-            type: item.type
+            type: item.groupType || item.type
           },
           schema: {
             name: settings.property.schema
