@@ -66,7 +66,16 @@ module.exports = {
         "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["LIGHT"],
-      "friendlyName": "Light Group"
+      "friendlyName": "Light Group",
+      "propertyMap": {
+        "PowerController": {
+          "powerState": {
+            "parameters": {"category": "LIGHT"},
+            "item": {"name": "lightGroup", "type": "Switch"},
+            "schema": {"name": "powerState"}
+          }
+        }
+      }
     }
   }
 };
