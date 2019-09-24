@@ -219,7 +219,7 @@ const normalizeParameters = {
     // Set scale parameter
     property.parameters.scale = temperatureScale === 'FAHRENHEIT' ? 'FAHRENHEIT' : 'CELSIUS';
     // Use setpoint range parameter to determine thermostat temperature range ([0] => minimum; [1] => maximum)
-    const setpointRange = (property.parameters.setpointRange || '').split(':').map(value => parseInt(value));
+    const setpointRange = (property.parameters.setpointRange || '').split(':').map(value => parseFloat(value));
     // Set setpoint range parameter if valid (min < max)
     property.parameters.setpointRange = setpointRange[0] < setpointRange[1] ? setpointRange : undefined;
   },
