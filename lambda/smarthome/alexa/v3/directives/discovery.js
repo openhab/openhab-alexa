@@ -139,8 +139,10 @@ class AlexaDiscovery extends AlexaDirective {
             }
           }
         });
-        // Add endpoint health capability to list
-        capabilities.push(getCapabilityInterface('EndpointHealth'));
+        // Add endpoint health capability to list if includes some retrievable properties
+        if (capabilities.some(capability => capability.properties && capability.properties.retrievable)) {
+          capabilities.push(getCapabilityInterface('EndpointHealth'));
+        }
 
         // Add device to discovered list
         discoveredDevices.push({

@@ -134,5 +134,46 @@ module.exports = [
         {"name": "light1", "value": "OFF"}
       ]
     }
+  },
+  {
+    description: "turn on power not retrievable state",
+    directive: {
+      "header": {
+        "namespace": "Alexa.PowerController",
+        "name": "TurnOn"
+      },
+      "endpoint": {
+        "endpointId": "light1",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "PowerController": {
+              "powerState": {
+                "parameters": {}, "item": {"name": "light1", "stateRetrievable": false, "type": "Switch"},
+                "schema": {"name": "powerState"}}}
+          })
+        }
+      },
+    },
+    mocked: {},
+    expected: {
+      alexa: {
+        "context": {
+          "properties": [{
+            "namespace": "Alexa.PowerController",
+            "name": "powerState",
+            "value": "ON"
+          }]
+        },
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "Response"
+          },
+        }
+      },
+      openhab: [
+        {"name": "light1", "value": "ON"}
+      ]
+    }
   }
 ];

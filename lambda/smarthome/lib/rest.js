@@ -106,7 +106,7 @@ function getItem(token, itemName, timeout) {
 function getItems(token, timeout) {
   const parameters = {
     fields: 'editable,groupNames,groupType,name,label,metadata,stateDescription,tags,type',
-    metadata: 'alexa,channel,synonyms'
+    metadata: 'alexa,autoupdate,channel,synonyms'
   };
   return getItemOrItems(token, null, timeout, parameters);
 }
