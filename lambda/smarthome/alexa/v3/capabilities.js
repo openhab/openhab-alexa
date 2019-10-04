@@ -84,6 +84,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   const configuration = {};
   const resources = {};
   const supported = [];
+  let nonControllable;
 
   // Iterate over interface properties
   Object.keys(properties).forEach((propertyName) => {
@@ -98,6 +99,11 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
     // Add unique property name to supported list if property is supported
     if (settings.property.isSupported !== false && !supported.find(property => property.name === propertyName)) {
       supported.push({name: propertyName});
+    }
+
+    // Update non-controllable state if property is multi-instance enabled
+    if (settings.property.multiInstance) {
+      nonControllable = nonControllable || parameters.nonControllable === true;
     }
 
     // Get capability resources if friendly names parameter defined
@@ -184,13 +190,15 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   if (Object.keys(resources).length > 0) {
     capability.capabilityResources = resources;
   }
-  // Add capability properties if supported is not empty,
+  // Add capability properties if supported is not empty, appending non-controllable property if defined
   if (supported.length > 0) {
-    capability.properties = {
+    capability.properties = Object.assign({
       'supported': supported,
       'proactivelyReported': false,
       'retrievable': true
-    };
+    }, typeof nonControllable !== 'undefined' && {
+      'nonControllable': nonControllable
+    });
   }
   // Add capability configuration if not empty
   if (Object.keys(configuration).length > 0) {
