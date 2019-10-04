@@ -66,6 +66,22 @@ module.exports = {
       "groupNames": ["gWasher"]
     },
     {
+      "type": "String",
+      "name": "WashCycleStatus",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ModeController.mode",
+          "config": {
+            "supportedModes": "Wash,Rinse,Spin",
+            "friendlyNames": "Wash Cycle Status",
+            "nonControllable": true
+          }
+        }
+      },
+      "groupNames": ["gWasher"]
+    },
+    {
       "type": "Group",
       "name": "gWasher",
       "label": "Washer",
@@ -85,6 +101,7 @@ module.exports = {
         "Alexa.ModeController.WashCycle.mode",
         "Alexa.ModeController.WashTemperature.mode",
         "Alexa.ModeController.WashSpinSpeed.mode",
+        "Alexa.ModeController.WashCycleStatus.mode",
         "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["OTHER"],
@@ -98,6 +115,9 @@ module.exports = {
         },
         "Alexa.ModeController.WashSpinSpeed": {
           "friendlyNames": ["text:Wash Spin Speed:en-US"]
+        },
+        "Alexa.ModeController.WashCycleStatus": {
+          "friendlyNames": ["text:Wash Cycle Status:en-US"]
         }
       },
       "configuration": {
@@ -145,6 +165,20 @@ module.exports = {
               "friendlyNames": ["text:High:en-US"]
             }
           }
+        },
+        "Alexa.ModeController.WashCycleStatus": {
+          "ordered": false,
+          "supportedModes": {
+            "Wash": {
+              "friendlyNames": ["text:Wash:en-US"]
+            },
+            "Rinse": {
+              'friendlyNames': ["text:Rinse:en-US"]
+            },
+            "Spin": {
+              'friendlyNames': ["text:Spin:en-US"]
+            }
+          }
         }
       },
       "propertyMap": {
@@ -172,6 +206,15 @@ module.exports = {
               "supportedModes": ["off=No Spin", "low=Low", "medium=Medium", "high=High"],
               "friendlyNames": ["Wash Spin Speed"]},
             "item": {"name": "WashSpinSpeed", "type": "String"},
+            "schema": {"name": "mode"}
+          }
+        },
+        "ModeController:WashCycleStatus": {
+          "mode": {
+            "parameters": {
+              "supportedModes": ["Wash=Wash", "Rinse=Rinse", "Spin=Spin"],
+              "friendlyNames": ["Wash Cycle Status"], "nonControllable": true},
+            "item": {"name": "WashCycleStatus", "type": "String"},
             "schema": {"name": "mode"}
           }
         }

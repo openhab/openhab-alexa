@@ -39,6 +39,7 @@ const PARAMETER_RESOURCES_PATTERN = /^(\w+)(?:=(.+))?$/;
  */
 const PARAMETER_TYPE_MAPPING = {
   'friendlyNames': 'list',
+  'nonControllable': 'boolean',
   'ordered': 'boolean',
   'presets': 'list',
   'supportedArmStates': 'list',
