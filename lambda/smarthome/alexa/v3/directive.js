@@ -16,7 +16,6 @@
  */
 const camelcase = require('camelcase');
 const { sprintf } = require('sprintf-js');
-const log = require('@lib/log.js');
 const rest = require('@lib/rest.js');
 const { RESPONSE_TIMEOUT } = require('./config.js');
 const AlexaPropertyMap = require('./propertyMap.js');
@@ -59,8 +58,8 @@ class AlexaDirective extends AlexaResponse {
     try {
       this[method]();
     } catch (error) {
-      log.error(`Failed to execute directive:\r${error.stack.replace(/\n/g, '\r')}`);
       this.returnAlexaErrorResponse({
+        error: error,
         payload: error.name === 'TypeError' ? {
           type: 'INVALID_DIRECTIVE',
           message: 'Invalid directive'
@@ -85,7 +84,6 @@ class AlexaDirective extends AlexaResponse {
     Promise.all(promises).then(() => {
       this.getPropertiesResponseAndReturn(parameters);
     }).catch((error) => {
-      log.error('postItemsAndReturn failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }
@@ -131,13 +129,11 @@ class AlexaDirective extends AlexaResponse {
             properties: properties
           }
         }));
-        log.info('getPropertiesResponseAndReturn done with response:', response);
         this.returnAlexaResponse(response);
       } else {
         this.returnAlexaErrorResponse(error);
       }
     }).catch((error) => {
-      log.error('getPropertiesResponseAndReturn failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }

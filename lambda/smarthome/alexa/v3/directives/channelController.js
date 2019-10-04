@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const log = require('@lib/log.js');
 const AlexaDirective = require('../directive.js');
 
 /**
@@ -51,11 +50,10 @@ class AlexaChannelController extends AlexaDirective {
     if (!isNaN(postItem.state)) {
       this.postItemsAndReturn([postItem]);
     } else {
-      log.error('Invalid channel:', {name: channelName, number: channelNumber});
       this.returnAlexaErrorResponse({
         payload: {
           type: 'INVALID_VALUE',
-          message: 'Invalid channel'
+          message: `The channel cannot be changed to ${channelNumber || channelName}.`
         }
       });
     }
@@ -76,7 +74,6 @@ class AlexaChannelController extends AlexaDirective {
       postItem.state = parseInt(item.state) + this.directive.payload.channelCount;
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
-      log.error('adjustChannel failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }

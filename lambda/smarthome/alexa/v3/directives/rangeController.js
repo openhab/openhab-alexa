@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const log = require('@lib/log.js');
 const AlexaDirective = require('../directive.js');
 
 /**
@@ -63,7 +62,6 @@ class AlexaRangeController extends AlexaDirective {
       postItem.state = state < minRange ? minRange : state < maxRange ? state : maxRange;
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
-      log.error('adjustRangeValue failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }

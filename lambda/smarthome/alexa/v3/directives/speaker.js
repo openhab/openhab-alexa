@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const log = require('@lib/log.js');
 const AlexaDirective = require('../directive.js');
 
 /**
@@ -64,7 +63,6 @@ class AlexaSpeaker extends AlexaDirective {
       postItem.state = parseInt(item.state) + volumeIncrement;
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
-      log.error('adjustVolume failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }

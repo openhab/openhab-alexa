@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const log = require('@lib/log.js');
 const AlexaDirective = require('../directive.js');
 const { normalize } = require('../propertyState.js');
 
@@ -72,7 +71,6 @@ class AlexaSecurityPanelController extends AlexaDirective {
         });
       }
     }).catch((error) => {
-      log.error('arm failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }

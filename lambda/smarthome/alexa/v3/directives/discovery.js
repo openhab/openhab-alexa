@@ -55,7 +55,7 @@ class AlexaDiscovery extends AlexaDirective {
       // Retry retrieving all items if not an array, up to 3 tries, otherwise throw error
       if (!Array.isArray(items)) {
         if (++this.tries <= 3) {
-          log.debug(`Retry #${this.tries}`);
+          log.info(`Retry #${this.tries}`);
           return this.discover();
         }
         throw new TypeError(`Discover items retrieved not an array [type: ${typeof items}]`);
@@ -95,7 +95,7 @@ class AlexaDiscovery extends AlexaDirective {
               // Get group members and add them to property map
               items.filter(member => member.groupNames.includes(item.name)).forEach((member) => {
                 convertV2Item(member, item.metadata.alexa.config);
-                log.debug(`adding  ${member.name} to group ${item.name}`);
+                log.debug(`adding ${member.name} to group ${item.name}`);
                 groupItems.push(member.name);
                 propertyMap.addItem(member, settings);
               });
@@ -174,10 +174,8 @@ class AlexaDiscovery extends AlexaDirective {
         }
       });
 
-      log.info('discover done with response:', response);
       this.returnAlexaResponse(response);
     }).catch((error) => {
-      log.error('discover failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }

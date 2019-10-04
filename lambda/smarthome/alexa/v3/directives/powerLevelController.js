@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const log = require('@lib/log.js');
 const AlexaDirective = require('../directive.js');
 
 /**
@@ -59,7 +58,6 @@ class AlexaPowerLevelController extends AlexaDirective {
       postItem.state = state < 0 ? 0 : state < 100 ? state : 100;
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
-      log.error('adjustPowerLevel failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }

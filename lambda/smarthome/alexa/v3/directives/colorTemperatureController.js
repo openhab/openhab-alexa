@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const log = require('@lib/log.js');
 const { isInColorMode } = require('../capabilities.js');
 const AlexaDirective = require('../directive.js');
 const { normalize } = require('../propertyState.js');
@@ -118,7 +117,6 @@ class AlexaColorTemperatureController extends AlexaDirective {
       postItem.state = state;
       this.postItemsAndReturn([postItem]);
     }).catch((error) => {
-      log.error('adjustColorTemperature failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }

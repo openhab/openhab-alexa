@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const log = require('@lib/log.js');
 const AlexaDirective = require('../directive.js');
 
 /**
@@ -76,7 +75,6 @@ class AlexaModeController extends AlexaDirective {
         });
       }
     }).catch((error) => {
-      log.error('adjustMode failed with error:', error);
       this.returnAlexaGenericErrorResponse(error);
     });
   }
