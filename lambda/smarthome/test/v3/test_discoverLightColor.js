@@ -48,6 +48,20 @@ module.exports = {
     {
       "type": "Color",
       "name": "light4",
+      "label": "Color Light 4",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "Lighting"
+        },
+        "autoupdate": {
+          "value": "false"
+        }
+      }
+    },
+    {
+      "type": "Color",
+      "name": "light99",
       "label": "", // Item skipped because no label or synonyms metadata value
       "tags": ["Lighting"]
     }
@@ -85,6 +99,39 @@ module.exports = {
       ],
       "displayCategories": ["SWITCH", "LIGHT"],
       "friendlyName": "Color Light 3"
+    },
+    "light4": {
+      "capabilities": [
+        "Alexa",
+        "Alexa.PowerController.powerState",
+        "Alexa.BrightnessController.brightness",
+        "Alexa.ColorController.color"
+      ],
+      "displayCategories": ["LIGHT"],
+      "friendlyName": "Color Light 4",
+      "propertyMap": {
+        "PowerController": {
+          "powerState": {
+            "parameters": {"category": "LIGHT"},
+            "item": {"name": "light4", "stateRetrievable": false, "type": "Color"},
+            "schema": {"name": "powerState"}
+          }
+        },
+        "BrightnessController": {
+          "brightness": {
+            "parameters": {"category": "LIGHT"},
+            "item": {"name": "light4", "stateRetrievable": false, "type": "Color"},
+            "schema": {"name": "brightness"}
+          }
+        },
+        "ColorController": {
+          "color": {
+            "parameters": {"category": "LIGHT"},
+            "item": {"name": "light4", "stateRetrievable": false, "type": "Color"},
+            "schema": {"name": "color"}
+          }
+        }
+      }
     }
   }
 };

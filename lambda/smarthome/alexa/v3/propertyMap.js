@@ -39,6 +39,7 @@ const PARAMETER_RESOURCES_PATTERN = /^(\w+)(?:=(.+))?$/;
  */
 const PARAMETER_TYPE_MAPPING = {
   'friendlyNames': 'list',
+  'itemStateRetrievable': 'boolean',
   'nonControllable': 'boolean',
   'ordered': 'boolean',
   'presets': 'list',
@@ -417,6 +418,11 @@ class AlexaPropertyMap {
           delete property.parameters.friendlyNames;
         }
 
+        // Set item state retrievable parameter to use autoupdate metadata value, if not already defined
+        if (item.metadata.autoupdate && !property.parameters.itemStateRetrievable) {
+          property.parameters.itemStateRetrievable = item.metadata.autoupdate.value;
+        }
+
         // Iterate over parameters
         Object.keys(property.parameters).forEach((parameter) => {
           // Convert parameters that have a defined type
@@ -613,12 +619,6 @@ class AlexaPropertyMap {
    *        name: <name1>,
    *        param1: <param1>, (item parameter stored in property map)
    *        ...
-   *        capabilities: [
-   *          {
-   *            interface: <interfaceName1>, property: <propertyName1>
-   *          },
-   *          ...
-   *        ]
    *      },
    *      ...
    *    ]
@@ -641,15 +641,13 @@ class AlexaPropertyMap {
         if (getPropertySettings(interfaceName, propertyName).isReportable === false) {
           return;
         }
-        // Add/update item object with capability to list
-        const capability = {interface: interfaceName, property: propertyName};
-        const item = Object.assign({}, properties[propertyName].item);
-        const index = items.findIndex(i => i.name === item.name);
 
-        if (index === -1) {
-          items.push(Object.assign(item, {capabilities: [capability]}));
+        const item = items.find(item => item.name === properties[propertyName].item.name);
+        // Add property item object to list if not included yet, otherwise update its item reference
+        if (typeof item === 'undefined') {
+          items.push(properties[propertyName].item);
         } else {
-          items[index].capabilities.push(capability);
+          properties[propertyName].item = item;
         }
       });
       return items;

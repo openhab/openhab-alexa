@@ -82,7 +82,7 @@ class AlexaDirective extends AlexaResponse {
     const promises = items.map(item =>
       rest.postItemCommand(this.directive.endpoint.scope.token, item.name, item.state, this.timeout));
     Promise.all(promises).then(() => {
-      this.getPropertiesResponseAndReturn(parameters);
+      this.getPropertiesResponseAndReturn(Object.assign(parameters, {postedItems: items}));
     }).catch((error) => {
       this.returnAlexaGenericErrorResponse(error);
     });
@@ -93,23 +93,27 @@ class AlexaDirective extends AlexaResponse {
    *  based of interface-specific properties latest item state from OH
    *  and then return a formatted response to the Alexa request
    *
-   * @param {Object} parameters     Additional parameters [header, payload, properties] (optional)
+   * @param {Object} parameters     Additional parameters [header, payload, postedItems, properties] (optional)
    */
   getPropertiesResponseAndReturn(parameters = {}) {
     // Use the property map defined interface names if this.interface not defined (e.g. reportState)
     const interfaceNames = this.interface ? [this.interface] : Object.keys(this.propertyMap);
     // Get list of all unique reportable properties item objects part of interfaces
     const items = this.propertyMap.getReportablePropertiesItems(interfaceNames, parameters.properties);
-    // Define get item state promises array, excluding items with defined state already
-    const promises = items.reduce((promises, item) => promises.concat(
-      typeof item.state !== 'undefined' ? [] : this.getItemState(item).then((result) => {
-        // Update item information in propertyMap object for each item capabilities
-        item.capabilities.forEach((capability) => {
-          this.propertyMap[capability.interface][capability.property].item = result;
-        });
-        return result;
-      })
-    ), []);
+    // Define get item state promises array
+    const promises = items.reduce((promises, item) => {
+      // Use item if its state already defined
+      if (typeof item.state !== 'undefined') {
+        return promises.concat(item);
+      }
+      // Use posted item state if not retrievable, skipping item if posted item not defined
+      if (item.stateRetrievable === false) {
+        const postedItem = parameters.postedItems && parameters.postedItems.find(posted => posted.name === item.name);
+        return promises.concat(postedItem ? Object.assign(item, {state: postedItem.state.toString()}) : []);
+      }
+      // Get current item state from server otherwise
+      return promises.concat(this.getItemState(item).then(result => Object.assign(item, result)));
+    }, []);
     Promise.all(promises).then((items) => {
       // Get context properties response
       const properties = this.propertyMap.getContextPropertiesResponse(interfaceNames, items);

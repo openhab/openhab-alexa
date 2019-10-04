@@ -66,7 +66,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   // Use default capability interface properties if not provided (e.g. EndpointHealth)
   if (!properties) {
     properties = CAPABILITIES[interfaceName].properties.reduce((map, property) =>
-      Object.assign(map, {[property.name]: {parameters: {}, schema: {}}}), {});
+      Object.assign(map, {[property.name]: {item: {}, parameters: {}, schema: {}}}), {});
   }
 
   // Initialize capability interface object
@@ -84,10 +84,12 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   const configuration = {};
   const resources = {};
   const supported = [];
-  let nonControllable;
+  let retrievable = true;
+  let nonControllable = false;
 
   // Iterate over interface properties
   Object.keys(properties).forEach((propertyName) => {
+    const item = properties[propertyName].item;
     const parameters = properties[propertyName].parameters;
     const schema = properties[propertyName].schema.name;
     let component;
@@ -101,9 +103,14 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
       supported.push({name: propertyName});
     }
 
-    // Update non-controllable state if property is multi-instance enabled
-    if (settings.property.multiInstance) {
-      nonControllable = nonControllable || parameters.nonControllable === true;
+    // Update properties retrievable if item state retrievable is set to false
+    if (item.stateRetrievable === false) {
+      retrievable = false;
+    }
+
+    // Update properties non-controllable if parameter is set to true
+    if (parameters.nonControllable === true) {
+      nonControllable = true;
     }
 
     // Get capability resources if friendly names parameter defined
@@ -190,13 +197,14 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   if (Object.keys(resources).length > 0) {
     capability.capabilityResources = resources;
   }
-  // Add capability properties if supported is not empty, appending non-controllable property if defined
+  // Add capability properties if supported is not empty,
+  //  appending non-controllable property if multi-instance enabled (mode, range & toggle)
   if (supported.length > 0) {
     capability.properties = Object.assign({
       'supported': supported,
       'proactivelyReported': false,
-      'retrievable': true
-    }, typeof nonControllable !== 'undefined' && {
+      'retrievable': retrievable
+    }, settings.property.multiInstance && {
       'nonControllable': nonControllable
     });
   }

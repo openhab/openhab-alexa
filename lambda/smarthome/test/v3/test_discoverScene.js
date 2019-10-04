@@ -50,8 +50,7 @@ module.exports = {
     "scene1": {
       "capabilities": [
         "Alexa",
-        "Alexa.SceneController",
-        "Alexa.EndpointHealth.connectivity"
+        "Alexa.SceneController"
       ],
       "parameters": {
         "Alexa.SceneController.supportsDeactivation": true
@@ -62,8 +61,7 @@ module.exports = {
     "scene2": {
       "capabilities": [
         "Alexa",
-        "Alexa.SceneController",
-        "Alexa.EndpointHealth.connectivity"
+        "Alexa.SceneController"
       ],
       "parameters": {
         "Alexa.SceneController.supportsDeactivation": false
@@ -74,8 +72,7 @@ module.exports = {
     "activity1": {
       "capabilities": [
         "Alexa",
-        "Alexa.SceneController",
-        "Alexa.EndpointHealth.connectivity"
+        "Alexa.SceneController"
       ],
       "parameters": {
         "Alexa.SceneController.supportsDeactivation": true
