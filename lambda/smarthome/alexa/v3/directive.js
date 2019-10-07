@@ -115,17 +115,21 @@ class AlexaDirective extends AlexaResponse {
       return promises.concat(this.getItemState(item).then(result => Object.assign(item, result)));
     }, []);
     Promise.all(promises).then((items) => {
-      // Get context properties response
-      const properties = this.propertyMap.getContextPropertiesResponse(interfaceNames, items);
-      // Throw error if no context properties found
-      if (properties.length === 0) {
-        throw {cause: 'Unable to get context properties response', properties: this.propertyMap};
+      let properties = [];
+      let error;
+      // Get context properties response if reportable items
+      if (items.length > 0) {
+        properties = this.propertyMap.getContextPropertiesResponse(interfaceNames, items);
+        // Throw error if no context properties found
+        if (properties.length === 0) {
+          throw {cause: 'Unable to get context properties response', properties: this.propertyMap};
+        }
+        // Get error response based on context property name/value if method defined
+        error = properties.reduce((error, property) => {
+          const method = property.name + 'ErrorResponse';
+          return this[method] && this[method](property.value) || error;
+        }, undefined);
       }
-      // Get error response based on context property name/value if method defined
-      const error = properties.reduce((error, property) => {
-        const method = property.name + 'ErrorResponse';
-        return this[method] && this[method](property.value) || error;
-      }, undefined);
       // Generate/return properties response if error not defined, otherwise return error response
       if (typeof error === 'undefined') {
         const response = this.generateResponse(Object.assign(parameters, {
