@@ -115,8 +115,9 @@ class AlexaResponse {
       } : {
         token: this.directive.payload.scope.token
       });
-      // Define log level channel as warn if not instance of Error or is StatusCodeError, otherwise error
-      const level = error instanceof Error === false || error.name === 'StatusCodeError' ? 'warn' : 'error';
+      // Define log level channel as warn if not instance of Error or is Request/StatusCodeError, otherwise as error
+      const level = error instanceof Error === false ||
+        ['RequestError', 'StatusCodeError'].includes(error.name) ? 'warn' : 'error';
       // Define error message using cause property if not instance of Error,
       //  otherwise specific error property for request and status code errors, fallback to stack trace property
       const message = error instanceof Error === false ? error.cause :

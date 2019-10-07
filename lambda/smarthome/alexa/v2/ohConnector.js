@@ -632,12 +632,19 @@ function returnAlexaResponse(response) {
  * @param  {Object} error
  */
 function returnAlexaGenericErrorResponse(error) {
-  // Define log level channel as warn if StatusCodeError, otherwise error
-  const level =  error.name === 'StatusCodeError' ? 'warn' : 'error';
+  // Define log level channel as warn if not instance of Error or is Request/StatusCodeError, otherwise as error
+  const level = error instanceof Error === false ||
+    ['RequestError', 'StatusCodeError'].includes(error.name) ? 'warn' : 'error';
+  // Define error message using message property if not instance of Error,
+  //  otherwise specific error property for request and status code errors, fallback to stack trace property
+  const message = error instanceof Error === false ? error.message :
+    error.name === 'RequestError' ? 'Request' + error.message :
+    error.name === 'StatusCodeError' ? 'StatusCodeError: ' + error.statusCode :
+    error.stack.split(/\n\s+/).slice(0, 2).join(' ');
   // Log error object in debug channel
   log.debug('Error:', error);
   // Log error message with essential directive properties in defined log level channel
-  log[level](error.message, {directive: {
+  log[level](message, {directive: {
     namespace: directive.header.namespace,
     name: directive.header.name,
     payload: directive.payload
