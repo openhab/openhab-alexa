@@ -32,13 +32,7 @@ module.exports = [
     expected: {
       alexa: {
         "context": {
-          "properties": [{
-            "namespace": "Alexa.EndpointHealth",
-            "name": "connectivity",
-            "value": {
-              "value": "OK"
-            }
-          }]
+          "properties": []
         },
         "event": {
           "header": {
@@ -77,13 +71,7 @@ module.exports = [
     expected: {
       alexa: {
         "context": {
-          "properties": [{
-            "namespace": "Alexa.EndpointHealth",
-            "name": "connectivity",
-            "value": {
-              "value": "OK"
-            }
-          }]
+          "properties": []
         },
         "event": {
           "header": {
