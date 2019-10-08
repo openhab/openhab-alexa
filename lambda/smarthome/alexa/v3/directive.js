@@ -112,7 +112,8 @@ class AlexaDirective extends AlexaResponse {
         return promises.concat(postedItem ? Object.assign(item, {state: postedItem.state.toString()}) : []);
       }
       // Get current item state from server otherwise
-      return promises.concat(this.getItemState(item).then(result => Object.assign(item, result)));
+      return promises.concat(this.getItemState(item).then(result => Object.assign(item, {
+        name: result.name, state: result.state, type: result.groupType || result.type})));
     }, []);
     Promise.all(promises).then((items) => {
       let properties = [];
@@ -174,10 +175,10 @@ function formatItemState(item) {
   const format = item.stateDescription && item.stateDescription.pattern &&
     item.stateDescription.pattern.match(ITEM_STATE_FORMATTER_PATTERN);
   const state = item.state;
-  const type = item.type.split(':').shift();
+  const type = item.groupType || item.type;
 
   if (format) {
-    switch (type) {
+    switch (type.split(':')[0]) {
       case 'Dimmer':
       case 'Number':
       case 'Rollershutter':
