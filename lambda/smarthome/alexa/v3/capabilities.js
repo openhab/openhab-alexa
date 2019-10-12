@@ -222,7 +222,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
  *
  *  {
  *    'labels': [ <assetIdOrText1>, <assetIdOrText2>, ... ],
- *    'locale': <localeSetting> [ Not used at the moment (en-US only supported) ]
+ *    'locale': <localeSetting>
  *  }
  *
  * @param  {Object} parameters
@@ -246,7 +246,7 @@ function getResourcesObject(parameters = {}) {
           '@type': 'text',
           'value': {
             'text': label,
-            'locale': 'en-US'
+            'locale': parameters.locale
           }
         });
       }

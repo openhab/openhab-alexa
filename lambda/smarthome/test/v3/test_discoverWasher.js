@@ -74,7 +74,8 @@ module.exports = {
           "value": "ModeController.mode",
           "config": {
             "friendlyNames": "Wash Cycle Status",
-            "nonControllable": true
+            "nonControllable": true,
+            "locale": "en-GB"
           }
         }
       },
@@ -116,7 +117,7 @@ module.exports = {
           "friendlyNames": ["text:Wash Spin Speed:en-US"]
         },
         "Alexa.ModeController.WashCycleStatus": {
-          "friendlyNames": ["text:Wash Cycle Status:en-US"]
+          "friendlyNames": ["text:Wash Cycle Status:en-GB"]
         }
       },
       "configuration": {
@@ -197,7 +198,7 @@ module.exports = {
         "ModeController:WashCycleStatus": {
           "mode": {
             "parameters": {
-              "friendlyNames": ["Wash Cycle Status"], "nonControllable": true},
+              "friendlyNames": ["Wash Cycle Status"], "nonControllable": true, "locale": "en-GB"},
             "item": {"name": "WashCycleStatus", "type": "String"},
             "schema": {"name": "mode"}
           }
