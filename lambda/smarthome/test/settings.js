@@ -65,6 +65,9 @@ module.exports = {
       "Lock": [
         "./v3/test_discoverLock.js"
       ],
+      "Outlet": [
+        "./v3/test_discoverOutlet.js"
+      ],
       "Scene": [
         "./v3/test_discoverScene.js"
       ],
