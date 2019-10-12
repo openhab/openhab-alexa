@@ -16,6 +16,12 @@ module.exports = {
   mocked: [
     {
       "type": "Number",
+      "name": "currentHumidity1",
+      "tags": ["CurrentHumidity"],
+      "groupNames": ["gThermostat1"]
+    },
+    {
+      "type": "Number",
       "name": "currentTemperature1",
       "tags": ["CurrentTemperature"],
       "groupNames": ["gThermostat1"]
@@ -267,6 +273,7 @@ module.exports = {
     "gThermostat1": {
       "capabilities": [
         "Alexa",
+        "Alexa.RangeController.currentHumidity1.rangeValue",
         "Alexa.TemperatureSensor.temperature",
         "Alexa.ThermostatController.targetSetpoint",
         "Alexa.ThermostatController.upperSetpoint",
@@ -276,12 +283,27 @@ module.exports = {
       ],
       "displayCategories": ["THERMOSTAT"],
       "friendlyName": "Thermostat 1",
+      "resources": {
+        "Alexa.RangeController.currentHumidity1": {
+          "friendlyNames": ["text:Humidity:en-US"]
+        }
+      },
       "configuration": {
+        "Alexa.RangeController.currentHumidity1": {
+          "unitOfMeasure": "Alexa.Unit.Percent"
+        },
         "Alexa.ThermostatController": {
           "supportsScheduling": false
         }
       },
       "propertyMap": {
+        "RangeController:currentHumidity1": {
+          "rangeValue": {
+            "parameters": {"friendlyNames": ["Humidity"], "nonControllable": true, "unitOfMeasure": "Percent"},
+            "item": {"name": "currentHumidity1", "type": "Number"},
+            "schema": {"name": "rangeValue"}
+          }
+        },
         "TemperatureSensor": {
           "temperature": {
             "parameters": {"scale": "FAHRENHEIT"},

@@ -270,6 +270,14 @@ function convertV2Item(item, config = {}) {
         case 'Lock':
           capabilities = ['LockController.lockState'];
           break;
+        case 'Outlet':
+          capabilities = ['PowerController.powerState'];
+          parameters = {category: 'SMARTPLUG'};
+          break;
+        case 'CurrentHumidity':
+          capabilities = ['RangeController.rangeValue'];
+          parameters = {friendlyNames: 'Humidity', nonControllable: true, unitOfMeasure: 'Percent'};
+          break;
         case 'CurrentTemperature':
           capabilities = ['TemperatureSensor.temperature'];
           parameters = {scale: config.scale || getV2TemperatureScale()};
