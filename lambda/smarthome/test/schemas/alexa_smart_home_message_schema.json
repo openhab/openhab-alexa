@@ -2182,8 +2182,7 @@
               "interface",
               "version",
               "instance",
-              "capabilityResources",
-              "configuration"
+              "capabilityResources"
             ],
             "additionalProperties": false,
             "properties": {
@@ -2249,10 +2248,6 @@
               },
               "configuration": {
                 "type": "object",
-                "required": [
-                  "ordered",
-                  "supportedModes"
-                ],
                 "additionalProperties": false,
                 "properties": {
                   "ordered": {
@@ -2344,8 +2339,7 @@
               "interface",
               "version",
               "instance",
-              "capabilityResources",
-              "configuration"
+              "capabilityResources"
             ],
             "additionalProperties": false,
             "properties": {
@@ -2411,9 +2405,6 @@
               },
               "configuration": {
                 "type": "object",
-                "required": [
-                  "supportedRange"
-                ],
                 "additionalProperties": false,
                 "properties": {
                   "supportedRange": {

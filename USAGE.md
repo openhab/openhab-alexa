@@ -521,6 +521,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * each name formatted as `<@assetIdOrName>`
         * defaults to item label name
       * nonControllable=`<boolean>`
+        * when set to true, supportedModes and ordered parameters are ignored
         * defaults to false
       * supportedModes=`<modes>`
         * each mode formatted as `<modeValue>=<@assetIdOrName1>:<@assetIdOrName2>:...`
@@ -545,6 +546,7 @@ Number:Temperature Temperature2 "Temperature"           {alexa="TemperatureSenso
         * each name formatted as `<@assetIdOrName>`
         * defaults to item label name
       * nonControllable=`<boolean>`
+        * when set to true, supportedRange and presets parameters are ignored
         * defaults to false
       * supportedRange=`<minValue:maxValue:precision>`
         * defaults to `"0:100:1"` for Dimmer/Rollershutter, `"0:10:1"` for Number* item types

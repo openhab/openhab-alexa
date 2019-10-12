@@ -151,7 +151,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
         capability.inputs = parameters.supportedInputs.map(input => Object.assign({name: input}));
         break;
       case 'mode':
-        Object.assign(configuration, {
+        Object.assign(configuration, parameters.supportedModes && {
           'ordered': parameters.ordered === true,
           'supportedModes': parameters.supportedModes.map(mode => ({
             'value': mode.split('=').shift(),
@@ -164,7 +164,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
         capability.supportedOperations = ['Play', 'Pause', 'Next', 'Previous', 'Rewind', 'FastForward'];
         break;
       case 'rangeValue':
-        Object.assign(configuration, Object.assign({
+        Object.assign(configuration, parameters.supportedRange && {
           'supportedRange': parameters.supportedRange
         }, parameters.unitOfMeasure && {
           'unitOfMeasure': 'Alexa.Unit.' + parameters.unitOfMeasure
@@ -174,7 +174,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
             'presetResources': getResourcesObject({
               labels: preset.split(/[=:]/).slice(1), locale: parameters.locale || locale})
           }))
-        }));
+        });
         break;
       case 'scene':
         capability.supportsDeactivation = parameters.supportsDeactivation === false ? false : true;

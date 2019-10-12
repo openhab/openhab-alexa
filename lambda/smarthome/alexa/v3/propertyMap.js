@@ -156,12 +156,18 @@ const normalizeParameters = {
       property.parameters.supportedModes = item.stateDescription.options.reduce((modes, option) =>
         modes.concat(`${option.value}=${option.label}`), []);
     }
-    // Update supported modes using mode as labels if not defined or first element empty
-    property.parameters.supportedModes = (property.parameters.supportedModes || []).reduce((modes, value) => {
-      // eslint-disable-next-line no-unused-vars
-      const [match, mode, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
-      return modes.concat(mode ? `${mode}=${labels.match(/^(:|$)/) ? mode : ''}${labels}` : []);
-    }, []);
+    // Update supported modes parameter if property controllable, otherwise delete non-relevant parameters
+    if (!property.parameters.nonControllable) {
+      // Use mode as labels if not defined or first element empty
+      property.parameters.supportedModes = (property.parameters.supportedModes || []).reduce((modes, value) => {
+        // eslint-disable-next-line no-unused-vars
+        const [match, mode, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
+        return modes.concat(mode ? `${mode}=${labels.match(/^(:|$)/) ? mode : ''}${labels}` : []);
+      }, []);
+    } else {
+      delete property.parameters.supportedModes;
+      delete property.parameters.ordered;
+    }
   },
 
   /**
@@ -171,22 +177,28 @@ const normalizeParameters = {
    * @param  {Object} settings
    */
   rangeValue: function (property, item, settings) {
-    // Define range values based on supported range parameter ([0] => minimum; [1] => maximum; [2] => precision)
-    let rangeValues = (property.parameters.supportedRange || '').split(':').map(value => parseInt(value));
-    // Update range values if not valid (min >= max; prec = 0; max - min <= prec) using default based on item type
-    if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) || rangeValues[0] >= rangeValues[1] ||
-      rangeValues[2] === 0 || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
-      rangeValues = settings.property.state.range.default[item.type.split(':').shift()];
+    // Update supported range and presets parameters if property controllable, otherwise delete non-relevant parameters
+    if (!property.parameters.nonControllable) {
+      // Define range values based on supported range parameter ([0] => minimum; [1] => maximum; [2] => precision)
+      let rangeValues = (property.parameters.supportedRange || '').split(':').map(value => parseInt(value));
+      // Update range values if not valid (min >= max; prec = 0; max - min <= prec) using default based on item type
+      if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) || rangeValues[0] >= rangeValues[1] ||
+        rangeValues[2] === 0 || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
+        rangeValues = settings.property.state.range.default[item.type.split(':').shift()];
+      }
+      // Set supported range object
+      property.parameters.supportedRange = {
+        'minimumValue': rangeValues[0], 'maximumValue': rangeValues[1], 'precision': Math.abs(rangeValues[2])};
+      // Update presets parameter removing out of range values
+      property.parameters.presets = (property.parameters.presets || []).reduce((presets, value) => {
+        const [match, preset, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
+        return rangeValues[0] <= preset && preset <= rangeValues[1] && labels ?
+          [].concat(presets || [], match) : presets;
+      }, undefined);
+    } else {
+      delete property.parameters.supportedRange;
+      delete property.parameters.presets;
     }
-    // Set supported range object
-    property.parameters.supportedRange = {
-      'minimumValue': rangeValues[0], 'maximumValue': rangeValues[1], 'precision': Math.abs(rangeValues[2])};
-    // Update presets parameter removing out of range values
-    property.parameters.presets = (property.parameters.presets || []).reduce((presets, value) => {
-      const [match, preset, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
-      return rangeValues[0] <= preset && preset <= rangeValues[1] && labels ?
-        [].concat(presets || [], match) : presets;
-    }, undefined);
     // Use item state presentation symbol and type dimension to determine unitOfMeasure if not defined or valid
     if (!property.parameters.unitOfMeasure || !getUnitOfMeasure({id: property.parameters.unitOfMeasure})) {
       property.parameters.unitOfMeasure = getUnitOfMeasure({
