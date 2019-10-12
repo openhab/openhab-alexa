@@ -31,7 +31,7 @@ By default, the ASK CLI deploys the lambda function in the `us-east-1` region. Y
 
 | Skill Language | Endpoint Region | Lambda Region |
 | -------------- | --------------- | ------------- |
-| English (US), English (CA) | North America | us-east-1 |
+| English (US), English (CA), Portuguese (BR) | North America | us-east-1 |
 | English (UK), French (FR), German, Italian, Spanish (ES) | Europe | eu-west-1 |
 | English (IN) | India | eu-west-1 |
 | English (AU), Japanese | Far East | us-west-2 |
