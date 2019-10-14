@@ -6,8 +6,8 @@
   "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/resources/icons/openhablogo-512.png",
   "examplePhrases": [
     "Alexa, ligar Luz da Cozinha",
-    "Alexa, set bedroom to 50 percent",
-    "Alexa, decrease temperature by 5 degrees"
+    "Alexa, definir Dormitório em 50 por cento",
+    "Alexa, reduzir a temperatura em 5 graus"
   ],
   "keywords": [
     "openHAB",
@@ -17,11 +17,11 @@
     "zwave",
     "eon",
     "homematic",
-    "home",
+    "casa",
     "automação",
     "1-wire",
     "Bluetooth",
-    "smarthome",
+    "casa inteligente",
     "Automação Residencial",
     "Casa inteligente",
     "Casa conectada"
