@@ -151,7 +151,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
         capability.inputs = parameters.supportedInputs.map(input => Object.assign({name: input}));
         break;
       case 'mode':
-        Object.assign(configuration, parameters.supportedModes && {
+        Object.assign(configuration, {
           'ordered': parameters.ordered === true,
           'supportedModes': parameters.supportedModes.map(mode => ({
             'value': mode.split('=').shift(),
@@ -164,7 +164,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
         capability.supportedOperations = ['Play', 'Pause', 'Next', 'Previous', 'Rewind', 'FastForward'];
         break;
       case 'rangeValue':
-        Object.assign(configuration, parameters.supportedRange && {
+        Object.assign(configuration, {
           'supportedRange': parameters.supportedRange
         }, parameters.unitOfMeasure && {
           'unitOfMeasure': 'Alexa.Unit.' + parameters.unitOfMeasure
@@ -222,7 +222,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
  *
  *  {
  *    'labels': [ <assetIdOrText1>, <assetIdOrText2>, ... ],
- *    'locale': <localeSetting>
+ *    'locale': <localeSetting> [ Not used at the moment (en-US only supported) ]
  *  }
  *
  * @param  {Object} parameters
@@ -246,7 +246,7 @@ function getResourcesObject(parameters = {}) {
           '@type': 'text',
           'value': {
             'text': label,
-            'locale': parameters.locale
+            'locale': 'en-US'
           }
         });
       }
