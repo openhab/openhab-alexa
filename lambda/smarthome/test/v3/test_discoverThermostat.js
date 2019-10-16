@@ -290,6 +290,7 @@ module.exports = {
       },
       "configuration": {
         "Alexa.RangeController.currentHumidity1": {
+          "supportedRange": {"minimumValue": 0, "maximumValue": 100, "precision": 1},
           "unitOfMeasure": "Alexa.Unit.Percent"
         },
         "Alexa.ThermostatController": {
@@ -299,7 +300,9 @@ module.exports = {
       "propertyMap": {
         "RangeController:currentHumidity1": {
           "rangeValue": {
-            "parameters": {"friendlyNames": ["Humidity"], "nonControllable": true, "unitOfMeasure": "Percent"},
+            "parameters": {
+              "friendlyNames": ["Humidity"], "nonControllable": true,
+              "supportedRange": {"minimumValue": 0, "maximumValue": 100, "precision": 1}, "unitOfMeasure": "Percent"},
             "item": {"name": "currentHumidity1", "type": "Number"},
             "schema": {"name": "rangeValue"}
           }
