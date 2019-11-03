@@ -42,11 +42,16 @@ class AlexaSecurityPanelController extends AlexaDirective {
     const postItem = Object.assign({}, properties.armState.item, {
       state: normalize(properties.armState, armState)
     });
-    let exitDelay;
+    const exitDelay = parseInt(properties.armState.parameters.exitDelay);
 
-    if (armState === 'ARMED_AWAY') {
-      // Set exit delay to defined parameter value only if arm away request
-      exitDelay = parseInt(properties.armState.parameters.exitDelay);
+    // Return invalid value error response if requested arm state not supported
+    if (!properties.armState.parameters.supportedArmStates.includes(armState)) {
+      return this.returnAlexaErrorResponse({
+        payload: {
+          type: 'INVALID_VALUE',
+          message: `${postItem.name} doesn't support arm state [${armState}]`
+        }
+      });
     }
 
     this.getItemState(postItem).then((item) => {
@@ -64,7 +69,8 @@ class AlexaSecurityPanelController extends AlexaDirective {
             'namespace': this.directive.header.namespace,
             'name': 'Arm.Response'
           },
-          payload: isNaN(exitDelay) ? {} : {
+          // Add exit delay to response payload if arm away request and is valid
+          payload: armState !== 'ARMED_AWAY' || isNaN(exitDelay) ? {} : {
             'exitDelayInSeconds': exitDelay
           },
           properties: ['armState']
