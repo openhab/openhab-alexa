@@ -82,6 +82,17 @@ module.exports = {
       "groupNames": ["gWasher"]
     },
     {
+      "type": "String",
+      "name": "InvalidMode",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ModeController.mode"
+        }
+      },
+      "groupNames": ["gWasher"]
+    },
+    {
       "type": "Group",
       "name": "gWasher",
       "label": "Washer",
