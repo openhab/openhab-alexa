@@ -133,6 +133,10 @@ const normalizeParameters = {
     // Update supported modes parameter removing invalid values based on alexa equalizer supported modes
     property.parameters.supportedModes = equalizerModes.reduce(
       (modes, value) => modes.concat(settings.property.state.supported.includes(value) ? value : []), []);
+    // Set property as invalid if no valid supported modes
+    if (property.parameters.supportedModes.length === 0) {
+      property.valid = false;
+    }
   },
 
   /**
@@ -143,6 +147,10 @@ const normalizeParameters = {
     // Normalize supported input names removing invalid values in the process
     property.parameters.supportedInputs = (property.parameters.supportedInputs || []).reduce(
       (inputs, value) => inputs.concat(normalize(property, value) || []), []);
+    // Set property as invalid if no valid supported inputs
+    if (property.parameters.supportedInputs.length === 0) {
+      property.valid = false;
+    }
   },
 
   /**
@@ -162,6 +170,10 @@ const normalizeParameters = {
       const [match, mode, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
       return modes.concat(mode ? `${mode}=${labels.match(/^(:|$)/) ? mode : ''}${labels}` : []);
     }, []);
+    // Set property as invalid if not at least two valid supported modes
+    if (property.parameters.supportedModes.length < 2) {
+      property.valid = false;
+    }
   },
 
   /**
@@ -456,8 +468,10 @@ class AlexaPropertyMap {
           normalizeParameters[property.schema.name](property, item, settings);
         }
 
-        // Add property to map object
-        propertyMap[interfaceName] = Object.assign(properties, {[propertyName]: property});
+        // Add property to map object if valid
+        if (property.valid !== false) {
+          propertyMap[interfaceName] = Object.assign(properties, {[propertyName]: property});
+        }
       }
     });
   }

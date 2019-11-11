@@ -189,6 +189,50 @@ module.exports = [
     }
   },
   {
+    description: "arm unsupported invalid value error",
+    directive: {
+      "header": {
+        "namespace": "Alexa.SecurityPanelController",
+        "name": "Arm",
+      },
+      "endpoint": {
+        "endpointId": "AlarmMode",
+        "cookie": {
+          "propertyMap": JSON.stringify({
+            "SecurityPanelController": {
+              "armState": {
+                "parameters": {
+                  "DISARMED": "OFF", "ARMED_STAY": "ON",
+                  "supportedArmStates": ["ARMED_STAY", "DISARMED"]},
+                "item": {"name": "AlarmMode", "type": "Switch"},
+                "schema": {"name": "armState"}
+              }
+            }
+          })
+        }
+      },
+      "payload": {
+        "armState": "ARMED_AWAY"
+      }
+    },
+    mocked: {},
+    expected: {
+      alexa: {
+        "event": {
+          "header": {
+            "namespace": "Alexa",
+            "name": "ErrorResponse"
+          },
+          "payload": {
+            "type": "INVALID_VALUE",
+            "message": "AlarmMode doesn't support arm state [ARMED_AWAY]",
+          }
+        }
+      },
+      openhab: []
+    }
+  },
+  {
     description: "arm authorization required error",
     directive: {
       "header": {
