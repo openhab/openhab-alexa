@@ -22,12 +22,12 @@
       "automação",
       "1-wire",
       "Bluetooth",
-      "smarthome",
-      "Home Automation",
-      "Smart Home",
-      "Connected Home"
+      "casa inteligente",
+      "Automação Residencial",
+      "Casa inteligente",
+      "Casa conectada"
     ],
-    "updatesDescription": "Alexa Skill API V3 introduces a more rich and complex set of features combining with the new metadata feature introduced in openaHAB 2.3. Please check the latest documentation for more information: https://www.openhab.org/docs/ecosystem/alexa/"
+    "updatesDescription": "A API de Skill Alexa V3 introduz um conjunto mais rico e complexo de recursos combinando com o novo recurso de metadados introduzido no openaHAB 2.3. Por favor, verifique a mais recente documentação para mais informações: https://www.openhab.org/docs/ecosystem/alexa/"
   },
   "privacyAndCompliance": {
     "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
