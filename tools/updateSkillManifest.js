@@ -56,21 +56,20 @@ const PLACEHOLDER_PATTERN = /%(\w+)[:]?(.*?)%/g;
  */
 function loadLocaleResources(schema) {
   LOCALES.forEach((locale) => {
-    const dirname = fs.readdirSync(`${RESOURCES_PATH}/locales`).find(
-      filename => filename === locale.split('-').shift());
-    if (dirname) {
-      fs.readdirSync(`${RESOURCES_PATH}/locales/${dirname}`).filter(
-        filename => filename.endsWith('.json')).forEach((filename) => {
-        const property = filename.replace(/\.json$/, '');
-        if (typeof schema.manifest[property] === 'object') {
-          try {
-            schema.manifest[property].locales[locale] = require(`${RESOURCES_PATH}/locales/${dirname}/${filename}`);
-          } catch (e) {
-            console.log(`Failed to load locale property file: ${RESOURCES_PATH}/locales/${dirname}/${filename}`);
-            throw e;
+    const path = `${RESOURCES_PATH}/locales/${locale.split('-').shift()}`;
+    // Update skill manifest locale properties
+    if (fs.existsSync(`${path}/manifest.json`)) {
+      try {
+        const properties = require(`${path}/manifest.json`);
+        Object.keys(properties).forEach((key) => {
+          if (typeof schema.manifest[key] === 'object') {
+            schema.manifest[key].locales[locale] = properties[key];
           }
-        }
-      });
+        });
+      } catch (e) {
+        console.log(`Failed to load locale properties file: ${path}/manifest.json`);
+        throw e;
+      }
     }
   });
 }
