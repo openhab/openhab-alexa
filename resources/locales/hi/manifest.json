@@ -8,7 +8,7 @@
     "examplePhrases": [
       "एलेक्सा, किचन ऑन करें",
       "एलेक्सा, बेडरूम को 50 प्रतिशत पर सेट करें",
-      "Alexa, decrease temperature by 5 degrees"
+      "एलेक्सा, तापमान में 5 डिग्री की कमी"
     ],
     "keywords": [
       "openHAB",
@@ -18,16 +18,16 @@
       "zwave",
       "insteon",
       "homematic",
-      "home",
-      "automation",
+      "घर",
+      "स्वचालन",
       "1-wire",
       "Bluetooth",
       "smarthome",
-      "Home Automation",
-      "Smart Home",
-      "Connected Home"
+      "घर स्वचालन",
+      "स्मार्ट घर",
+      "जुड़ा हुआ घर"
     ],
-    "updatesDescription": "Alexa Skill API V3 introduces a more rich and complex set of features combining with the new metadata feature introduced in openaHAB 2.3. Please check the latest documentation for more information: https://www.openhab.org/docs/ecosystem/alexa/"
+    "updatesDescription": "एलेक्सा स्किल एपीआई वी 3 ओपनएएचएबी 2.3 में पेश किए गए नए मेटाडेटा फीचर के साथ संयोजन का एक और अधिक समृद्ध और जटिल सेट पेश करता है। अधिक जानकारी के लिए कृपया नवीनतम दस्तावेज़ देखें: https://www.openhab.org/docs/ecosystem/alexa/"
   },
   "privacyAndCompliance": {
     "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
