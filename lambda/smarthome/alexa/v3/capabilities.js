@@ -14,7 +14,9 @@
 /**
  * Amazon Smart Home Skill Capabilities for API V3
  */
-const { CAPABILITIES, PROPERTY_SCHEMAS, ASSET_IDENTIFIERS, DISPLAY_CATEGORIES, UNIT_OF_MEASUREMENT } = require('./config.js');
+const catalog = require('@lib/catalog.js');
+const { CAPABILITIES, PROPERTY_SCHEMAS, ASSET_IDENTIFIERS, DISPLAY_CATEGORIES,
+  FRIENDLY_NAMES_FORBIDDEN, LOCALES, UNIT_OF_MEASUREMENT } = require('./config.js');
 
 /**
  * Returns alexa capability display category for a given interface
@@ -116,7 +118,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
     // Get capability resources if friendly names parameter defined
     if (parameters.friendlyNames) {
       Object.assign(resources, getResourcesObject({
-        labels: parameters.friendlyNames, locale: parameters.locale || locale}));
+        labels: parameters.friendlyNames, locale: locale}));
     }
 
     // Update properties based on schema name
@@ -156,7 +158,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
           'supportedModes': parameters.supportedModes.map(mode => ({
             'value': mode.split('=').shift(),
             'modeResources': getResourcesObject({
-              labels: mode.split(/[=:]/).slice(1), locale: parameters.locale || locale})
+              labels: mode.split(/[=:]/).slice(1), locale: locale})
           }))
         });
         break;
@@ -172,7 +174,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
           'presets': parameters.presets.map(preset => ({
             'rangeValue': parseInt(preset.split('=').shift()),
             'presetResources': getResourcesObject({
-              labels: preset.split(/[=:]/).slice(1), locale: parameters.locale || locale})
+              labels: preset.split(/[=:]/).slice(1), locale: locale})
           }))
         });
         break;
@@ -222,7 +224,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
  *
  *  {
  *    'labels': [ <assetIdOrText1>, <assetIdOrText2>, ... ],
- *    'locale': <localeSetting> [ Not used at the moment (en-US only supported) ]
+ *    'locale': <defaultLocaleSetting>
  *  }
  *
  * @param  {Object} parameters
@@ -233,6 +235,10 @@ function getResourcesObject(parameters = {}) {
     friendlyNames: parameters.labels.reduce((names, label) => {
       if (label.startsWith('@')) {
         const assetId = label.slice(1);
+        // Add asset object if supported in global Alexa catalog,
+        //  otherwise add text objects if defined in skill catalog schema
+        //  (This is a temporary solution until Amazon provides the ability to upload our own catalog:
+        //    https://developer.amazon.com/docs/device-apis/resources-and-assets.html#upload-your-own-catalog)
         if (isSupportedAssetId(assetId)) {
           names.push({
             '@type': 'asset',
@@ -240,15 +246,26 @@ function getResourcesObject(parameters = {}) {
               'assetId': 'Alexa.' + assetId
             }
           });
+        } else if (Array.isArray(catalog.assetIds && catalog.assetIds[assetId])) {
+          catalog.assetIds[assetId].forEach((value) => {
+            names.push({
+              '@type': 'text',
+              'value': value
+            });
+          });
         }
       } else if (label) {
-        names.push({
-          '@type': 'text',
-          'value': {
-            'text': label,
-            'locale': 'en-US'
-          }
-        });
+        const [text, locale] = label.split('@');
+        // Add text object if friendly name supported
+        if (isSupportedFriendlyName(text)) {
+          names.push({
+            '@type': 'text',
+            'value': {
+              'text': text,
+              'locale': LOCALES.includes(locale) ? locale : parameters.locale
+            }
+          });
+        }
       }
       return names;
     }, [])
@@ -263,6 +280,15 @@ function getResourcesObject(parameters = {}) {
 function isSupportedAssetId(assetId) {
   const [type, name] = assetId.split('.');
   return typeof ASSET_IDENTIFIERS[type] !== 'undefined' && ASSET_IDENTIFIERS[type].includes(name);
+}
+
+/**
+ * Determines if friendly name is supported
+ * @param  {String} name
+ * @return {Boolean}
+ */
+function isSupportedFriendlyName(name) {
+  return !FRIENDLY_NAMES_FORBIDDEN.includes(name.toLowerCase());
 }
 
 /**

@@ -12,6 +12,7 @@
  */
 
 require('module-alias/register');
+const catalog = require('@lib/catalog.js');
 const log = require('@lib/log.js');
 const rest = require('@lib/rest.js');
 const ohv3 = require('@root/alexa/v3/ohConnector.js');
@@ -80,6 +81,7 @@ describe('ohConnectorV3 Tests', function () {
         const test = require(path);
 
         it(test.description, function (done) {
+          Object.assign(catalog, test.catalog);
           response = {'openhab': test.mocked, 'settings': test.settings};
           ohv3.handleRequest(directive, callback);
           // wait for async responses

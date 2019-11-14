@@ -22,7 +22,7 @@ module.exports = {
         "alexa": {
           "value": "ModeController.mode",
           "config": {
-            "supportedModes": "Normal=:Cottons,Delicate=@Value.Delicate:Knites,Whites",
+            "supportedModes": "Normal=:Cottons,Delicate=@Value.Delicate:Knits,Whites",
             "friendlyNames": "Wash Cycle,Wash Setting"
           }
         }
@@ -67,14 +67,14 @@ module.exports = {
     },
     {
       "type": "String",
-      "name": "WashCycleStatus",
+      "name": "WashStatus",
       "tags": [],
       "metadata": {
         "alexa": {
           "value": "ModeController.mode",
           "config": {
-            "supportedModes": "Wash,Rinse,Spin",
-            "friendlyNames": "Wash Cycle Status",
+            "supportedModes": "Washing=:Lavage@fr-FR,Rinsing=:Rincage@fr-FR,Spinning=:Essorage@fr-FR",
+            "friendlyNames": "Wash Status,État de Lavage@fr-FR",
             "nonControllable": true
           }
         }
@@ -105,6 +105,12 @@ module.exports = {
       "groupNames": []
     }
   ],
+  settings: {
+    "regional": {
+      "language": "en",
+      "region": "US"
+    }
+  },
   expected: {
     "gWasher": {
       "capabilities": [
@@ -112,7 +118,7 @@ module.exports = {
         "Alexa.ModeController.WashCycle.mode",
         "Alexa.ModeController.WashTemperature.mode",
         "Alexa.ModeController.WashSpinSpeed.mode",
-        "Alexa.ModeController.WashCycleStatus.mode",
+        "Alexa.ModeController.WashStatus.mode",
         "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["OTHER"],
@@ -127,8 +133,8 @@ module.exports = {
         "Alexa.ModeController.WashSpinSpeed": {
           "friendlyNames": ["text:Wash Spin Speed:en-US"]
         },
-        "Alexa.ModeController.WashCycleStatus": {
-          "friendlyNames": ["text:Wash Cycle Status:en-US"]
+        "Alexa.ModeController.WashStatus": {
+          "friendlyNames": ["text:Wash Status:en-US", "text:État de Lavage:fr-FR"]
         }
       },
       "configuration": {
@@ -139,10 +145,10 @@ module.exports = {
               "friendlyNames": ["text:Normal:en-US", "text:Cottons:en-US"]
             },
             "Delicate": {
-              'friendlyNames': ["asset:Alexa.Value.Delicate", "text:Knites:en-US"]
+              "friendlyNames": ["asset:Alexa.Value.Delicate", "text:Knits:en-US"]
             },
             "Whites": {
-              'friendlyNames': ["text:Whites:en-US"]
+              "friendlyNames": ["text:Whites:en-US"]
             }
           }
         },
@@ -153,10 +159,10 @@ module.exports = {
               "friendlyNames": ["text:Cold:en-US", "text:Cool:en-US"]
             },
             "1": {
-              'friendlyNames': ["text:Warm:en-US"]
+              "friendlyNames": ["text:Warm:en-US"]
             },
             "2": {
-              'friendlyNames': ["text:Hot:en-US"]
+              "friendlyNames": ["text:Hot:en-US"]
             }
           }
         },
@@ -164,30 +170,30 @@ module.exports = {
           "ordered": false,
           "supportedModes": {
             "off": {
-              'friendlyNames': ["text:No Spin:en-US"]
+              "friendlyNames": ["text:No Spin:en-US"]
             },
             "low": {
-              'friendlyNames': ["text:Low:en-US"]
+              "friendlyNames": ["text:Low:en-US"]
             },
             "medium": {
-              'friendlyNames': ["text:Medium:en-US"]
+              "friendlyNames": ["text:Medium:en-US"]
             },
             "high": {
               "friendlyNames": ["text:High:en-US"]
             }
           }
         },
-        "Alexa.ModeController.WashCycleStatus": {
+        "Alexa.ModeController.WashStatus": {
           "ordered": false,
           "supportedModes": {
-            "Wash": {
-              "friendlyNames": ["text:Wash:en-US"]
+            "Washing": {
+              "friendlyNames": ["text:Washing:en-US", "text:Lavage:fr-FR"]
             },
-            "Rinse": {
-              'friendlyNames': ["text:Rinse:en-US"]
+            "Rinsing": {
+              "friendlyNames": ["text:Rinsing:en-US", "text:Rincage:fr-FR"]
             },
-            "Spin": {
-              'friendlyNames': ["text:Spin:en-US"]
+            "Spinning": {
+              "friendlyNames": ["text:Spinning:en-US", "text:Essorage:fr-FR"]
             }
           }
         }
@@ -196,7 +202,7 @@ module.exports = {
         "ModeController:WashCycle": {
           "mode": {
             "parameters": {
-              "supportedModes": ["Normal=Normal:Cottons", "Delicate=@Value.Delicate:Knites", "Whites=Whites"],
+              "supportedModes": ["Normal=Normal:Cottons", "Delicate=@Value.Delicate:Knits", "Whites=Whites"],
               "friendlyNames": ["Wash Cycle", "Wash Setting"]},
             "item": {"name": "WashCycle", "type": "String"},
             "schema": {"name": "mode"}
@@ -220,12 +226,13 @@ module.exports = {
             "schema": {"name": "mode"}
           }
         },
-        "ModeController:WashCycleStatus": {
+        "ModeController:WashStatus": {
           "mode": {
             "parameters": {
-              "supportedModes": ["Wash=Wash", "Rinse=Rinse", "Spin=Spin"],
-              "friendlyNames": ["Wash Cycle Status"], "nonControllable": true},
-            "item": {"name": "WashCycleStatus", "type": "String"},
+              "supportedModes": [
+                "Washing=Washing:Lavage@fr-FR", "Rinsing=Rinsing:Rincage@fr-FR", "Spinning=Spinning:Essorage@fr-FR"],
+              "friendlyNames": ["Wash Status", "État de Lavage@fr-FR"], "nonControllable": true},
+            "item": {"name": "WashStatus", "type": "String"},
             "schema": {"name": "mode"}
           }
         }

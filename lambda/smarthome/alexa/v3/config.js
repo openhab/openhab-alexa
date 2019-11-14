@@ -542,8 +542,31 @@ module.exports = Object.freeze({
   ],
 
   /**
+   * Defines alexa unsupported friendly names
+   *  https://developer.amazon.com/docs/device-apis/resources-and-assets.html#names-you-cannot-use
+   *
+   * @type {Array}
+   */
+  FRIENDLY_NAMES_FORBIDDEN: [
+    'alarm', 'alarms', 'all alarms', 'away mode', 'bass', 'camera', 'date', 'date today',
+    'day', 'do not disturb', 'drop in', 'music', 'night light', 'notification', 'playing',
+    'sleep sounds', 'time', 'timer', 'today in music', 'treble', 'volume', 'way f. m.'
+  ],
+
+  /**
+   * Defines alexa supported Locales
+   *  https://developer.amazon.com/docs/smapi/skill-manifest.html#locales
+   *
+   * @type {Array}
+   */
+  LOCALES: [
+    'de-DE', 'en-AU', 'en-CA', 'en-GB', 'en-IN', 'en-US', 'es-ES', 'es-MX', 'es-US',
+    'fr-CA', 'fr-FR', 'hi-IN', 'it-IT', 'ja-JP', 'pt-BR'
+  ],
+
+  /**
    * Defines alexa supported unit of measurement
-   *    https://developer.amazon.com/docs/device-apis/alexa-rangecontroller.html#supported-values-for-unitofmeasure
+   *    https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#units-of-measure
    *    https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html (Alexa units)
    *    https://www.openhab.org/docs/concepts/units-of-measurement.html#list-of-units (OH symbols + defaults)
    *
