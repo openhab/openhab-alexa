@@ -71,7 +71,7 @@ module.exports = {
       "tags": [],
       "metadata": {
         "alexa": {
-          "value": "Endpoint.Other"
+          "value": "Endpoint.Fan"
         },
         "synonyms": {
           "value": "Tower Fan,Floor Fan"
@@ -89,7 +89,7 @@ module.exports = {
         "Alexa.ToggleController.TowerFanOscillate.toggleState",
         "Alexa.EndpointHealth.connectivity"
       ],
-      "displayCategories": ["OTHER"],
+      "displayCategories": ["FAN"],
       "friendlyName": "Tower Fan",
       "resources": {
         "Alexa.RangeController.TowerFanAngle": {
