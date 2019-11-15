@@ -3491,6 +3491,11 @@
                   "SCENE_TRIGGER",
                   "ACTIVITY_TRIGGER",
                   "SECURITY_PANEL",
+                  "EXTERIOR_BLIND",
+                  "FAN",
+                  "INTERIOR_BLIND",
+                  "OVEN",
+                  "SCREEN",
                   "OTHER"
                 ]
               }

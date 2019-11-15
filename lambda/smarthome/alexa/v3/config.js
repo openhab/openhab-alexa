@@ -513,17 +513,18 @@ module.exports = Object.freeze({
    */
   ASSET_IDENTIFIERS: {
     'DeviceName': [
-      'Shower', 'Washer', 'Router', 'Fan', 'AirPurifier', 'SpaceHeater'
-    ],
-    'Shower': [
-      'RainHead', 'HandHeld'
+      'AirPurifier', 'Fan', 'Router', 'Shade', 'Shower', 'SpaceHeater', 'Washer'
     ],
     'Setting': [
-      'WaterTemperature', 'Temperature', 'WashCycle', '2GGuestWiFi', '5GGuestWiFi', 'GuestWiFi',
-      'Auto', 'Night', 'Quiet', 'Oscillate', 'FanSpeed', 'Preset', 'Mode', 'Direction'
+      '2GGuestWiFi', '5GGuestWiFi', 'Auto', 'Direction', 'DryCycle', 'FanSpeed', 'GuestWiFi',
+      'Heat', 'Mode', 'Night', 'Opening', 'Oscillate', 'Preset', 'Quiet', 'Temperature',
+      'WashCycle', 'WaterTemperature'
+    ],
+    'Shower': [
+      'HandHeld', 'RainHead'
     ],
     'Value': [
-      'Delicate', 'QuickWash', 'Maximum', 'Minimum', 'High', 'Low', 'Medium'
+      'Close', 'Delicate', 'High', 'Low', 'Maximum', 'Medium', 'Minimum', 'Open', 'QuickWash'
     ]
   },
 
@@ -534,9 +535,10 @@ module.exports = Object.freeze({
    * @type {Array}
    */
   DISPLAY_CATEGORIES: [
-    'ACTIVITY_TRIGGER', 'CAMERA', 'CONTACT_SENSOR', 'DOOR', 'DOORBELL', 'LIGHT', 'MICROWAVE',
-    'MOTION_SENSOR', 'OTHER', 'SCENE_TRIGGER', 'SECURITY_PANEL', 'SMARTLOCK', 'SMARTPLUG',
-    'SPEAKER', 'SWITCH', 'TEMPERATURE_SENSOR', 'THERMOSTAT', 'TV'
+    'ACTIVITY_TRIGGER', 'CAMERA', 'CONTACT_SENSOR', 'DOOR', 'DOORBELL', 'EXTERIOR_BLIND',
+    'FAN', 'INTERIOR_BLIND', 'LIGHT', 'MICROWAVE', 'MOTION_SENSOR', 'OTHER', 'OVEN',
+    'SCENE_TRIGGER', 'SCREEN', 'SECURITY_PANEL', 'SMARTLOCK', 'SMARTPLUG', 'SPEAKER',
+    'SWITCH', 'TEMPERATURE_SENSOR', 'THERMOSTAT', 'TV'
   ],
 
   /**
