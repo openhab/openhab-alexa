@@ -284,6 +284,7 @@ function convertV2Item(item, config = {}) {
           parameters = {scale: config.scale || getV2TemperatureScale()};
           break;
         case 'TargetTemperature':
+        case 'homekit:TargetTemperature':
           capabilities = ['ThermostatController.targetSetpoint'];
           parameters = {scale: config.scale || getV2TemperatureScale()};
           break;
@@ -297,6 +298,8 @@ function convertV2Item(item, config = {}) {
           break;
         case 'HeatingCoolingMode':
         case 'homekit:HeatingCoolingMode':
+        case 'homekit:TargetHeatingCoolingMode':
+        case 'homekit:CurrentHeatingCoolingMode':
           capabilities = ['ThermostatController.thermostatMode'];
           parameters = {binding: config.binding};
           break;
