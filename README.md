@@ -32,9 +32,9 @@ By default, the ASK CLI deploys the lambda function in the `us-east-1` region. Y
 
 | Skill Language | Endpoint Region | Lambda Region |
 | -------------- | --------------- | ------------- |
-| English (US), English (CA), Portuguese (BR) | North America | us-east-1 |
+| English (CA), English (US), French (CA), Portuguese (BR),<br>Spanish (MX), Spanish (US) | North America | us-east-1 |
 | English (UK), French (FR), German, Italian, Spanish (ES) | Europe | eu-west-1 |
-| English (IN) | India | eu-west-1 |
+| English (IN), Hindi (IN) | India | eu-west-1 |
 | English (AU), Japanese | Far East | us-west-2 |
 
 To change your default region, you will need to add the `region` parameter to the AWS credentials file located in your home directory, under the AWS profile name associated during the ASK CLI profile initialization. The default profile name is `ask_cli_default`.
