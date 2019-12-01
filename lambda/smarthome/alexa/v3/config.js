@@ -567,6 +567,21 @@ module.exports = Object.freeze({
   ],
 
   /**
+   * Defines alexa supported semantic mapping identifiers
+   *    https://developer.amazon.com/docs/device-apis/alexa-discovery.html#semantics-object
+   *
+   * @type {Object}
+   */
+  SEMANTIC_IDENTIFIERS: {
+    'Actions': [
+      'Close', 'Open', 'Lower', 'Raise'
+    ],
+    'States': [
+      'Closed', 'Open'
+    ]
+  },
+
+  /**
    * Defines alexa supported unit of measurement
    *    https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#units-of-measure
    *    https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html (Alexa units)
