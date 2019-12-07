@@ -353,7 +353,7 @@ The following are a list of supported metadata. It is important to note that not
 * Default category: SCENE_TRIGGER
 
 #### `ChannelController.channel`
-* Items that represent a channel. A channel mapping may be specified in metadata parameters allowing channel request by name.
+* Items that represent a channel. A channel mapping may be specified in metadata parameters allowing channel request by name. It is important to note only well-known channel names can be used as these are validated against a database on the Alexa side when requested. Unfortunately, Amazon doesn't provide a list of supported channel names.
 * Supported item type:
   * Number
   * String
