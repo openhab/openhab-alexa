@@ -24,6 +24,11 @@ function install_dependencies ($CWD, $SOURCE_DIR) {
     return $EXEC_RESULT
 }
 
+function update_skill_catalog () {
+    Invoke-Expression "node tools\updateSkillCatalog.js" 2>&1 | Out-Null
+    return $?
+}
+
 function update_skill_manifest () {
     Invoke-Expression "node tools\updateSkillManifest.js" 2>&1 | Out-Null
     return $?
@@ -61,6 +66,16 @@ if ($TARGET -eq "all" -Or $TARGET -eq "lambda") {
             }
             exit 1
         }
+    }
+    if (update_skill_catalog) {
+        if ($DO_DEBUG) {
+            Write-Output "Skill catalog updated successfully."
+        }
+    } else {
+        if ($DO_DEBUG) {
+            Write-Output "There was a problem updating the skill catalog."
+        }
+        exit 1
     }
     if (update_skill_manifest) {
         if ($DO_DEBUG) {

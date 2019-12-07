@@ -277,7 +277,8 @@ function convertV2Item(item, config = {}) {
         case 'CurrentHumidity':
           capabilities = ['RangeController.rangeValue'];
           parameters = {
-            friendlyNames: 'Humidity', nonControllable: true, supportedRange: '0:100:1', unitOfMeasure: 'Percent'};
+            friendlyNames: '@Setting.Humidity', nonControllable: true,
+            supportedRange: '0:100:1', unitOfMeasure: 'Percent'};
           break;
         case 'CurrentTemperature':
           capabilities = ['TemperatureSensor.temperature'];

@@ -263,10 +263,24 @@ module.exports = {
       "groupNames": []
     }
   ],
+  catalog: {
+    "assetIds": {
+      "Setting.Humidity": [
+        {
+          "text": "Humidity",
+          "locale": "en-US"
+        },
+        {
+          "text": "Moisture",
+          "locale": "en-US"
+        }
+      ]
+    }
+  },
   settings: {
-    regional: {
-      'measurementSystem': 'US',
-      'region': 'US'
+    "regional": {
+      "measurementSystem": "US",
+      "region": "US"
     }
   },
   expected: {
@@ -285,7 +299,7 @@ module.exports = {
       "friendlyName": "Thermostat 1",
       "resources": {
         "Alexa.RangeController.currentHumidity1": {
-          "friendlyNames": ["text:Humidity:en-US"]
+          "friendlyNames": ["text:Humidity:en-US", "text:Moisture:en-US"]
         }
       },
       "configuration": {
@@ -301,7 +315,7 @@ module.exports = {
         "RangeController:currentHumidity1": {
           "rangeValue": {
             "parameters": {
-              "friendlyNames": ["Humidity"], "nonControllable": true,
+              "friendlyNames": ["@Setting.Humidity"], "nonControllable": true,
               "supportedRange": {"minimumValue": 0, "maximumValue": 100, "precision": 1}, "unitOfMeasure": "Percent"},
             "item": {"name": "currentHumidity1", "type": "Number"},
             "schema": {"name": "rangeValue"}
