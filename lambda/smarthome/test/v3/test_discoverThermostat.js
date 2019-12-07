@@ -269,10 +269,6 @@ module.exports = {
         {
           "text": "Humidity",
           "locale": "en-US"
-        },
-        {
-          "text": "Moisture",
-          "locale": "en-US"
         }
       ]
     }
@@ -299,7 +295,7 @@ module.exports = {
       "friendlyName": "Thermostat 1",
       "resources": {
         "Alexa.RangeController.currentHumidity1": {
-          "friendlyNames": ["text:Humidity:en-US", "text:Moisture:en-US"]
+          "friendlyNames": ["text:Humidity:en-US"]
         }
       },
       "configuration": {
