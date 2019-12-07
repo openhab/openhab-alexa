@@ -185,8 +185,8 @@ module.exports = Object.freeze({
       'category': 'THERMOSTAT',
       'properties': [
         {'name': 'targetSetpoint', 'schema': 'temperature'},
-        {'name': 'lowerSetpoint', 'schema': 'temperature', 'links': ['upperSetpoint'], 'tags': ['auto', 'eco']},
-        {'name': 'upperSetpoint', 'schema': 'temperature', 'links': ['lowerSetpoint'], 'tags': ['auto', 'eco']},
+        {'name': 'lowerSetpoint', 'schema': 'temperature', 'links': ['upperSetpoint'], 'tags': ['eco']},
+        {'name': 'upperSetpoint', 'schema': 'temperature', 'links': ['lowerSetpoint'], 'tags': ['eco']},
         {'name': 'thermostatMode', 'schema': 'thermostatMode'}
       ]
     },

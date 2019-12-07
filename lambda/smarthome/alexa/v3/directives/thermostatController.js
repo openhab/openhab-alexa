@@ -39,8 +39,7 @@ class AlexaThermostatController extends AlexaDirective {
   }
 
   /**
-   * Sets the target temperature, this can include upper, lower and target setpoints
-   * in the same request.
+   * Sets the target temperature, this can include upper, lower and target setpoints in the same request
    */
   setTargetTemperature() {
     const properties = this.propertyMap.ThermostatController;
