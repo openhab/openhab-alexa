@@ -38,7 +38,6 @@ module.exports = {
   AlexaSpeaker:                       require('./speaker.js'),
   AlexaStepSpeaker:                   require('./stepSpeaker.js'),
   AlexaThermostatController:          require('./thermostatController.js'),
-  AlexaTimeHoldController:            require('./timeHoldController.js'),
   AlexaToggleController:              require('./toggleController.js'),
   AlexaUnsupported:                   require('./unsupported.js'),
 };
