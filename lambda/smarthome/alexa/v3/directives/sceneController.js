@@ -34,17 +34,16 @@ class AlexaSceneController extends AlexaDirective {
   }
 
   /**
-   * Sends a send name to a string item
+   * Set scene
    */
   setScene() {
-    const isSceneActivate = this.directive.header.name === 'Activate';
     const postItem = Object.assign({}, this.propertyMap.SceneController.scene.item, {
-      state: isSceneActivate ? 'ON' : 'OFF'
+      state: this.directive.header.name === 'Activate' ? 'ON' : 'OFF'
     });
     this.postItemsAndReturn([postItem], {
       header: {
         namespace: this.directive.header.namespace,
-        name: isSceneActivate ? 'ActivationStarted' : 'DeactivationStarted'
+        name: this.directive.header.name === 'Activate' ? 'ActivationStarted' : 'DeactivationStarted'
       },
       payload: {
         cause: {
