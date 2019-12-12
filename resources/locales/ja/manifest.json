@@ -8,7 +8,7 @@
     "examplePhrases": [
       "Alexa、キッチンをつけて",
       "Alexa、ベッドルームを 50 %にして",
-      "Alexa、温度を 5 度下げて"
+      "Alexa、サーモスタットを 2 度上げて"
     ],
     "keywords": [
       "openHAB",
