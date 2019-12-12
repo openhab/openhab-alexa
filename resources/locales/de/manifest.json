@@ -7,7 +7,7 @@
     "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/resources/icons/openhablogo-512.png",
     "examplePhrases": [
       "Alexa, schalte Küche ein",
-      "Alexa, stelle schlafzimmer auf 50 Prozent",
+      "Alexa, stelle Schlafzimmer auf 50 Prozent",
       "Alexa, erhöhe Thermostat um 2 grad"
     ],
     "keywords": [
