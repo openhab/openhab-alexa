@@ -6,9 +6,9 @@
     "smallIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/resources/icons/openhablogo-108.png",
     "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/resources/icons/openhablogo-512.png",
     "examplePhrases": [
-      "Alexa, रसोई चालू करें",
-      "Alexa, शयनकक्ष 50 प्रतिशत पर सेट करें",
-      "Alexa, तापमान 2 डिग्री की बढ़ाएँ"
+      "Alexa, kitchen चालू करें",
+      "Alexa, bedroom 50 percent पर सेट करें",
+      "Alexa, thermostat 2 degrees बढ़ाओ"
     ],
     "keywords": [
       "openHAB",
