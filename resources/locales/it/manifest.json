@@ -8,7 +8,7 @@
     "examplePhrases": [
       "Alexa, accendi la luce della cucina",
       "Alexa, imposta la camera da letto al 50 percento",
-      "Alexa, increase thermostat by 2 degrees"
+      "Alexa, aumenta il termostato di 2 gradi"
     ],
     "keywords": [
       "openHAB",
