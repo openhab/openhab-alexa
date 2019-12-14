@@ -310,32 +310,16 @@ function getPropertySchema(schema, path = '') {
 
 /**
  * Returns alexa property settings for a given capability
- *
- *  {
- *    'name': <propertyName>,
- *    'schema': <propertySchemaName>,
- *    'report': <propertyReportName>,
- *    'components': <componentNames>,
- *    'isReportable': <boolean>,
- *    'isSupported': <boolean>,
- *    'multiInstance': <boolean>,
- *    'itemTypes': <itemTypes>,
- *    'state': {
- *      'map': <stateMap>,
- *      'type': <stateType>
- *    }
- *  }
- *
  * @param  {String} interfaceName
  * @param  {String} propertyName
  * @return {Object}
  */
 function getPropertySettings(interfaceName, propertyName) {
   // Get capability properties, based on interface name without instance
-  const capability = CAPABILITIES[interfaceName.split(':').shift()];
-  const properties = capability && capability.properties || [];
+  const capability = CAPABILITIES[interfaceName.match(INTERFACE_PATTERN)[1]];
   // Get property settings, based on property name without component or tag
-  const property = properties.find(property => property.name === propertyName.split(/[:#]/).shift()) || {};
+  const property = capability && capability.properties.find(
+    property => property.name === propertyName.match(PROPERTY_PATTERN)[1]) || {};
 
   return Object.assign({}, property, getPropertySchema(property.schema));
 }
