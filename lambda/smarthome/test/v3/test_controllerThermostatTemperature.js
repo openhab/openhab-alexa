@@ -240,7 +240,7 @@ module.exports = [
     }
   },
   {
-    description: "set target temperature dual mode with tagged setpoints",
+    description: "set target temperature dual mode with eco setpoints",
     directive: {
       "header": {
         "namespace": "Alexa.ThermostatController",
