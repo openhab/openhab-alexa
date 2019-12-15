@@ -98,8 +98,8 @@ class AlexaDirective extends AlexaResponse {
   getPropertiesResponseAndReturn(parameters = {}) {
     // Use the property map defined interface names if this.interface not defined (e.g. reportState)
     const interfaceNames = this.interface ? [this.interface] : Object.keys(this.propertyMap);
-    // Get list of all unique reportable properties item objects part of interfaces
-    const items = this.propertyMap.getReportablePropertiesItems(interfaceNames, parameters.properties);
+    // Get list of all unique reportable items part of interfaces
+    const items = this.propertyMap.getReportableItems(interfaceNames, parameters.properties);
     // Define get item state promises array
     const promises = items.reduce((promises, item) => {
       // Use item if its state already defined

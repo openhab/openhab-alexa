@@ -45,6 +45,18 @@ module.exports = {
       "groupNames": ["gThermostat1"]
     },
     {
+      "type": "Number",
+      "name": "ecoHighTargetTemperature1",
+      "tags": ["UpperTemperature#eco"],
+      "groupNames": ["gThermostat1"]
+    },
+    {
+      "type": "Number",
+      "name": "ecoLowTargetTemperature1",
+      "tags": ["LowerTemperature#eco"],
+      "groupNames": ["gThermostat1"]
+    },
+    {
       "type": "String",
       "name": "thermostatMode1",
       "tags": ["homekit:HeatingCoolingMode"],
@@ -106,6 +118,34 @@ module.exports = {
       "metadata": {
         "alexa": {
           "value": "ThermostatController.lowerSetpoint",
+          "config": {
+            "scale": "Fahrenheit"
+          }
+        }
+      },
+      "groupNames": ["gThermostat2"]
+    },
+    {
+      "type": "Number",
+      "name": "ecoHighTargetTemperature2",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.upperSetpoint#eco",
+          "config": {
+            "scale": "Fahrenheit"
+          }
+        }
+      },
+      "groupNames": ["gThermostat2"]
+    },
+    {
+      "type": "Number",
+      "name": "ecoLowTargetTemperature2",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.lowerSetpoint#eco",
           "config": {
             "scale": "Fahrenheit"
           }
@@ -179,6 +219,20 @@ module.exports = {
           "config": {
             "scale": "Fahrenheit",
             "setpointRange": "60:90"
+          }
+        }
+      },
+      "groupNames": ["gThermostat4"]
+    },
+    { // Ignored due to no lowerSetpoint item defined
+      "type": "Number",
+      "name": "upperTemperature4",
+      "tags": [],
+      "metadata": {
+        "alexa": {
+          "value": "ThermostatController.upperSetpoint",
+          "config": {
+            "scale": "Fahrenheit",
           }
         }
       },
@@ -340,6 +394,16 @@ module.exports = {
             "item": {"name": "lowTargetTemperature1", "type": "Number"},
             "schema": {"name": "temperature"}
           },
+          "upperSetpoint#eco": {
+            "parameters": {"scale": "FAHRENHEIT"},
+            "item": {"name": "ecoHighTargetTemperature1", "type": "Number"},
+            "schema": {"name": "temperature"}
+          },
+          "lowerSetpoint#eco": {
+            "parameters": {"scale": "FAHRENHEIT"},
+            "item": {"name": "ecoLowTargetTemperature1", "type": "Number"},
+            "schema": {"name": "temperature"}
+          },
           "thermostatMode": {
             "parameters": {},
             "item": {"name": "thermostatMode1", "type": "String"},
@@ -388,6 +452,16 @@ module.exports = {
           "lowerSetpoint": {
             "parameters": {"scale": "FAHRENHEIT"},
             "item": {"name": "lowTargetTemperature2", "type": "Number"},
+            "schema": {"name": "temperature"}
+          },
+          "upperSetpoint#eco": {
+            "parameters": {"scale": "FAHRENHEIT"},
+            "item": {"name": "ecoHighTargetTemperature2", "type": "Number"},
+            "schema": {"name": "temperature"}
+          },
+          "lowerSetpoint#eco": {
+            "parameters": {"scale": "FAHRENHEIT"},
+            "item": {"name": "ecoLowTargetTemperature2", "type": "Number"},
             "schema": {"name": "temperature"}
           },
           "thermostatMode": {

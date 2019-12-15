@@ -13,7 +13,7 @@
 
 module.exports = [
   {
-    description: "set thermostat mode map parameters",
+    description: "set thermostat mode string state map parameters",
     directive: {
       "header": {
         "namespace": "Alexa.ThermostatController",
@@ -64,7 +64,7 @@ module.exports = [
     }
   },
   {
-    description: "set thermostat mode to OFF with user map parameters with numeric values",
+    description: "set thermostat mode numeric state map parameters",
     directive: {
       "header": {
         "namespace": "Alexa.ThermostatController",

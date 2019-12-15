@@ -17,8 +17,9 @@
 const camelcase = require('camelcase');
 const { sprintf } = require('sprintf-js');
 const utils = require('@lib/utils.js');
-const { getPropertySettings, getPropertyStateMap, getUnitOfMeasure, isInColorMode, isSupportedDisplayCategory } = require('./capabilities.js');
-const { CAPABILITY_PATTERN } = require('./config.js');
+const { getPropertySettings, getPropertyStateMap, getThermostatSetpointProperties,
+  getUnitOfMeasure, isInColorMode, isSupportedDisplayCategory } = require('./capabilities.js');
+const { CAPABILITY_PATTERN, INTERFACE_PATTERN, PROPERTY_PATTERN } = require('./config.js');
 const { normalize } = require('./propertyState.js');
 
 /**
@@ -47,8 +48,21 @@ const PARAMETER_TYPE_MAPPING = {
   'supportedInputs': 'list',
   'supportedModes': 'list',
   'supportsDeactivation': 'boolean',
-  'supportsPinCodes': 'boolean'
+  'supportsPinCodes': 'boolean',
+  'supportsSetpointMode': 'boolean',
 };
+
+/**
+ * Defines setpoint mapping format pattern
+ * @type {RegExp}
+ */
+const SETPOINT_MAPPING_PATTERN = /^(\w+)(?:#(\w+))?@(\w+)$/;
+
+/**
+ * Defines item state presentation format pattern
+ * @type {RegExp}
+ */
+const STATE_PRESENTATION_PATTERN = /[\d.]+\s*(?=.{1,4}$)([%'"]|°[CF]?|[a-zA-Z/]+\d?)$/;
 
 /**
  * Defines normalize parameters functions
@@ -262,12 +276,6 @@ const normalizeParameters = {
 };
 
 /**
- * Defines item state presentation pattern
- * @type {RegExp}
- */
-const STATE_PRESENTATION_PATTERN = /[\d.]+\s*(?=.{1,4}$)([%'"]|°[CF]?|[a-zA-Z/]+\d?)$/;
-
-/**
  * Returns item state presentation symbol
  * @param  {String} format
  * @return {String}
@@ -393,14 +401,33 @@ class AlexaPropertyMap {
 
     item.metadata.alexa.value.split(',').forEach((capability) => {
       if ((matches = capability.match(CAPABILITY_PATTERN))) {
+        // Extract capability matching values
+        let [interfaceName, propertyName, component, tag] = matches.slice(1);
         // Get capability property settings
-        settings = Object.assign({}, settings, {property: getPropertySettings(matches[1], matches[2])});
-        // Append item name, as instance name, if property multi-instance enabled
-        const interfaceName = matches[1] + (settings.property.multiInstance ? ':' + item.name : '');
-        // Append component name if property components required
-        const propertyName = matches[2] + (settings.property.components ? ':' + matches[3] : '');
-        const component = matches[3];
+        settings = Object.assign({}, settings, {property: getPropertySettings(interfaceName, propertyName)});
+        // Append item name to interface name, as instance name, if property multi-instance-enabled
+        interfaceName += settings.property.multiInstance ? ':' + item.name : '';
+        // Append component name to property name, if component-enabled and defined
+        propertyName += settings.property.components && component ? ':' + component : '';
+        // Append tag name to property name, if tag-enabled and valid
+        propertyName += settings.property.tags && settings.property.tags.includes(tag) ? '#' + tag : '';
+
+        // Skip capability if already added
+        if (propertyMap[interfaceName] && propertyMap[interfaceName][propertyName]) {
+          return;
+        }
+        // Skip capability if its item (group)type not supported by capability
+        if (!settings.property.itemTypes || !settings.property.itemTypes.includes(item.groupType || item.type)) {
+          return;
+        }
+        // Skip capability if component-enabled and not valid
+        if (settings.property.components && !settings.property.components.includes(component)) {
+          return;
+        }
+
+        // Copy current capability properties
         const properties = Object.assign({}, propertyMap[interfaceName]);
+        // Initialize capability property object to be added
         const property = {
           parameters: Object.assign({}, item.metadata.alexa.config),
           item: {
@@ -411,16 +438,6 @@ class AlexaPropertyMap {
             name: settings.property.schema
           }
         };
-
-        // Skip property if its item (group)type not supported by capability
-        if (!settings.property.itemTypes || !settings.property.itemTypes.includes(item.groupType || item.type)) {
-          return;
-        }
-
-        // Skip property if component-enabled and not valid
-        if (settings.property.components && !settings.property.components.includes(component)) {
-          return;
-        }
 
         // Set friendly names parameter on multi-instance property to use item label & synonyms, if not already defined
         if (settings.property.multiInstance) {
@@ -515,7 +532,6 @@ class AlexaPropertyMap {
    * @return {Object}
    */
   getContextPropertiesResponse(interfaceNames, items) {
-    const propertyMap = this;
     const response = [];
 
     // Returns property object for a given namespace, name, value and instance
@@ -532,56 +548,50 @@ class AlexaPropertyMap {
       });
     };
 
-    // Iterate over reportable interface and property names
-    this.getReportablePropertiesInterfaces(interfaceNames).forEach((interfaceName) => {
-      Object.keys(propertyMap[interfaceName]).forEach((propertyName) => {
-        // Get normalized property state
-        let state = normalize(propertyMap[interfaceName][propertyName]);
-        let component, instance;
-        // Extract instance name from interface name
-        [interfaceName, instance] = interfaceName.split(':');
-        // Extract component from property name
-        [propertyName, component] = propertyName.split(':');
-        // Get capability property settings
-        const propertySettings = getPropertySettings(interfaceName, propertyName);
-        const propertyReportName = propertySettings.report || propertyName;
-        const type = propertySettings.state && propertySettings.state.type;
+    // Iterate over reportable properties
+    this.getReportableProperties(interfaceNames).forEach((property) => {
+      const interfaceName = property.interface;
+      const instance = property.instance;
+      // Define property name based on report setting if defined, fallback to name
+      const propertyName = property.settings.report || property.name;
+      const component = property.component;
+      const type = property.settings.state && property.settings.state.type;
+      let state = property.state;
 
-        // Skip property if not reportable, its state or type not defined
-        if (propertySettings.isReportable === false || typeof state === 'undefined' || typeof type === 'undefined') {
+      // Skip property if not reportable, its state or type not defined
+      if (property.settings.isReportable === false || typeof state === 'undefined' || typeof type === 'undefined') {
+        return;
+      }
+
+      // Convert property state to defined type if currently string
+      if (typeof state === 'string') {
+        switch (type) {
+          case 'boolean':
+            state = state === 'true';
+            break;
+          case 'float':
+            state = parseFloat(state);
+            break;
+          case 'integer':
+            state = parseInt(state);
+            break;
+        }
+      }
+
+      // Update state if component defined
+      if (component) {
+        state = [{'name': component.toUpperCase(), 'value': state}];
+        // Concatenate state to property reponse value and go to next property if previously added
+        const property = response.find(property => property.namespace === 'Alexa.' + interfaceName &&
+          property.name === propertyName && property.instance === instance);
+        if (property) {
+          property.value = property.value.concat(state);
           return;
         }
+      }
 
-        // Convert property state to defined type if currently string
-        if (typeof state === 'string') {
-          switch (type) {
-            case 'boolean':
-              state = state === 'true';
-              break;
-            case 'float':
-              state = parseFloat(state);
-              break;
-            case 'integer':
-              state = parseInt(state);
-              break;
-          }
-        }
-
-        // Update state if component defined
-        if (component) {
-          state = [{'name': component.toUpperCase(), 'value': state}];
-          // Concatenate state to property reponse value and go to next property if previously added
-          const property = response.find(property => property.namespace === 'Alexa.' + interfaceName &&
-            property.name === propertyReportName && property.instance === instance);
-          if (property) {
-            property.value = property.value.concat(state);
-            return;
-          }
-        }
-
-        // Add property state to response
-        response.push(generateProperty('Alexa.' + interfaceName, propertyReportName, state, instance));
-      });
+      // Add property state to response
+      response.push(generateProperty('Alexa.' + interfaceName, propertyName, state, instance));
     });
 
     // Define endpoint health status based on every reportable properties item states being defined
@@ -597,13 +607,46 @@ class AlexaPropertyMap {
   }
 
   /**
-   * Returns list of reportable properties interface names for a given list of interface names
+   * Returns list of reportable properties for a given list of interface names
    *   based on alexa api interface-specific properties requirements
+   *
+   *  Properties array return format:
+   *    [
+   *      {
+   *        interface: <interfaceName1>,
+   *        instance: <interfaceInstanceName1>,
+   *        name: <propertyName1>,
+   *        component: <propertyComponentName1>,
+   *        tag: <propertyTageName1>,
+   *        settings: <propertySettings>,
+   *        state: <propertyState>,
+   *      },
+   *      ...
+   *    ]
+   *
    * @param  {Array} interfaceNames
    * @return {Array}
    */
-  getReportablePropertiesInterfaces(interfaceNames) {
+  getReportableProperties(interfaceNames) {
     const propertyMap = this;
+
+    // Determine properties from interface names
+    let properties = interfaceNames.reduce((properties, interfaceName) => {
+      Object.keys(propertyMap[interfaceName]).forEach((propertyName) => {
+        const property = {};
+        // Extract instance name from interface name
+        [property.interface, property.instance] = interfaceName.match(INTERFACE_PATTERN).slice(1);
+        // Extract component and tag from property name
+        [property.name, property.component, property.tag] = propertyName.match(PROPERTY_PATTERN).slice(1);
+        // Get property settings
+        property.settings = getPropertySettings(interfaceName, propertyName);
+        // Get normalized property state
+        property.state = normalize(propertyMap[interfaceName][propertyName]);
+        // Add property to object
+        properties.push(property);
+      });
+      return properties;
+    }, []);
 
     // ColorController & ColorTemperatureController interface properties requirements:
     //  - exclude temperature property if in color mode, otherwise exclude color property
@@ -612,20 +655,47 @@ class AlexaPropertyMap {
       const temperatureItem = propertyMap.ColorTemperatureController.colorTemperatureInKelvin.item;
       const binding = propertyMap.ColorTemperatureController.colorTemperatureInKelvin.parameters.binding;
 
-      // Update interfaceNames list based on color mode
+      // Update properties list based on color mode
       if (isInColorMode(colorItem, temperatureItem, binding)) {
-        interfaceNames.splice(interfaceNames.indexOf('ColorTemperatureController'), 1);
-        temperatureItem.state = 0; // set state to zero to exclude item from health check
+        // Remove ColorTemperatureController interface properties
+        properties = properties.filter(property => property.interface !== 'ColorTemperatureController');
+        // Set state to zero to exclude item from health check
+        temperatureItem.state = 0;
       } else {
-        interfaceNames.splice(interfaceNames.indexOf('ColorController'), 1);
+        // Remove ColorController interface properties
+        properties = properties.filter(property => property.interface !== 'ColorController');
       }
     }
 
-    return interfaceNames;
+    // ThermostatController interface properties requirements:
+    //  - exclude specific setpoints properties depending on current thermostat setpoints mode
+    //  - update setpoint alias property report name if defined (e.g. upperSetpoint@targetSetpoint => targetSetpoint)
+    if (interfaceNames.includes('ThermostatController')) {
+      // Determine alexa normalized thermostat mode if property defined
+      const thermostatMode = propertyMap.ThermostatController.thermostatMode &&
+        normalize(propertyMap.ThermostatController.thermostatMode);
+      // Determine setpoint mode properties based on thermostat mode
+      const setpointProperties = getThermostatSetpointProperties(thermostatMode, propertyMap.ThermostatController);
+      // Define thermostat controller reportable properties
+      const thermostatProperties = [].concat('thermostatMode',
+        setpointProperties.map(property => property.split('@').shift()));
+      // Update properties based on thermostat controller reportable properties with tags
+      properties = properties.filter(property => property.interface !== 'ThermostatController' ||
+        thermostatProperties.includes(property.name + (property.tag ? '#' + property.tag : '')));
+      // Update property report settings for setpoint properties with mapping alias
+      setpointProperties.filter(property => property.split('@').length === 2).forEach(mapping => {
+        const [name, tag, report] = mapping.match(SETPOINT_MAPPING_PATTERN).slice(1);
+        const property = properties.find(property =>
+          property.interface === 'ThermostatController' && property.name === name && property.tag === tag);
+        property.settings.report = report;
+      });
+    }
+
+    return properties;
   }
 
   /**
-   * Returns list of reportable properties item objects for a given list of interface names
+   * Returns list of reportable items for a given list of interface names
    *
    *  Items array return format:
    *    [
@@ -641,7 +711,7 @@ class AlexaPropertyMap {
    * @param  {Array} propertyNames  [property names filter] (optional)
    * @return {Array}
    */
-  getReportablePropertiesItems(interfaceNames, propertyNames) {
+  getReportableItems(interfaceNames, propertyNames) {
     const propertyMap = this;
 
     return interfaceNames.reduce((items, interfaceName) => {
