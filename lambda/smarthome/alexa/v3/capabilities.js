@@ -26,7 +26,7 @@ const { CAPABILITIES, PROPERTY_SCHEMAS, INTERFACE_PATTERN, PROPERTY_PATTERN,
  */
 function getCapabilityCategory(interfaceName) {
   // Strip instance name from interface name if present
-  interfaceName = interfaceName.split(':').shift();
+  interfaceName = interfaceName.match(INTERFACE_PATTERN)[1];
   return CAPABILITIES[interfaceName] && CAPABILITIES[interfaceName]['category'];
 }
 
