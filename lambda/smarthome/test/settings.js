@@ -54,6 +54,12 @@ module.exports = {
   },
   "testCasesV3": {
     "discovery": {
+      "Blind": [
+        "./v3/test_discoverBlind.js",
+      ],
+      "Door": [
+        "./v3/test_discoverDoor.js",
+      ],
       "Fan": [
         "./v3/test_discoverFan.js",
       ],

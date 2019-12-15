@@ -157,6 +157,29 @@ function getCapabilitiesResources(capabilities) {
 }
 
 /**
+ * Returns list of capabilities semantics
+ * @param  {Array}  capabilities
+ * @return {Object}
+ */
+function getCapabilitiesSemantics(capabilities) {
+  return capabilities.reduce((result, capability) => {
+    const interfaceName = [capability.interface].concat(capability.instance || []).join('.');
+
+    if (capability.semantics) {
+      result[interfaceName] = Object.keys(capability.semantics).reduce((semantics, parameter) =>
+        Object.assign(semantics, capability.semantics[parameter].reduce((map, semantic) =>
+          Object.assign(map, {
+            [semantic['@type']]: (map[semantic['@type']] || []).concat(
+              Object.entries(semantic).reduce((mapping, [key, value]) =>
+                Object.assign(mapping, key !== '@type' && {[key]: value}), {}))
+          }), {}
+        )), {});
+    }
+    return result;
+  }, {});
+}
+
+/**
  * Returns initialized schema validator function
  * @return {Function}
  */
@@ -257,6 +280,9 @@ assert.discoveredEndpoints = function (endpoints, results) {
           break;
         case 'resources':
           assert.deepInclude(getCapabilitiesResources(endpoint.capabilities), expected.resources);
+          break;
+        case 'semantics':
+          assert.deepInclude(getCapabilitiesSemantics(endpoint.capabilities), expected.semantics);
           break;
         case 'propertyMap':
           assert.deepInclude(JSON.parse(endpoint.cookie.propertyMap), expected.propertyMap);

@@ -29,21 +29,17 @@ const { normalize } = require('./propertyState.js');
 const PARAMETER_ITEM_PATTERN = /^item(\w+)$/;
 
 /**
- * Defines parameter resources single element format pattern
- * @type {RegExp}
- */
-const PARAMETER_RESOURCES_PATTERN = /^(\w+)(?:=(.+))?$/;
-
-/**
  * Defines parameter type mapping
  * @type {Object}
  */
 const PARAMETER_TYPE_MAPPING = {
+  'actionMappings': 'list',
   'friendlyNames': 'list',
   'itemStateRetrievable': 'boolean',
   'nonControllable': 'boolean',
   'ordered': 'boolean',
   'presets': 'list',
+  'stateMappings': 'list',
   'supportedArmStates': 'list',
   'supportedInputs': 'list',
   'supportedModes': 'list',
@@ -180,10 +176,38 @@ const normalizeParameters = {
     }
     // Update supported modes using mode as labels if not defined or first element empty
     property.parameters.supportedModes = (property.parameters.supportedModes || []).reduce((modes, value) => {
-      // eslint-disable-next-line no-unused-vars
-      const [match, mode, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
+      const [mode, labels=''] = value.split('=');
       return modes.concat(mode ? `${mode}=${labels.match(/^(:|$)/) ? mode : ''}${labels}` : []);
     }, []);
+    // Update action mappings parameter removing invalid mappings if defined
+    if (property.parameters.actionMappings) {
+      property.parameters.actionMappings = property.parameters.actionMappings.reduce((actions, mapping) => {
+        const [name, value=''] = mapping.split('=');
+        const directive = value.match(/^\([+-]?\d+\)$/) ? {
+          name: 'AdjustMode', payload: {'modeDelta': parseInt(value.slice(1, -1))}
+        } : {
+          name: 'SetMode', payload: {'mode': value}
+        };
+        // Add action mapping object if adjust directive, mode delta numerical and ordered property,
+        //  or if set directive and mode value supported
+        return actions.concat(
+          directive.name === 'AdjustMode' &&
+            !isNaN(directive.payload.modeDelta) && property.parameters.ordered ||
+          directive.name === 'SetMode' &&
+            property.parameters.supportedModes.find(mode => mode.startsWith(`${value}=`)) ? {
+              name: name, directive: directive} : []);
+      }, []);
+    }
+    // Update state mappings parameter removing invalid mappings if defined
+    if (property.parameters.stateMappings) {
+      property.parameters.stateMappings = property.parameters.stateMappings.reduce((states, mapping) => {
+        const [name, value] = mapping.split('=');
+        // Add state mapping object if mode value supported
+        return states.concat(
+          property.parameters.supportedModes.find(mode => mode.startsWith(`${value}=`)) ? {
+            name: name, value: value} : []);
+      }, []);
+    }
     // Set property as invalid if not at least two valid supported modes
     if (property.parameters.supportedModes.length < 2) {
       property.valid = false;
@@ -198,7 +222,7 @@ const normalizeParameters = {
    */
   rangeValue: function (property, item, settings) {
     // Define range values based on supported range parameter ([0] => minimum; [1] => maximum; [2] => precision)
-    let rangeValues = (property.parameters.supportedRange || '').split(':').map(value => parseInt(value));
+    let rangeValues = (property.parameters.supportedRange || '').split(':').map(value => parseFloat(value));
     // Update range values if not valid (min >= max; prec = 0; max - min <= prec) using default based on item type
     if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) || rangeValues[0] >= rangeValues[1] ||
       rangeValues[2] === 0 || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
@@ -207,12 +231,13 @@ const normalizeParameters = {
     // Set supported range object
     property.parameters.supportedRange = {
       'minimumValue': rangeValues[0], 'maximumValue': rangeValues[1], 'precision': Math.abs(rangeValues[2])};
-    // Update presets parameter removing out of range values
-    property.parameters.presets = (property.parameters.presets || []).reduce((presets, value) => {
-      const [match, preset, labels=''] = value.match(PARAMETER_RESOURCES_PATTERN) || [];
-      return rangeValues[0] <= preset && preset <= rangeValues[1] && labels ?
-        [].concat(presets || [], match) : presets;
-    }, undefined);
+    // Update presets parameter removing out of range values if defined
+    if (property.parameters.presets) {
+      property.parameters.presets = property.parameters.presets.reduce((presets, value) => {
+        const [preset, labels] = value.split('=');
+        return presets.concat(rangeValues[0] <= preset && preset <= rangeValues[1] && labels ? value : []);
+      }, []);
+    }
     // Use item state presentation symbol and type dimension to determine unitOfMeasure if not defined or valid
     if (!property.parameters.unitOfMeasure || !getUnitOfMeasure({id: property.parameters.unitOfMeasure})) {
       property.parameters.unitOfMeasure = getUnitOfMeasure({
@@ -222,6 +247,43 @@ const normalizeParameters = {
           (settings.regional.measurementSystem || settings.regional.region),
         property: 'id'
       });
+    }
+    // Update action mappings parameter removing invalid mappings if defined
+    if (property.parameters.actionMappings) {
+      property.parameters.actionMappings = property.parameters.actionMappings.reduce((actions, mapping) => {
+        const [name, value=''] = mapping.split('=');
+        const directive = value.match(/^\([+-]?\d+\.?\d*\)$/) ? {
+          name: 'AdjustRangeValue', payload: {
+            'rangeValueDelta': parseFloat(value.slice(1, -1)), 'rangeValueDeltaDefault': false}
+        } : {
+          name: 'SetRangeValue', payload: {
+            'rangeValue': parseFloat(value)}
+        };
+        // Add action mapping object if adjust directive and range delta valid,
+        //  or if set directive and range value valid
+        return actions.concat(
+          directive.name === 'AdjustRangeValue' &&
+            rangeValues[1] - rangeValues[0] > Math.abs(directive.payload.rangeValueDelta) ||
+          directive.name === 'SetRangeValue' &&
+            rangeValues[0] <= value && value <= rangeValues[1] ? {
+              name: name, directive: directive} : []);
+      }, []);
+    }
+    // Update state mappings parameter removing out of range values if defined
+    if (property.parameters.stateMappings) {
+      property.parameters.stateMappings = property.parameters.stateMappings.reduce((states, mapping) => {
+        const [name, ...values] = mapping.split(/[=:]/);
+        // Add state mapping object if value(s) valid
+        return states.concat(
+          values.length > 0 &&
+            values.every(value => rangeValues[0] <= value && value <= rangeValues[1]) ? Object.assign({
+              name: name
+            }, values.length === 2 ? {
+              range: {'minimumValue': parseFloat(values[0]), 'maximumValue': parseFloat(values[1])}
+            } : {
+              value: parseFloat(values[0])
+            }) : []);
+      }, []);
     }
   },
 
@@ -271,6 +333,30 @@ const normalizeParameters = {
     // Remove supported modes parameter if includes every alexa thermostat supported modes
     if (settings.property.state.supported.every(mode => property.parameters.supportedModes.includes(mode))) {
       delete property.parameters.supportedModes;
+    }
+  },
+
+  /**
+   * Normalizes toggle state parameters
+   * @param  {Object} property
+   */
+  toggleState: function (property) {
+    // Update action mappings parameter removing invalid toggle value if defined
+    if (property.parameters.actionMappings) {
+      property.parameters.actionMappings = property.parameters.actionMappings.reduce((actions, mapping) => {
+        const [name, value] = mapping.replace(/=\w+/, (text) => text.toUpperCase()).split('=');
+        const directive = {name: value === 'ON' ? 'TurnOn' : 'TurnOff', payload: {}};
+        // Add action mapping object if toggle value valid
+        return actions.concat(value === 'ON' || value === 'OFF' ? {name: name, directive: directive} : []);
+      }, []);
+    }
+    // Update state mappings parameter removing invalid toggle value if defined
+    if (property.parameters.stateMappings) {
+      property.parameters.stateMappings = property.parameters.stateMappings.reduce((states, mapping) => {
+        const [name, value] = mapping.replace(/=\w+/, (text) => text.toUpperCase()).split('=');
+        // Add state mapping object if toggle value valid
+        return states.concat(value === 'ON' || value === 'OFF' ? {name: name, value: value} : []);
+      }, []);
     }
   }
 };
@@ -439,12 +525,15 @@ class AlexaPropertyMap {
           }
         };
 
-        // Set friendly names parameter on multi-instance property to use item label & synonyms, if not already defined
-        if (settings.property.multiInstance) {
-          property.parameters.friendlyNames = property.parameters.friendlyNames ||
-            [item.label, item.metadata.synonyms && item.metadata.synonyms.value].filter(Boolean).join(',');
-        } else {
+        // Delete friendly names and action/state mappings parameters if not multi-instance property,
+        //  otherwise set friendly names parameter to use item label & synonyms, if not already defined
+        if (!settings.property.multiInstance) {
           delete property.parameters.friendlyNames;
+          delete property.parameters.actionMappings;
+          delete property.parameters.stateMappings;
+        } else if (!property.parameters.friendlyNames) {
+          property.parameters.friendlyNames = [
+            item.label, item.metadata.synonyms && item.metadata.synonyms.value].filter(Boolean).join(',');
         }
 
         // Set item state retrievable parameter to use autoupdate metadata value, if not already defined

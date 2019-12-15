@@ -269,6 +269,20 @@ function convertV2Item(item, config = {}) {
           capabilities = getV2SwitchableCapabilities();
           parameters = {category: label === 'Lighting' ? 'LIGHT' : 'SWITCH'};
           break;
+        case 'Blind':
+        case 'WindowCovering':
+          capabilities = ['RangeController.rangeValue'];
+          parameters = {
+            category: 'INTERIOR_BLIND', friendlyNames: '@Setting.Opening',
+            supportedRange: '0:100:10', unitOfMeasure: 'Percent',
+            actionMappings: 'Close=0,Open=100,Lower=(-10),Raise=(+10)', stateMappings:'Closed=0,Open=1:100'};
+          break;
+        case 'Door':
+          capabilities = ['ToggleController.toggleState'];
+          parameters = {
+            category: 'DOOR', friendlyNames: '@Setting.Opening',
+            actionMappings: 'Close=OFF,Open=ON', stateMappings:'Closed=OFF,Open=ON'};
+          break;
         case 'Lock':
           capabilities = ['LockController.lockState'];
           break;

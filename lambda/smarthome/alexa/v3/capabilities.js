@@ -17,7 +17,7 @@
 const catalog = require('@lib/catalog.js');
 const { CAPABILITIES, PROPERTY_SCHEMAS, INTERFACE_PATTERN, PROPERTY_PATTERN,
   ASSET_IDENTIFIERS, DISPLAY_CATEGORIES, FRIENDLY_NAMES_FORBIDDEN, LOCALES,
-  UNIT_OF_MEASUREMENT } = require('./config.js');
+  SEMANTIC_IDENTIFIERS, UNIT_OF_MEASUREMENT } = require('./config.js');
 
 /**
  * Returns alexa capability display category for a given interface
@@ -86,6 +86,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   // Initialize capability common properties
   const configuration = {};
   const resources = {};
+  const semantics = {};
   const supported = [];
   let retrievable = true;
   let nonControllable = false;
@@ -125,6 +126,12 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
     if (parameters.friendlyNames) {
       Object.assign(resources, getResourcesObject({
         labels: parameters.friendlyNames, locale: locale}));
+    }
+
+    // Get capability semantics if action or state mappings parameter defined
+    if (parameters.actionMappings || parameters.statesMappings) {
+      Object.assign(semantics, getSemanticsObject({
+        actionMappings: parameters.actionMappings, stateMappings: parameters.stateMappings}));
     }
 
     // Update properties based on schema name
@@ -220,6 +227,10 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
   if (Object.keys(configuration).length > 0) {
     capability.configuration = configuration;
   }
+  // Add capability semantics if not empty
+  if (Object.keys(semantics).length > 0) {
+    capability.semantics = semantics;
+  }
 
   return capability;
 }
@@ -295,6 +306,90 @@ function isSupportedAssetId(assetId) {
  */
 function isSupportedFriendlyName(name) {
   return !FRIENDLY_NAMES_FORBIDDEN.includes(name.toLowerCase());
+}
+
+/**
+ * Returns alexa semantics object for a given list of parameters
+ *  https://developer.amazon.com/docs/device-apis/alexa-discovery.html#semantics-object
+ *
+ *  {
+ *    'actionMappings': [
+ *      { 'name': <actionName1>, 'directive': { 'name': <directiveName>, 'payload': <directivePayload } },
+ *      ...
+ *    ],
+ *    'stateMappings': [
+ *      { 'name': <stateName1>, 'value': <stateValue> },
+ *      { 'name': <stateName2>, 'range': <rangeValues> },
+ *      ...
+ *    ]
+ *  }
+ *
+ * @param  {Object} parameters
+ * @return {Object}
+ */
+function getSemanticsObject(parameters = {}) {
+  return Object.assign({
+  }, parameters.actionMappings && {
+    actionMappings: parameters.actionMappings.reduce((actions, {name, directive}) => {
+      // Define action semantic id
+      const action = 'Alexa.Actions.' + name;
+      // Add mapping if action supported and not already defined in action mappings
+      if (isSupportedSemanticId(action) && !actions.some(mapping => mapping.actions.includes(action))) {
+        // Find defined action mappings index with same directive
+        const index = actions.findIndex(mapping => JSON.stringify(mapping.directive) === JSON.stringify(directive));
+        // Update existing mapping actions list if found, otherwise add new mapping
+        if (index > -1) {
+          actions[index].actions.push(action);
+        } else {
+          actions.push({
+            '@type': 'ActionsToDirective',
+            'actions': [action],
+            'directive': directive
+          });
+        }
+      }
+      return actions;
+    }, [])
+  }, parameters.stateMappings && {
+    stateMappings: parameters.stateMappings.reduce((states, {name, range, value}) => {
+      // Define state semantic id
+      const state = 'Alexa.States.' + name;
+      // Add mapping if state supported and not already defined in state mappings
+      if (isSupportedSemanticId(state) && !states.some(mapping => mapping.states.includes(state))) {
+        // Find defined state mappings index with same value/range
+        const index = states.findIndex(mapping => mapping.value === value &&
+          JSON.stringify(mapping.range) === JSON.stringify(range));
+        // Update existing mapping states list if found, otherwise add new mapping
+        //  with range property if defined, otherwise with value property
+        if (index > -1) {
+          states[index].states.push(state);
+        } else if (range) {
+          states.push({
+            '@type': 'StatesToRange',
+            'states': [state],
+            'range': range
+          });
+        } else {
+          states.push({
+            '@type': 'StatesToValue',
+            'states': [state],
+            'value': value
+          });
+        }
+      }
+      return states;
+    }, [])
+  });
+}
+
+/**
+ * Determines if semantic id is supported
+ * @param  {String}  semanticId
+ * @return {Boolean}
+ */
+function isSupportedSemanticId(semanticId) {
+  const [type, name] = semanticId.split('.').slice(1);
+  return typeof SEMANTIC_IDENTIFIERS[type] !== 'undefined' && SEMANTIC_IDENTIFIERS[type].includes(name);
 }
 
 /**
