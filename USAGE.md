@@ -110,7 +110,7 @@ NOTE: the Alexa skill has 3 different percentage interfaces, BrightnessControlle
 ### Group Endpoint
 While single mapping items works for many use cases, occasionally multiple openHAB items need to be mapped to a single endpoint in Alexa. When using a group item, keep in mind that there can only be one specific interface capability per group. If you need to have more than one instance of a given capability, you should use the [building block APIs](#building-block-apis) controllers.
 
-Below are examples for various use cases, such as a thermostat, a stereo and a security system.
+Below are examples for various use cases, such as a thermostat, a smart bulb, a stereo and a security system.
 
 In openHAB a thermostat is modeled as many different items, typically there are items for setpoints (target, heat, cool), modes, and the current temperature. To map these items to a single endpoint in Alexa, we will add them to a group which also uses "Alexa" metadata. When items are Alexa-enabled, but are also a member of a group Alexa-enabled, they will be added to the group endpoint and not exposed as their own endpoints.
 
@@ -145,6 +145,20 @@ Number LowSetpoint     "Low Setpoint [%.0f °F]"      (Thermostat)  {alexa="Ther
 Number EcoHighSetpoint "High Eco Setpoint [%.0f °F]" (Thermostat)  {alexa="ThermostatController.upperSetpoint#eco"}
 Number EcoLowSetpoint  "Low Eco Setpoint [%.0f °F]"  (Thermostat)  {alexa="ThermostatController.lowerSetpoint#eco"}
 Number Mode            "Mode [%s]"                   (Thermostat)  {alexa="ThermostatController.thermostatMode" [binding="nest"]}
+```
+
+A smart bulb is another example when it supports shade of colors. Below are two ways to set up a color and a dimmable white bulb with color temperature capability.
+
+```
+Group  Bulb        "Bulb"                {alexa="Endpoint.Light"}
+Color  Color       "Color"       (Bulb)  {alexa="BrightnessController.brightness,PowerController.powerState,ColorController.color"}
+Dimmer Temperature "Temperature" (Bulb)  {alexa="ColorTemperature.colorTemperatureInKelvin"}
+```
+
+```
+Group  Bulb        "Bulb"                {alexa="Endpoint.Light"}
+Dimmer White       "White"       (Bulb)  {alexa="BrightnessController.brightness,PowerController.powerState"}
+Dimmer Temperature "Temperature" (Bulb)  {alexa="ColorTemperature.colorTemperatureInKelvin"}
 ```
 
 A Stereo is another example of a single endpoint that needs many items to function properly.  Power, volume, input, speakers and player controllers are all typical use cases for a stereo that a user may wish to control.
