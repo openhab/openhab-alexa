@@ -38,6 +38,7 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
   * [Command Not Working](#command-not-working)
   * [Device Not Found](#device-not-found)
   * [Device Not Responding](#device-not-responding)
+  * [Request Not Supported](#request-not-supported)
   * [Server Authentication Issue](#server-authentication-issue)
   * [Server Not Accessible](#server-not-accessible)
   * [Temperature Out Of Range](#temperature-out-of-range)
@@ -1126,6 +1127,11 @@ Here are some of the most common generic errors you may encounter while using th
 * To resolve this error, make sure that all items interfacing with Alexa have a defined state. If necessary, use [item sensors](#item-sensor), or if the state is not available in openHAB, set the [item state](#item-state) to not be retrievable.
 * For group endpoints, partial properties responses will be send back to Alexa excluding items with invalid state. This will allow Alexa to acknowledge a command request assuming that the relevant item state is accurate. However, it will cause Alexa to generate this error when requesting the status of a device configured with an interface supporting that feature. For example, using a thermostat group endpoint, a request to set its mode will succeed but requesting its mode status will fail if one of its property state, such as its temperature sensor, is not defined in openHAB.
 * This is the default error.
+
+### Request Not Supported
+* Alexa will respond with "_device_ doesn't support that"
+* It indicates that a requested command is not supported by any of the device configured interfaces.
+* To resolve this error, make sure that the relevant interfaces are configured properly on the given device. If this is the case, the response implies a limitation on the Alexa side. This will happen for a device with specific interfaces that don't support certain voice requests as of yet, such as the state of a PowerController or BrightnessController interface.
 
 ### Server Authentication Issue
 * Alexa will respond with "Sorry something wrong, to control _device_ try disabling the skill and re-enabling it from your Alexa app"
