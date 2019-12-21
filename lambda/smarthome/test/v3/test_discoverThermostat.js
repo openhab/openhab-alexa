@@ -327,8 +327,8 @@ module.exports = {
       ]
     }
   },
-  settings: {
-    "regional": {
+  services: {
+    "org.eclipse.smarthome.i18n": {
       "measurementSystem": "US",
       "region": "US"
     }

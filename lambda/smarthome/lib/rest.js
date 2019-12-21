@@ -130,15 +130,16 @@ function getItemOrItems(token, itemName, timeout, parameters) {
 }
 
 /**
- * Returns openHAB regional settings
+ * Returns openHAB service config
  * @param  {String}   token
+ * @param  {String}   serviceId
  * @param  {Number}   timeout
  * @return {Promise}
  */
-function getRegionalSettings(token, timeout) {
+function getServiceConfig(token, serviceId, timeout) {
   const options = ohAuthenticationSettings(token, {
     method: 'GET',
-    uri: `${config.openhab.baseURL}/services/org.eclipse.smarthome.core.i18nprovider/config`,
+    uri: `${config.openhab.baseURL}/services/${serviceId}/config`,
     json: true
   });
   return handleRequest(options, timeout);
@@ -190,6 +191,6 @@ function handleRequest(options, timeout) {
 module.exports = {
   getItem: getItem,
   getItems: getItems,
-  getRegionalSettings: getRegionalSettings,
+  getServiceConfig: getServiceConfig,
   postItemCommand: postItemCommand
 };

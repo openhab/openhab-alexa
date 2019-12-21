@@ -33,8 +33,8 @@ describe('ohConnectorV3 Tests', function () {
       return Promise.resolve(
         Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.getRegionalSettings = function () {
-      return Promise.resolve(response.settings && response.settings.regional);
+    rest.getServiceConfig = function (token, serviceId) {
+      return Promise.resolve(response.services && response.services[serviceId]);
     };
     rest.postItemCommand = function (token, itemName, value) {
       capture.calls.push({'name': itemName, 'value': value});
@@ -82,7 +82,7 @@ describe('ohConnectorV3 Tests', function () {
 
         it(test.description, function (done) {
           Object.assign(catalog, test.catalog);
-          response = {'openhab': test.mocked, 'settings': test.settings};
+          response = {'openhab': test.mocked, 'services': test.services};
           ohv3.handleRequest(directive, callback);
           // wait for async responses
           setTimeout(function () {
