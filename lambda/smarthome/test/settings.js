@@ -74,6 +74,9 @@ module.exports = {
       "Outlet": [
         "./v3/test_discoverOutlet.js"
       ],
+      "Router": [
+        "./v3/test_discoverRouter.js"
+      ],
       "Scene": [
         "./v3/test_discoverScene.js"
       ],

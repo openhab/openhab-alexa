@@ -211,6 +211,15 @@ Switch Rotate "Rotate" (Fan) {alexa="ToggleController.toggleState" [friendlyName
 Switch Power  "Power"  (Fan) {alexa="ToggleController.toggleState" [friendlyNames="@DeviceName.Fan"]}
 ```
 
+A router and its settings modeled with multiple toggle interface capabilities.
+
+```
+Group Router       "Router"                 {alexa="Endpoint.NetworkHardware"}
+Switch 2GGuestWiFi "2G Guest WiFi" (Router) {alexa="ToggleController.toggleState" [friendlyNames="@Setting.2GGuestWiFi"]}
+Switch 5GGuestWiFi "5G Guest WiFi" (Router) {alexa="ToggleController.toggleState" [friendlyNames="@Setting.5GGuestWiFi"]}
+Switch Power       "Power"         (Router) {alexa="ToggleController.toggleState" [friendlyNames="@DeviceName.Router"]}
+```
+
 ### Semantic Extensions
 Semantic extensions are used to further customize how to interact with a device. This functionality is only supported by the [Mode](#modecontroller-mode), [Range](#rangecontroller-rangevalue) and [Toggle](#togglecontroller-togglestate) controllers. It currently provides "Close", "Open", "Lower" and "Raise" interactions, removing the need for the Alexa routine workaround to control certain devices such as blinds or doors. Each semantic is composed of action and state mappings. The actions are used for interacting with the device and the states for displaying its current semantic state in the Alexa app (Not available as of yet). The supported action and state names are listed in the [semantic catalog](#semantic-catalog).
 
@@ -935,27 +944,38 @@ Category | Description
 ---------|------------
 ACTIVITY_TRIGGER | A combination of devices set to a specific state. Use activity triggers for scenes when the state changes must occur in a specific order. For example, for a scene named "watch Netflix" you might power on the TV first, and then set the input to HDMI1.
 CAMERA | A media device with video or photo functionality.
+COMPUTER | A non-mobile computer, such as a desktop computer.
 CONTACT_SENSOR | An endpoint that detects and reports changes in contact between two surfaces.
 DOOR | A door.
 DOORBELL | A doorbell.
 EXTERIOR_BLIND | A window covering on the outside of a structure.
 FAN | A fan.
+GAME_CONSOLE | A game console, such as Microsoft Xbox or Nintendo Switch
+GARAGE_DOOR | A garage door. Garage doors must implement the [ModeController](modecontroller-mode) interface to open and close the door.
 INTERIOR_BLIND | A window covering on the inside of a structure.
+LAPTOP | A laptop or other mobile computer.
 LIGHT | A light source or fixture.
 MICROWAVE | A microwave oven.
+MOBILE_PHONE | A mobile phone.
 MOTION_SENSOR | An endpoint that detects and reports movement in an area.
+MUSIC_SYSTEM | A network-connected music system.
+NETWORK_HARDWARE | A network router.
 OTHER | An endpoint that doesn't belong to one of the other categories.
 OVEN | An oven cooking appliance.
+PHONE | A non-mobile phone, such as landline or an IP phone.
 SCENE_TRIGGER | A combination of devices set to a specific state. Use scene triggers for scenes when the order of the state change is not important. For example, for a scene named "bedtime" you might turn off the lights and lower the thermostat, in any order.
 SCREEN | A projector screen.
 SECURITY_PANEL | A security panel.
 SMARTLOCK | An endpoint that locks.
 SMARTPLUG | A module that is plugged into an existing electrical outlet, and then has a device plugged into it. For example, a user can plug a smart plug into an outlet, and then plug a lamp into the smart plug. A smart plug can control a variety of devices.
 SPEAKER | A speaker or speaker system.
+STREAMING_DEVICE | A streaming device such as Apple TV, Chromecast, or Roku.
 SWITCH | A switch wired directly to the electrical system. A switch can control a variety of devices.
+TABLET | A tablet computer.
 TEMPERATURE_SENSOR | An endpoint that reports temperature, but does not control it. The temperature data of the endpoint is not shown in the Alexa app.
 THERMOSTAT | An endpoint that controls temperature, stand-alone air conditioners, or heaters with direct temperature control.
 TV | A television.
+WEARABLE | A network-connected wearable device, such as an Apple Watch, Fitbit, or Samsung Gear.
 
 ### Asset Catalog
   * List of Alexa asset catalog from [Alexa Skill API](https://developer.amazon.com/docs/device-apis/resources-and-assets.html#global-alexa-catalog) docs:
@@ -1007,8 +1027,8 @@ Setting.Humidity | Humidity
 ### Semantic Catalog
   * List of Alexa semantic catalog from [Alexa Skill API](https://developer.amazon.com/docs/device-apis/alexa-discovery.html#semantics-object) docs:
 
-Semantic Type | Names
---------------|------
+Semantic Type | Identifiers
+--------------|------------
 Actions | Close<br>Open<br>Lower<br>Raise
 States | Closed<br>Open
 
