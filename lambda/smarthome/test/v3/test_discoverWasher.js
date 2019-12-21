@@ -106,8 +106,8 @@ module.exports = {
       "groupNames": []
     }
   ],
-  settings: {
-    "regional": {
+  services: {
+    "org.eclipse.smarthome.i18n": {
       "language": "en"
     }
   },

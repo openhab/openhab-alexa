@@ -40,13 +40,19 @@ class AlexaDiscovery extends AlexaDirective {
   discover() {
     // Request following data from openHAB:
     //  - all items
-    //  - regional settings
+    //  - regional settings service config
+    //    - org.eclipse.smarthome.i18n (OH 2.5 and later)
+    //    - org.eclipse.smarthome.core.i18nprovider (OH 2.4 and prior)
     Promise.all([
-      rest.getItems(this.directive.payload.scope.token, this.timeout),
-      rest.getRegionalSettings(this.directive.payload.scope.token, this.timeout)
+      rest.getItems(
+        this.directive.payload.scope.token, this.timeout),
+      rest.getServiceConfig(
+        this.directive.payload.scope.token, 'org.eclipse.smarthome.i18n', this.timeout),
+      rest.getServiceConfig(
+        this.directive.payload.scope.token, 'org.eclipse.smarthome.core.i18nprovider', this.timeout)
     ]).then((data) => {
       const items = data[0];
-      const settings = {regional: data[1]};
+      const settings = {regional: Object.assign({}, data[1], data[2])};
       const discoveredDevices = [];
       const groupItems = [];
 
