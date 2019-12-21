@@ -79,9 +79,8 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
     'version': '3'
   };
 
-  // Define locale based on regional settings if defined, otherwise default to 'en-US'
-  const locale = settings.regional && settings.regional.language && settings.regional.region ?
-    [settings.regional.language, settings.regional.region].join('-') : 'en-US';
+  // Define default language based on regional settings if defined, otherwise default to 'en'
+  const language = settings.regional && settings.regional.language || 'en';
 
   // Initialize capability common properties
   const configuration = {};
@@ -125,7 +124,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
     // Get capability resources if friendly names parameter defined
     if (parameters.friendlyNames) {
       Object.assign(resources, getResourcesObject({
-        labels: parameters.friendlyNames, locale: locale}));
+        labels: parameters.friendlyNames, language: parameters.language || language}));
     }
 
     // Get capability semantics if action or state mappings parameter defined
@@ -171,7 +170,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
           'supportedModes': parameters.supportedModes.map(mode => ({
             'value': mode.split('=').shift(),
             'modeResources': getResourcesObject({
-              labels: mode.split(/[=:]/).slice(1), locale: locale})
+              labels: mode.split(/[=:]/).slice(1), language: parameters.language || language})
           }))
         });
         break;
@@ -187,7 +186,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
           'presets': parameters.presets.map(preset => ({
             'rangeValue': parseInt(preset.split('=').shift()),
             'presetResources': getResourcesObject({
-              labels: preset.split(/[=:]/).slice(1), locale: locale})
+              labels: preset.split(/[=:]/).slice(1), language: parameters.language || language})
           }))
         });
         break;
@@ -241,7 +240,7 @@ function getCapabilityInterface(interfaceName, properties, settings = {}) {
  *
  *  {
  *    'labels': [ <assetIdOrText1>, <assetIdOrText2>, ... ],
- *    'locale': <defaultLocaleSetting>
+ *    'language': <languageSetting>
  *  }
  *
  * @param  {Object} parameters
@@ -272,15 +271,16 @@ function getResourcesObject(parameters = {}) {
           });
         }
       } else if (label) {
-        const [text, locale] = label.split('@');
-        // Add text object if friendly name supported
-        if (isSupportedFriendlyName(text)) {
-          names.push({
-            '@type': 'text',
-            'value': {
-              'text': text,
-              'locale': LOCALES.includes(locale) ? locale : parameters.locale
-            }
+        // Add text object for each locale matching language parameter, if friendly name supported
+        if (isSupportedFriendlyName(label)) {
+          LOCALES.filter(locale => locale.split('-')[0] === parameters.language.toLowerCase()).forEach((locale) => {
+            names.push({
+              '@type': 'text',
+              'value': {
+                'text': label,
+                'locale': locale
+              }
+            });
           });
         }
       }

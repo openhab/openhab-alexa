@@ -27,7 +27,7 @@ module.exports = {
           "config": {
             "supportedRange": "0:100:10",
             "presets": "10=@Value.Minimum:@Value.Low:Lowest,100=@Value.Maximum:@Value.High:Highest,999=invalid",
-            "friendlyNames": "@Setting.FanSpeed,Air Speed,Speed"
+            "friendlyNames": "@Setting.FanSpeed,Air Speed"
           }
         }
       },
@@ -93,13 +93,26 @@ module.exports = {
       "friendlyName": "Tower Fan",
       "resources": {
         "Alexa.RangeController.TowerFanAngle": {
-          "friendlyNames": ["text:Fan Angle:en-US", "text:Orientation:en-US"]
+          "friendlyNames": [
+            "text:Fan Angle:en-AU", "text:Fan Angle:en-CA", "text:Fan Angle:en-GB",
+            "text:Fan Angle:en-IN", "text:Fan Angle:en-US",
+            "text:Orientation:en-AU", "text:Orientation:en-CA", "text:Orientation:en-GB",
+            "text:Orientation:en-IN", "text:Orientation:en-US"
+          ]
         },
         "Alexa.RangeController.TowerFanSpeed": {
-          "friendlyNames": ["asset:Alexa.Setting.FanSpeed", "text:Air Speed:en-US", "text:Speed:en-US"]
+          "friendlyNames": [
+            "asset:Alexa.Setting.FanSpeed",
+            "text:Air Speed:en-AU", "text:Air Speed:en-CA", "text:Air Speed:en-GB",
+            "text:Air Speed:en-IN", "text:Air Speed:en-US"
+          ]
         },
         "Alexa.ToggleController.TowerFanOscillate": {
-          "friendlyNames": ["asset:Alexa.Setting.Oscillate", "text:Rotate:en-US"]
+          "friendlyNames": [
+            "asset:Alexa.Setting.Oscillate",
+            "text:Rotate:en-AU", "text:Rotate:en-CA", "text:Rotate:en-GB",
+            "text:Rotate:en-IN", "text:Rotate:en-US"
+          ]
         }
       },
       "configuration": {
@@ -112,10 +125,18 @@ module.exports = {
           "unitOfMeasure": "Alexa.Unit.Percent",
           "presets": {
             10: {
-              "friendlyNames": ["asset:Alexa.Value.Minimum", "asset:Alexa.Value.Low", "text:Lowest:en-US"]
+              "friendlyNames": [
+                "asset:Alexa.Value.Minimum", "asset:Alexa.Value.Low",
+                "text:Lowest:en-AU", "text:Lowest:en-CA", "text:Lowest:en-GB",
+                "text:Lowest:en-IN", "text:Lowest:en-US"
+              ]
             },
             100: {
-              "friendlyNames": ["asset:Alexa.Value.Maximum", "asset:Alexa.Value.High", "text:Highest:en-US"]
+              "friendlyNames": [
+                "asset:Alexa.Value.Maximum", "asset:Alexa.Value.High",
+                "text:Highest:en-AU", "text:Highest:en-CA", "text:Highest:en-GB",
+                "text:Highest:en-IN", "text:Highest:en-US"
+              ]
             }
           }
         }
@@ -138,7 +159,7 @@ module.exports = {
               "supportedRange": {"minimumValue": 0, "maximumValue": 100, "precision": 10},
               "unitOfMeasure": "Percent",
               "presets": ["10=@Value.Minimum:@Value.Low:Lowest", "100=@Value.Maximum:@Value.High:Highest"],
-              "friendlyNames": ["@Setting.FanSpeed", "Air Speed", "Speed"]
+              "friendlyNames": ["@Setting.FanSpeed", "Air Speed"]
             },
             "item": {"name": "TowerFanSpeed", "type": "Dimmer"},
             "schema": {"name": "rangeValue"}
