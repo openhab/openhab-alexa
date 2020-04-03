@@ -27,7 +27,7 @@
       "Smart Home",
       "Vernetztes Zuhause"
     ],
-    "updatesDescription": "Alexa Skill API V3 führt eine reichere und komplexere Reihe von Funktionen ein, die mit der neuen Metadaten-Funktion in openaHAB 2.3 kombiniert werden. Bitte überprüfen Sie die neueste Dokumentation für weitere Informationen: https://www.openhab.org/docs/ecosystem/alexa/"
+    "updatesDescription": "Alexa Skill API V3 führt ein erweitertes und komplexeres Set von Funktionen ein, die mit der neuen Metadaten-Funktion in openaHAB 2.3 kombiniert werden. Bitte überprüfen Sie die neueste Dokumentation für weitere Informationen: https://www.openhab.org/docs/ecosystem/alexa/"
   },
   "privacyAndCompliance": {
     "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
