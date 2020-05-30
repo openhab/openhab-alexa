@@ -66,8 +66,14 @@ To configure the server path and credentials, you will need to setup the applica
     ```
     $ git clone https://github.com/openhab/openhab-alexa.git
     ```
+2. Install nodejs dependencies
+    ```
+    cd lambda/smarthome
+    npm install
+    cd ../..
+    ```
 
-2. Deploy the skill and the lambda function in one step:
+3. Deploy the skill and the lambda function in one step:
     ```
     $ ask deploy
     Profile for the deployment: [default]
@@ -82,7 +88,7 @@ To configure the server path and credentials, you will need to setup the applica
     [Warn]: Skill api domain "smartHome" can not be enabled. Skipping the enablement.
     ```
 
-3. Setup skill account linking using the skill id displayed in previous step and your OAuth2 provider configuration:
+4. Setup skill account linking using the skill id displayed in previous step and your OAuth2 provider configuration:
     ```
     $ ask api create-account-linking -s <skillId>
     ? Authorization URL:  https://www.amazon.com/ap/oa
@@ -98,7 +104,7 @@ To configure the server path and credentials, you will need to setup the applica
     Account linking created successfully.
     ```
 
-4. Enable skill with account linking:
+5. Enable skill with account linking:
     * Go to your [Alexa skill console](https://alexa.amazon.com/spa/index.html#skills/your-skills/?ref-suffix=ysa_gw)
     * Click on the "openHAB" skill under the "Dev Skills" tab
     * Click "Enable" and go through the account linking process
