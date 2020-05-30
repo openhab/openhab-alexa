@@ -46,7 +46,7 @@ if [ -f .env ]; then
 fi
 
 if [[ $TARGET == "all" || $TARGET == "lambda" ]]; then
-    grep "sourceDir" ./skill.json | sed -E 's/.*:\s*"([^"]+)".*/\1/g' | sort -u | while read -r SOURCE_DIR; do
+    grep "sourceDir" ./skill.json | sed -E 's/.*:[[:space:]]*"([^"]+)".*/\1/g' | sort -u | while read -r SOURCE_DIR; do
         if install_dependencies $SOURCE_DIR; then
             echo "Codebase ($SOURCE_DIR) built successfully."
         else
