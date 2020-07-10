@@ -96,6 +96,10 @@ In the Alexa skill a light switch endpoint implements the "PowerController" inte
 Switch LightSwitch "Light Switch" {alexa="PowerController.powerState"}
 ```
 Setting this on a single item will create an Alexa endpoint with the spoken addressable name "Light Switch" and map the powerState property to our item. You can ask Alexa to turn "Light Switch" on or off.
+Note: If you have already defined a channel linking then add the Alexa mapping after the channel separated with a comma. An example ZWave switch is given below.
+```
+Switch LightSwitch "Light Switch" {channel="zwave:device:22c99d1e:node3:switch_binary", alexa="PowerController.powerState"}
+```
 
 This can also be written using [metadata labels](#supported-metadata-labels), which is a shorthand version of the full Alexa namespace:
 ```
