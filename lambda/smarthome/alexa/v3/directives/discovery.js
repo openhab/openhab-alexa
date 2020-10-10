@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2019 Contributors to the openHAB project
+ * Copyright (c) 2010-2020 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -40,19 +40,12 @@ class AlexaDiscovery extends AlexaDirective {
   discover() {
     // Request following data from openHAB:
     //  - all items
-    //  - regional settings service config
-    //    - org.eclipse.smarthome.i18n (OH 2.5 and later)
-    //    - org.eclipse.smarthome.core.i18nprovider (OH 2.4 and prior)
+    //  - regional settings
     Promise.all([
-      rest.getItems(
-        this.directive.payload.scope.token, this.timeout),
-      rest.getServiceConfig(
-        this.directive.payload.scope.token, 'org.eclipse.smarthome.i18n', this.timeout),
-      rest.getServiceConfig(
-        this.directive.payload.scope.token, 'org.eclipse.smarthome.core.i18nprovider', this.timeout)
-    ]).then((data) => {
-      const items = data[0];
-      const settings = {regional: Object.assign({}, data[1], data[2])};
+      rest.getItems(this.directive.payload.scope.token, this.timeout),
+      getRegionalSettings(this.directive.payload.scope.token, this.timeout)
+    ]).then(([items, regional]) => {
+      const settings = {regional};
       const discoveredDevices = [];
       const groupItems = [];
 
@@ -407,6 +400,37 @@ function convertV2Item(item, config = {}) {
     alexa: {
       value: metadata.values.join(','),
       config: metadata.config
+    }
+  });
+}
+
+/**
+ * Returns regional settings based on api version
+ * @param  {String} token
+ * @param  {Number} timeout
+ * @return {Promise}
+ */
+function getRegionalSettings(token, timeout) {
+  return rest.getRootResource(token, timeout).then((result) => {
+    const apiVersion = parseInt(result.version);
+    if (apiVersion >= 4) {
+      // Use root resource properties for OH 3.0 and later [API Version >= 4]
+      const [language, region] = result.locale.split('_');
+      return {
+        language: language,
+        measurementSystem: result.measurementSystem,
+        region: region
+      };
+    } else if (apiVersion >= 0) {
+      // Use service config for OH 2.0 to 2.5:
+      //  - org.eclipse.smarthome.i18n (OH 2.5) [API Version == 3]
+      //  - org.eclipse.smarthome.core.i18nprovider (OH 2.0 -> 2.4) [API Version <= 2]
+      const serviceId = apiVersion === 3 ? 'org.eclipse.smarthome.i18n' : 'org.eclipse.smarthome.core.i18nprovider';
+      return rest.getServiceConfig(token, serviceId, timeout).then((result) => ({
+        language: result.language,
+        measurementSystem: result.measurementSystem,
+        region: result.region
+      }));
     }
   });
 }

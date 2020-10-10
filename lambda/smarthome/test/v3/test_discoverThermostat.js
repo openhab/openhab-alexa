@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2019 Contributors to the openHAB project
+ * Copyright (c) 2010-2020 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -327,11 +327,10 @@ module.exports = {
       ]
     }
   },
-  services: {
-    "org.eclipse.smarthome.i18n": {
-      "measurementSystem": "US",
-      "region": "US"
-    }
+  api: {
+    "version": "4",
+    "locale": "en_US",
+    "measurementSystem": "US"
   },
   expected: {
     "gThermostat1": {

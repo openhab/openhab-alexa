@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2019 Contributors to the openHAB project
+ * Copyright (c) 2010-2020 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -33,8 +33,11 @@ describe('ohConnectorV3 Tests', function () {
       return Promise.resolve(
         Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
+    rest.getRootResource = function () {
+      return Promise.resolve(response.root || {});
+    }
     rest.getServiceConfig = function (token, serviceId) {
-      return Promise.resolve(response.services && response.services[serviceId]);
+      return Promise.resolve(response.services && response.services[serviceId] || {});
     };
     rest.postItemCommand = function (token, itemName, value) {
       capture.calls.push({'name': itemName, 'value': value});
@@ -82,7 +85,7 @@ describe('ohConnectorV3 Tests', function () {
 
         it(test.description, function (done) {
           Object.assign(catalog, test.catalog);
-          response = {'openhab': test.mocked, 'services': test.services};
+          response = {'openhab': test.mocked, 'root': test.api, 'services': test.services};
           ohv3.handleRequest(directive, callback);
           // wait for async responses
           setTimeout(function () {
