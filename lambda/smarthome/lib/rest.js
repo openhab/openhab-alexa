@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2019 Contributors to the openHAB project
+ * Copyright (c) 2010-2020 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -130,6 +130,21 @@ function getItemOrItems(token, itemName, timeout, parameters) {
 }
 
 /**
+ * Returns root resource
+ * @param  {String} token
+ * @param  {Number} timeout
+ * @return {Object}
+ */
+function getRootResource(token, timeout) {
+  const options = ohAuthenticationSettings(token, {
+    method: 'GET',
+    uri: `${config.openhab.baseURL}/`,
+    json: true
+  });
+  return handleRequest(options, timeout);
+}
+
+/**
  * Returns openHAB service config
  * @param  {String}   token
  * @param  {String}   serviceId
@@ -191,6 +206,7 @@ function handleRequest(options, timeout) {
 module.exports = {
   getItem: getItem,
   getItems: getItems,
+  getRootResource: getRootResource,
   getServiceConfig: getServiceConfig,
   postItemCommand: postItemCommand
 };

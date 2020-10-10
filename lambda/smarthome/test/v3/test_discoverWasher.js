@@ -106,6 +106,9 @@ module.exports = {
       "groupNames": []
     }
   ],
+  api: {
+    "version": "3"
+  },
   services: {
     "org.eclipse.smarthome.i18n": {
       "language": "en"
