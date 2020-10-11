@@ -130,10 +130,38 @@ function getItemOrItems(token, itemName, timeout, parameters) {
 }
 
 /**
+ * Returns openHAB server settings based on api version
+ * @param  {String}   token
+ * @param  {Number}   timeout
+ * @return {Promise}
+ */
+function getServerSettings(token, timeout) {
+  return getRootResource(token, timeout).then(({locale, measurementSystem, version}) => {
+    const apiVersion = parseInt(version);
+    if (apiVersion >= 4) {
+      // Use root resource properties for OH 3.0 and later [API Version >= 4]
+      const [language, region] = locale.split('_');
+      return {
+        regional: {language, measurementSystem, region}
+      };
+    } else {
+      // Use service config for OH 2.0 to 2.5:
+      //  - regional settings
+      //    - org.eclipse.smarthome.i18n (OH 2.5) [API Version == 3]
+      //    - org.eclipse.smarthome.core.i18nprovider (OH 2.0 -> 2.4) [API Version <= 2]
+      const serviceId = apiVersion === 3 ? 'org.eclipse.smarthome.i18n' : 'org.eclipse.smarthome.core.i18nprovider';
+      return getServiceConfig(token, serviceId, timeout).then(({language, measurementSystem, region}) => ({
+        regional: {language, measurementSystem, region}
+      }));
+    }
+  });
+}
+
+/**
  * Returns root resource
- * @param  {String} token
- * @param  {Number} timeout
- * @return {Object}
+ * @param  {String}   token
+ * @param  {Number}   timeout
+ * @return {Promise}
  */
 function getRootResource(token, timeout) {
   const options = ohAuthenticationSettings(token, {
@@ -206,7 +234,6 @@ function handleRequest(options, timeout) {
 module.exports = {
   getItem: getItem,
   getItems: getItems,
-  getRootResource: getRootResource,
-  getServiceConfig: getServiceConfig,
+  getServerSettings: getServerSettings,
   postItemCommand: postItemCommand
 };
