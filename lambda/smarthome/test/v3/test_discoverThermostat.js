@@ -327,10 +327,12 @@ module.exports = {
       ]
     }
   },
-  api: {
-    "version": "4",
-    "locale": "en_US",
-    "measurementSystem": "US"
+  settings: {
+    "regional": {
+      "language": "en",
+      "measurementSystem": "US",
+      "region": "US"
+    }
   },
   expected: {
     "gThermostat1": {

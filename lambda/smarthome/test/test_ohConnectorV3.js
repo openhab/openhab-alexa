@@ -33,12 +33,9 @@ describe('ohConnectorV3 Tests', function () {
       return Promise.resolve(
         Array.isArray(response.openhab) && response.staged ? response.openhab.shift() : response.openhab);
     };
-    rest.getRootResource = function () {
-      return Promise.resolve(response.root || {});
+    rest.getServerSettings = function () {
+      return Promise.resolve(response.settings || {});
     }
-    rest.getServiceConfig = function (token, serviceId) {
-      return Promise.resolve(response.services && response.services[serviceId] || {});
-    };
     rest.postItemCommand = function (token, itemName, value) {
       capture.calls.push({'name': itemName, 'value': value});
       return Promise.resolve();
@@ -85,7 +82,7 @@ describe('ohConnectorV3 Tests', function () {
 
         it(test.description, function (done) {
           Object.assign(catalog, test.catalog);
-          response = {'openhab': test.mocked, 'root': test.api, 'services': test.services};
+          response = {'openhab': test.mocked, 'settings': test.settings};
           ohv3.handleRequest(directive, callback);
           // wait for async responses
           setTimeout(function () {
