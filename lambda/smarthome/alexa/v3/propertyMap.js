@@ -80,8 +80,8 @@ const normalizeParameters = {
     // Update exit delay parameters within alexa supported spread (0-255) if defined
     property.parameters.exitDelay = !isNaN(property.parameters.exitDelay) ? property.parameters.exitDelay > 0 ?
       property.parameters.exitDelay < 255 ? property.parameters.exitDelay : 255 : 0 : undefined;
-    // Remove pin codes support parameters if item type not string
-    if (item.type !== 'String') {
+    // Remove pin codes support parameters if property item type not string
+    if (property.item.type !== 'String') {
       delete property.parameters.supportsPinCodes;
     }
   },
@@ -120,7 +120,7 @@ const normalizeParameters = {
     // Update range values if not valid (min >= max) using default based on item type
     if (equalizerRange.length !== 2 || equalizerRange.some(value => isNaN(value)) ||
       equalizerRange[0] >= equalizerRange[1]) {
-      equalizerRange = settings.property.state.range.default[item.type.split(':').shift()];
+      equalizerRange = settings.property.state.range.default[property.item.type.split(':').shift()];
     }
     // Define equalizer default based on parameter
     const equalizerDefault = parseInt(property.parameters.default);
@@ -226,7 +226,7 @@ const normalizeParameters = {
     // Update range values if not valid (min >= max; prec = 0; max - min <= prec) using default based on item type
     if (rangeValues.length !== 3 || rangeValues.some(value => isNaN(value)) || rangeValues[0] >= rangeValues[1] ||
       rangeValues[2] === 0 || rangeValues[1] - rangeValues[0] <= Math.abs(rangeValues[2])) {
-      rangeValues = settings.property.state.range.default[item.type.split(':').shift()];
+      rangeValues = settings.property.state.range.default[property.item.type.split(':').shift()];
     }
     // Set supported range object
     property.parameters.supportedRange = {
@@ -241,7 +241,7 @@ const normalizeParameters = {
     // Use item state presentation symbol and type dimension to determine unitOfMeasure if not defined or valid
     if (!property.parameters.unitOfMeasure || !getUnitOfMeasure({id: property.parameters.unitOfMeasure})) {
       property.parameters.unitOfMeasure = getUnitOfMeasure({
-        dimension: item.type.split(':')[1],
+        dimension: property.item.type.split(':')[1],
         symbol: getStatePresentationSymbol(item.stateDescription && item.stateDescription.pattern),
         system: settings.regional &&
           (settings.regional.measurementSystem || settings.regional.region),
