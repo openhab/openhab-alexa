@@ -274,7 +274,7 @@ module.exports = [
       alexa: {
         "event": {
           "header": {
-            "namespace": "Alexa.ColorTemperatureController",
+            "namespace": "Alexa",
             "name": "ErrorResponse"
           },
           "payload": {

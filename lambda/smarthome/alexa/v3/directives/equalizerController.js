@@ -95,8 +95,8 @@ class AlexaEqualizerController extends AlexaDirective {
    */
   setMode() {
     const properties = this.propertyMap.EqualizerController;
-    const postItem = Object.assign({}, properties.modes.item, {
-      state: normalize(properties.modes, this.directive.payload.mode)
+    const postItem = Object.assign({}, properties.mode.item, {
+      state: normalize(properties.mode, this.directive.payload.mode)
     });
     this.postItemsAndReturn([postItem]);
   }

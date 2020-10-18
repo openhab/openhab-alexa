@@ -533,7 +533,7 @@ function isInColorMode(colorItem, temperatureItem, binding) {
     const type = temperatureItem.type;
     // Determine omit saturation color mode property based on binding name
     const omitSaturationColorMode = getPropertySchema(
-      'colorTemperatureInKelvin', `.state.map.custom:omitSaturationColorMode.${binding}`);
+      'colorTemperatureInKelvin', `.state.property.omitSaturationColorMode.${binding}`);
 
     switch (type) {
       case 'Dimmer':

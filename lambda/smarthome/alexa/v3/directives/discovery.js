@@ -342,7 +342,7 @@ function convertV2Item(item, config = {}) {
           capabilities = ['EqualizerController.bands:treble'];
           break;
         case 'EqualizerMode':
-          capabilities = ['EqualizerController.modes'];
+          capabilities = ['EqualizerController.mode'];
           break;
         case 'MediaPlayer':
           capabilities = ['PlaybackController.playback'];

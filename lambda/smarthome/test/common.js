@@ -12,7 +12,7 @@
  */
 
 const { assert } = require('chai');
-const ajv = require('ajv')();
+const Ajv = require('ajv');
 const validate = initializeSchemaValidator();
 
 /**
@@ -185,10 +185,16 @@ function getCapabilitiesSemantics(capabilities) {
  */
 function initializeSchemaValidator() {
   try {
+    // Load alexa schema
     const schema = require('./schemas/alexa_smart_home_message_schema.json');
-    // Add metadata for json schema draft v6 support
-    ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
-    // Return function with compiled schema
+    // Instantiate the validator
+    const ajv = new Ajv({
+      schemaId: 'auto',
+      unknownFormats: ['double', 'int32']
+    });
+    // Add metadata for json schema draft v4 support
+    ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
+    // Return compiled schema validator function
     return ajv.compile(schema);
   } catch (e) {
     return;
@@ -305,7 +311,7 @@ assert.validSchema = function (result, canValidate) {
   //    https://github.com/alexa/alexa-smarthome/wiki/Validation-Schemas
   if (canValidate !== false && typeof validate === 'function') {
     [].concat(result).forEach(data => assert(validate(data),
-      `Schema Validation Failed\nData: ${JSON.stringify(data)}\n\nErrors: ${ajv.errorsText(validate.errors)}`));
+      `Schema Validation Failed\nData: ${JSON.stringify(data)}\n\nErrors: ${JSON.stringify(validate.errors)}`));
   }
 };
 
