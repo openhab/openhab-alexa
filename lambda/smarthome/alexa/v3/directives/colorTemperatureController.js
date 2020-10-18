@@ -79,7 +79,6 @@ class AlexaColorTemperatureController extends AlexaDirective {
       // Generate error if in color mode
       if (isInColorMode(colorItem, temperatureItem, binding)) {
         this.returnAlexaErrorResponse({
-          namespace: this.directive.header.namespace,
           payload: {
             type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
             message: 'The light is currently set to a color.',

@@ -109,7 +109,7 @@ module.exports = {
       "tags": [],
       "metadata": {
         "alexa": {
-          "value": "EqualizerController.modes",
+          "value": "EqualizerController.mode",
           "config": {
             "supportedModes": "MOVIE,TV,FOOBAR"
           }
@@ -138,7 +138,7 @@ module.exports = {
         "Alexa.Speaker.volume",
         "Alexa.PlaybackController",
         "Alexa.EqualizerController.bands",
-        "Alexa.EqualizerController.modes",
+        "Alexa.EqualizerController.mode",
         "Alexa.EndpointHealth.connectivity"
       ],
       "displayCategories": ["SPEAKER"],
@@ -174,7 +174,7 @@ module.exports = {
             "item": {"name": "equalizerTreble", "type": "Number"},
             "schema": {"name": "equalizerBands"}
           },
-          "modes": {
+          "mode": {
             "parameters": {"supportedModes": ["MOVIE", "TV"]},
             "item": {"name": "equalizerMode", "type": "String"},
             "schema": {"name": "equalizerMode"}

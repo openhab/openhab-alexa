@@ -88,7 +88,7 @@ module.exports = Object.freeze({
       'category': 'SPEAKER',
       'properties': [
         {'name': 'bands', 'schema': 'equalizerBands', 'components': ['bass', 'midrange', 'treble']},
-        {'name': 'modes', 'schema': 'equalizerMode', 'report': 'mode'}
+        {'name': 'mode', 'schema': 'equalizerMode'}
       ]
     },
     'InputController': {
@@ -249,7 +249,7 @@ module.exports = Object.freeze({
             'Switch':  {'OK': 'OFF', 'ALARM': 'ON'}
           }
         },
-        'type': 'string'
+        'type': 'object'
       }
     },
     'armState': {
@@ -297,8 +297,8 @@ module.exports = Object.freeze({
     'colorTemperatureInKelvin': {
       'itemTypes': ['Dimmer', 'Number'],
       'state': {
-        'map': {
-          'custom:omitSaturationColorMode': {
+        'property': {
+          'omitSaturationColorMode': {
             'hue': true
           }
         },

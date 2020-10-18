@@ -506,22 +506,30 @@ module.exports = [
             {
               "namespace": "Alexa.SecurityPanelController",
               "name": "burglaryAlarm",
-              "value": "ALARM"
+              "value": {
+                "value": "ALARM"
+              }
             },
             {
               "namespace": "Alexa.SecurityPanelController",
               "name": "fireAlarm",
-              "value": "OK"
+              "value": {
+                "value": "OK"
+              }
             },
             {
               "namespace": "Alexa.SecurityPanelController",
               "name": "carbonMonoxideAlarm",
-              "value": "OK"
+              "value": {
+                "value": "OK"
+              }
             },
             {
               "namespace": "Alexa.SecurityPanelController",
               "name": "waterAlarm",
-              "value": "OK"
+              "value": {
+                "value": "OK"
+              }
             }
           ]
         },

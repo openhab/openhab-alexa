@@ -22,6 +22,17 @@ const { getPropertySchema, getPropertyStateMap } = require('./capabilities.js');
  */
 const normalizeFunctions = {
   /**
+   * Normalizes alarm state value
+   * @param  {String} value
+   * @return {Object}
+   */
+  alarmState: function (value) {
+    return {
+      value: value
+    };
+  },
+
+  /**
    * Normalizes brightness value
    * @param  {*}      value
    * @return {Integer}
@@ -40,7 +51,7 @@ const normalizeFunctions = {
   /**
    * Normalizes channel value
    * @param  {*}      value
-   * @return {String}
+   * @return {Object}
    */
   channel: function (value) {
     return {
@@ -190,16 +201,16 @@ const normalizeFunctions = {
 };
 
 /**
- * Normalizes property state for a given interface property from one of the steps in the order below:
+ * Normalizes property state for a given interface property using the steps in the order below:
  *
- *    1) normalize function
- *      use for data manipulation which cannot be handled by property state map
- *    2) property state map
+ *    1) property state map
  *      a) user map (provided in property parameters)
  *        e.g. [LOCKED="1:3",UNLOCKED="2:4",JAMMED=11] (lockState)
  *      b) custom map (based on a specific property parameter)
  *        e.g. [binding="nest"] (thermostatMode)
  *      c) default map (based on item type)
+ *    2) normalize function
+ *      specific data manipulation based on property schema name
  *
  * @param  {Object} property
  * @param  {*}      value       [only needed if normalizing directive payload value]
@@ -216,11 +227,7 @@ function normalize(property, value, options) {
   if (typeof state === 'undefined') {
     return;
   }
-  // Return normalized property state using method if defined
-  if (typeof normalizeFunctions[method] === 'function') {
-    return normalizeFunctions[method](state, property, options);
-  }
-  // Return normalized property state using state map otherwise
+  // Normalize property state using state map if not empty
   //  { <alexaState>: '<ohState1>:<ohState2>:...', ... }
   if (Object.keys(propertyStateMap).length > 0) {
     if (typeof propertyStateMap[state] !== 'undefined') {
@@ -233,6 +240,11 @@ function normalize(property, value, options) {
         key => propertyStateMap[key].toString().split(':').includes(state.toString()));
     }
   }
+  // Normalize property state using function if method defined
+  if (typeof normalizeFunctions[method] === 'function') {
+    state = normalizeFunctions[method](state, property, options);
+  }
+
   return state;
 }
 

@@ -32,7 +32,7 @@ module.exports = [
                 "parameters": {"range": {"minimum": -5, "maximum": 5}, "default": 0},
                 "item": {"name": "equalizerTreble", "type": "Number"}, "schema": {"name": "equalizerBands"}
               },
-              "modes": {
+              "mode": {
                 "parameters": {"supportedModes": ["MOVIE", "TV"]},
                 "item": {"name": "equalizerMode", "type": "String"}, "schema": {"name": "equalizerMode"}
               }
@@ -327,7 +327,7 @@ module.exports = [
         "cookie": {
           "propertyMap": JSON.stringify({
             "EqualizerController": {
-              "modes": {
+              "mode": {
                 "parameters": {"supportedModes": ["MOVIE", "TV"]},
                 "item": {"name": "equalizerMode", "type": "String"}, "schema": {"name": "equalizerMode"}
               }
