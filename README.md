@@ -57,7 +57,7 @@ If using a private openHAB Cloud Connector, in order to setup the OAuth2 server,
 ```
 $ mongo
 > use openhab
-> db.oauth2clients.insert({ name: "alexa", clientId: "alexa-skill", clientSecret: "<clientSecret>" })
+> db.oauth2clients.insert({ name: "Alexa", description: "Alexa Voice Control", icon: "alexa.png", clientId: "alexa-skill", clientSecret: "<clientSecret>" })
 > db.oauth2scopes.insert({ name: "alexa", description: "Access to openHAB Cloud specific API for Amazon Alexa" })
 ```
 
