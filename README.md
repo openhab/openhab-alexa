@@ -50,7 +50,23 @@ region=us-east-1
 
 ### OAuth2 Provider
 
-If you aren't using your own OAuth2 server (e.g. private openHAB Cloud Connector), it is highly recommended to use [Login with Amazon](https://developer.amazon.com/loginwithamazon/console/site/lwa/overview.html). See [this post](https://developer.amazon.com/public/community/post/Tx3CX1ETRZZ2NPC/Alexa-Account-Linking-5-Steps-to-Seamlessly-Link-Your-Alexa-Skill-with-Login-wit) to set it up for your private skill.
+If you aren't using your own OAuth2 server (e.g. private openHAB Cloud Connector), it is highly recommended to use [Login with Amazon](https://developer.amazon.com/loginwithamazon/console/site/lwa/overview.html). See [this post](https://developer.amazon.com/public/community/post/Tx3CX1ETRZZ2NPC/Alexa-Account-Linking-5-Steps-to-Seamlessly-Link-Your-Alexa-Skill-with-Login-wit) to set it up for your private skill. Doing so allows [other server level authentication methods](#openhab-server) to be used over the Alexa Smart Home skill requirements for OAuth2 authentication.
+
+If using a private openHAB Cloud Connector, in order to setup the OAuth2 server, make sure to create a client profile and scope to use with the skill in the Mango database. It is recommended to use an online random hex number generator to create a unique client secret.
+
+```
+$ mongo
+> use openhab
+> db.oauth2clients.insert({ name: "alexa", clientId: "alexa-skill", clientSecret: "<clientSecret>" })
+> db.oauth2scopes.insert({ name: "alexa", description: "Access to openHAB Cloud specific API for Amazon Alexa" })
+```
+
+And use the following settings during the skill account linking deployment step instead:
+
+* Authorization URL: `https://openhab.myserver.com/oauth2/authorize`
+* Client ID: `alexa-skill`
+* Scope: `alexa`
+* Access Token URI: `https://openhab.myserver.com/oauth2/token`
 
 ### openHAB Server
 
@@ -71,10 +87,10 @@ To configure the server path and credentials, you will need to setup the applica
     ```
     $ ask deploy
     Profile for the deployment: [default]
-    -------------------- Update Skill Project --------------------
+    -------------------- Create Skill Project --------------------
     Skill Id: <skillId>
     Skill deployment finished.
-    [Warn]: No runtime and handler settings found for alexaUsage "smartHome/default" when creating Lambda function. CLI will use "nodejs8.10" and "index.handler" as the Runtime and Handler to create Lambda. You can update the runtime and handler for the target Lambda in the project config and deploy again if you want to set differently.
+    [Warn]: No runtime and handler settings found for alexaUsage "smartHome/default" when creating Lambda function. CLI will use "nodejs10.x" and "index.handler" as the Runtime and Handler to create Lambda. You can update the runtime and handler for the target Lambda in the project config and deploy again if you want to set differently.
     Lambda deployment finished.
     Lambda function(s) created:
       [Lambda ARN] <lambdaArn>
@@ -95,6 +111,7 @@ To configure the server path and credentials, you will need to setup the applica
     ? Client Authentication Scheme:  HTTP_BASIC
     ? Optional* Default Access Token Expiration Time In Seconds:
     ? Optional* Reciprocal Access Token Url:
+    ? Optional* RedirectUrls for App-to-App Account Linking (separated by comma):
     Account linking created successfully.
     ```
 
