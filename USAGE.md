@@ -1159,6 +1159,7 @@ Here are some of the most common generic errors you may encounter while using th
   * Look for any relevant errors in your openHAB server logs.
   * If only new devices aren't found, make sure your last Alexa-related config changes are valid.
   * If necessary, stagger the discovery process by adding a couple devices at a time to isolate the culprit.
+  * Check the spelling of the alexa namespace metadata.  They are case sensative (PowerController.powerstate <> Powercontroller.powerstate)
 
 ### Device Not Responding
 * Alexa will respond with "_device_ isn't responding, please check its network connection and power supply", and in some rare occasions, no response or acknowledgement will be given.
