@@ -68,7 +68,12 @@ The skill connects your openHAB setup through the [myopenHAB.org](http://myopenH
 
 ## Requirements
 
-* [openHAB Cloud Connector](https://www.openhab.org/addons/integrations/openhabcloud/) configured using myopenHAB.org
+::: tip
+This integration relies on the cloud connector addon.
+More information can be found in the corresponding [docs page](https://www.openhab.org/link/openhabcloud).
+:::
+
+* openHAB Cloud Connector configured using myopenHAB.org
 * Amazon account
 * Amazon Echo, Amazon Echo Dot or compatible Alexa device
 
