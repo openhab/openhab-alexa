@@ -7,8 +7,8 @@
     "largeIconUri": "https://raw.githubusercontent.com/openhab/openhab-alexa/master/resources/icons/openhablogo-512.png",
     "examplePhrases": [
       "Alexa、キッチンをつけて",
-      "Alexa、ベッドルームを 50 %にして",
-      "Alexa、サーモスタットを 2 度上げて"
+      "Alexa、寝室を50パーセントにして",
+      "Alexa、サーモスタットを2度上げて"
     ],
     "keywords": [
       "openHAB",
