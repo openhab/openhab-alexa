@@ -1,7 +1,7 @@
 ---
 layout: documentation
 title: Amazon Alexa Smart Home Skill
-source: https://github.com/openhab/openhab-alexa/blob/master/USAGE.md
+source: https://github.com/openhab/openhab-alexa/blob/main/USAGE.md
 description: "Alexa is an intelligent personal assistant developed by Amazon and designed to run on smart speakers and devices such as the Amazon Echo and Dot."
 ---
 
