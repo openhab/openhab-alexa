@@ -1,6 +1,6 @@
 # Amazon Alexa Smart Home skill for openHAB 2
 
-[![Build Status](https://github.com/openhab/openhab-alexa/workflows/build/badge.svg?branch=master)](https://github.com/openhab/openhab-alexa/actions?query=workflow%3Abuild)
+[![Build Status](https://github.com/openhab/openhab-alexa/workflows/build/badge.svg?branch=main)](https://github.com/openhab/openhab-alexa/actions?query=workflow%3Abuild)
 [![Crowdin](https://badges.crowdin.net/openhab-alexa/localized.svg)](https://crowdin.com/project/openhab-alexa)
 
 This is a nodejs / lambda application that connects the Alexa Smart Home API to a user's openHAB instance, either directly or through the openHAB Cloud service (preferred).  The Smart Home API is not a general skill API, it allows the user to bypass using a application wake work and instead ask Alexa to perform a smart home action like "Alexa turn lights on"
