@@ -1,6 +1,8 @@
-/lambda/*/catalog.json
-/lambda/*/config.js
-ssl/
+.ask
+lambda/ssl/
+skill-package/accountLinking.json
+
+# VS Code
 .vscode
 
 # Logs
