@@ -1,0 +1,36 @@
+name: Locale
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ resources/locales/** ]
+
+jobs:
+  update:
+    name: Locale Updates
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+
+    - name: Update skill locale
+      run: node tools/updateSkillLocale.js
+
+    - name: Check for changes to commit
+      id: changes
+      run: test -n "$(git status -suno)"
+      continue-on-error: true
+
+    - name: Commit and push changes
+      if: steps.changes.outcome == 'success'
+      run: |
+        git config user.name openhab-bot
+        git config user.email bot@openhab.org
+        git commit -a -m "New locale updates"
+        git push

@@ -1,0 +1,23 @@
+name: Documentation
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ '**.md' ]
+  pull_request:
+    branches: [ main ]
+    paths: [ '**.md' ]
+
+jobs:
+  markdown:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Lint Markdown files
+      uses: nosborn/github-action-markdown-cli@v2
+      with:
+        files: '**.md'

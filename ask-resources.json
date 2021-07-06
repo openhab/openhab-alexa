@@ -1,0 +1,33 @@
+{
+  "askcliResourcesVersion": "2020-03-31",
+  "profiles": {
+    "default": {
+      "skillMetadata": {
+        "src": "./skill-package"
+      },
+      "code": {
+        "default": {
+          "src": "./lambda"
+        }
+      },
+      "skillInfrastructure": {
+        "type": "@ask-cli/cfn-deployer",
+        "userConfig": {
+          "awsRegion": "us-east-1",
+          "runtime": "nodejs14.x",
+          "handler": "index.handler",
+          "templatePath": "./infrastructure/cfn-deployer/skill-stack.yml",
+          "cfn": {
+            "parameters": {
+              "LambdaFunctionName": "alexa-openhab",
+              "LambdaLogLevel": "info",
+              "OpenHABBaseURL": "https://myopenhab.org",
+              "OpenHABUsername": "",
+              "OpenHABPassword": ""
+            }
+          }
+        }
+      }
+    }
+  }
+}

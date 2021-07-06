@@ -1,0 +1,66 @@
+name: Deployment
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull Request (development)
+        required: false
+      tag:
+        description: Release Version (live)
+        required: false
+
+env:
+  DEPLOY_ENV: ${{ (github.event_name == 'release' || github.event.inputs.tag) && 'live' || 'development' }}
+
+jobs:
+  skill:
+    name: Skill Deployment
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.inputs.pr && format('refs/pull/{0}/merge', github.event.inputs.pr) || github.event.inputs.tag }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+        cache: npm
+        cache-dependency-path: lambda/package-lock.json
+
+    - name: Install ASK CLI
+      run: npm install -g jsetton/ask-cli
+
+    - name: Cache ASK CLI states
+      uses: actions/cache@v2
+      with:
+        path: .ask/ask-states.json
+        key: ask-states-${{ env.DEPLOY_ENV }}
+
+    - name: Generate deployment config
+      run: node tools/generateDeployConfig.js
+      env:
+        FUNCTION_NAME: ${{ env.DEPLOY_ENV == 'live' && 'openhab-alexa' || 'openhab-alexa-beta' }}
+        LOG_LEVEL: ${{ env.DEPLOY_ENV == 'live' && 'error' || 'info' }}
+        S3_BUCKET_NA: ${{ secrets.S3_BUCKET_NA }}
+        S3_BUCKET_EU: ${{ secrets.S3_BUCKET_EU }}
+        S3_BUCKET_FE: ${{ secrets.S3_BUCKET_FE }}
+        SKILL_ID: ${{ secrets.SKILL_ID }}
+        TESTING_USERNAME: ${{ secrets.TESTING_USERNAME }}
+        TESTING_PASSWORD: ${{ secrets.TESTING_PASSWORD }}
+
+    - name: Deploy skill and AWS resources
+      run: ask deploy
+      env:
+        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        ASK_ACCESS_TOKEN: ${{ secrets.ASK_ACCESS_TOKEN }}
+        ASK_REFRESH_TOKEN : ${{ secrets.ASK_REFRESH_TOKEN }}
+        ASK_VENDOR_ID: ${{ secrets.ASK_VENDOR_ID }}
+        ASK_SHARE_USAGE: false
