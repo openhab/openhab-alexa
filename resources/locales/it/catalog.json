@@ -19,14 +19,14 @@
     "@Value.Down": "Giù",
     "@Value.Increase": "Aumento",
     "@Value.Left": "Sinistra",
-    "@Value.Move": "Move",
-    "@Value.Off": "Off",
-    "@Value.On": "On",
-    "@Value.Pause": "Pause",
-    "@Value.Resume": "Resume",
-    "@Value.Right": "Right",
-    "@Value.Start": "Start",
-    "@Value.Stop": "Stop",
-    "@Value.Up": "Up"
+    "@Value.Move": "Mossa",
+    "@Value.Off": "Spento",
+    "@Value.On": "Acceso",
+    "@Value.Pause": "Pausa",
+    "@Value.Resume": "Riprendere",
+    "@Value.Right": "Destro",
+    "@Value.Start": "Avvio",
+    "@Value.Stop": "Fermare",
+    "@Value.Up": "Alto"
   }
 }
