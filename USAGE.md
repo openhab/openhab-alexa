@@ -513,7 +513,7 @@ Device Types | Supported Attributes | Description
 `Dryer` | _[`PowerState`](#powerstate)_ | A device that dries wet clothing.
 `Fan` | _[`PowerState`](#powerstate)_, _[`FanSpeed`](#fanspeed)_, [`FanDirection`](#fandirection), [`FanOscillate`](#fanoscillate) | A fan.
 `GameConsole` | _[`PowerState`](#powerstate)_, [`NetworkAccess`](#networkaccess) | A game console, such as Microsoft Xbox or Nintendo Switch.
-`GarageDoor` | _[`OpenState`](#openstate)_, [`TargetOpenState`](#targetopenstate), [`CurrentOpenState`](#currentopenstate), [`ObstacleAlert`](#obstaclealert), [`SafetyBeamAlert`](#safetybeamalert) | A garage door. Supports unlock by voice code. Only supported in `en-US`. For other languages, use `Door` instead.
+`GarageDoor` | _[`OpenState`](#openstate)_, [`TargetOpenState`](#targetopenstate), [`CurrentOpenState`](#currentopenstate), [`ObstacleAlert`](#obstaclealert) | A garage door. Supports unlock by voice code. Only supported in `en-US`. For other languages, use `Door` instead.
 `Headphones` | Same as `BluetoothSpeaker` | A wearable device that transmits audio directly into the ear.
 `Hub` | _[`PowerState`](#powerstate)_ | A smart-home hub.
 `Laptop` | _[`PowerState`](#powerstate)_, [`BatteryLevel`](#batterylevel), [`NetworkAccess`](#networkaccess) | A laptop or other mobile computer.
@@ -627,18 +627,6 @@ Items that represent the current open state of a door or window blind with decou
 #### `ObstacleAlert`
 
 Items that represent the alert state when an obstacle is detected preventing closing a garage door. This needs to be paired with [`OpenState`](#openstate). This attribute only works with [`GarageDoor`](#device-types) type. When in alert state, close requests will trigger an error response.
-
-* Supported item types:
-  * Contact [OK="CLOSED", ALERT="OPEN"]
-  * Switch [OK="OFF", ALERT="ON"]
-* Supported metadata parameters:
-  * inverted=`<boolean>`
-    * set to true to invert item state
-    * defaults to false
-
-#### `SafetyBeamAlert`
-
-Items that represent the alert state when a safety beam was breached preventing closing a garage door. This needs to be paired with [`OpenState`](#openstate). This attribute only works with [`GarageDoor`](#device-types) type. When in alert state, close requests will trigger an error response.
 
 * Supported item types:
   * Contact [OK="CLOSED", ALERT="OPEN"]
@@ -1897,7 +1885,7 @@ PlaybackController | [`Playback`](#playback), [`PlaybackStop`](#playbackstop) | 
 PowerController | [`PowerState`](#powerstate) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-FR`, `it-IT`, `ja-JP`
 PowerLevelController | [`PowerLevel`](#powerlevel) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `it-IT`, `ja-JP`
 RangeController | [`RangeValue`](#rangevalue), [`BatteryLevel`](#batterylevel), [`CurrentHumidity`](#currenthumidity), [`FanSpeed`](#fanspeed), [`PositionState`](#positionstate), [`TiltAngle`](#tiltangle) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-CA`, `fr-FR`, `it-IT`, `ja-JP`
-Safety | [`ObstacleAlert`](#obstaclealert), [`SafetyBeamAlert`](#safetybeamalert) | `en-US`
+Safety | [`ObstacleAlert`](#obstaclealert) | `en-US`
 SceneController | [`Scene`](#scene), [`Activity`](#activity) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `it-IT`, `ja-JP`
 SecurityPanelController | [`ArmState`](#armstate), [`BurglaryAlarm`](#burglaryalarm), [`CarbonMonoxideAlarm`](#carbonmonoxidealarm), [`FireAlarm`](#firealarm), [`WaterAlarm`](#wateralarm) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `it-IT`, `ja-JP`, `pt-BR`
 Speaker | [`VolumeLevel`](#volumelevel), [`MuteState`](#mutestate) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `it-IT`, `ja-JP`

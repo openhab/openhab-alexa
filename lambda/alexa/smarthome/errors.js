@@ -359,20 +359,6 @@ class SafetyObstacleDetectedError extends SafetyError {
 }
 
 /**
- * Defines safety beam breached error class
- * @extends SafetyError
- */
-class SafetyBeamBreachedError extends SafetyError {
-  /**
-   * Returns error type
-   * @return {String}
-   */
-  get type() {
-    return 'SAFETY_BEAM_BREACHED';
-  }
-}
-
-/**
  * Defines security panel namespace error class
  *  https://developer.amazon.com/docs/device-apis/alexa-securitypanelcontroller-errorresponse.html
  * @extends AlexaError
@@ -624,7 +610,6 @@ module.exports = {
   ValueOutOfRangeError,
   AuthorizationAcceptGrantError,
   SafetyObstacleDetectedError,
-  SafetyBeamBreachedError,
   SecurityPanelAuthorizationRequiredError,
   SecurityPanelBypassNeededError,
   SecurityPanelNotReadyError,

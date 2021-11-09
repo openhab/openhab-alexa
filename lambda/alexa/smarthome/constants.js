@@ -120,7 +120,6 @@ const Property = Object.freeze({
   POWER_STATE: 'powerState',
   RANGE_VALUE: 'rangeValue',
   READY_ALERT: 'readyAlert',
-  SAFETY_BEAM_ALERT: 'safetyBeamAlert',
   SCENE: 'scene',
   TARGET_SETPOINT: 'targetSetpoint',
   TEMPERATURE: 'temperature',

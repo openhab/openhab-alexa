@@ -180,61 +180,6 @@ module.exports = [
     }
   },
   {
-    description: 'set mode open state safety beam breached error',
-    directive: {
-      header: {
-        namespace: 'Alexa.ModeController',
-        instance: 'OpenState',
-        name: 'SetMode'
-      },
-      endpoint: {
-        endpointId: 'gGarageDoor',
-        cookie: {
-          capabilities: JSON.stringify([
-            {
-              name: 'ModeController',
-              instance: 'OpenState',
-              property: 'mode',
-              parameters: {
-                capabilityNames: ['@Setting.Opening'],
-                supportedModes: { OPEN: ['@Value.Open'], CLOSED: ['@Value.Close'] },
-                actionMappings: { Close: 'CLOSED', Open: 'OPEN', Lower: 'CLOSED', Raise: 'OPEN' },
-                stateMappings: { Closed: 'CLOSED', Open: 'OPEN' },
-                CLOSED: 'ON',
-                OPEN: 'OFF'
-              },
-              item: { name: 'GarageDoor', type: 'Switch' }
-            },
-            {
-              name: 'Safety',
-              property: 'safetyBeamAlert',
-              parameters: { inverted: true },
-              item: { name: 'SafetyBeamAlert', type: 'Switch' }
-            }
-          ])
-        }
-      },
-      payload: {
-        mode: 'CLOSED'
-      }
-    },
-    items: [{ name: 'SafetyBeamAlert', state: 'OFF', type: 'Switch' }],
-    expected: {
-      alexa: {
-        event: {
-          header: {
-            namespace: 'Alexa.Safety',
-            name: 'ErrorResponse'
-          },
-          payload: {
-            type: 'SAFETY_BEAM_BREACHED',
-            message: 'Unable to close door because a safety beam was breached.'
-          }
-        }
-      }
-    }
-  },
-  {
     description: 'adjust mode',
     directive: {
       header: {

@@ -36,8 +36,7 @@ class Safety extends AlexaCapability {
    */
   get supportedProperties() {
     return {
-      [Property.OBSTACLE_ALERT]: AlertState,
-      [Property.SAFETY_BEAM_ALERT]: AlertState
+      [Property.OBSTACLE_ALERT]: AlertState
     };
   }
 

@@ -12,7 +12,7 @@
  */
 
 const { Interface, Property } = require('../constants');
-const { SafetyBeamBreachedError, SafetyObstacleDetectedError } = require('../errors');
+const { SafetyObstacleDetectedError } = require('../errors');
 const { AlertState } = require('../properties');
 const AlexaHandler = require('./handler');
 
@@ -58,8 +58,6 @@ class Safety extends AlexaHandler {
       switch (alert.name) {
         case Property.OBSTACLE_ALERT:
           throw new SafetyObstacleDetectedError('Unable to close door because an obstacle is detected.');
-        case Property.SAFETY_BEAM_ALERT:
-          throw new SafetyBeamBreachedError('Unable to close door because a safety beam was breached.');
       }
     }
   }
