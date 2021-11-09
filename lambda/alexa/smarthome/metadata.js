@@ -48,7 +48,6 @@ const Parameter = Object.freeze({
   SUPPORTED_ARM_STATES: 'supportedArmStates',
   SUPPORTED_COMMANDS: 'supportedCommands',
   SUPPORTED_INPUTS: 'supportedInputs',
-  SUPPORTED_KEYS: 'supportedKeys',
   SUPPORTED_MODES: 'supportedModes',
   SUPPORTED_OPERATIONS: 'supportedOperations',
   SUPPORTED_RANGE: 'supportedRange',
