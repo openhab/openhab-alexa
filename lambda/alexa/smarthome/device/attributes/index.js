@@ -59,7 +59,6 @@ module.exports = {
   PowerState: require('./powerState'),
   RangeValue: require('./rangeValue'),
   ReadyAlert: require('./readyAlert'),
-  SafetyBeamAlert: require('./safetyBeamAlert'),
   Scene: require('./scene'),
   TargetTemperature: require('./targetTemperature'),
   Temperature: require('./temperature'),

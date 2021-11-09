@@ -96,15 +96,6 @@ module.exports = {
               }
             }
           }
-        },
-        {
-          type: 'Contact',
-          name: 'safetyBeamGarageDoor3',
-          metadata: {
-            alexa: {
-              value: 'SafetyBeamAlert'
-            }
-          }
         }
       ]
     },
@@ -413,12 +404,6 @@ module.exports = {
             CLOSED: 'OPEN'
           },
           item: { name: 'currentGarageDoor3', type: 'Contact' }
-        },
-        {
-          name: 'Safety',
-          property: 'safetyBeamAlert',
-          parameters: {},
-          item: { name: 'safetyBeamGarageDoor3', type: 'Contact' }
         }
       ]
     },

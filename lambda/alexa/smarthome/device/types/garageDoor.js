@@ -13,7 +13,7 @@
 
 const AlexaDisplayCategory = require('@alexa/smarthome/category');
 const Door = require('./door');
-const { ObstacleAlert, SafetyBeamAlert } = require('../attributes');
+const { ObstacleAlert } = require('../attributes');
 
 /**
  * Defines garage door device type class
@@ -33,7 +33,7 @@ class GarageDoor extends Door {
    * @return {Array}
    */
   static get supportedAttributes() {
-    return [ObstacleAlert, SafetyBeamAlert, ...super.supportedAttributes];
+    return [ObstacleAlert, ...super.supportedAttributes];
   }
 
   /**
