@@ -76,7 +76,6 @@ module.exports = {
   ],
   EqualizerController: [require('./equalizerController.test.js')],
   InputController: [require('./inputController.test.js')],
-  KeypadController: [require('./keypadController.test.js')],
   LockController: [require('./lockController.test.js')],
   ModeController: [require('./modeController.test.js')],
   NetworkingAccessController: [require('./networkingAccessController.test.js')],

@@ -28,7 +28,6 @@ module.exports = {
   [Capability.ENDPOINT_HEALTH]: require('./endpointHealth'),
   [Capability.EQUALIZER_CONTROLLER]: require('./equalizerController'),
   [Capability.INPUT_CONTROLLER]: require('./inputController'),
-  [Capability.KEYPAD_CONTROLLER]: require('./keypadController'),
   [Capability.LOCK_CONTROLLER]: require('./lockController'),
   [Capability.MODE_CONTROLLER]: require('./modeController'),
   [Capability.MOTION_SENSOR]: require('./motionSensor'),

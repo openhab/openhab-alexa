@@ -26,7 +26,6 @@ module.exports = {
   Discovery: require('./discovery'),
   EqualizerController: require('./equalizerController'),
   InputController: require('./inputController'),
-  KeypadController: require('./keypadController'),
   LockController: require('./lockController'),
   ModeController: require('./modeController'),
   NetworkingAccessController: require('./networkingAccessController'),
