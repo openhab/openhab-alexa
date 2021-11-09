@@ -6298,60 +6298,6 @@
                                         ]
                                     }
                                 }
-                            },
-                            {
-                                "type": "object",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "enum": [
-                                            "AlexaInterface"
-                                        ]
-                                    },
-                                    "interface": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Alexa.KeypadController"
-                                        ]
-                                    },
-                                    "version": {
-                                        "oneOf": [
-                                            {
-                                                "type": "string",
-                                                "enum": [
-                                                    "3"
-                                                ]
-                                            },
-                                            {
-                                                "type": "integer",
-                                                "format": "int32",
-                                                "enum": [
-                                                    3
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "keys": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string",
-                                            "enum": [
-                                                "UP",
-                                                "DOWN",
-                                                "LEFT",
-                                                "RIGHT",
-                                                "SELECT",
-                                                "PAGE_UP",
-                                                "PAGE_DOWN",
-                                                "PAGE_LEFT",
-                                                "PAGE_RIGHT",
-                                                "INFO",
-                                                "MORE",
-                                                "BACK"
-                                            ]
-                                        }
-                                    }
-                                }
                             }
                         ]
                     },
