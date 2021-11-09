@@ -33,7 +33,6 @@ module.exports = {
   EqualizerMode: require('./equalizerMode'),
   Generic: require('./generic'),
   Input: require('./input'),
-  Keystroke: require('./keystroke'),
   LockState: require('./lockState'),
   LowerSetpoint: require('./lowerSetpoint'),
   Mode: require('./mode'),

@@ -25,18 +25,6 @@ module.exports = {
       },
       members: [
         {
-          type: 'String',
-          name: 'navigation1',
-          metadata: {
-            alexa: {
-              value: 'Navigation',
-              config: {
-                supportedKeys: 'UP,DOWN,LEFT,RIGHT,SELECT,FOOBAR'
-              }
-            }
-          }
-        },
-        {
           type: 'Player',
           name: 'playback1',
           metadata: {
@@ -83,16 +71,6 @@ module.exports = {
       }
     },
     {
-      type: 'String',
-      name: 'navigation3',
-      label: 'Streaming Device Navigation 3',
-      metadata: {
-        alexa: {
-          value: 'Navigation'
-        }
-      }
-    },
-    {
       type: 'Player',
       name: 'playback3',
       label: 'Streaming Device Playback 3',
@@ -105,20 +83,13 @@ module.exports = {
   ],
   expected: {
     gStreamingDevice1: {
-      capabilities: ['Alexa.KeypadController', 'Alexa.PlaybackController', 'Alexa'],
+      capabilities: ['Alexa.PlaybackController', 'Alexa'],
       displayCategories: ['STREAMING_DEVICE'],
       friendlyName: 'Streaming Device 1',
       parameters: {
-        'Alexa.KeypadController.keys': ['UP', 'DOWN', 'LEFT', 'RIGHT', 'SELECT'],
         'Alexa.PlaybackController.supportedOperations': ['Play', 'Pause', 'Next', 'Previous', 'Stop']
       },
       cookie: [
-        {
-          name: 'KeypadController',
-          property: 'keystroke',
-          parameters: { supportedKeys: ['UP', 'DOWN', 'LEFT', 'RIGHT', 'SELECT'] },
-          item: { name: 'navigation1', type: 'String' }
-        },
         {
           name: 'PlaybackController',
           property: 'playback',
@@ -131,27 +102,6 @@ module.exports = {
       capabilities: ['Alexa.PlaybackController', 'Alexa'],
       displayCategories: ['STREAMING_DEVICE'],
       friendlyName: 'Streaming Device 2'
-    },
-    navigation3: {
-      capabilities: ['Alexa.KeypadController', 'Alexa'],
-      displayCategories: ['STREAMING_DEVICE'],
-      friendlyName: 'Streaming Device Navigation 3',
-      parameters: {
-        'Alexa.KeypadController.keys': [
-          'UP',
-          'DOWN',
-          'LEFT',
-          'RIGHT',
-          'SELECT',
-          'PAGE_UP',
-          'PAGE_DOWN',
-          'PAGE_LEFT',
-          'PAGE_RIGHT',
-          'INFO',
-          'MORE',
-          'BACK'
-        ]
-      }
     },
     playback3: {
       capabilities: ['Alexa.PlaybackController', 'Alexa'],

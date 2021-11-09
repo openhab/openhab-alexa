@@ -48,7 +48,6 @@ module.exports = {
   Mode: require('./mode'),
   MotionDetectionState: require('./motionDetectionState'),
   MuteState: require('./muteState'),
-  Navigation: require('./navigation'),
   NetworkAccess: require('./networkAccess'),
   ObstacleAlert: require('./obstacleAlert'),
   OpenState: require('./openState'),
