@@ -1,7 +1,5 @@
 {
   "assetIds": {
-    "Setting.Humidity": [
-      "Umidità"
-    ]
+    "@Setting.Humidity": "Umidità"
   }
 }

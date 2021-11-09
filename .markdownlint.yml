@@ -1,0 +1,9 @@
+default: true
+
+# Line length
+MD013: false
+# Multiple top-level headings in the same document
+MD025: false
+# Inline HTML
+MD033:
+  allowed_elements: [a, br, img]

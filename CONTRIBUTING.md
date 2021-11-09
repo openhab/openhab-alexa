@@ -1,4 +1,6 @@
-## Contribution guidelines
+# Contributing
+
+## Guidelines
 
 ### Pull requests are always welcome
 
@@ -10,7 +12,7 @@ If your pull request is not accepted on the first try, don't be
 discouraged! If there's a problem with the implementation, hopefully you
 received feedback on what to improve.
 
-### Discuss your design on the mailing list
+### Discuss your design in the discussion forum
 
 We recommend discussing your plans [in the discussion forum](https://community.openhab.org/)
 before starting to code - especially for more ambitious contributions.
@@ -18,18 +20,16 @@ This gives other contributors a chance to point you in the right
 direction, give feedback on your design, and maybe point out if someone
 else is working on the same thing.
 
-### Create issues...
-
-Any significant improvement should be documented as [a GitHub
-issue](https://github.com/openhab/openhab-alxea/issues?labels=enhancement&page=1&state=open) before anybody
-starts working on it.
-
-### ...but check for existing issues first!
+### Create issues
 
 Please take a moment to check that an issue doesn't already exist
 documenting your bug report or improvement proposal. If it does, it
 never hurts to add a quick "+1" or "I have this problem too". This will
 help prioritize the most common problems and requests.
+
+Any significant improvement should be documented as [a GitHub
+issue](https://github.com/openhab/openhab-alxea/issues?labels=enhancement&page=1&state=open) before anybody
+starts working on it.
 
 ### Conventions
 
@@ -78,7 +78,7 @@ pass it on as an open-source patch.  The rules are pretty simple: if you
 can certify the below (from
 [developercertificate.org](http://developercertificate.org/)):
 
-```
+```text
 Developer Certificate of Origin
 Version 1.1
 
@@ -119,7 +119,9 @@ By making a contribution to this project, I certify that:
 
 then you just add a line to every git commit message:
 
-    Signed-off-by: Joe Smith <joe.smith@email.com> (github: github_handle)
+```text
+Signed-off-by: Joe Smith <joe.smith@email.com> (github: github_handle)
+```
 
 using your real name (sorry, no pseudonyms or anonymous contributions.)
 
@@ -130,7 +132,7 @@ There are several exceptions to the signing requirement. Currently these are:
 * Your patch fixes spelling or grammar errors.
 * Your patch is a single line change to documentation.
 
-## Community Guidelines
+## Code of Conduct
 
 We want to keep the openHAB-alexa community awesome, growing and collaborative. We
 need your help to keep it that way. To help with this we've come up with some

@@ -1,0 +1,658 @@
+{
+  "@Setting.Humidity": [
+    {
+      "text": "Luftfeuchtigkeit",
+      "locale": "de-DE"
+    },
+    {
+      "text": "Humidity",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Humidity",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Humidity",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Humidity",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Humidity",
+      "locale": "en-US"
+    },
+    {
+      "text": "Humedad",
+      "locale": "es-ES"
+    },
+    {
+      "text": "Humedad",
+      "locale": "es-MX"
+    },
+    {
+      "text": "Humedad",
+      "locale": "es-US"
+    },
+    {
+      "text": "Humidité",
+      "locale": "fr-CA"
+    },
+    {
+      "text": "Humidité",
+      "locale": "fr-FR"
+    },
+    {
+      "text": "आर्द्रता",
+      "locale": "hi-IN"
+    },
+    {
+      "text": "Umidità",
+      "locale": "it-IT"
+    },
+    {
+      "text": "湿度",
+      "locale": "ja-JP"
+    },
+    {
+      "text": "Umidade",
+      "locale": "pt-BR"
+    }
+  ],
+  "@Setting.Angle": [
+    {
+      "text": "Angle",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Angle",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Angle",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Angle",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Angle",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.BatteryLevel": [
+    {
+      "text": "Battery Level",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Battery Level",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Battery Level",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Battery Level",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Battery Level",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.Clean": [
+    {
+      "text": "Clean",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Clean",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Clean",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Clean",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Clean",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.Dock": [
+    {
+      "text": "Dock",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Dock",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Dock",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Dock",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Dock",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.Forward": [
+    {
+      "text": "Forward",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Forward",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Forward",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Forward",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Forward",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.Input": [
+    {
+      "text": "Input",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Input",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Input",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Input",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Input",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.Position": [
+    {
+      "text": "Position",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Position",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Position",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Position",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Position",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.RangeValue": [
+    {
+      "text": "Range Value",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Range Value",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Range Value",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Range Value",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Range Value",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.Reverse": [
+    {
+      "text": "Reverse",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Reverse",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Reverse",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Reverse",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Reverse",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.Speed": [
+    {
+      "text": "Speed",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Speed",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Speed",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Speed",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Speed",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.Spot": [
+    {
+      "text": "Spot",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Spot",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Spot",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Spot",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Spot",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.Tilt": [
+    {
+      "text": "Tilt",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Tilt",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Tilt",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Tilt",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Tilt",
+      "locale": "en-US"
+    }
+  ],
+  "@Setting.ToggleState": [
+    {
+      "text": "Toggle State",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Toggle State",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Toggle State",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Toggle State",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Toggle State",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Decrease": [
+    {
+      "text": "Decrease",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Decrease",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Decrease",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Decrease",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Decrease",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Default": [
+    {
+      "text": "Default",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Default",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Default",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Default",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Default",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Down": [
+    {
+      "text": "Down",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Down",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Down",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Down",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Down",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Increase": [
+    {
+      "text": "Increase",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Increase",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Increase",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Increase",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Increase",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Left": [
+    {
+      "text": "Left",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Left",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Left",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Left",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Left",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Move": [
+    {
+      "text": "Move",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Move",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Move",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Move",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Move",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Off": [
+    {
+      "text": "Off",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Off",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Off",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Off",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Off",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.On": [
+    {
+      "text": "On",
+      "locale": "en-AU"
+    },
+    {
+      "text": "On",
+      "locale": "en-CA"
+    },
+    {
+      "text": "On",
+      "locale": "en-GB"
+    },
+    {
+      "text": "On",
+      "locale": "en-IN"
+    },
+    {
+      "text": "On",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Pause": [
+    {
+      "text": "Pause",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Pause",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Pause",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Pause",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Pause",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Resume": [
+    {
+      "text": "Resume",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Resume",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Resume",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Resume",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Resume",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Right": [
+    {
+      "text": "Right",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Right",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Right",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Right",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Right",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Start": [
+    {
+      "text": "Start",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Start",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Start",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Start",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Start",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Stop": [
+    {
+      "text": "Stop",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Stop",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Stop",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Stop",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Stop",
+      "locale": "en-US"
+    }
+  ],
+  "@Value.Up": [
+    {
+      "text": "Up",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Up",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Up",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Up",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Up",
+      "locale": "en-US"
+    }
+  ]
+}
