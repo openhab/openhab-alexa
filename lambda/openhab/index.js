@@ -56,7 +56,11 @@ class OpenHAB {
    * @return {Promise}
    */
   async getAllItems() {
-    const items = await this.getItems();
+    let items;
+    // Retrieve all items up to 3 tries if not an array
+    for (let tries = 0; !Array.isArray(items) && tries < 3; tries++) {
+      items = await this.getItems();
+    }
     // Return all items adding members and expanding groupNames into groups
     return items.map(({ groupNames, ...item }) => ({
       ...item,
