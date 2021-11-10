@@ -1,5 +1,32 @@
 {
   "assetIds": {
-    "@Setting.Humidity": "Humidité"
+    "@Setting.Angle": "Angle",
+    "@Setting.BatteryLevel": "Niveau de batterie",
+    "@Setting.Clean": "Nettoyage",
+    "@Setting.Dock": "Dock",
+    "@Setting.Forward": "Avant",
+    "@Setting.Humidity": "Humidité",
+    "@Setting.Input": "Entrée",
+    "@Setting.Position": "Position",
+    "@Setting.RangeValue": "Plage de valeur",
+    "@Setting.Reverse": "Inverse",
+    "@Setting.Speed": "Vitesse",
+    "@Setting.Spot": "Spot",
+    "@Setting.Tilt": "Inclinaison",
+    "@Setting.ToggleState": "État de bascule",
+    "@Value.Decrease": "Diminue",
+    "@Value.Default": "Défaut",
+    "@Value.Down": "Bas",
+    "@Value.Increase": "Augmente",
+    "@Value.Left": "Gauche",
+    "@Value.Move": "Avance",
+    "@Value.Off": "Désactivé",
+    "@Value.On": "Activé",
+    "@Value.Pause": "Pause",
+    "@Value.Resume": "Redémarre",
+    "@Value.Right": "Droite",
+    "@Value.Start": "Démarre",
+    "@Value.Stop": "Arrêt",
+    "@Value.Up": "Haut"
   }
 }

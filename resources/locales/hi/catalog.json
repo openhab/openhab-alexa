@@ -1,5 +1,32 @@
 {
   "assetIds": {
-    "@Setting.Humidity": "आर्द्रता"
+    "@Setting.Angle": "कोण",
+    "@Setting.BatteryLevel": "बैटरी का स्तर",
+    "@Setting.Clean": "स्वच्छ",
+    "@Setting.Dock": "गोदी",
+    "@Setting.Forward": "आगे",
+    "@Setting.Humidity": "आर्द्रता",
+    "@Setting.Input": "इनपुट",
+    "@Setting.Position": "पोजीशन",
+    "@Setting.RangeValue": "रेंज वैल्यू",
+    "@Setting.Reverse": "उल्टा",
+    "@Setting.Speed": "स्पीड",
+    "@Setting.Spot": "चित्ती",
+    "@Setting.Tilt": "झुकाव",
+    "@Setting.ToggleState": "राज्य टॉगल करें",
+    "@Value.Decrease": "घटती",
+    "@Value.Default": "डिफॉल्ट",
+    "@Value.Down": "नीचे",
+    "@Value.Increase": "बढ़ाना",
+    "@Value.Left": "बाएं",
+    "@Value.Move": "मूव",
+    "@Value.Off": "ऑफ",
+    "@Value.On": "ऑन",
+    "@Value.Pause": "विराम",
+    "@Value.Resume": "फिर से शुरू करें",
+    "@Value.Right": "दायें",
+    "@Value.Start": "स्टार्ट",
+    "@Value.Stop": "रोके",
+    "@Value.Up": "अप"
   }
 }

@@ -1,5 +1,32 @@
 {
   "assetIds": {
-    "@Setting.Humidity": "Luftfeuchtigkeit"
+    "@Setting.Angle": "Winkel,Schiefheit",
+    "@Setting.BatteryLevel": "Batterieladung",
+    "@Setting.Clean": "Sauber",
+    "@Setting.Dock": "Dock",
+    "@Setting.Forward": "Vorwärts",
+    "@Setting.Humidity": "Luftfeuchtigkeit,Feuchtigkeit",
+    "@Setting.Input": "Eingang",
+    "@Setting.Position": "Position",
+    "@Setting.RangeValue": "Bereichswert",
+    "@Setting.Reverse": "Umkehren",
+    "@Setting.Speed": "Geschwindigkeit",
+    "@Setting.Spot": "Spot",
+    "@Setting.Tilt": "Neigung",
+    "@Setting.ToggleState": "Schaltzustand",
+    "@Value.Decrease": "Verringern",
+    "@Value.Default": "Standard",
+    "@Value.Down": "Runter",
+    "@Value.Increase": "Erhöhung",
+    "@Value.Left": "Links",
+    "@Value.Move": "Bewegung",
+    "@Value.Off": "Aus",
+    "@Value.On": "Auf",
+    "@Value.Pause": "Pause",
+    "@Value.Resume": "Lebenslauf",
+    "@Value.Right": "Rechte",
+    "@Value.Start": "Start",
+    "@Value.Stop": "Halt",
+    "@Value.Up": "Hoch"
   }
 }
