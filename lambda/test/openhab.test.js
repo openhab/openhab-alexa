@@ -231,7 +231,16 @@ describe('OpenHAB Tests', () => {
 
     it('type error', async () => {
       // set environment
-      nock(baseURL).get('/rest/items').query(qs).reply(200, 'invalid');
+      nock(baseURL)
+        .get('/rest/items')
+        .query(qs)
+        .reply(200, 'invalid 1')
+        .get('/rest/items')
+        .query(qs)
+        .reply(200, 'invalid 2')
+        .get('/rest/items')
+        .query(qs)
+        .reply(200, 'invalid 3');
       // run test
       try {
         await openhab.getAllItems();
