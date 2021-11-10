@@ -27,7 +27,7 @@
       "Smart Home",
       "コネクティッドホーム"
     ],
-    "updatesDescription": "新しい簡略化されたメタデータ構文が導入されました。 詳細については、最新のドキュメントを確認してください：https：//www.openhab.org/link/alexa"
+    "updatesDescription": "新しい簡略化されたメタデータ構文が導入されました。詳細については最新のドキュメントを確認してください: https://www.openhab.org/link/alexa"
   },
   "privacyAndCompliance": {
     "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
