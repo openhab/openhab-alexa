@@ -1,15 +1,15 @@
 {
   "assetIds": {
     "@Setting.Angle": "Angle",
-    "@Setting.BatteryLevel": "Niveau de la batterie",
+    "@Setting.BatteryLevel": "Niveau de batterie",
     "@Setting.Clean": "Nettoyage",
     "@Setting.Dock": "Dock",
-    "@Setting.Forward": "En avant",
+    "@Setting.Forward": "Avant",
     "@Setting.Humidity": "Humidité",
     "@Setting.Input": "Entrée",
     "@Setting.Position": "Position",
     "@Setting.RangeValue": "Plage de valeur",
-    "@Setting.Reverse": "Sens inverse",
+    "@Setting.Reverse": "Inverse",
     "@Setting.Speed": "Vitesse",
     "@Setting.Spot": "Spot",
     "@Setting.Tilt": "Inclinaison",
