@@ -16,7 +16,7 @@
           "awsRegion": "us-east-1",
           "runtime": "nodejs14.x",
           "handler": "index.handler",
-          "templatePath": "./infrastructure/cfn-deployer/skill-stack.yml",
+          "templatePath": "./infrastructure/cfn-deployer/skill-stack.json",
           "cfn": {
             "parameters": {
               "LambdaFunctionName": "alexa-openhab",

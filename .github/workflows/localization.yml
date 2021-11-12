@@ -1,9 +1,9 @@
-name: Locale
+name: Localization
 
 on:
   push:
     branches: [ main ]
-    paths: [ resources/locales/** ]
+    paths: [ 'resources/locales/**' ]
 
 jobs:
   update:
@@ -20,7 +20,7 @@ jobs:
         node-version: 14.x
 
     - name: Update skill locale
-      run: node tools/updateSkillLocale.js
+      run: node .github/scripts/updateSkillLocale.js
 
     - name: Check for changes to commit
       id: changes

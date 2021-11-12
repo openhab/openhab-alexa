@@ -15,22 +15,22 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Defines catalog path
+ * Defines catalog file path
  * @type {String}
  */
-const CATALOG_PATH = path.join('..', 'lambda', 'catalog.json');
+const CATALOG_FILE = path.resolve('lambda', 'catalog.json');
 
 /**
- * Defines skill manifest path
+ * Defines skill manifest file path
  * @type {String}
  */
-const SKILL_MANIFEST_PATH = path.join('..', 'skill-package', 'skill.json');
+const SKILL_MANIFEST_FILE = path.resolve('skill-package', 'skill.json');
 
 /**
- * Defines resources locales path
+ * Defines resources locales directory path
  * @type {String}
  */
-const RESOURCES_LOCALES_PATH = path.join('..', 'resources', 'locales');
+const RESOURCES_LOCALES_DIR = path.resolve('resources', 'locales');
 
 /**
  * Defines supported skill Locales
@@ -57,27 +57,27 @@ const SUPPORTED_SKILL_LOCALES = [
 
 /**
  * Load a schema
- * @param  {String} path
+ * @param  {String} file
  * @return {Object}
  */
-function loadSchema(path) {
+function loadSchema(file) {
   try {
-    return require(path);
+    return require(file);
   } catch {
-    throw new Error(`Failed to load schema: ${path}`);
+    throw new Error(`Failed to load schema: ${file}`);
   }
 }
 
 /**
  * Save a schema
  * @param  {Object} schema
- * @param  {String} path
+ * @param  {String} file
  */
-function saveSchema(schema, path) {
+function saveSchema(schema, file) {
   try {
-    fs.writeFileSync(path, JSON.stringify(schema, null, 2));
+    fs.writeFileSync(file, JSON.stringify(schema, null, 2));
   } catch {
-    throw new Error(`Failed to save schema: ${path}`);
+    throw new Error(`Failed to save schema: ${file}`);
   }
 }
 
@@ -91,9 +91,9 @@ function updateCatalog() {
   const schema = {};
   // Iterate over locale resources
   for (const locale of SUPPORTED_SKILL_LOCALES) {
-    const catalogPath = path.join(RESOURCES_LOCALES_PATH, locale.split('-')[0], 'catalog.json');
-    if (fs.existsSync(catalogPath)) {
-      const { assetIds } = loadSchema(catalogPath);
+    const catalogFile = path.resolve(RESOURCES_LOCALES_DIR, locale.split('-')[0], 'catalog.json');
+    if (fs.existsSync(catalogFile)) {
+      const { assetIds } = loadSchema(catalogFile);
       // Update catalog asset ids locale labels
       for (const [assetId, value] of Object.entries(assetIds)) {
         const labels = value.split(',').map((value) => ({ text: value.trim(), locale }));
@@ -102,7 +102,7 @@ function updateCatalog() {
     }
   }
   // Save catalog schema
-  saveSchema(schema, CATALOG_PATH);
+  saveSchema(schema, CATALOG_FILE);
 }
 
 /**
@@ -110,12 +110,12 @@ function updateCatalog() {
  */
 function updateSkillManifest() {
   // Load skill manifest schema
-  const schema = loadSchema(SKILL_MANIFEST_PATH);
+  const schema = loadSchema(SKILL_MANIFEST_FILE);
   // Iterate over locale resources
   for (const locale of SUPPORTED_SKILL_LOCALES) {
-    const manifestPath = path.join(RESOURCES_LOCALES_PATH, locale.split('-')[0], 'manifest.json');
-    if (fs.existsSync(manifestPath)) {
-      const properties = loadSchema(manifestPath);
+    const manifestFile = path.resolve(RESOURCES_LOCALES_DIR, locale.split('-')[0], 'manifest.json');
+    if (fs.existsSync(manifestFile)) {
+      const properties = loadSchema(manifestFile);
       // Update skill manifest locale properties
       for (const [key, value] of Object.entries(properties)) {
         if (typeof schema.manifest[key] === 'object') {
@@ -125,13 +125,11 @@ function updateSkillManifest() {
     }
   }
   // Save skill manifest schema
-  saveSchema(schema, SKILL_MANIFEST_PATH);
+  saveSchema(schema, SKILL_MANIFEST_FILE);
 }
 
 if (require.main === module) {
   try {
-    // Change working directory to script location
-    process.chdir(__dirname);
     // Update catalog
     updateCatalog();
     // Update skill manifest
