@@ -3,17 +3,6 @@ name: Deployment
 on:
   release:
     types: [ published ]
-  workflow_dispatch:
-    inputs:
-      pr:
-        description: Pull Request (development)
-        required: false
-      tag:
-        description: Release Version (live)
-        required: false
-
-env:
-  DEPLOY_ENV: ${{ (github.event_name == 'release' || github.event.inputs.tag) && 'live' || 'development' }}
 
 jobs:
   skill:
@@ -23,8 +12,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.inputs.pr && format('refs/pull/{0}/merge', github.event.inputs.pr) || github.event.inputs.tag }}
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -36,31 +23,40 @@ jobs:
     - name: Install ASK CLI
       run: npm install -g jsetton/ask-cli
 
-    - name: Cache ASK CLI states
-      uses: actions/cache@v2
-      with:
-        path: .ask/ask-states.json
-        key: ask-states-${{ env.DEPLOY_ENV }}
-
     - name: Generate deployment config
-      run: node tools/generateDeployConfig.js
+      run: node .github/scripts/generateDeployConfig.js
       env:
-        FUNCTION_NAME: ${{ env.DEPLOY_ENV == 'live' && 'openhab-alexa' || 'openhab-alexa-beta' }}
-        LOG_LEVEL: ${{ env.DEPLOY_ENV == 'live' && 'error' || 'info' }}
+        DEPLOY_ENV: ${{ github.event.release.prerelease && 'development' || 'live' }}
+        FUNCTION_NAME: openhab-alexa
+        LOG_LEVEL: ${{ github.event.release.prerelease && 'info' || 'error' }}
+        OPENHAB_BASE_URL: https://myopenhab.org
         S3_BUCKET_NA: ${{ secrets.S3_BUCKET_NA }}
         S3_BUCKET_EU: ${{ secrets.S3_BUCKET_EU }}
         S3_BUCKET_FE: ${{ secrets.S3_BUCKET_FE }}
         SKILL_ID: ${{ secrets.SKILL_ID }}
+        STACK_ID_NA: ${{ secrets.STACK_ID_NA }}
+        STACK_ID_EU: ${{ secrets.STACK_ID_EU }}
+        STACK_ID_FE: ${{ secrets.STACK_ID_FE }}
         TESTING_USERNAME: ${{ secrets.TESTING_USERNAME }}
         TESTING_PASSWORD: ${{ secrets.TESTING_PASSWORD }}
 
     - name: Deploy skill and AWS resources
       run: ask deploy
       env:
-        AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         ASK_ACCESS_TOKEN: ${{ secrets.ASK_ACCESS_TOKEN }}
         ASK_REFRESH_TOKEN : ${{ secrets.ASK_REFRESH_TOKEN }}
         ASK_VENDOR_ID: ${{ secrets.ASK_VENDOR_ID }}
-        ASK_SHARE_USAGE: false
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: Submit skill for certification
+      if: github.event.release.prerelease != true
+      run: node .github/scripts/submitSkillForCertification.js
+      env:
+        ASK_ACCESS_TOKEN: ${{ secrets.ASK_ACCESS_TOKEN }}
+        ASK_REFRESH_TOKEN : ${{ secrets.ASK_REFRESH_TOKEN }}
+        ASK_VENDOR_ID: ${{ secrets.ASK_VENDOR_ID }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        RELEASE_VERSION: ${{ github.event.release.tag_name }}
+        SKILL_ID: ${{ secrets.SKILL_ID }}

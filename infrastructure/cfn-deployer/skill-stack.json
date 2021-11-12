@@ -1,0 +1,196 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "OpenHABBaseURL": {
+      "Type": "String",
+      "Default": "https://myopenhab.org"
+    },
+    "OpenHABUsername": {
+      "Type": "String",
+      "Default": ""
+    },
+    "OpenHABPassword": {
+      "Type": "String",
+      "Default": ""
+    },
+    "OpenHABCertFile": {
+      "Type": "String",
+      "Default": "ssl/client.pfx"
+    },
+    "OpenHABCertPassphrase": {
+      "Type": "String",
+      "Default": ""
+    },
+    "SkillId": {
+      "Type": "String"
+    },
+    "LambdaFunctionName": {
+      "Type": "String",
+      "Default": "alexa-openhab"
+    },
+    "LambdaLogLevel": {
+      "Type": "String",
+      "Default": "info",
+      "AllowedValues": [
+        "error",
+        "warn",
+        "info",
+        "debug"
+      ]
+    },
+    "LambdaRuntime": {
+      "Type": "String"
+    },
+    "LambdaRuntime": {
+      "Type": "String"
+    },
+    "LambdaHandler": {
+      "Type": "String"
+    },
+    "CodeBucket": {
+      "Type": "String"
+    },
+    "CodeKey": {
+      "Type": "String"
+    },
+    "CodeVersion": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "AlexaSkillIAMRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "AlexaOpenHABSkillPolicy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${LambdaFunctionName}:*"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "AlexaSkillFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "CodeBucket"
+          },
+          "S3Key": {
+            "Ref": "CodeKey"
+          },
+          "S3ObjectVersion": {
+            "Ref": "CodeVersion"
+          }
+        },
+        "FunctionName": {
+          "Ref": "LambdaFunctionName"
+        },
+        "Description": "openHAB Skill for Amazon Alexa",
+        "Handler": {
+          "Ref": "LambdaHandler"
+        },
+        "Runtime": {
+          "Ref": "LambdaRuntime"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "AlexaSkillIAMRole",
+            "Arn"
+          ]
+        },
+        "MemorySize": 128,
+        "Timeout": 10,
+        "Environment": {
+          "Variables": {
+            "LOG_LEVEL": {
+              "Ref": "LambdaLogLevel"
+            },
+            "OPENHAB_BASE_URL": {
+              "Ref": "OpenHABBaseURL"
+            },
+            "OPENHAB_USERNAME": {
+              "Ref": "OpenHABUsername"
+            },
+            "OPENHAB_PASSWORD": {
+              "Ref": "OpenHABPassword"
+            },
+            "OPENHAB_CERT_FILE": {
+              "Ref": "OpenHABCertFile"
+            },
+            "OPENHAB_CERT_PASSPHRASE": {
+              "Ref": "OpenHABCertPassphrase"
+            }
+          }
+        }
+      }
+    },
+    "AlexaSkillFunctionPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:invokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AlexaSkillFunction",
+            "Arn"
+          ]
+        },
+        "Principal": "alexa-connectedhome.amazon.com",
+        "EventSourceToken": {
+          "Ref": "SkillId"
+        }
+      }
+    },
+    "AlexaSkillFunctionLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Sub": "/aws/lambda/${AlexaSkillFunction}"
+        },
+        "RetentionInDays": 30
+      }
+    }
+  },
+  "Outputs": {
+    "SkillEndpoint": {
+      "Description": "LambdaARN for the regional endpoint",
+      "Value": {
+        "Fn::GetAtt": [
+          "AlexaSkillFunction",
+          "Arn"
+        ]
+      }
+    }
+  }
+}
