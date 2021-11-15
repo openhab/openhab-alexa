@@ -67,7 +67,7 @@ class ThermostatHold extends AlexaProperty {
       case ItemType.NUMBER:
         return { RESUME: 0 };
       case ItemType.STRING:
-        return { RESUME: 'off' };
+        return { RESUME: 'resume' };
       case ItemType.SWITCH:
         return { RESUME: ItemValue.OFF };
       default:

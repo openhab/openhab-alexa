@@ -116,7 +116,7 @@ class ThermostatController extends AlexaHandler {
     }
 
     // Throw thermostat setpoints unsupported error if thermostat not currently in dual/triple mode while request is
-    if (requestProperties.length > 1 && requestProperties.length > Object.keys(setpointProperties).length) {
+    if (requestProperties.length > Object.keys(setpointProperties).length) {
       const setpointMode = requestProperties.length === 2 ? 'dual' : 'triple';
       throw new ThermostatSetpointsUnsupportedError(
         `The thermostat doesn't support ${setpointMode} setpoints in the current mode.`,
