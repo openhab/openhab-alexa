@@ -11,76 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-
-/**
- * Defines ask-cli resources file path
- * @type {String}
- */
-const ASK_CLI_RESOURCES_FILE = path.resolve('ask-resources.json');
-
-/**
- * Defines ask-cli states file path
- * @type {String}
- */
-const ASK_CLI_STATES_FILE = path.resolve('.ask', 'ask-states.json');
-
-/**
- * Defines skill infrastructure template file path
- * @type {String}
- */
-const SKILL_INFRA_TEMPLATE_FILE = path.resolve('infrastructure', 'cfn-deployer', 'skill-stack.json');
-
-/**
- * Defines skill manifest file path
- * @type {String}
- */
-const SKILL_MANIFEST_FILE = path.resolve('skill-package', 'skill.json');
-
-/**
- * Defines supported deployment regions
- *  https://developer.amazon.com/docs/smapi/skill-manifest.html#regions
- * @type {Array}
- */
-const SUPPORTED_DEPLOY_REGIONS = ['NA', 'EU', 'FE'];
-
-/**
- * Defines ask-cli deployment profile name
- *  https://developer.amazon.com/en-US/blogs/alexa/alexa-skills-kit/2020/06/using-the-ask-cli-v2-0-to-continuously-deploy-your-skill
- * @type {String}
- */
-const PROFILE_NAME = '__ENVIRONMENT_ASK_PROFILE__';
-
-/**
- * Loads a schema
- * @param  {String} file
- * @return {Object}
- */
-function loadSchema(file) {
-  try {
-    return require(file);
-  } catch {
-    throw new Error(`Failed to load schema: ${file}`);
-  }
-}
-
-/**
- * Saves a schema
- * @param  {Object} schema
- * @param  {String} file
- */
-function saveSchema(schema, file) {
-  try {
-    // Create the file's directory recursively in case it doesn't exist
-    fs.mkdirSync(path.dirname(file), { recursive: true });
-    // Write json formatted schema to file
-    fs.writeFileSync(file, JSON.stringify(schema, null, 2));
-  } catch {
-    throw new Error(`Failed to save schema: ${file}`);
-  }
-}
+const { getCommandOuput, loadSchema, saveSchema } = require('./utils');
+const {
+  ASK_CLI_RESOURCES_FILE,
+  ASK_CLI_STATES_FILE,
+  DEPLOY_PROFILE,
+  DEPLOY_REGIONS,
+  SKILL_INFRA_TEMPLATE_FILE,
+  SKILL_MANIFEST_FILE
+} = require('./constants');
 
 /**
  * Creates ask-cli states
@@ -97,16 +36,16 @@ function createAskCliStates() {
   const deployState = profile.skillInfrastructure['@ask-cli/cfn-deployer'].deployState;
   // Set default deploy state
   deployState.default = {
-    s3: { bucket: process.env[`S3_BUCKET_${SUPPORTED_DEPLOY_REGIONS[0]}`], key: 'endpoint/build.zip' },
-    stackId: process.env[`STACK_ID_${SUPPORTED_DEPLOY_REGIONS[0]}`]
+    s3: { bucket: process.env[`S3_BUCKET_${DEPLOY_REGIONS[0]}`], key: 'endpoint/build.zip' },
+    stackId: process.env[`STACK_ID_${DEPLOY_REGIONS[0]}`]
   };
   // Set regional deploy states
-  SUPPORTED_DEPLOY_REGIONS.forEach((region) => deployState[region] = {
+  DEPLOY_REGIONS.forEach((region) => deployState[region] = {
     s3: { bucket: process.env[`S3_BUCKET_${region}`], key: 'endpoint/build.zip' },
     stackId: process.env[`STACK_ID_${region}`]
   });
   // Add state profile to schema
-  schema.profiles[PROFILE_NAME] = profile;
+  schema.profiles[DEPLOY_PROFILE] = profile;
   // Save ask-cli states schema
   saveSchema(schema, ASK_CLI_STATES_FILE);
 }
@@ -120,7 +59,7 @@ function updateAskCliResources() {
   // Deep clone default profile as deployment profile
   const profile = JSON.parse(JSON.stringify(schema.profiles.default));
   // Set regional endpoints
-  SUPPORTED_DEPLOY_REGIONS.forEach((region) => profile.code[region] = profile.code.default);
+  DEPLOY_REGIONS.forEach((region) => profile.code[region] = profile.code.default);
   // Define skill infrastructure user config
   const userConfig = profile.skillInfrastructure.userConfig;
   // Set lambda function name
@@ -130,7 +69,7 @@ function updateAskCliResources() {
   // Set openhab base url
   userConfig.cfn.parameters.OpenHABBaseURL = process.env.OPENHAB_BASE_URL;
   // Add deployment profile to schema
-  schema.profiles[PROFILE_NAME] = profile;
+  schema.profiles[DEPLOY_PROFILE] = profile;
   // Save ask-cli resources schema
   saveSchema(schema, ASK_CLI_RESOURCES_FILE);
 }
@@ -142,7 +81,7 @@ function updateSkillInfraTemplate() {
   // Load skill infrastructure template schema
   const schema = loadSchema(SKILL_INFRA_TEMPLATE_FILE);
   // Get skill function revision
-  const revision = execSync('git rev-parse --short HEAD:lambda').toString().trim();
+  const revision = getCommandOuput('git rev-parse --short HEAD:lambda');
   // Define skill function version resource name
   const versionResource = `AlexaSkillFunctionVersion${revision}`;
   // Add skill function version resource
