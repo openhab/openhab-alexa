@@ -66,7 +66,7 @@ describe('OpenHAB Tests', () => {
       const certFile = 'cert.pfx';
       const certPass = 'passphrase';
       sinon.stub(fs, 'existsSync').withArgs(certFile).returns(true);
-      sinon.stub(fs, 'readFileSync').withArgs(`${process.cwd()}/${certFile}`).returns('pfx');
+      sinon.stub(fs, 'readFileSync').withArgs(certFile).returns('pfx');
       nock(baseURL)
         .get('/')
         .reply(200)
