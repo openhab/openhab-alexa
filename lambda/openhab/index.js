@@ -258,7 +258,7 @@ class OpenHAB {
     // Add authentication options
     if (fs.existsSync(config.certFile)) {
       // SSL Certificate Authentication
-      options.agentOptions.pfx = fs.readFileSync(`${process.cwd()}/${config.certFile}`);
+      options.agentOptions.pfx = fs.readFileSync(config.certFile);
       options.agentOptions.passphrase = config.certPass;
     } else if (config.user && config.pass) {
       // Basic Authentication
