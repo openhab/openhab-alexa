@@ -341,7 +341,7 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'thermostatHold', value: 'off' }]
+      openhab: [{ name: 'thermostatHold', value: 'resume' }]
     }
   },
   {
