@@ -12,14 +12,8 @@
  */
 
 const assert = require('assert');
-const { execSync } = require('child_process');
-const path = require('path');
-
-/**
- * Defines skill manifest file path
- * @type {String}
- */
-const SKILL_MANIFEST_FILE = path.resolve('skill-package', 'skill.json');
+const { getCommandOuput, loadSchema } = require('./utils');
+const { SKILL_MANIFEST_FILE } = require('./constants');
 
 /**
  * Submits skill for certification
@@ -31,8 +25,10 @@ function submitSkillForCertification() {
   const command =
     'ask smapi submit-skill-for-certification ' +
     `-s ${process.env.SKILL_ID} --publication-method ${method} --version-message "${message}"`;
+  const output = getCommandOuput(command);
 
-  execSync(command, { stdio: 'inherit' });
+  // Log command output
+  console.log(output);
 }
 
 /**
@@ -42,19 +38,17 @@ function submitSkillForCertification() {
  */
 function validateSkill() {
   // Retrieve skill locales from manifest
-  const { manifest } = require(SKILL_MANIFEST_FILE);
+  const { manifest } = loadSchema(SKILL_MANIFEST_FILE);
   const locales = Object.keys(manifest.publishingInformation.locales).join(',');
 
   // Request skill validation
   const submitCommand = `ask smapi submit-skill-validation -s ${process.env.SKILL_ID} -l ${locales} -g development`;
-  const { id } = JSON.parse(execSync(submitCommand).toString());
+  const { id } = getCommandOuput(submitCommand, { json: true });
 
   // Get skill validations result
   const getCommand = `ask smapi get-skill-validations -s ${process.env.SKILL_ID} -i ${id} -g development`;
-  const { message, result, status } = JSON.parse(execSync(getCommand).toString());
+  const { result, status } = getCommandOuput(getCommand, { json: true });
 
-  // Throw error message if provided
-  if (message) throw new Error(message);
   // Log result if provided
   if (result) console.log('Result:', JSON.stringify(result, null, 2));
   // Assert if status is successful
