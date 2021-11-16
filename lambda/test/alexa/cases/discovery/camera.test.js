@@ -20,7 +20,10 @@ module.exports = {
       label: 'Camera 1',
       metadata: {
         alexa: {
-          value: 'Camera'
+          value: 'Camera',
+          config: {
+            proxyBaseUrl: 'https://openhab.myserver.tld'
+          }
         }
       }
     },
@@ -32,9 +35,8 @@ module.exports = {
         alexa: {
           value: 'Camera',
           config: {
-            resolution: '720p',
-            username: 'foobar',
-            password: 42 // should be converted to string
+            proxyBaseUrl: 'https://openhab.myserver.tld',
+            resolution: '720p'
           }
         }
       }
@@ -45,7 +47,23 @@ module.exports = {
       label: 'Camera 3',
       metadata: {
         alexa: {
-          value: 'CameraStream'
+          value: 'CameraStream',
+          config: {
+            proxyBaseUrl: 'https://openhab.myserver.tld'
+          }
+        }
+      }
+    },
+    {
+      type: 'String',
+      name: 'camera99',
+      label: 'Camera Invalid',
+      metadata: {
+        alexa: {
+          value: 'Camera',
+          config: {
+            resolution: 42 // should be converted to string
+          }
         }
       }
     }
@@ -76,7 +94,7 @@ module.exports = {
           {
             protocols: ['HLS'],
             resolutions: [{ width: 1280, height: 720 }],
-            authorizationTypes: ['BASIC'],
+            authorizationTypes: ['NONE'],
             videoCodecs: ['H264'],
             audioCodecs: ['AAC']
           }

@@ -29,7 +29,10 @@ module.exports = {
           name: 'cameraStream',
           metadata: {
             alexa: {
-              value: 'CameraStream'
+              value: 'CameraStream',
+              config: {
+                proxyBaseUrl: 'https://openhab.myserver.tld'
+              }
             }
           }
         }

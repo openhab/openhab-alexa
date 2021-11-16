@@ -13,7 +13,6 @@
 
 const { parseUrl } = require('@root/utils');
 const { Interface, Property } = require('../constants');
-const { CameraStream } = require('../properties');
 const { InvalidValueError } = require('../errors');
 const AlexaHandler = require('./handler');
 
@@ -54,7 +53,7 @@ class CameraStreamController extends AlexaHandler {
    * @return {Promise}
    */
   static async initializeCameraStreams(directive, openhab) {
-    const { item, proxyBaseUrl, username, password } = directive.endpoint.getCapabilityProperty({
+    const { item, proxyBaseUrl } = directive.endpoint.getCapabilityProperty({
       interface: directive.namespace,
       property: Property.CAMERA_STREAM
     });
@@ -65,12 +64,6 @@ class CameraStreamController extends AlexaHandler {
     // Throw invalid value error if camera stream url not defined, not https protocol or has non-standard port
     if (!streamUrl || streamUrl.protocol !== 'https:' || streamUrl.port) {
       throw new InvalidValueError('Could not determine a valid camera stream URL');
-    }
-
-    // Add basic auth credentials to camera stream url if necessary
-    if (authorizationType === CameraStream.AuthType.BASIC) {
-      streamUrl.username = username;
-      streamUrl.password = password;
     }
 
     // Return directive response including camera stream and image information
