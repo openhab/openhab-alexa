@@ -133,13 +133,10 @@ if (require.main === module) {
     createAskCliStates();
     // Update ask-cli resources
     updateAskCliResources();
-    // Update skill config for live deployment
-    if (process.env.DEPLOY_ENV === 'live') {
-      // Update skill infrastructure template
-      updateSkillInfraTemplate();
-      // Update skill manifest
-      updateSkillManifest();
-    }
+    // Update skill manifest
+    updateSkillManifest();
+    // Update skill infrastructure template for live deployment
+    if (process.env.DEPLOY_ENV === 'live') updateSkillInfraTemplate();
   } catch (error) {
     console.log(error.message);
     process.exit(1);
