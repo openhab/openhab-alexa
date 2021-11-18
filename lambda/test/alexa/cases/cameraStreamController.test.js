@@ -20,13 +20,13 @@ module.exports = [
         name: 'InitializeCameraStreams'
       },
       endpoint: {
-        endpointId: 'gCamera',
+        endpointId: 'cameraStream',
         cookie: {
           capabilities: JSON.stringify([
             {
               name: 'CameraStreamController',
               property: 'cameraStream',
-              parameters: {},
+              parameters: { proxyBaseUrl: 'https://openhab.myserver.tld' },
               item: { name: 'cameraStream', type: 'String' }
             }
           ])
@@ -44,7 +44,7 @@ module.exports = [
         ]
       }
     },
-    items: [{ name: 'cameraStream', state: 'https://cam.foobar.com/ipcamera.m3u8', type: 'String' }],
+    items: [{ name: 'cameraStream', state: 'http://192.168.42.42:8080/ipcamera/cam/ipcamera.m3u8', type: 'String' }],
     expected: {
       alexa: {
         event: {
@@ -55,7 +55,7 @@ module.exports = [
           payload: {
             cameraStreams: [
               {
-                uri: 'https://cam.foobar.com/ipcamera.m3u8',
+                uri: 'https://openhab.myserver.tld/ipcamera/cam/ipcamera.m3u8',
                 protocol: 'HLS',
                 resolution: { width: 1920, height: 1080 },
                 authorizationType: 'NONE',
@@ -63,69 +63,7 @@ module.exports = [
                 audioCodec: 'AAC'
               }
             ],
-            imageUri: 'https://cam.foobar.com/ipcamera.jpg'
-          }
-        }
-      }
-    }
-  },
-  {
-    description: 'initialize camera stream with authentication',
-    directive: {
-      header: {
-        namespace: 'Alexa.CameraStreamController',
-        name: 'InitializeCameraStreams'
-      },
-      endpoint: {
-        endpointId: 'cameraStream',
-        cookie: {
-          capabilities: JSON.stringify([
-            {
-              name: 'CameraStreamController',
-              property: 'cameraStream',
-              parameters: {
-                proxyBaseUrl: 'https://cam.foobar.com',
-                resolution: '720p',
-                username: 'foo',
-                password: 'bar'
-              },
-              item: { name: 'cameraStream', type: 'String' }
-            }
-          ])
-        }
-      },
-      payload: {
-        cameraStreams: [
-          {
-            protocol: 'HLS',
-            resolution: { width: 1280, height: 720 },
-            authorizationType: 'BASIC',
-            videoCodec: 'H264',
-            audioCodec: 'AAC'
-          }
-        ]
-      }
-    },
-    items: [{ name: 'cameraStream', state: 'https://cam.foobar.com/ipcamera.m3u8', type: 'String' }],
-    expected: {
-      alexa: {
-        event: {
-          header: {
-            namespace: 'Alexa.CameraStreamController',
-            name: 'Response'
-          },
-          payload: {
-            cameraStreams: [
-              {
-                uri: 'https://foo:bar@cam.foobar.com/ipcamera.m3u8',
-                protocol: 'HLS',
-                resolution: { width: 1280, height: 720 },
-                authorizationType: 'BASIC',
-                videoCodec: 'H264',
-                audioCodec: 'AAC'
-              }
-            ],
-            imageUri: 'https://foo:bar@cam.foobar.com/ipcamera.jpg'
+            imageUri: 'https://openhab.myserver.tld/ipcamera/cam/ipcamera.jpg'
           }
         }
       }
@@ -145,7 +83,7 @@ module.exports = [
             {
               name: 'CameraStreamController',
               property: 'cameraStream',
-              parameters: {},
+              parameters: { proxyBaseUrl: 'https://openhab.myserver.tld:8443' },
               item: { name: 'cameraStream', type: 'String' }
             }
           ])
@@ -163,7 +101,7 @@ module.exports = [
         ]
       }
     },
-    items: [{ name: 'cameraStream', state: 'http://192.168.42.42:54321/ipcamera.m3u8', type: 'String' }],
+    items: [{ name: 'cameraStream', state: 'http://192.168.42.42:8080/ipcamera/cam/ipcamera.m3u8', type: 'String' }],
     expected: {
       alexa: {
         event: {

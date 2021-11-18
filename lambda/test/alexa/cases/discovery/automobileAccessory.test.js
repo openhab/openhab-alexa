@@ -38,7 +38,10 @@ module.exports = {
           name: 'cameraStream',
           metadata: {
             alexa: {
-              value: 'CameraStream'
+              value: 'CameraStream',
+              config: {
+                proxyBaseUrl: 'https://openhab.myserver.tld'
+              }
             }
           }
         },
@@ -118,7 +121,9 @@ module.exports = {
         {
           name: 'CameraStreamController',
           property: 'cameraStream',
-          parameters: {},
+          parameters: {
+            proxyBaseUrl: 'https://openhab.myserver.tld'
+          },
           item: { name: 'cameraStream', type: 'String' }
         },
         {

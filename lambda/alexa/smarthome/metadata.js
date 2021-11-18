@@ -32,7 +32,6 @@ const Parameter = Object.freeze({
   MAC_ADDRESS: 'macAddress',
   NON_CONTROLLABLE: 'nonControllable',
   ORDERED: 'ordered',
-  PASSWORD: 'password',
   PIN_CODES: 'pinCodes',
   PRESETS: 'presets',
   PRIMARY_CONTROL: 'primaryControl',
@@ -53,8 +52,7 @@ const Parameter = Object.freeze({
   SUPPORTED_RANGE: 'supportedRange',
   SUPPORTS_DEACTIVATION: 'supportsDeactivation',
   SUPPORTS_SETPOINT_MODE: 'supportsSetpointMode',
-  UNIT_OF_MEASURE: 'unitOfMeasure',
-  USERNAME: 'username'
+  UNIT_OF_MEASURE: 'unitOfMeasure'
 });
 
 /**
