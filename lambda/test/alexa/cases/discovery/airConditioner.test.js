@@ -27,12 +27,7 @@ module.exports = {
   ],
   expected: {
     airConditioner: {
-      capabilities: [
-        'Alexa.ThermostatController.thermostatMode',
-        'Alexa.PowerController.powerState',
-        'Alexa.EndpointHealth.connectivity',
-        'Alexa'
-      ],
+      capabilities: ['Alexa.PowerController.powerState', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
       displayCategories: ['AIR_CONDITIONER'],
       friendlyName: 'Air Conditioner'
     }

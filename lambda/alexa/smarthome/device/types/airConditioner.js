@@ -13,7 +13,7 @@
 
 const AlexaDisplayCategory = require('@alexa/smarthome/category');
 const Fan = require('./fan');
-const { HeatingCoolingMode, TargetTemperature, Temperature } = require('../attributes');
+const { TargetTemperature, Temperature, PowerState } = require('../attributes');
 
 /**
  * Defines air conditioner device type class
@@ -33,7 +33,7 @@ class AirConditioner extends Fan {
    * @return {Array}
    */
   static get supportedAttributes() {
-    return [HeatingCoolingMode, TargetTemperature, Temperature, ...super.supportedAttributes];
+    return [TargetTemperature, Temperature, ...super.supportedAttributes];
   }
 
   /**
@@ -41,7 +41,7 @@ class AirConditioner extends Fan {
    * @return {Array}
    */
   static get defaultAttributes() {
-    return [HeatingCoolingMode];
+    return [PowerState];
   }
 
   /**
