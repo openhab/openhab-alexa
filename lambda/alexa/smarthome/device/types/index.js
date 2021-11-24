@@ -79,6 +79,9 @@ module.exports = {
  */
 module.exports.get = function (name) {
   return Object.values(this).find(
-    (deviceType) => deviceType.supportedNames && deviceType.supportedNames.includes(name)
+    (deviceType) =>
+      (deviceType.supportedNames && deviceType.supportedNames.includes(name)) ||
+      // Fallback to display category for backward compatibility
+      (deviceType.displayCategories && deviceType.displayCategories.includes(name))
   );
 };

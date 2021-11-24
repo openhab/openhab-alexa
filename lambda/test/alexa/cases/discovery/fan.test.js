@@ -19,7 +19,7 @@ module.exports = {
       name: 'gFan1',
       metadata: {
         alexa: {
-          value: 'Endpoint.Fan',
+          value: 'Endpoint.FAN',
           config: {
             name: 'Fan 1',
             description: 'Super Smart Fan'
