@@ -34,7 +34,8 @@ class Channel extends AlexaProperty {
    */
   get supportedParameters() {
     return {
-      [Parameter.CHANNEL_MAPPINGS]: ParameterType.MAP
+      [Parameter.CHANNEL_MAPPINGS]: ParameterType.MAP,
+      [Parameter.RANGE]: ParameterType.RANGE
     };
   }
 
@@ -44,6 +45,14 @@ class Channel extends AlexaProperty {
    */
   get channelMappings() {
     return this.parameters[Parameter.CHANNEL_MAPPINGS] || {};
+  }
+
+  /**
+   * Returns range based on parameter
+   * @return {Array}
+   */
+  get range() {
+    return this.parameters[Parameter.RANGE] || [1, 9999];
   }
 
   /**
@@ -69,11 +78,23 @@ class Channel extends AlexaProperty {
     // Update parameters from parent method
     super.updateParameters(item, metadata, settings);
 
-    const channels = parameters[Parameter.CHANNEL_MAPPINGS] || {};
+    // Define channel mappings as follow:
+    //  1) using parameter if defined
+    //  2) using item state description options if available
+    //  3) empty object
+    const channels = parameters[Parameter.CHANNEL_MAPPINGS]
+      ? parameters[Parameter.CHANNEL_MAPPINGS]
+      : item.stateDescription && item.stateDescription.options
+      ? Object.fromEntries(item.stateDescription.options.map((option) => [option.value, option.label]))
+      : {};
     // Update channel mappings parameter removing invalid mappings if defined
     parameters[Parameter.CHANNEL_MAPPINGS] = Object.entries(channels)
-      .filter(([, number]) => !isNaN(number))
-      .reduce((channels, [name, number]) => ({ ...channels, [name.toUpperCase()]: number }), undefined);
+      .filter(([number]) => !isNaN(number))
+      .reduce((channels, [number, name]) => ({ ...channels, [number]: name }), undefined);
+
+    const range = parameters[Parameter.RANGE] || [];
+    // Update range parameter if valid (min < max), otherwise set to undefined
+    parameters[Parameter.RANGE] = range[0] < range[1] ? range.map((value) => Math.round(value)) : undefined;
   }
 }
 
