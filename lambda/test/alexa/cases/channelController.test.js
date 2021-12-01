@@ -64,6 +64,52 @@ module.exports = [
     }
   },
   {
+    description: 'change channel by number value out of range error',
+    directive: {
+      header: {
+        namespace: 'Alexa.ChannelController',
+        name: 'ChangeChannel'
+      },
+      endpoint: {
+        endpointId: 'channel',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ChannelController',
+              property: 'channel',
+              parameters: { range: [100, 499] },
+              item: { name: 'channel', type: 'Number' }
+            }
+          ])
+        }
+      },
+      payload: {
+        channel: {
+          number: '1234'
+        },
+        channelMetadata: {}
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'VALUE_OUT_OF_RANGE',
+            message: 'The channel cannot be changed to 1234.',
+            validRange: {
+              minimumValue: 100,
+              maximumValue: 499
+            }
+          }
+        }
+      }
+    }
+  },
+  {
     description: 'change channel by name',
     directive: {
       header: {
@@ -77,7 +123,7 @@ module.exports = [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { FOO: '12', BAR: '34', BAZ: '56', QUX: '78' } },
+              parameters: { channelMappings: { 12: 'FOO', 34: 'BAR', 56: 'BAZ' } },
               item: { name: 'channel', type: 'Number' }
             }
           ])
@@ -86,7 +132,7 @@ module.exports = [
       payload: {
         channel: {},
         channelMetadata: {
-          name: 'BAZ'
+          name: 'baz'
         }
       }
     },
@@ -115,7 +161,7 @@ module.exports = [
     }
   },
   {
-    description: 'change channel invalid value error',
+    description: 'change channel by name invalid value error',
     directive: {
       header: {
         namespace: 'Alexa.ChannelController',
@@ -128,7 +174,7 @@ module.exports = [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { FOO: '12', BAR: '34' } },
+              parameters: { channelMappings: { 12: 'FOO', 34: 'BAR' } },
               item: { name: 'channel', type: 'Number' }
             }
           ])
@@ -137,7 +183,7 @@ module.exports = [
       payload: {
         channel: {},
         channelMetadata: {
-          name: 'BAZ'
+          name: 'baz'
         }
       }
     },
@@ -150,7 +196,7 @@ module.exports = [
           },
           payload: {
             type: 'INVALID_VALUE',
-            message: 'The channel cannot be changed to BAZ.'
+            message: 'The channel cannot be changed to baz.'
           }
         }
       }
@@ -170,19 +216,19 @@ module.exports = [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { FOO: '12', BAR: '34', BAZ: '56', QUX: '78' } },
+              parameters: {},
               item: { name: 'channel', type: 'Number' }
             }
           ])
         }
       },
       payload: {
-        channelCount: -2
+        channelCount: 1
       }
     },
     items: [
-      { name: 'channel', state: '78', type: 'Number' },
-      { name: 'channel', state: '34', type: 'Number' }
+      { name: 'channel', state: '41', type: 'Number' },
+      { name: 'channel', state: '42', type: 'Number' }
     ],
     expected: {
       alexa: {
@@ -192,7 +238,7 @@ module.exports = [
               namespace: 'Alexa.ChannelController',
               name: 'channel',
               value: {
-                number: '34'
+                number: '42'
               }
             }
           ]
@@ -204,7 +250,46 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'channel', value: '34' }]
+      openhab: [{ name: 'channel', value: 42 }]
+    }
+  },
+  {
+    description: 'skip channel invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.ChannelController',
+        name: 'SkipChannels'
+      },
+      endpoint: {
+        endpointId: 'channel',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ChannelController',
+              property: 'channel',
+              parameters: { retrievable: false },
+              item: { name: 'channel', type: 'Number' }
+            }
+          ])
+        }
+      },
+      payload: {
+        channelCount: 1
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'Cannot retrieve state for item channel.'
+          }
+        }
+      }
     }
   },
   {
@@ -221,14 +306,14 @@ module.exports = [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { FOO: '12', BAR: '34', BAZ: '56', QUX: '78' } },
+              parameters: {},
               item: { name: 'channel', type: 'Number' }
             }
           ])
         }
       },
       payload: {
-        channelCount: -2
+        channelCount: 1
       }
     },
     items: [{ name: 'channel', state: 'NULL', type: 'Number' }],
@@ -248,7 +333,7 @@ module.exports = [
     }
   },
   {
-    description: 'skip channel unretrievable invalid value error',
+    description: 'skip channel value out of range error',
     directive: {
       header: {
         namespace: 'Alexa.ChannelController',
@@ -261,16 +346,17 @@ module.exports = [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { FOO: '12', BAR: '34', BAZ: '56', QUX: '78' }, retrievable: false },
+              parameters: {},
               item: { name: 'channel', type: 'Number' }
             }
           ])
         }
       },
       payload: {
-        channelCount: -2
+        channelCount: -1
       }
     },
+    items: [{ name: 'channel', state: '1', type: 'Number' }],
     expected: {
       alexa: {
         event: {
@@ -279,48 +365,12 @@ module.exports = [
             name: 'ErrorResponse'
           },
           payload: {
-            type: 'INVALID_VALUE',
-            message: 'Cannot retrieve state for item channel.'
-          }
-        }
-      }
-    }
-  },
-  {
-    description: 'skip channel missing mapping invalid value error',
-    directive: {
-      header: {
-        namespace: 'Alexa.ChannelController',
-        name: 'SkipChannels'
-      },
-      endpoint: {
-        endpointId: 'channel',
-        cookie: {
-          capabilities: JSON.stringify([
-            {
-              name: 'ChannelController',
-              property: 'channel',
-              parameters: { channelMappings: { FOO: '12', BAR: '34', BAZ: '56', QUX: '78' } },
-              item: { name: 'channel', type: 'Number' }
+            type: 'VALUE_OUT_OF_RANGE',
+            message: 'The channel cannot be adjusted to 0.',
+            validRange: {
+              minimumValue: 1,
+              maximumValue: 9999
             }
-          ])
-        }
-      },
-      payload: {
-        channelCount: -2
-      }
-    },
-    items: [{ name: 'channel', state: '42', type: 'Number' }],
-    expected: {
-      alexa: {
-        event: {
-          header: {
-            namespace: 'Alexa',
-            name: 'ErrorResponse'
-          },
-          payload: {
-            type: 'INVALID_VALUE',
-            message: 'Current channel number 42 is not defined in channel mappings.'
           }
         }
       }

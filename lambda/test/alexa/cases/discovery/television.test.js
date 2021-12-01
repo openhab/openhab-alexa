@@ -31,7 +31,8 @@ module.exports = {
             alexa: {
               value: 'Channel',
               config: {
-                channelMappings: 'FOO=12,BAR=34,baz=56,QUX=invalid'
+                channelMappings: '12=FOO,34=BAR,56=BAZ,invalid=QUX',
+                range: '10:99'
               }
             }
           }
@@ -51,9 +52,27 @@ module.exports = {
       ]
     },
     {
-      type: 'String',
+      type: 'Number',
       name: 'channel2',
       label: 'Television Channel 2',
+      metadata: {
+        alexa: {
+          value: 'Channel'
+        }
+      },
+      stateDescription: {
+        options: [
+          { value: '12', label: 'FOO' },
+          { value: '34', label: 'BAR' },
+          { value: '56', label: 'BAZ' },
+          { value: 'invalid', label: 'QUX' }
+        ]
+      }
+    },
+    {
+      type: 'String',
+      name: 'channel3',
+      label: 'Television Channel 3',
       metadata: {
         alexa: {
           value: 'Channel'
@@ -170,7 +189,8 @@ module.exports = {
           name: 'ChannelController',
           property: 'channel',
           parameters: {
-            channelMappings: { FOO: '12', BAR: '34', BAZ: '56' }
+            channelMappings: { 12: 'FOO', 34: 'BAR', 56: 'BAZ' },
+            range: [10, 99]
           },
           item: { name: 'channel1', type: 'Number' }
         },
@@ -189,7 +209,22 @@ module.exports = {
     channel2: {
       capabilities: ['Alexa.ChannelController.channel', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
       displayCategories: ['TV'],
-      friendlyName: 'Television Channel 2'
+      friendlyName: 'Television Channel 2',
+      cookie: [
+        {
+          name: 'ChannelController',
+          property: 'channel',
+          parameters: {
+            channelMappings: { 12: 'FOO', 34: 'BAR', 56: 'BAZ' }
+          },
+          item: { name: 'channel2', type: 'Number' }
+        }
+      ]
+    },
+    channel3: {
+      capabilities: ['Alexa.ChannelController.channel', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
+      displayCategories: ['TV'],
+      friendlyName: 'Television Channel 3'
     },
     input2: {
       capabilities: ['Alexa.ModeController:Input.mode', 'Alexa.EndpointHealth.connectivity', 'Alexa'],

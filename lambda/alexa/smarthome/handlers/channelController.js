@@ -11,9 +11,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
 const { Interface, Property } = require('../constants');
-const { EndpointUnreachableError, InvalidValueError } = require('../errors');
+const { EndpointUnreachableError, InvalidValueError, ValueOutOfRangeError } = require('../errors');
 const AlexaHandler = require('./handler');
 
 /**
@@ -54,24 +53,30 @@ class ChannelController extends AlexaHandler {
   }
 
   /**
-   * Changes channel to number or name
+   * Changes channel
    * @param  {Object}  directive
    * @param  {Object}  openhab
    * @return {Promise}
    */
   static async changeChannel(directive, openhab) {
-    const { item, channelMappings } = directive.endpoint.getCapabilityProperty({
+    const { item, channelMappings, range } = directive.endpoint.getCapabilityProperty({
       interface: directive.namespace,
       property: Property.CHANNEL
     });
-    // Determine channel number using channel name if provided and defined in channelMappings parameter,
-    //  otherwise use provided channel number
-    const channelName = directive.payload.channelMetadata.name || '';
-    const channelNumber = channelMappings[channelName.toUpperCase()] || directive.payload.channel.number;
+    // Determine channel number using channel name if provided, otherwise using provided channel number
+    const channelName = directive.payload.channelMetadata.name;
+    const channelNumber = channelName
+      ? Object.keys(channelMappings).find((num) => channelMappings[num].toUpperCase() === channelName.toUpperCase())
+      : directive.payload.channel.number;
 
     // Throw invalid value error if channel number not valid
     if (isNaN(channelNumber)) {
       throw new InvalidValueError(`The channel cannot be changed to ${channelNumber || channelName}.`);
+    }
+
+    // Throw value out of range error if channel number out of range
+    if (channelNumber < range[0] || channelNumber > range[1]) {
+      throw new ValueOutOfRangeError(`The channel cannot be changed to ${channelNumber}.`, { validRange: range });
     }
 
     await openhab.sendCommand(item.name, channelNumber);
@@ -80,13 +85,13 @@ class ChannelController extends AlexaHandler {
   }
 
   /**
-   * Adjusts channel number
+   * Adjusts channel
    * @param  {Object}  directive
    * @param  {Object}  openhab
    * @return {Promise}
    */
   static async adjustChannel(directive, openhab) {
-    const { item, channelMappings, isRetrievable } = directive.endpoint.getCapabilityProperty({
+    const { item, range, isRetrievable } = directive.endpoint.getCapabilityProperty({
       interface: directive.namespace,
       property: Property.CHANNEL
     });
@@ -104,17 +109,13 @@ class ChannelController extends AlexaHandler {
       throw new EndpointUnreachableError(`Could not get numeric state for item ${item.name}.`);
     }
 
-    const channelCount = directive.payload.channelCount;
-    const channelNumbers = Object.values(channelMappings);
-    const channelIndex = channelNumbers.indexOf(state);
+    // Determine adjusted channel number adding directive payload channel count value to current state
+    const channelNumber = parseInt(state) + directive.payload.channelCount;
 
-    // Throw invalid value error if current channel not defined
-    if (channelIndex === -1) {
-      throw new InvalidValueError(`Current channel number ${state} is not defined in channel mappings.`);
+    // Throw value out of range error if adjusted channel number out of range
+    if (channelNumber < range[0] || channelNumber > range[1]) {
+      throw new ValueOutOfRangeError(`The channel cannot be adjusted to ${channelNumber}.`, { validRange: range });
     }
-
-    const adjustedIndex = clamp(channelIndex + channelCount, 0, channelNumbers.length - 1);
-    const channelNumber = channelNumbers[adjustedIndex];
 
     await openhab.sendCommand(item.name, channelNumber);
 
