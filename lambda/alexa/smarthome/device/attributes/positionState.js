@@ -78,10 +78,6 @@ class PositionState extends DeviceAttribute {
             parameters: {
               capabilityNames: PositionState.capabilityNames,
               supportedRange: [0, 100, 1],
-              presets:
-                isInverted === true
-                  ? { 0: [AlexaAssetCatalog.VALUE_OPEN], 100: [AlexaAssetCatalog.VALUE_CLOSE] }
-                  : { 0: [AlexaAssetCatalog.VALUE_CLOSE], 100: [AlexaAssetCatalog.VALUE_OPEN] },
               unitOfMeasure: AlexaUnitOfMeasure.PERCENT,
               ...((hasPrimaryControl &&
                 (isInverted === true
@@ -135,8 +131,8 @@ class PositionState extends DeviceAttribute {
             parameters: {
               capabilityNames: PositionState.capabilityNames,
               supportedCommands: {
-                [ItemValue.UP]: [AlexaAssetCatalog.VALUE_UP, AlexaAssetCatalog.VALUE_OPEN],
-                [ItemValue.DOWN]: [AlexaAssetCatalog.VALUE_DOWN, AlexaAssetCatalog.VALUE_CLOSE],
+                [ItemValue.UP]: [AlexaAssetCatalog.VALUE_UP],
+                [ItemValue.DOWN]: [AlexaAssetCatalog.VALUE_DOWN],
                 [ItemValue.STOP]: [AlexaAssetCatalog.VALUE_STOP]
               },
               actionMappings: hasPrimaryControl

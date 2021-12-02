@@ -71,14 +71,6 @@ module.exports = {
       configuration: {
         'Alexa.RangeController:PositionState': {
           supportedRange: { minimumValue: 0, maximumValue: 100, precision: 1 },
-          presets: {
-            0: {
-              friendlyNames: ['asset:Alexa.Value.Close']
-            },
-            100: {
-              friendlyNames: ['asset:Alexa.Value.Open']
-            }
-          },
           unitOfMeasure: 'Alexa.Unit.Percent'
         }
       },
@@ -116,7 +108,6 @@ module.exports = {
           parameters: {
             capabilityNames: ['@Setting.Position', '@Setting.Opening'],
             supportedRange: [0, 100, 1],
-            presets: { 0: ['@Value.Close'], 100: ['@Value.Open'] },
             unitOfMeasure: 'Percent',
             actionMappings: { Close: '0', Open: '100', Lower: '0', Raise: '100' },
             stateMappings: { Closed: '0', Open: '1:100' }
