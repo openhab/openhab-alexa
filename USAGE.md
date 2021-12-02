@@ -113,6 +113,8 @@ In order for the skill to determine your default language and measurement system
 
 The Alexa skill API uses the concept of "endpoints".  Endpoints are addressable entities that expose one or more capabilities.  An example endpoint may be a light switch, which has a single capability to control power and report its state (ON/OFF).  A more complex endpoint may be a thermostat which has many capabilities to control and report temperature, setpoints, modes, etc...
 
+There is a maximum of 300 endpoints limit per user with 100 capabilities per endpoint. This restriction is driven by the [Alexa Smart Home API](https://developer.amazon.com/docs/device-apis/alexa-discovery.html#limits).
+
 ## Single Endpoint
 
 Single items in openHAB can be mapped to single endpoint in Alexa through the use of the [item metadata](https://www.openhab.org/docs/concepts/items.html#item-metadata).
@@ -551,6 +553,8 @@ Device Types | Supported Attributes | Description
 
 A device attribute represents one or more [Alexa Smart Home interface capabilities](https://developer.amazon.com/docs/device-apis/list-of-interfaces.html) that defines the supported functionalities of a given device.
 
+While the majority of the device attributes are based on the Alexa native/specific capabilities, some, such as [`PositionState`](#positionstate), were introduced in the skill to fill the lack of native support using a combination of [generic capabilities](#generic-capabilities) in order to ease the configuration of commonly used functionalities.
+
 For device attributes used in a [group endpoint](#group-endpoint), if multiple items with the same attribute are part of a group, only the first one will be considered while the others will be ignored. This doesn't apply to [generic attributes](#generic-attributes).
 
 Any group level metadata parameters are passed to each members part of that group. This is useful when the same parameter is used across multiple item capabilities of a group endpoint. For example, the `scale` temperature/setpoint parameter in a `Thermostat` group.
@@ -652,11 +656,16 @@ If paired with [`TiltAngle`](#tiltangle), the primary controls (open/close/stop)
   * presets=`<presets>`
     * each preset formatted as `<presetValue>=<@assetIdOrName1>:...` (e.g. `presets="20=Morning,60=Afternoon,80=Evening:@Setting.Night"`)
     * predefined [asset ids](#asset-catalog)
-    * defaults to item state description options `presets="value1=label1,..."` if defined, otherwise supported controls presets
+    * defaults to item state description options `presets="value1=label1,..."` if defined, otherwise no presets
   * language=`<code>`
     * text-based preset name language support
     * two-letter language code: `de`, `en`, `es`, `fr`, `hi`, `it`, `ja`, `pt`
     * defaults to your server [regional settings](#regional-settings) if defined, otherwise `en`
+  * actionMappings=`<mappings>`
+    * each [semantic](#semantic-extensions) mapping formatted as `<action>=<value>`
+    * defaults to:
+      * Dimmer => `Close=0,Open=100,Lower=0,Raise=100` or `Close=100,Open=0,Lower=100,Raise=0` (inverted)
+      * Rollershutter => `Close=DOWN,Open=UP,Lower=DOWN,Raise=UP,Stop=STOP`
 * Utterance examples:
   * *Alexa, open the `<device name>`.*
   * *Alexa, close the `<device name>`.*
@@ -665,8 +674,6 @@ If paired with [`TiltAngle`](#tiltangle), the primary controls (open/close/stop)
   * *Alexa, stop the `<device name>`.* (Rollershutter only)
   * *Alexa, set the `<device name>` position to 50 percent.*
   * *Alexa, set the `<device name>` position to `<preset name>`.*
-  * *Alexa, set the `<device name>` position to open.*
-  * *Alexa, set the `<device name>` position to close.*
   * *Alexa, set the `<device name>` position to up.* (Rollershutter only)
   * *Alexa, set the `<device name>` position to down.* (Rollershutter only)
   * *Alexa, set the `<device name>` position to stop.* (Rollershutter only)
@@ -695,11 +702,17 @@ If paired with [`PositionState`](#positionstate), the primary controls (open/clo
   * presets=`<presets>`
     * each preset formatted as `<presetValue>=<@assetIdOrName1>:...` (e.g. `presets="20=Morning,60=Afternoon,80=Evening:@Setting.Night"`)
     * predefined [asset ids](#asset-catalog)
-    * defaults to item state description options `presets="value1=label1,..."` if defined, otherwise supported controls presets
+    * defaults to item state description options `presets="value1=label1,..."` if defined, otherwise no presets
   * language=`<code>`
     * text-based preset name language support
     * two-letter language code: `de`, `en`, `es`, `fr`, `hi`, `it`, `ja`, `pt`
     * defaults to your server [regional settings](#regional-settings) if defined, otherwise `en`
+  * actionMappings=`<mappings>`
+    * each [semantic](#semantic-extensions) mapping formatted as `<action>=<value>`
+    * defaults to:
+      * Dimmer => `Close=0,Open=100` or `Close=100,Open=0` (inverted)
+      * Number => `Close=-90,Open=0` or `Close=90,Open=0`(inverted)
+      * Rollershutter => `Close=DOWN,Open=UP,Stop=STOP`
 * Utterance examples:
   * *Alexa, open the `<device name>`.*
   * *Alexa, close the `<device name>`.*
@@ -707,8 +720,6 @@ If paired with [`PositionState`](#positionstate), the primary controls (open/clo
   * *Alexa, set the `<device name>` tilt to 30 degrees.* (Number only)
   * *Alexa, set the `<device name>` tilt to 50 percent.* (Dimmer/Rollershutter only)
   * *Alexa, set the `<device name>` tilt to `<preset name>`.*
-  * *Alexa, set the `<device name>` tilt to open.*
-  * *Alexa, set the `<device name>` tilt to close.*
   * *Alexa, set the `<device name>` tilt to up.* (Rollershutter only)
   * *Alexa, set the `<device name>` tilt to down.* (Rollershutter only)
   * *Alexa, set the `<device name>` tilt to stop.* (Rollershutter only)

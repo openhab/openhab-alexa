@@ -314,10 +314,10 @@ module.exports = {
           ordered: false,
           supportedModes: {
             UP: {
-              friendlyNames: ['text:Up:en-US', 'asset:Alexa.Value.Open']
+              friendlyNames: ['text:Up:en-US']
             },
             DOWN: {
-              friendlyNames: ['text:Down:en-US', 'asset:Alexa.Value.Close']
+              friendlyNames: ['text:Down:en-US']
             },
             STOP: {
               friendlyNames: ['text:Stop:en-US']
@@ -332,10 +332,10 @@ module.exports = {
           ordered: false,
           supportedModes: {
             UP: {
-              friendlyNames: ['text:Up:en-US', 'asset:Alexa.Value.Open']
+              friendlyNames: ['text:Up:en-US']
             },
             DOWN: {
-              friendlyNames: ['text:Down:en-US', 'asset:Alexa.Value.Close']
+              friendlyNames: ['text:Down:en-US']
             },
             STOP: {
               friendlyNames: ['text:Stop:en-US']
@@ -388,8 +388,8 @@ module.exports = {
           parameters: {
             capabilityNames: ['@Setting.Position', '@Setting.Opening'],
             supportedModes: {
-              UP: ['@Value.Up', '@Value.Open'],
-              DOWN: ['@Value.Down', '@Value.Close'],
+              UP: ['@Value.Up'],
+              DOWN: ['@Value.Down'],
               STOP: ['@Value.Stop']
             },
             actionMappings: { Close: 'DOWN', Open: 'UP', Lower: 'DOWN', Raise: 'UP' }
@@ -423,8 +423,8 @@ module.exports = {
           parameters: {
             capabilityNames: ['@Setting.Tilt', '@Setting.Angle', '@Setting.Direction'],
             supportedModes: {
-              UP: ['@Value.Up', '@Value.Open'],
-              DOWN: ['@Value.Down', '@Value.Close'],
+              UP: ['@Value.Up'],
+              DOWN: ['@Value.Down'],
               STOP: ['@Value.Stop']
             }
           },
@@ -496,10 +496,10 @@ module.exports = {
           ordered: false,
           supportedModes: {
             UP: {
-              friendlyNames: ['text:Up:en-US', 'asset:Alexa.Value.Open']
+              friendlyNames: ['text:Up:en-US']
             },
             DOWN: {
-              friendlyNames: ['text:Down:en-US', 'asset:Alexa.Value.Close']
+              friendlyNames: ['text:Down:en-US']
             },
             STOP: {
               friendlyNames: ['text:Stop:en-US']
@@ -514,10 +514,10 @@ module.exports = {
           ordered: false,
           supportedModes: {
             UP: {
-              friendlyNames: ['text:Up:en-US', 'asset:Alexa.Value.Open']
+              friendlyNames: ['text:Up:en-US']
             },
             DOWN: {
-              friendlyNames: ['text:Down:en-US', 'asset:Alexa.Value.Close']
+              friendlyNames: ['text:Down:en-US']
             },
             STOP: {
               friendlyNames: ['text:Stop:en-US']
@@ -581,8 +581,8 @@ module.exports = {
           parameters: {
             capabilityNames: ['@Setting.Position', '@Setting.Opening'],
             supportedModes: {
-              UP: ['@Value.Up', '@Value.Open'],
-              DOWN: ['@Value.Down', '@Value.Close'],
+              UP: ['@Value.Up'],
+              DOWN: ['@Value.Down'],
               STOP: ['@Value.Stop']
             },
             actionMappings: { Lower: 'DOWN', Raise: 'UP' }
@@ -607,8 +607,8 @@ module.exports = {
           parameters: {
             capabilityNames: ['@Setting.Tilt', '@Setting.Angle', '@Setting.Direction'],
             supportedModes: {
-              UP: ['@Value.Up', '@Value.Open'],
-              DOWN: ['@Value.Down', '@Value.Close'],
+              UP: ['@Value.Up'],
+              DOWN: ['@Value.Down'],
               STOP: ['@Value.Stop']
             },
             actionMappings: { Close: 'DOWN', Open: 'UP' }
@@ -649,19 +649,11 @@ module.exports = {
       configuration: {
         'Alexa.RangeController:PositionState': {
           supportedRange: { minimumValue: 0, maximumValue: 100, precision: 1 },
-          unitOfMeasure: 'Alexa.Unit.Percent',
-          presets: {
-            0: { friendlyNames: ['asset:Alexa.Value.Close'] },
-            100: { friendlyNames: ['asset:Alexa.Value.Open'] }
-          }
+          unitOfMeasure: 'Alexa.Unit.Percent'
         },
         'Alexa.RangeController:TiltAngle': {
           supportedRange: { minimumValue: 0, maximumValue: 100, precision: 1 },
-          unitOfMeasure: 'Alexa.Unit.Percent',
-          presets: {
-            0: { friendlyNames: ['asset:Alexa.Value.Close'] },
-            100: { friendlyNames: ['asset:Alexa.Value.Open'] }
-          }
+          unitOfMeasure: 'Alexa.Unit.Percent'
         }
       },
       semantics: {
@@ -715,19 +707,11 @@ module.exports = {
       configuration: {
         'Alexa.RangeController:PositionState': {
           supportedRange: { minimumValue: 0, maximumValue: 100, precision: 1 },
-          unitOfMeasure: 'Alexa.Unit.Percent',
-          presets: {
-            0: { friendlyNames: ['asset:Alexa.Value.Open'] },
-            100: { friendlyNames: ['asset:Alexa.Value.Close'] }
-          }
+          unitOfMeasure: 'Alexa.Unit.Percent'
         },
         'Alexa.RangeController:TiltAngle': {
           supportedRange: { minimumValue: 0, maximumValue: 100, precision: 1 },
-          unitOfMeasure: 'Alexa.Unit.Percent',
-          presets: {
-            0: { friendlyNames: ['asset:Alexa.Value.Open'] },
-            100: { friendlyNames: ['asset:Alexa.Value.Close'] }
-          }
+          unitOfMeasure: 'Alexa.Unit.Percent'
         }
       },
       semantics: {
@@ -776,11 +760,7 @@ module.exports = {
       configuration: {
         'Alexa.RangeController:PositionState': {
           supportedRange: { minimumValue: 0, maximumValue: 100, precision: 1 },
-          unitOfMeasure: 'Alexa.Unit.Percent',
-          presets: {
-            0: { friendlyNames: ['asset:Alexa.Value.Close'] },
-            100: { friendlyNames: ['asset:Alexa.Value.Open'] }
-          }
+          unitOfMeasure: 'Alexa.Unit.Percent'
         }
       },
       semantics: {
@@ -817,11 +797,7 @@ module.exports = {
       configuration: {
         'Alexa.RangeController:PositionState': {
           supportedRange: { minimumValue: 0, maximumValue: 100, precision: 1 },
-          unitOfMeasure: 'Alexa.Unit.Percent',
-          presets: {
-            0: { friendlyNames: ['asset:Alexa.Value.Open'] },
-            100: { friendlyNames: ['asset:Alexa.Value.Close'] }
-          }
+          unitOfMeasure: 'Alexa.Unit.Percent'
         }
       },
       semantics: {
@@ -897,11 +873,7 @@ module.exports = {
       configuration: {
         'Alexa.RangeController:TiltAngle': {
           supportedRange: { minimumValue: -90, maximumValue: 90, precision: 1 },
-          unitOfMeasure: 'Alexa.Unit.Angle.Degrees',
-          presets: {
-            0: { friendlyNames: ['asset:Alexa.Value.Open'] },
-            '-90': { friendlyNames: ['asset:Alexa.Value.Close'] }
-          }
+          unitOfMeasure: 'Alexa.Unit.Angle.Degrees'
         }
       },
       semantics: {
@@ -938,11 +910,7 @@ module.exports = {
       configuration: {
         'Alexa.RangeController:TiltAngle': {
           supportedRange: { minimumValue: -90, maximumValue: 90, precision: 1 },
-          unitOfMeasure: 'Alexa.Unit.Angle.Degrees',
-          presets: {
-            0: { friendlyNames: ['asset:Alexa.Value.Open'] },
-            90: { friendlyNames: ['asset:Alexa.Value.Close'] }
-          }
+          unitOfMeasure: 'Alexa.Unit.Angle.Degrees'
         }
       },
       semantics: {
