@@ -125,10 +125,10 @@ class RangeController extends AlexaCapability {
       const values = value && value.split(':', 2);
       // Add state mapping object if value(s) valid
       if (values && values.every((value) => value >= supportedRange[0] && value <= supportedRange[1])) {
-        if (values.length === 2) {
-          semantics.addStateToRange(name, { minimumValue: parseFloat(values[0]), maximumValue: parseFloat(values[1]) });
-        } else {
+        if (values.length === 1) {
           semantics.addStateToValue(name, parseFloat(values[0]));
+        } else if (values[0] < values[1]) {
+          semantics.addStateToRange(name, { minimumValue: parseFloat(values[0]), maximumValue: parseFloat(values[1]) });
         }
       }
     }

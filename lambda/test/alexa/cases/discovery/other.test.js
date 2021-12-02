@@ -98,7 +98,7 @@ module.exports = {
             unitOfMeasure: 'Invalid',
             // Invalid semantics (except playback action)
             actionMappings: 'Close=-1,Open=11,Lower=(-11),Raise=(+11),Stop=0',
-            stateMappings: 'Closed=-1,Open=0:11'
+            stateMappings: 'Closed=-1,Open=10:1'
           }
         }
       }
@@ -627,7 +627,7 @@ module.exports = {
             capabilityNames: ['@Setting.RangeValue'],
             supportedRange: [0, 10, 1],
             actionMappings: { Close: '-1', Open: '11', Lower: '(-11)', Raise: '(+11)' },
-            stateMappings: { Closed: '-1', Open: '0:11' }
+            stateMappings: { Closed: '-1', Open: '10:1' }
           },
           item: { name: 'range2', type: 'Number' }
         },
