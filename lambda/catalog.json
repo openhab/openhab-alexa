@@ -751,6 +751,68 @@
       "locale": "pt-BR"
     }
   ],
+  "@Setting.TargetTemperature": [
+    {
+      "text": "Zieltemperatur",
+      "locale": "de-DE"
+    },
+    {
+      "text": "Target Temperature",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Target Temperature",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Target Temperature",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Target Temperature",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Target Temperature",
+      "locale": "en-US"
+    },
+    {
+      "text": "Temperatura objetivo",
+      "locale": "es-ES"
+    },
+    {
+      "text": "Temperatura objetivo",
+      "locale": "es-MX"
+    },
+    {
+      "text": "Temperatura objetivo",
+      "locale": "es-US"
+    },
+    {
+      "text": "Température cible",
+      "locale": "fr-CA"
+    },
+    {
+      "text": "Température cible",
+      "locale": "fr-FR"
+    },
+    {
+      "text": "लक्ष्य तापमान",
+      "locale": "hi-IN"
+    },
+    {
+      "text": "Temperatura Obiettivo",
+      "locale": "it-IT"
+    },
+    {
+      "text": "目標温度",
+      "locale": "ja-JP"
+    },
+    {
+      "text": "Temperatura alvo",
+      "locale": "pt-BR"
+    }
+  ],
   "@Setting.Tilt": [
     {
       "text": "Neigung",
@@ -1741,28 +1803,6 @@
     {
       "text": "Acima",
       "locale": "pt-BR"
-    }
-  ],
-  "@Setting.TargetTemperature": [
-    {
-      "text": "Target Temperature",
-      "locale": "en-AU"
-    },
-    {
-      "text": "Target Temperature",
-      "locale": "en-CA"
-    },
-    {
-      "text": "Target Temperature",
-      "locale": "en-GB"
-    },
-    {
-      "text": "Target Temperature",
-      "locale": "en-IN"
-    },
-    {
-      "text": "Target Temperature",
-      "locale": "en-US"
     }
   ]
 }
