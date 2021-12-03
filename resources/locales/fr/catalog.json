@@ -12,6 +12,7 @@
     "@Setting.Reverse": "Inverse",
     "@Setting.Speed": "Vitesse",
     "@Setting.Spot": "Spot",
+    "@Setting.TargetTemperature": "Target Temperature",
     "@Setting.Tilt": "Inclinaison",
     "@Setting.ToggleState": "État de bascule",
     "@Value.Decrease": "Diminue",
