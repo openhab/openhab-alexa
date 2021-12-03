@@ -1742,5 +1742,27 @@
       "text": "Acima",
       "locale": "pt-BR"
     }
+  ],
+  "@Setting.TargetTemperature": [
+    {
+      "text": "Target Temperature",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Target Temperature",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Target Temperature",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Target Temperature",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Target Temperature",
+      "locale": "en-US"
+    }
   ]
 }

@@ -500,7 +500,7 @@ Device Types | Supported Attributes | Description
 `AirConditioner` | _[`PowerState`](#powerstate)_, [`TargetTemperature`](#targettemperature), [`CurrentTemperature`](#currenttemperature), [`FanSpeed`](#fanspeed), [`FanDirection`](#fandirection), [`FanOscillate`](#fanoscillate) | A device that cools the air in interior spaces.
 `AirFreshener` | Same as `Fan` | A device that emits pleasant odors and masks unpleasant odors in interior spaces.
 `AirPurifier` | Same as `Fan` | A device that improves the quality of air in interior spaces.
-`Automobile` | [`BatteryLevel`](#batterylevel), [`FanSpeed`](#fanspeed), [`LockState`](#lockstate), [`PowerState`](#powerstate), [`CurrentTemperature`](#currenttemperature) | A motor vehicle (automobile, car).
+`Automobile` | [`BatteryLevel`](#batterylevel), [`FanSpeed`](#fanspeed), [`LockState`](#lockstate), [`PowerState`](#powerstate), [`TargetTemperature`](#targettemperature), [`CurrentTemperature`](#currenttemperature) | A motor vehicle (automobile, car).
 `AutomobileAccessory` | [`BatteryLevel`](#batterylevel), [`CameraStream`](#camerastream), [`FanSpeed`](#fanspeed), [`PowerState`](#powerstate) | A smart device in an automobile, such as a dash camera.
 `Blind`, `Curtain`, `Shade` | _[`OpenState`](#openstate)_, _[`PositionState`](#positionstate)_, [`TiltAngle`](#tiltAngle), [`TargetOpenState`](#targetopenstate), [`CurrentOpenState`](#currentopenstate) | A window covering on the inside of a structure.
 `BluetoothSpeaker` | _[`PowerState`](#powerstate)_, _[`VolumeLevel`](#volumelevel)_, [`MuteState`](#mutestate), [`EqualizerBass`](#equalizerbass), [`EqualizerMidrange`](#equalizermidrange), [`EqualizerTreble`](#equalizertreble), [`EqualizerMode`](#equalizermode), [`Channel`](#channel), [`Input`](#input), [`Playback`](#playback), [`PlaybackStop`](#playbackstop), [`BatteryLevel`](#batterylevel) | A speaker that connects to an audio source over Bluetooth.
@@ -1344,7 +1344,7 @@ Items that represent a temperature sensor that provides the ambient temperature.
     * defaults to [item unit of measurement](#item-unit-of-measurement), otherwise Celsius
 * Utterance examples:
   * *Alexa, what’s the `<device name>` temperature?*
-  * *Alexa, what’s the temperature in `<device name>`?*
+  * *Alexa, what’s the temperature of `<device name>`?*
 
 <a name="contactsensor-detectionstate"></a>
 
@@ -1447,9 +1447,10 @@ Items that represent a target setpoint for a thermostat.
     * defaults to 4°C -> 32°C or 40°F -> 90°F
 * Utterance examples:
   * *Alexa, set the `<device name>` to 70.*
-  * *Alexa, make it warmer in here.*
-  * *Alexa, make it cooler in here.*
-  * *Alexa, what's the `<device name>` set to?*
+  * *Alexa, make it warmer in here.* ([`Thermostat`](#device-types) type only)
+  * *Alexa, make it cooler in here.* ([`Thermostat`](#device-types) type only)
+  * *Alexa, what's the `<device name>` set to?* ([`Thermostat`](#device-types) type only)
+  * *Alexa, what's the `<device name>` target temperature?* (All supported types except [`Thermostat`](#device-types))
 
 <a name="thermostatcontroller-uppersetpoint"></a>
 <a name="uppertemperature"></a>

@@ -21,6 +21,18 @@ const Temperature = require('./temperature');
  */
 class TargetSetpoint extends Temperature {
   /**
+   * Defines default setpoint range in celsius
+   * @type {Array}
+   */
+  static DEFAULT_RANGE_CELSIUS = [4, 32];
+
+  /**
+   * Defines default setpoint range in fahrenheit
+   * @type {Array}
+   */
+  static DEFAULT_RANGE_FAHRENHEIT = [40, 90];
+
+  /**
    * Returns supported parameters and their type
    * @return {Object}
    */
@@ -36,7 +48,9 @@ class TargetSetpoint extends Temperature {
    * @return {Array}
    */
   get defaultSetpointRange() {
-    return this.scale === AlexaUnitOfMeasure.UNIT_FAHRENHEIT ? [40, 90] : [4, 32];
+    return this.scale === AlexaUnitOfMeasure.UNIT_FAHRENHEIT
+      ? TargetSetpoint.DEFAULT_RANGE_FAHRENHEIT
+      : TargetSetpoint.DEFAULT_RANGE_CELSIUS;
   }
 
   /**

@@ -13,7 +13,15 @@
 
 const AlexaDisplayCategory = require('@alexa/smarthome/category');
 const DeviceType = require('./type');
-const { BatteryLevel, FanSpeed, LockState, PowerState, Temperature, genericAttributes } = require('../attributes');
+const {
+  BatteryLevel,
+  FanSpeed,
+  LockState,
+  PowerState,
+  TargetTemperature,
+  Temperature,
+  genericAttributes
+} = require('../attributes');
 
 /**
  * Defines automobile device type class
@@ -33,7 +41,7 @@ class Automobile extends DeviceType {
    * @return {Array}
    */
   static get supportedAttributes() {
-    return [BatteryLevel, FanSpeed, LockState, PowerState, Temperature, ...genericAttributes];
+    return [BatteryLevel, FanSpeed, LockState, PowerState, TargetTemperature, Temperature, ...genericAttributes];
   }
 
   /**
