@@ -77,10 +77,11 @@ class AlexaDevice {
   getCapabilities(item, metadata, settings) {
     // Determine capability attribute(s) based on defined attribute, fallback to device type default attributes
     const attributes = [].concat(this._device.attribute || this._device.type.defaultAttributes);
+    const categories = this._device.type.displayCategories;
     const capabilities = [];
 
     for (const attribute of attributes) {
-      capabilities.push(...(attribute.getCapabilities(item, metadata, settings) || []));
+      capabilities.push(...(attribute.getCapabilities(item, metadata, settings, categories) || []));
     }
 
     return capabilities;

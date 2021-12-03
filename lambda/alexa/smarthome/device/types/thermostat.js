@@ -12,6 +12,7 @@
  */
 
 const AlexaDisplayCategory = require('@alexa/smarthome/category');
+const { Parameter } = require('@alexa/smarthome/metadata');
 const DeviceType = require('./type');
 const {
   HeatingCoolingMode,
@@ -85,8 +86,8 @@ class Thermostat extends DeviceType {
    */
   static getConfig(metadata) {
     // Add v2 temperature scale parameter if scale config not defined
-    if (!metadata.config.scale) {
-      metadata.setConfigParameter('scale', Temperature.getV2TemperatureScale(metadata));
+    if (!metadata.getConfigParameter(Parameter.SCALE)) {
+      metadata.setConfigParameter(Parameter.SCALE, Temperature.getV2TemperatureScale(metadata));
     }
 
     return super.getConfig(metadata);

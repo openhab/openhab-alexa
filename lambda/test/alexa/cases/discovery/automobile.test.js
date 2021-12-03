@@ -41,6 +41,15 @@ module.exports = {
               value: 'CurrentTemperature'
             }
           }
+        },
+        {
+          type: 'Number:Temperature',
+          name: 'targetTemperature',
+          metadata: {
+            alexa: {
+              value: 'TargetTemperature'
+            }
+          }
         }
       ]
     }
@@ -51,13 +60,20 @@ module.exports = {
         text: 'Battery Level',
         locale: 'en-US'
       }
+    ],
+    '@Setting.TargetTemperature': [
+      {
+        text: 'Target Temperature',
+        locale: 'en-US'
+      }
     ]
   },
   expected: {
     gAutomobile: {
       capabilities: [
         'Alexa.RangeController:BatteryLevel.rangeValue',
-        'Alexa.TemperatureSensor.temperature',
+        'Alexa.RangeController:Temperature.rangeValue',
+        'Alexa.RangeController:TargetTemperature.rangeValue',
         'Alexa.EndpointHealth.connectivity',
         'Alexa'
       ],
@@ -68,39 +84,43 @@ module.exports = {
           proactivelyReported: false,
           retrievable: true,
           nonControllable: true
+        },
+        'Alexa.RangeController:Temperature': {
+          proactivelyReported: false,
+          retrievable: true,
+          nonControllable: true
+        },
+        'Alexa.RangeController:TargetTemperature': {
+          proactivelyReported: false,
+          retrievable: true,
+          nonControllable: false
         }
       },
       resources: {
         'Alexa.RangeController:BatteryLevel': {
           friendlyNames: ['text:Battery Level:en-US']
+        },
+        'Alexa.RangeController:Temperature': {
+          friendlyNames: ['asset:Alexa.Setting.Temperature']
+        },
+        'Alexa.RangeController:TargetTemperature': {
+          friendlyNames: ['text:Target Temperature:en-US']
         }
       },
       configuration: {
         'Alexa.RangeController:BatteryLevel': {
           supportedRange: { minimumValue: 0, maximumValue: 100, precision: 1 },
           unitOfMeasure: 'Alexa.Unit.Percent'
-        }
-      },
-      cookie: [
-        {
-          name: 'RangeController',
-          instance: 'BatteryLevel',
-          property: 'rangeValue',
-          parameters: {
-            capabilityNames: ['@Setting.BatteryLevel'],
-            nonControllable: true,
-            supportedRange: [0, 100, 1],
-            unitOfMeasure: 'Percent'
-          },
-          item: { name: 'batteryLevel', type: 'Number:Dimensionless' }
         },
-        {
-          name: 'TemperatureSensor',
-          property: 'temperature',
-          parameters: { scale: 'CELSIUS' },
-          item: { name: 'temperature', type: 'Number:Temperature' }
+        'Alexa.RangeController:Temperature': {
+          supportedRange: { minimumValue: -50, maximumValue: 100, precision: 0.5 },
+          unitOfMeasure: 'Alexa.Unit.Temperature.Celsius'
+        },
+        'Alexa.RangeController:TargetTemperature': {
+          supportedRange: { minimumValue: 4, maximumValue: 32, precision: 0.5 },
+          unitOfMeasure: 'Alexa.Unit.Temperature.Celsius'
         }
-      ]
+      }
     }
   }
 };

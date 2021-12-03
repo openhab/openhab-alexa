@@ -42,7 +42,7 @@ module.exports = {
       name: 'temperature3',
       label: 'Temperature Sensor 3',
       stateDescription: {
-        pattern: '%.1f °C'
+        pattern: '%.1f °F'
       },
       metadata: {
         alexa: {
@@ -74,13 +74,6 @@ module.exports = {
       }
     }
   ],
-  settings: {
-    regional: {
-      language: 'en',
-      measurementSystem: 'US',
-      region: 'US'
-    }
-  },
   expected: {
     temperature1: {
       capabilities: ['Alexa.TemperatureSensor.temperature', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
@@ -108,7 +101,7 @@ module.exports = {
         {
           name: 'TemperatureSensor',
           property: 'temperature',
-          parameters: { scale: 'CELSIUS' },
+          parameters: { scale: 'FAHRENHEIT' },
           item: { name: 'temperature3', type: 'Number:Temperature' }
         }
       ]
@@ -121,7 +114,7 @@ module.exports = {
         {
           name: 'TemperatureSensor',
           property: 'temperature',
-          parameters: { scale: 'FAHRENHEIT' },
+          parameters: { scale: 'CELSIUS' },
           item: { name: 'temperature4', type: 'Number' }
         }
       ]

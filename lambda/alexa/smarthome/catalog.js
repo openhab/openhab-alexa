@@ -329,6 +329,12 @@ class AlexaAssetCatalog extends AlexaGlobalCatalog {
   static SETTING_SPOT = '@Setting.Spot';
 
   /**
+   * Defines setting target temperature asset
+   * @type {String}
+   */
+  static SETTING_TARGET_TEMPERATURE = '@Setting.TargetTemperature';
+
+  /**
    * Defines setting tilt asset
    * @type {String}
    */

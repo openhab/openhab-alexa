@@ -15,9 +15,48 @@ module.exports = {
   description: 'air conditioner',
   items: [
     {
+      type: 'Group',
+      name: 'gAirConditioner1',
+      label: 'Air Conditioner 1',
+      metadata: {
+        alexa: {
+          value: 'AirConditioner'
+        }
+      },
+      members: [
+        {
+          type: 'Switch',
+          name: 'power',
+          metadata: {
+            alexa: {
+              value: 'PowerState'
+            }
+          }
+        },
+        {
+          type: 'Number:Temperature',
+          name: 'temperature',
+          metadata: {
+            alexa: {
+              value: 'CurrentTemperature'
+            }
+          }
+        },
+        {
+          type: 'Number:Temperature',
+          name: 'targetTemperature',
+          metadata: {
+            alexa: {
+              value: 'TargetTemperature'
+            }
+          }
+        }
+      ]
+    },
+    {
       type: 'Switch',
-      name: 'airConditioner',
-      label: 'Air Conditioner',
+      name: 'airConditioner2',
+      label: 'Air Conditioner 2',
       metadata: {
         alexa: {
           value: 'AirConditioner'
@@ -25,11 +64,67 @@ module.exports = {
       }
     }
   ],
+  catalog: {
+    '@Setting.TargetTemperature': [
+      {
+        text: 'Target Temperature',
+        locale: 'en-US'
+      }
+    ]
+  },
+  settings: {
+    regional: {
+      language: 'en',
+      measurementSystem: 'US',
+      region: 'US'
+    }
+  },
   expected: {
-    airConditioner: {
+    gAirConditioner1: {
+      capabilities: [
+        'Alexa.PowerController.powerState',
+        'Alexa.RangeController:Temperature.rangeValue',
+        'Alexa.RangeController:TargetTemperature.rangeValue',
+        'Alexa.EndpointHealth.connectivity',
+        'Alexa'
+      ],
+      displayCategories: ['AIR_CONDITIONER'],
+      friendlyName: 'Air Conditioner 1',
+      propertyFlags: {
+        'Alexa.RangeController:Temperature': {
+          proactivelyReported: false,
+          retrievable: true,
+          nonControllable: true
+        },
+        'Alexa.RangeController:TargetTemperature': {
+          proactivelyReported: false,
+          retrievable: true,
+          nonControllable: false
+        }
+      },
+      resources: {
+        'Alexa.RangeController:Temperature': {
+          friendlyNames: ['asset:Alexa.Setting.Temperature']
+        },
+        'Alexa.RangeController:TargetTemperature': {
+          friendlyNames: ['text:Target Temperature:en-US']
+        }
+      },
+      configuration: {
+        'Alexa.RangeController:Temperature': {
+          supportedRange: { minimumValue: -58, maximumValue: 212, precision: 1 },
+          unitOfMeasure: 'Alexa.Unit.Temperature.Fahrenheit'
+        },
+        'Alexa.RangeController:TargetTemperature': {
+          supportedRange: { minimumValue: 40, maximumValue: 90, precision: 1 },
+          unitOfMeasure: 'Alexa.Unit.Temperature.Fahrenheit'
+        }
+      }
+    },
+    airConditioner2: {
       capabilities: ['Alexa.PowerController.powerState', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
       displayCategories: ['AIR_CONDITIONER'],
-      friendlyName: 'Air Conditioner'
+      friendlyName: 'Air Conditioner 2'
     }
   }
 };

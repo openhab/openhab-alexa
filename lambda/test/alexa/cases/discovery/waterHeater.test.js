@@ -35,10 +35,13 @@ module.exports = {
         },
         {
           type: 'Number',
-          name: 'targetSetpoint',
+          name: 'targetTemperature',
           metadata: {
             alexa: {
-              value: 'TargetTemperature'
+              value: 'TargetTemperature',
+              config: {
+                setpointRange: '90:150'
+              }
             }
           }
         },
@@ -54,17 +57,62 @@ module.exports = {
       ]
     }
   ],
+  catalog: {
+    '@Setting.TargetTemperature': [
+      {
+        text: 'Target Temperature',
+        locale: 'en-US'
+      }
+    ]
+  },
+  settings: {
+    regional: {
+      language: 'en',
+      measurementSystem: 'US',
+      region: 'US'
+    }
+  },
   expected: {
     gWaterHeater: {
       capabilities: [
-        'Alexa.TemperatureSensor.temperature',
-        'Alexa.ThermostatController.targetSetpoint',
+        'Alexa.RangeController:Temperature.rangeValue',
+        'Alexa.RangeController:TargetTemperature.rangeValue',
         'Alexa.PowerController.powerState',
         'Alexa.EndpointHealth.connectivity',
         'Alexa'
       ],
       displayCategories: ['WATER_HEATER'],
-      friendlyName: 'Water Heater'
+      friendlyName: 'Water Heater',
+      propertyFlags: {
+        'Alexa.RangeController:Temperature': {
+          proactivelyReported: false,
+          retrievable: true,
+          nonControllable: true
+        },
+        'Alexa.RangeController:TargetTemperature': {
+          proactivelyReported: false,
+          retrievable: true,
+          nonControllable: false
+        }
+      },
+      resources: {
+        'Alexa.RangeController:Temperature': {
+          friendlyNames: ['asset:Alexa.Setting.Temperature']
+        },
+        'Alexa.RangeController:TargetTemperature': {
+          friendlyNames: ['text:Target Temperature:en-US']
+        }
+      },
+      configuration: {
+        'Alexa.RangeController:Temperature': {
+          supportedRange: { minimumValue: -58, maximumValue: 212, precision: 1 },
+          unitOfMeasure: 'Alexa.Unit.Temperature.Fahrenheit'
+        },
+        'Alexa.RangeController:TargetTemperature': {
+          supportedRange: { minimumValue: 90, maximumValue: 150, precision: 1 },
+          unitOfMeasure: 'Alexa.Unit.Temperature.Fahrenheit'
+        }
+      }
     }
   }
 };
