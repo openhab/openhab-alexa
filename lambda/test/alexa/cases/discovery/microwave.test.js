@@ -48,9 +48,7 @@ module.exports = {
               value: 'RangeValue',
               config: {
                 supportedRange: '0:2:1',
-                presets: { 0: '@Value.Off', 1: '@Setting.Night', 2: '@Value.On' },
-                actionMappings: { TurnOff: '0', TurnOn: '2' },
-                stateMappings: { Off: '0', On: '1:2' }
+                presets: { 0: '@Value.Off', 1: '@Setting.Night', 2: '@Value.On' }
               }
             }
           }
@@ -87,7 +85,6 @@ module.exports = {
       capabilities: [
         'Alexa.RangeController:MicrowavePowerLevel.rangeValue',
         'Alexa.RangeController:MicrowaveSurfaceLight.rangeValue',
-        'Alexa.ToggleController:MicrowaveSurfaceLight.toggleState',
         'Alexa.ToggleController:MicrowaveTurnTable.toggleState',
         'Alexa.EndpointHealth.connectivity',
         'Alexa'
@@ -101,11 +98,6 @@ module.exports = {
           nonControllable: false
         },
         'Alexa.RangeController:MicrowaveSurfaceLight': {
-          proactivelyReported: false,
-          retrievable: true,
-          nonControllable: false
-        },
-        'Alexa.ToggleController:MicrowaveSurfaceLight': {
           proactivelyReported: false,
           retrievable: true,
           nonControllable: false
@@ -127,15 +119,6 @@ module.exports = {
           ]
         },
         'Alexa.RangeController:MicrowaveSurfaceLight': {
-          friendlyNames: [
-            'text:Surface Light:en-AU',
-            'text:Surface Light:en-CA',
-            'text:Surface Light:en-GB',
-            'text:Surface Light:en-IN',
-            'text:Surface Light:en-US'
-          ]
-        },
-        'Alexa.ToggleController:MicrowaveSurfaceLight': {
           friendlyNames: [
             'text:Surface Light:en-AU',
             'text:Surface Light:en-CA',
@@ -203,17 +186,6 @@ module.exports = {
             capabilityNames: ['Surface Light'],
             supportedRange: [0, 2, 1],
             presets: { 0: ['@Value.Off'], 1: ['@Setting.Night'], 2: ['@Value.On'] }
-          },
-          item: { name: 'MicrowaveSurfaceLight', type: 'Number' }
-        },
-        {
-          name: 'ToggleController',
-          instance: 'Toggle:MicrowaveSurfaceLight',
-          property: 'toggleState',
-          parameters: {
-            capabilityNames: ['Surface Light'],
-            actionMappings: { TurnOff: '0', TurnOn: '2' },
-            stateMappings: { Off: '0', On: '1:2' }
           },
           item: { name: 'MicrowaveSurfaceLight', type: 'Number' }
         },

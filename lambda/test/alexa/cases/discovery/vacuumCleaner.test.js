@@ -204,9 +204,7 @@ module.exports = {
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Resume: 'CLEAN', Pause: 'PAUSE', Stop: 'STOP' }
-          },
+          parameters: { RESUME: 'CLEAN', PAUSE: 'PAUSE', STOP: 'STOP' },
           item: { name: 'vacuumMode1', type: 'String' }
         },
         {
@@ -296,12 +294,7 @@ module.exports = {
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Resume: 'CLEAN', Pause: 'PAUSE', Stop: 'STOP' },
-            CLEAN: 1,
-            PAUSE: 4,
-            STOP: 5
-          },
+          parameters: { RESUME: 1, PAUSE: 4, STOP: 5 },
           item: { name: 'vacuumCleaner2', type: 'Number' }
         }
       ]
@@ -365,10 +358,7 @@ module.exports = {
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Stop: 'DOCK' },
-            DOCK: 0
-          },
+          parameters: { STOP: 0 },
           item: { name: 'vacuumCleaner3', type: 'Number' }
         }
       ]

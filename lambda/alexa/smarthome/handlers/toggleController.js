@@ -13,6 +13,7 @@
 
 const { Interface, Property } = require('../constants');
 const { InvalidValueError } = require('../errors');
+const { ToggleState } = require('../properties');
 const AlexaHandler = require('./handler');
 
 /**
@@ -70,7 +71,7 @@ class ToggleController extends AlexaHandler {
       throw new InvalidValueError('No toggle state property defined.');
     }
 
-    const command = property.getCommand(directive.name);
+    const command = property.getCommand(directive.name === ToggleController.TURN_ON ? ToggleState.ON : ToggleState.OFF);
 
     await openhab.sendCommand(property.item.name, command);
 

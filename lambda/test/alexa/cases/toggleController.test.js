@@ -127,8 +127,8 @@ module.exports = [
               property: 'toggleState',
               parameters: {
                 capabilityNames: ['Light'],
-                actionMappings: { TurnOff: '0', TurnOn: '2' },
-                stateMappings: { Off: '0', On: '1:3' }
+                OFF: '0',
+                ON: '2'
               },
               item: { name: 'FanLight', type: 'Number' }
             }
@@ -209,6 +209,56 @@ module.exports = [
     }
   },
   {
+    description: 'turn off toggle state number item',
+    directive: {
+      header: {
+        namespace: 'Alexa.ToggleController',
+        instance: 'Toggle:FanLight',
+        name: 'TurnOff'
+      },
+      endpoint: {
+        endpointId: 'FanLight',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ToggleController',
+              instance: 'Toggle:FanLight',
+              property: 'toggleState',
+              parameters: {
+                capabilityNames: ['Light'],
+                OFF: '0',
+                ON: '2'
+              },
+              item: { name: 'FanLight', type: 'Number' }
+            }
+          ])
+        }
+      }
+    },
+    items: [{ name: 'FanLight', state: '0', type: 'Number' }],
+    expected: {
+      alexa: {
+        context: {
+          properties: [
+            {
+              namespace: 'Alexa.ToggleController',
+              instance: 'Toggle:FanLight',
+              name: 'toggleState',
+              value: 'OFF'
+            }
+          ]
+        },
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'Response'
+          }
+        }
+      },
+      openhab: [{ name: 'FanLight', value: '0' }]
+    }
+  },
+  {
     description: 'turn off toggle state invalid value error',
     directive: {
       header: {
@@ -227,7 +277,7 @@ module.exports = [
               parameters: {
                 capabilityNames: ['Light']
               },
-              item: { name: 'FanLight', type: 'Dimmer' }
+              item: { name: 'FanLight', type: 'String' }
             }
           ])
         }

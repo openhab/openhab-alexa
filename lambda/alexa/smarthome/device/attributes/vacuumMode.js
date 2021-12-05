@@ -14,8 +14,7 @@
 const { ItemType } = require('@openhab/constants');
 const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
 const { Capability, Property } = require('@alexa/smarthome/constants');
-const PlaybackAction = require('@alexa/smarthome/properties/playbackAction');
-const PowerState = require('@alexa/smarthome/properties/powerState');
+const { CustomActionSemantic } = require('@alexa/smarthome/semantics');
 const DeviceAttribute = require('./attribute');
 
 /**
@@ -78,15 +77,6 @@ class VacuumMode extends DeviceAttribute {
   }
 
   /**
-   * Returns if vacuum mode is supported
-   * @param  {String}  mode
-   * @return {Boolean}
-   */
-  static isSupported(mode) {
-    return this.supportedModes.includes(mode);
-  }
-
-  /**
    * Returns capabilities
    * @param  {Object} item
    * @param  {Object} metadata
@@ -94,10 +84,15 @@ class VacuumMode extends DeviceAttribute {
    */
   static getCapabilities(item, metadata) {
     const itemType = item.groupType || item.type;
-    const mappings = Object.fromEntries(Object.entries(metadata.config).filter(([mode]) => this.isSupported(mode)));
+    const mappings = Object.entries(metadata.config)
+      .filter(([mode]) => this.supportedModes.includes(mode))
+      .reduce((mappings, [mode, value]) => ({ ...mappings, [mode]: value }), {});
     const supportsMode = (mode) => !Object.keys(mappings).length || typeof mappings[mode] !== 'undefined';
-    const getDefault = (mode) =>
-      itemType === ItemType.NUMBER ? this.supportedModes.findIndex((value) => value === mode) + 1 : mode;
+    const getMode = (mode) => {
+      if (typeof mappings[mode] !== 'undefined') return mappings[mode];
+      if (itemType === ItemType.NUMBER) return this.supportedModes.findIndex((value) => value === mode) + 1;
+      return mode;
+    };
 
     // Return if clean or dock mode not supported
     if (!supportsMode(VacuumMode.CLEAN) || !supportsMode(VacuumMode.DOCK)) {
@@ -124,11 +119,11 @@ class VacuumMode extends DeviceAttribute {
               },
               // Add value mappings for number item type
               ...(itemType === ItemType.NUMBER && {
-                [VacuumMode.CLEAN]: getDefault(VacuumMode.CLEAN),
-                [VacuumMode.DOCK]: getDefault(VacuumMode.DOCK),
-                ...(supportsMode(VacuumMode.SPOT) && { [VacuumMode.SPOT]: getDefault(VacuumMode.SPOT) }),
-                ...(supportsMode(VacuumMode.PAUSE) && { [VacuumMode.PAUSE]: getDefault(VacuumMode.PAUSE) }),
-                ...(supportsMode(VacuumMode.STOP) && { [VacuumMode.STOP]: getDefault(VacuumMode.STOP) })
+                [VacuumMode.CLEAN]: getMode(VacuumMode.CLEAN),
+                [VacuumMode.DOCK]: getMode(VacuumMode.DOCK),
+                ...(supportsMode(VacuumMode.SPOT) && { [VacuumMode.SPOT]: getMode(VacuumMode.SPOT) }),
+                ...(supportsMode(VacuumMode.PAUSE) && { [VacuumMode.PAUSE]: getMode(VacuumMode.PAUSE) }),
+                ...(supportsMode(VacuumMode.STOP) && { [VacuumMode.STOP]: getMode(VacuumMode.STOP) })
               })
             }
           },
@@ -136,8 +131,10 @@ class VacuumMode extends DeviceAttribute {
             name: Capability.POWER_CONTROLLER,
             property: Property.POWER_STATE,
             parameters: {
-              [PowerState.ON]: typeof mappings.CLEAN !== 'undefined' ? mappings.CLEAN : getDefault(VacuumMode.CLEAN),
-              [PowerState.OFF]: typeof mappings.DOCK !== 'undefined' ? mappings.DOCK : getDefault(VacuumMode.DOCK)
+              actionMappings: {
+                [CustomActionSemantic.TURN_ON]: getMode(VacuumMode.CLEAN),
+                [CustomActionSemantic.TURN_OFF]: getMode(VacuumMode.DOCK)
+              }
             }
           },
           {
@@ -146,23 +143,13 @@ class VacuumMode extends DeviceAttribute {
             parameters: {
               actionMappings: {
                 ...(supportsMode(VacuumMode.PAUSE) && {
-                  [PlaybackAction.RESUME]: VacuumMode.CLEAN,
-                  [PlaybackAction.PAUSE]: VacuumMode.PAUSE
+                  [CustomActionSemantic.RESUME]: getMode(VacuumMode.CLEAN),
+                  [CustomActionSemantic.PAUSE]: getMode(VacuumMode.PAUSE)
                 }),
-                ...(supportsMode(VacuumMode.STOP)
-                  ? { [PlaybackAction.STOP]: VacuumMode.STOP }
-                  : { [PlaybackAction.STOP]: VacuumMode.DOCK })
-              },
-              // Add value mappings for number item type
-              ...(itemType === ItemType.NUMBER && {
-                ...(supportsMode(VacuumMode.PAUSE) && {
-                  [VacuumMode.CLEAN]: getDefault(VacuumMode.CLEAN),
-                  [VacuumMode.PAUSE]: getDefault(VacuumMode.PAUSE)
-                }),
-                ...(supportsMode(VacuumMode.STOP)
-                  ? { [VacuumMode.STOP]: getDefault(VacuumMode.STOP) }
-                  : { [VacuumMode.DOCK]: getDefault(VacuumMode.DOCK) })
-              })
+                [CustomActionSemantic.STOP]: supportsMode(VacuumMode.STOP)
+                  ? getMode(VacuumMode.STOP)
+                  : getMode(VacuumMode.DOCK)
+              }
             }
           }
         ];

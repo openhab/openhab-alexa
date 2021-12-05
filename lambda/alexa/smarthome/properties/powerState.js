@@ -12,6 +12,8 @@
  */
 
 const { ItemType } = require('@openhab/constants');
+const { Parameter, ParameterType } = require('../metadata');
+const { CustomActionSemantic } = require('../semantics');
 const AlexaProperty = require('./property');
 
 /**
@@ -20,13 +22,13 @@ const AlexaProperty = require('./property');
  */
 class PowerState extends AlexaProperty {
   /**
-   * Defines on power state
+   * Defines on state
    * @type {String}
    */
   static ON = 'ON';
 
   /**
-   * Defines off power state
+   * Defines off state
    * @type {String}
    */
   static OFF = 'OFF';
@@ -37,6 +39,16 @@ class PowerState extends AlexaProperty {
    */
   get supportedItemTypes() {
     return [ItemType.COLOR, ItemType.DIMMER, ItemType.NUMBER, ItemType.STRING, ItemType.SWITCH];
+  }
+
+  /**
+   * Returns supported parameters and their type
+   * @return {Object}
+   */
+  get supportedParameters() {
+    return {
+      [Parameter.ACTION_MAPPINGS]: ParameterType.MAP
+    };
   }
 
   /**
@@ -104,6 +116,33 @@ class PowerState extends AlexaProperty {
     }
 
     return value;
+  }
+
+  /**
+   * Updates parameters
+   * @param {Object} item
+   * @param {Object} metadata
+   * @param {Object} settings
+   */
+  updateParameters(item, metadata, settings) {
+    const parameters = this.parameters;
+    // Update parameters from parent method
+    super.updateParameters(item, metadata, settings);
+
+    const actionMappings = parameters[Parameter.ACTION_MAPPINGS] || {};
+    // Iterate over action mappings parameter updating value mapping parameters based on supported action semantics
+    for (const [action, value] of Object.entries(actionMappings)) {
+      switch (action) {
+        case CustomActionSemantic.TURN_ON:
+          parameters[PowerState.ON] = value;
+          break;
+        case CustomActionSemantic.TURN_OFF:
+          parameters[PowerState.OFF] = value;
+          break;
+      }
+    }
+    // Delete action mappings parameter
+    delete parameters[Parameter.ACTION_MAPPINGS];
   }
 }
 
