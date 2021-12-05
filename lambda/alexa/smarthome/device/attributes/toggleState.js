@@ -40,7 +40,7 @@ class ToggleState extends DeviceAttribute {
     const itemType = item.groupType || item.type;
 
     switch (itemType) {
-      // Switch toggle control with actions
+      // Switch toggle with action controls
       case ItemType.SWITCH:
         return [
           { name: Capability.TOGGLE_CONTROLLER, property: Property.TOGGLE_STATE },

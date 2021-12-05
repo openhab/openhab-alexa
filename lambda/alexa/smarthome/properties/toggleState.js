@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
+const { ItemType } = require('@openhab/constants');
 const { Parameter, ParameterType } = require('../metadata');
 const Generic = require('./generic');
 
@@ -21,51 +21,23 @@ const Generic = require('./generic');
  */
 class ToggleState extends Generic {
   /**
-   * Defines turn on action
-   * @type {String}
-   */
-  static TURN_ON = 'TurnOn';
-
-  /**
-   * Defines turn off action
-   * @type {String}
-   */
-  static TURN_OFF = 'TurnOff';
-
-  /**
    * Defines on state
    * @type {String}
    */
-  static ON = 'On';
+  static ON = 'ON';
 
   /**
    * Defines off state
    * @type {String}
    */
-  static OFF = 'Off';
-
-  /**
-   * Returns action semantics
-   * @return {Array}
-   */
-  static get actionSemantics() {
-    return [ToggleState.TURN_ON, ToggleState.TURN_OFF];
-  }
-
-  /**
-   * Returns state semantics
-   * @return {Array}
-   */
-  static get stateSemantics() {
-    return [ToggleState.ON, ToggleState.OFF];
-  }
+  static OFF = 'OFF';
 
   /**
    * Returns supported item types
    * @return {Array}
    */
   get supportedItemTypes() {
-    return [ItemType.DIMMER, ItemType.NUMBER, ItemType.STRING, ItemType.SWITCH];
+    return [ItemType.NUMBER, ItemType.STRING, ItemType.SWITCH];
   }
 
   /**
@@ -80,19 +52,19 @@ class ToggleState extends Generic {
   }
 
   /**
-   * Returns if is non-controlable
-   * @return {Boolean}
+   * Returns supported values
+   * @return {Array}
    */
-  get isNonControllable() {
-    return super.isNonControllable || !this.hasRequiredActionMappings;
+  get supportedValues() {
+    return [ToggleState.ON, ToggleState.OFF];
   }
 
   /**
-   * Returns if is retrievable
+   * Returns if require value map
    * @return {Boolean}
    */
-  get isRetrievable() {
-    return super.isRetrievable && this.hasRequiredStateMappings;
+  get requiresValueMap() {
+    return this.item.type === ItemType.NUMBER || this.item.type === ItemType.STRING;
   }
 
   /**
@@ -100,75 +72,7 @@ class ToggleState extends Generic {
    * @return {Boolean}
    */
   get isValid() {
-    return super.isValid && (this.hasRequiredActionMappings || this.hasRequiredStateMappings);
-  }
-
-  /**
-   * Returns if property has required action mappings
-   * @return {Boolean}
-   */
-  get hasRequiredActionMappings() {
-    return !!this.actionMappings[ToggleState.TURN_ON] && !!this.actionMappings[ToggleState.TURN_OFF];
-  }
-
-  /**
-   * Returns if property has required state mappings
-   * @return {Boolean}
-   */
-  get hasRequiredStateMappings() {
-    return !!this.stateMappings[ToggleState.ON] && !!this.stateMappings[ToggleState.OFF];
-  }
-
-  /**
-   * Returns default action map based on item type
-   * @return {Object}
-   */
-  get defaultActionMap() {
-    return this.item.type === ItemType.SWITCH
-      ? { [ToggleState.TURN_OFF]: ItemValue.OFF, [ToggleState.TURN_ON]: ItemValue.ON }
-      : {};
-  }
-
-  /**
-   * Returns default state map based on item type
-   * @return {Object}
-   */
-  get defaultStateMap() {
-    return this.item.type === ItemType.SWITCH
-      ? { [ToggleState.OFF]: ItemValue.OFF, [ToggleState.ON]: ItemValue.ON }
-      : {};
-  }
-
-  /**
-   * Returns supported action semantics
-   * @return {Array}
-   */
-  get supportedActionSemantics() {
-    return [...super.supportedActionSemantics, ...ToggleState.actionSemantics];
-  }
-
-  /**
-   * Returns supported state semantics
-   * @return {Array}
-   */
-  get supportedStateSemantics() {
-    return [...super.supportedStateSemantics, ...ToggleState.stateSemantics];
-  }
-
-  /**
-   * Returns action mappings based on parameter
-   * @return {Object}
-   */
-  get actionMappings() {
-    return { ...this.defaultActionMap, ...this.parameters[Parameter.ACTION_MAPPINGS] };
-  }
-
-  /**
-   * Returns state mappings based on parameter
-   * @return {Object}
-   */
-  get stateMappings() {
-    return { ...this.defaultStateMap, ...this.parameters[Parameter.STATE_MAPPINGS] };
+    return !this.requiresValueMap || this.supportedValues.every((value) => typeof this.valueMap[value] !== 'undefined');
   }
 
   /**
@@ -185,14 +89,17 @@ class ToggleState extends Generic {
    * @return {String}
    */
   getCommand(value) {
-    // Invert value for switch item type if property inverted
-    if (this.inverted && this.item.type === ItemType.SWITCH) {
-      value = value === ToggleState.TURN_OFF ? ToggleState.TURN_ON : ToggleState.TURN_OFF;
+    // Return command using value map if required
+    if (this.requiresValueMap) {
+      return this.valueMap[value];
     }
 
-    // Return openhab command using action mappings
-    //  { TurnOff: '<ohCommandOff>', TurnOn: '<ohCommandOn>' }
-    return this.actionMappings[value];
+    // Return inverted command if property inverted
+    if (this.inverted) {
+      return value === ToggleState.OFF ? ToggleState.ON : ToggleState.OFF;
+    }
+
+    return value;
   }
 
   /**
@@ -201,28 +108,17 @@ class ToggleState extends Generic {
    * @return {String}
    */
   getState(value) {
-    // Determine alexa state using state mappings
-    //  { Off: '<ohStateOff>', On: '<ohStateOnMinRange>:<ohStateOnMaxRange>' }
-    //  { Off: '<ohStateOff>', On: '<ohStateOn1>|<ohStateOn2>|...' }
-    value = Object.keys(this.stateMappings)
-      .filter((state) => state === ToggleState.ON || state === ToggleState.OFF)
-      .find((state) => {
-        const mapping = this.stateMappings[state].toString();
-        const range = mapping.split(':', 2);
-        return range.length === 2 && range.every((value) => !isNaN(value))
-          ? range[0] <= Number(value) && range[1] >= Number(value)
-          : mapping.split('|').includes(String(value));
-      });
-
-    // Invert value for switch item type if property inverted
-    if (this.inverted && this.item.type === ItemType.SWITCH) {
-      value = value === ToggleState.OFF ? ToggleState.ON : value === ToggleState.ON ? ToggleState.OFF : undefined;
+    // Return state based on value map if required
+    if (this.requiresValueMap) {
+      return value !== this.valueMap.OFF.toString() ? ToggleState.ON : ToggleState.OFF;
     }
 
-    // Return state if value defined
-    if (typeof value !== 'undefined') {
-      return value.toUpperCase();
+    // Return inverted state if property inverted
+    if (this.inverted) {
+      return value === ToggleState.OFF ? ToggleState.ON : value === ToggleState.ON ? ToggleState.OFF : undefined;
     }
+
+    return value;
   }
 }
 

@@ -411,9 +411,7 @@ module.exports = {
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Stop: 'STOP' }
-          },
+          parameters: { STOP: 'STOP' },
           item: { name: 'windowBlindPosition1', type: 'Rollershutter' }
         },
         {
@@ -630,9 +628,7 @@ module.exports = {
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Stop: 'STOP' }
-          },
+          parameters: { STOP: 'STOP' },
           item: { name: 'windowBlindTilt2', type: 'Rollershutter' }
         }
       ]

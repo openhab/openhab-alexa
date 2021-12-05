@@ -179,11 +179,10 @@ class AlexaMetadata {
             .filter((value, index, array) => value && array.indexOf(value) === index);
         case `array->${ParameterType.MAP}`: // ['foo=1', 'bar=2', 'baz', 'foo=3', ''] => { foo: '1', bar: '2', baz: undefined }
         case `string->${ParameterType.MAP}`: // 'foo=1,bar=2,baz,foo=3,' => { foo: '1', bar: '2', baz: undefined }
-          return Object.fromEntries(
-            (current === 'string' ? value.split(',') : value)
-              .map((value) => value.split('=', 2).map((value) => value.trim()))
-              .filter(([key], index, array) => key && array.map(([key]) => key).indexOf(key) === index)
-          );
+          return (current === 'string' ? value.split(',') : value)
+            .map((value) => value.split('=', 2).map((value) => value.trim()))
+            .filter(([key], index, array) => key && array.map(([key]) => key).indexOf(key) === index)
+            .reduce((map, [key, value]) => ({ ...map, [key]: value }), {});
         case `object->${ParameterType.RANGE}`: // { minimum: minRange, maximum: maxRange } => [minRange, maxRange]
         case `string->${ParameterType.RANGE}`: // 'minRange:maxRange:precision' => [minRange, maxRange, precision]
           return (current === 'string' ? value.split(':', 3) : Object.values(value)).map((value) => parseFloat(value));

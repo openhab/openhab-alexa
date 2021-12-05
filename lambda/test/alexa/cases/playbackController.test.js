@@ -146,9 +146,7 @@ module.exports = [
             {
               name: 'PlaybackController',
               property: 'playbackAction',
-              parameters: {
-                actionMappings: { Resume: 'RESUME', Pause: 'PAUSE' }
-              },
+              parameters: { RESUME: 'RESUME', PAUSE: 'PAUSE' },
               item: { name: 'vacuumControl', type: 'String' }
             }
           ])
@@ -184,9 +182,7 @@ module.exports = [
             {
               name: 'PlaybackController',
               property: 'playbackAction',
-              parameters: {
-                actionMappings: { Resume: 'RESUME' }
-              },
+              parameters: { RESUME: 'RESUME' },
               item: { name: 'vacuumControl', type: 'String' }
             }
           ])

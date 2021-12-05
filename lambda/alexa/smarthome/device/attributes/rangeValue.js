@@ -40,19 +40,18 @@ class RangeValue extends DeviceAttribute {
     const itemType = item.groupType || item.type;
 
     switch (itemType) {
-      // Dimmer range control with commands, toggles and actions
+      // Dimmer range with command and action controls
       case ItemType.DIMMER:
         return [
           { name: Capability.RANGE_CONTROLLER, property: Property.RANGE_VALUE },
           { name: Capability.MODE_CONTROLLER, property: Property.MODE },
-          { name: Capability.TOGGLE_CONTROLLER, property: Property.TOGGLE_STATE },
           { name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_ACTION }
         ];
-      // Number range control with toggles and actions
+      // Number range with switch and action controls
       case ItemType.NUMBER:
         return [
           { name: Capability.RANGE_CONTROLLER, property: Property.RANGE_VALUE },
-          { name: Capability.TOGGLE_CONTROLLER, property: Property.TOGGLE_STATE },
+          { name: Capability.POWER_CONTROLLER, property: Property.POWER_STATE },
           { name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_ACTION }
         ];
       // Number with dimension range control
@@ -63,7 +62,7 @@ class RangeValue extends DeviceAttribute {
       case ItemType.NUMBER_TEMPERATURE:
       case ItemType.NUMBER_VOLUME:
         return [{ name: Capability.RANGE_CONTROLLER, property: Property.RANGE_VALUE }];
-      // Rollershutter range control with commands and actions
+      // Rollershutter range with command and action controls
       case ItemType.ROLLERSHUTTER:
         return [
           { name: Capability.RANGE_CONTROLLER, property: Property.RANGE_VALUE },

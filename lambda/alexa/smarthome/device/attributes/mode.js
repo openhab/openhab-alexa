@@ -40,15 +40,15 @@ class Mode extends DeviceAttribute {
     const itemType = item.groupType || item.type;
 
     switch (itemType) {
-      // Number/String mode control with toggles and actions
+      // Number/String mode with switch and action controls
       case ItemType.NUMBER:
       case ItemType.STRING:
         return [
           { name: Capability.MODE_CONTROLLER, property: Property.MODE },
-          { name: Capability.TOGGLE_CONTROLLER, property: Property.TOGGLE_STATE },
+          { name: Capability.POWER_CONTROLLER, property: Property.POWER_STATE },
           { name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_ACTION }
         ];
-      // Switch mode control with actions
+      // Switch mode with action controls
       case ItemType.SWITCH:
         return [
           { name: Capability.MODE_CONTROLLER, property: Property.MODE },

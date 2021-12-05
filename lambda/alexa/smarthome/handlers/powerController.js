@@ -11,9 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemValue } = require('@openhab/constants');
 const { Interface, Property } = require('../constants');
 const { InvalidValueError } = require('../errors');
+const { PowerState } = require('../properties');
 const AlexaHandler = require('./handler');
 
 /**
@@ -70,7 +70,7 @@ class PowerController extends AlexaHandler {
       throw new InvalidValueError('No power state property defined.');
     }
 
-    const command = property.getCommand(directive.name === PowerController.TURN_ON ? ItemValue.ON : ItemValue.OFF);
+    const command = property.getCommand(directive.name === PowerController.TURN_ON ? PowerState.ON : PowerState.OFF);
 
     await openhab.sendCommand(property.item.name, command);
 

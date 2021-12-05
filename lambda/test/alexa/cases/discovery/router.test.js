@@ -69,9 +69,7 @@ module.exports = {
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Resume: 'ON', Pause: 'OFF' }
-          },
+          parameters: { RESUME: 'ON', PAUSE: 'OFF' },
           item: { name: 'guestNetwork', type: 'Switch' }
         }
       ]

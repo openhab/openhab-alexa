@@ -15,8 +15,7 @@ const { ItemType, ItemValue } = require('@openhab/constants');
 const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
 const { Capability, Property } = require('@alexa/smarthome/constants');
 const { Parameter, ParameterType } = require('@alexa/smarthome/metadata');
-const PlaybackAction = require('@alexa/smarthome/properties/playbackAction');
-const { AlexaActionSemantic, AlexaStateSemantic } = require('@alexa/smarthome/semantics');
+const { AlexaActionSemantic, AlexaStateSemantic, CustomActionSemantic } = require('@alexa/smarthome/semantics');
 const AlexaUnitOfMeasure = require('@alexa/smarthome/unitOfMeasure');
 const DeviceAttribute = require('./attribute');
 
@@ -170,7 +169,7 @@ class PositionState extends DeviceAttribute {
                   name: Capability.PLAYBACK_CONTROLLER,
                   property: Property.PLAYBACK_ACTION,
                   parameters: {
-                    actionMappings: { [PlaybackAction.STOP]: ItemValue.STOP }
+                    actionMappings: { [CustomActionSemantic.STOP]: ItemValue.STOP }
                   }
                 }
               ]

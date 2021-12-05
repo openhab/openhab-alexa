@@ -79,8 +79,7 @@ module.exports = {
           value: 'RangeValue',
           config: {
             supportedCommands: 'INCREASE,DECREASE',
-            actionMappings: 'TurnOff=OFF,TurnOn=ON,Stop=OFF',
-            stateMappings: 'Off=0,On=1:100'
+            actionMappings: 'Stop=OFF'
           }
         }
       }
@@ -265,31 +264,23 @@ module.exports = {
     mode1: {
       capabilities: [
         'Alexa.ModeController:mode1.mode',
-        'Alexa.ToggleController:mode1.toggleState',
+        'Alexa.PowerController.powerState',
         'Alexa.PlaybackController',
         'Alexa.EndpointHealth.connectivity',
         'Alexa'
       ],
-      displayCategories: ['OTHER'],
+      displayCategories: ['OTHER', 'SWITCH'],
       friendlyName: 'Mode 1',
       propertyFlags: {
         'Alexa.ModeController:mode1': {
           proactivelyReported: false,
           retrievable: true,
           nonControllable: false
-        },
-        'Alexa.ToggleController:mode1': {
-          proactivelyReported: false,
-          retrievable: false,
-          nonControllable: false
         }
       },
       resources: {
         'Alexa.ModeController:mode1': {
           friendlyNames: ['asset:Alexa.Setting.Mode']
-        },
-        'Alexa.ToggleController:mode1': {
-          friendlyNames: ['text:Toggle State:en-US']
         }
       },
       configuration: {
@@ -352,30 +343,15 @@ module.exports = {
           item: { name: 'mode1', type: 'String' }
         },
         {
-          name: 'ToggleController',
-          instance: 'Toggle:mode1',
-          property: 'toggleState',
-          parameters: {
-            capabilityNames: ['@Setting.ToggleState'],
-            actionMappings: {
-              Close: 'OFF',
-              Open: 'MEDIUM',
-              Lower: '(-1)',
-              Raise: '(+1)',
-              TurnOff: 'OFF',
-              TurnOn: 'MEDIUM'
-            }
-          },
+          name: 'PowerController',
+          property: 'powerState',
+          parameters: { OFF: 'OFF', ON: 'MEDIUM' },
           item: { name: 'mode1', type: 'String' }
         },
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: {
-              Stop: 'OFF'
-            }
-          },
+          parameters: { STOP: 'OFF' },
           item: { name: 'mode1', type: 'String' }
         }
       ]
@@ -442,9 +418,7 @@ module.exports = {
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Stop: 'OFF' }
-          },
+          parameters: { STOP: 'OFF' },
           item: { name: 'mode2', type: 'Switch' }
         }
       ]
@@ -495,7 +469,6 @@ module.exports = {
       capabilities: [
         'Alexa.ModeController:range1.mode',
         'Alexa.RangeController:range1.rangeValue',
-        'Alexa.ToggleController:range1.toggleState',
         'Alexa.PlaybackController',
         'Alexa.EndpointHealth.connectivity',
         'Alexa'
@@ -512,11 +485,6 @@ module.exports = {
           proactivelyReported: false,
           retrievable: true,
           nonControllable: false
-        },
-        'Alexa.ToggleController:range1': {
-          proactivelyReported: false,
-          retrievable: true,
-          nonControllable: false
         }
       },
       resources: {
@@ -525,9 +493,6 @@ module.exports = {
         },
         'Alexa.RangeController:range1': {
           friendlyNames: ['text:Range Value:en-US']
-        },
-        'Alexa.ToggleController:range1': {
-          friendlyNames: ['text:Toggle State:en-US']
         }
       },
       configuration: {
@@ -568,22 +533,9 @@ module.exports = {
           item: { name: 'range1', type: 'Dimmer' }
         },
         {
-          name: 'ToggleController',
-          instance: 'Toggle:range1',
-          property: 'toggleState',
-          parameters: {
-            capabilityNames: ['@Setting.ToggleState'],
-            actionMappings: { TurnOff: 'OFF', TurnOn: 'ON' },
-            stateMappings: { Off: '0', On: '1:100' }
-          },
-          item: { name: 'range1', type: 'Dimmer' }
-        },
-        {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Stop: 'OFF' }
-          },
+          parameters: { STOP: 'OFF' },
           item: { name: 'range1', type: 'Dimmer' }
         }
       ]
@@ -634,9 +586,7 @@ module.exports = {
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Stop: '0' }
-          },
+          parameters: { STOP: '0' },
           item: { name: 'range2', type: 'Number' }
         }
       ]
@@ -746,9 +696,7 @@ module.exports = {
         {
           name: 'PlaybackController',
           property: 'playbackAction',
-          parameters: {
-            actionMappings: { Stop: 'STOP' }
-          },
+          parameters: { STOP: 'STOP' },
           item: { name: 'range4', type: 'Rollershutter' }
         }
       ]

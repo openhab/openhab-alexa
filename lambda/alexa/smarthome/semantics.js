@@ -32,20 +32,17 @@ class AlexaSemantics {
     const actionMappings = this._semantics.actionMappings;
     // Define alexa action semantic id
     const action = AlexaActionSemantic.get(name);
-    // Add mapping if action semantic id defined and not already defined in action mappings
-    if (typeof action !== 'undefined' && !actionMappings.some(({ actions }) => actions.includes(action))) {
-      // Find defined action mappings index with same directive
-      const index = actionMappings.findIndex((map) => JSON.stringify(map.directive) === JSON.stringify(directive));
-      // Update existing mapping actions list if found, otherwise add new mapping
-      if (index > -1) {
-        actionMappings[index].actions.push(action);
-      } else {
-        actionMappings.push({
-          '@type': 'ActionsToDirective',
-          actions: [action],
-          directive: directive
-        });
-      }
+    // Find defined action mappings index with same directive
+    const index = actionMappings.findIndex((map) => JSON.stringify(map.directive) === JSON.stringify(directive));
+    // Update existing mapping actions list if found, otherwise add new mapping
+    if (index > -1) {
+      actionMappings[index].actions.push(action);
+    } else {
+      actionMappings.push({
+        '@type': 'ActionsToDirective',
+        actions: [action],
+        directive: directive
+      });
     }
   }
 
@@ -58,20 +55,17 @@ class AlexaSemantics {
     const stateMappings = this._semantics.stateMappings;
     // Define alexa state semantic id
     const state = AlexaStateSemantic.get(name);
-    // Add mapping if state semantic id defined and not already defined in state mappings
-    if (typeof state !== 'undefined' && !stateMappings.some(({ states }) => states.includes(state))) {
-      // Find defined state mappings index with same range
-      const index = stateMappings.findIndex((map) => JSON.stringify(map.range) === JSON.stringify(range));
-      // Update existing mapping states list if found, otherwise add new mapping
-      if (index > -1) {
-        stateMappings[index].states.push(state);
-      } else {
-        stateMappings.push({
-          '@type': 'StatesToRange',
-          states: [state],
-          range: range
-        });
-      }
+    // Find defined state mappings index with same range
+    const index = stateMappings.findIndex((map) => JSON.stringify(map.range) === JSON.stringify(range));
+    // Update existing mapping states list if found, otherwise add new mapping
+    if (index > -1) {
+      stateMappings[index].states.push(state);
+    } else {
+      stateMappings.push({
+        '@type': 'StatesToRange',
+        states: [state],
+        range: range
+      });
     }
   }
 
@@ -84,20 +78,17 @@ class AlexaSemantics {
     const stateMappings = this._semantics.stateMappings;
     // Define alexa state semantic id
     const state = AlexaStateSemantic.get(name);
-    // Add mapping if state semantic id defined and not already defined in state mappings
-    if (typeof state !== 'undefined' && !stateMappings.some(({ states }) => states.includes(state))) {
-      // Find defined state mappings index with same value
-      const index = stateMappings.findIndex((map) => map.value === value);
-      // Update existing mapping states list if found, otherwise add new mapping
-      if (index > -1) {
-        stateMappings[index].states.push(state);
-      } else {
-        stateMappings.push({
-          '@type': 'StatesToValue',
-          states: [state],
-          value: value
-        });
-      }
+    // Find defined state mappings index with same value
+    const index = stateMappings.findIndex((map) => map.value === value);
+    // Update existing mapping states list if found, otherwise add new mapping
+    if (index > -1) {
+      stateMappings[index].states.push(state);
+    } else {
+      stateMappings.push({
+        '@type': 'StatesToValue',
+        states: [state],
+        value: value
+      });
     }
   }
 
@@ -144,14 +135,12 @@ class AlexaActionSemantic {
   static LOWER = 'Lower';
 
   /**
-   * Returns alexa semantic id for given action name if supported
+   * Returns alexa semantic id for given action name
    * @param  {String} name
    * @return {String}
    */
   static get(name) {
-    if (Object.values(this).includes(name)) {
-      return 'Alexa.Actions.' + name;
-    }
+    return 'Alexa.Actions.' + name;
   }
 }
 
@@ -172,17 +161,51 @@ class AlexaStateSemantic {
   static CLOSED = 'Closed';
 
   /**
-   * Returns alexa semantic id for given state name if supported
+   * Returns alexa semantic id for given state name
    * @param  {String} name
    * @return {String}
    */
   static get(name) {
-    if (Object.values(this).includes(name)) {
-      return 'Alexa.States.' + name;
-    }
+    return 'Alexa.States.' + name;
   }
+}
+
+/**
+ * Defines custom action semantic class
+ */
+class CustomActionSemantic {
+  /**
+   * Defines resume action semantic
+   * @type {String}
+   */
+  static RESUME = 'Resume';
+
+  /**
+   * Defines pause action semantic
+   * @type {String}
+   */
+  static PAUSE = 'Pause';
+
+  /**
+   * Defines stop action semantic
+   * @type {String}
+   */
+  static STOP = 'Stop';
+
+  /**
+   * Defines turn on action semantic
+   * @type {String}
+   */
+  static TURN_ON = 'TurnOn';
+
+  /**
+   * Defines turn off action semantic
+   * @type {String}
+   */
+  static TURN_OFF = 'TurnOff';
 }
 
 module.exports = AlexaSemantics;
 module.exports.AlexaActionSemantic = AlexaActionSemantic;
 module.exports.AlexaStateSemantic = AlexaStateSemantic;
+module.exports.CustomActionSemantic = CustomActionSemantic;

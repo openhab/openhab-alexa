@@ -13,6 +13,7 @@
 
 const { ItemType } = require('@openhab/constants');
 const { Parameter, ParameterType } = require('../metadata');
+const { CustomActionSemantic } = require('../semantics');
 const AlexaProperty = require('./property');
 const Playback = require('./playback');
 
@@ -22,30 +23,22 @@ const Playback = require('./playback');
  */
 class PlaybackAction extends AlexaProperty {
   /**
-   * Defines pause action
+   * Defines pause state
    * @type {String}
    */
-  static PAUSE = 'Pause';
+  static PAUSE = 'PAUSE';
 
   /**
-   * Defines resume action
+   * Defines resume state
    * @type {String}
    */
-  static RESUME = 'Resume';
+  static RESUME = 'RESUME';
 
   /**
-   * Defines stop action
+   * Defines stop state
    * @type {String}
    */
-  static STOP = 'Stop';
-
-  /**
-   * Returns action semantics
-   * @return {Array}
-   */
-  static get actionSemantics() {
-    return [PlaybackAction.PAUSE, PlaybackAction.RESUME, PlaybackAction.STOP];
-  }
+  static STOP = 'STOP';
 
   /**
    * Returns supported item types
@@ -70,7 +63,7 @@ class PlaybackAction extends AlexaProperty {
    * @return {Array}
    */
   get supportedValues() {
-    return Object.values(this.actionMappings);
+    return [PlaybackAction.RESUME, PlaybackAction.PAUSE, PlaybackAction.STOP];
   }
 
   /**
@@ -95,16 +88,8 @@ class PlaybackAction extends AlexaProperty {
    */
   get supportedOperations() {
     return Object.keys(this.operationMappings).filter((key) =>
-      Object.keys(this.actionMappings).includes(this.operationMappings[key])
+      Object.keys(this.valueMap).includes(this.operationMappings[key])
     );
-  }
-
-  /**
-   * Returns action mappings based on parameter
-   * @return {Object}
-   */
-  get actionMappings() {
-    return this.parameters[Parameter.ACTION_MAPPINGS] || {};
   }
 
   /**
@@ -125,14 +110,8 @@ class PlaybackAction extends AlexaProperty {
    * @return {String}
    */
   getCommand(value) {
-    // Get action name using operation mappings
-    const action = this.operationMappings[value];
-    // Determine openhab command using action mappings
-    //  { Resume: '<ohCommandResume>', Pause: '<ohCommandPause>', Stop: '<ohCommandStop>' }
-    value = this.actionMappings[action];
-    // Return command map value from parent if defined, otherwise unchanged value
-    //  This is used to remap some of the device attributes action mappings commands (e.g. VacuumMode)
-    return super.getCommand(value) || value;
+    // Return command map value from parent method based on operation mappings
+    return super.getCommand(this.operationMappings[value]);
   }
 
   /**
@@ -147,10 +126,22 @@ class PlaybackAction extends AlexaProperty {
     super.updateParameters(item, metadata, settings);
 
     const actionMappings = parameters[Parameter.ACTION_MAPPINGS] || {};
-    // Update action mappings parameter removing unsupported action semantics
-    parameters[Parameter.ACTION_MAPPINGS] = Object.entries(actionMappings)
-      .filter(([action]) => PlaybackAction.actionSemantics.includes(action))
-      .reduce((actions, [action, mapping]) => ({ ...actions, [action]: mapping }), undefined);
+    // Iterate over action mappings parameter updating value mapping parameters based on supported action semantics
+    for (const [action, value] of Object.entries(actionMappings)) {
+      switch (action) {
+        case CustomActionSemantic.RESUME:
+          parameters[PlaybackAction.RESUME] = value;
+          break;
+        case CustomActionSemantic.PAUSE:
+          parameters[PlaybackAction.PAUSE] = value;
+          break;
+        case CustomActionSemantic.STOP:
+          parameters[PlaybackAction.STOP] = value;
+          break;
+      }
+    }
+    // Delete action mappings parameter
+    delete parameters[Parameter.ACTION_MAPPINGS];
   }
 }
 
