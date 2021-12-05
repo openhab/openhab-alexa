@@ -113,7 +113,7 @@ module.exports = {
         alexa: {
           value: 'RangeValue',
           config: {
-            // No playback action or toggle action support for number with dimension
+            // No playback action or turn on/off action support for number with dimension
             actionMappings: 'TurnOff=0,TurnOn=1,Stop=0'
           }
         }
@@ -142,7 +142,7 @@ module.exports = {
           value: 'RangeValue',
           config: {
             // code coverage test for state mappings with same range
-            stateMappings: ['Closed=1:100', 'Open=1:100']
+            stateMappings: 'Closed=1:100,Open=1:100'
           }
         }
       }
@@ -176,15 +176,33 @@ module.exports = {
       }
     },
     {
-      type: 'Switch',
+      type: 'String',
       name: 'toggle2',
       label: 'Toggle State 2',
       metadata: {
         alexa: {
           value: 'ToggleState',
           config: {
+            OFF: 'off',
+            ON: 'on',
             // code coverage test for state mappings with same value
-            stateMappings: ['Closed=ON', 'Open=ON']
+            stateMappings: 'Closed=ON,Open=ON'
+          }
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'toggle3',
+      label: 'Toggle State 3',
+      metadata: {
+        alexa: {
+          value: 'ToggleState',
+          config: {
+            OFF: '0',
+            ON: '1',
+            // No turn on/off action support for number
+            actionMappings: 'TurnOff=0,TurnOn=1'
           }
         }
       }
@@ -846,9 +864,41 @@ module.exports = {
           property: 'toggleState',
           parameters: {
             capabilityNames: ['@Setting.ToggleState'],
-            stateMappings: { Closed: 'ON', Open: 'ON' }
+            stateMappings: { Closed: 'ON', Open: 'ON' },
+            OFF: 'off',
+            ON: 'on'
           },
-          item: { name: 'toggle2', type: 'Switch' }
+          item: { name: 'toggle2', type: 'String' }
+        }
+      ]
+    },
+    toggle3: {
+      capabilities: ['Alexa.ToggleController:toggle3.toggleState', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
+      displayCategories: ['OTHER'],
+      friendlyName: 'Toggle State 3',
+      propertyFlags: {
+        'Alexa.ToggleController:toggle3': {
+          proactivelyReported: false,
+          retrievable: true,
+          nonControllable: false
+        }
+      },
+      resources: {
+        'Alexa.ToggleController:toggle3': {
+          friendlyNames: ['text:Toggle State:en-US']
+        }
+      },
+      cookie: [
+        {
+          name: 'ToggleController',
+          instance: 'Toggle:toggle3',
+          property: 'toggleState',
+          parameters: {
+            capabilityNames: ['@Setting.ToggleState'],
+            OFF: '0',
+            ON: '1'
+          },
+          item: { name: 'toggle3', type: 'Number' }
         }
       ]
     }
