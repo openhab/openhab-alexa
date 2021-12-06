@@ -87,6 +87,7 @@ class ThermostatController extends AlexaHandler {
   static async setTargetTemperature(directive, openhab) {
     const capability = directive.endpoint.getCapability({ interface: directive.namespace });
     const properties = capability.getPropertyMap();
+    const thermostatHold = properties[Property.THERMOSTAT_HOLD];
     const thermostatMode = properties[Property.THERMOSTAT_MODE];
 
     // Throw schedule request error if schedule request
@@ -182,6 +183,11 @@ class ThermostatController extends AlexaHandler {
       }
     }
 
+    // Set thermostat hold prior to sending setpoint commands if required
+    if (thermostatHold && thermostatHold.requiresSetpointHold) {
+      await openhab.sendCommand(thermostatHold.item.name, thermostatHold.getCommand(ThermostatHold.ON));
+    }
+
     // Define commands to send
     const commands = items.map((item) => openhab.sendCommand(item.name, item.command));
 
@@ -199,6 +205,7 @@ class ThermostatController extends AlexaHandler {
   static async adjustTargetTemperature(directive, openhab) {
     const capability = directive.endpoint.getCapability({ interface: directive.namespace });
     const properties = capability.getPropertyMap();
+    const thermostatHold = properties[Property.THERMOSTAT_HOLD];
     const thermostatMode = properties[Property.THERMOSTAT_MODE];
 
     // Get current alexa thermostat mode if property defined, retrievable and supports setpoint mode
@@ -251,6 +258,11 @@ class ThermostatController extends AlexaHandler {
       });
     });
 
+    // Set thermostat hold prior to sending setpoint commands if required
+    if (thermostatHold && thermostatHold.requiresSetpointHold) {
+      await openhab.sendCommand(thermostatHold.item.name, thermostatHold.getCommand(ThermostatHold.ON));
+    }
+
     await Promise.all(commands);
 
     return directive.response();
@@ -273,14 +285,12 @@ class ThermostatController extends AlexaHandler {
       throw new InvalidValueError('The thermostat has no mode property.');
     }
 
-    const thermostatMode = directive.payload.thermostatMode.value;
-    const command = property.getCommand(thermostatMode);
+    const mode = directive.payload.thermostatMode.value;
+    const command = property.getCommand(mode);
 
     // Throw thermostat mode unsupported error if no command defined
     if (typeof command === 'undefined') {
-      throw new ThermostatModeUnsupportedError(
-        `${property.item.name} doesn't support thermostat mode [${thermostatMode}].`
-      );
+      throw new ThermostatModeUnsupportedError(`${property.item.name} doesn't support thermostat mode [${mode}].`);
     }
 
     await openhab.sendCommand(property.item.name, command);
@@ -296,7 +306,13 @@ class ThermostatController extends AlexaHandler {
    */
   static async resumeSchedule(directive, openhab) {
     const properties = directive.endpoint.getCapabilityPropertyMap({ interface: directive.namespace });
+    const thermostatHold = properties[Property.THERMOSTAT_HOLD];
     const thermostatMode = properties[Property.THERMOSTAT_MODE];
+
+    // Throw invalid value error if no thermostat hold property defined
+    if (typeof thermostatHold === 'undefined') {
+      throw new InvalidValueError('The thermostat has no hold property.');
+    }
 
     // Get current alexa thermostat mode if property defined and retrievable
     const mode =
@@ -309,8 +325,7 @@ class ThermostatController extends AlexaHandler {
       throw new ThermostatOffError('The thermostat is off.');
     }
 
-    const thermostatHold = properties[Property.THERMOSTAT_HOLD];
-    const command = thermostatHold.getCommand(ThermostatHold.RESUME);
+    const command = thermostatHold.getCommand(ThermostatHold.OFF);
 
     await openhab.sendCommand(thermostatHold.item.name, command);
 

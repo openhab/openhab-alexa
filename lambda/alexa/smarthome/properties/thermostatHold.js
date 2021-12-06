@@ -13,6 +13,7 @@
 
 const { ItemType, ItemValue } = require('@openhab/constants');
 const { Property } = require('../constants');
+const { Parameter, ParameterType } = require('../metadata');
 const AlexaProperty = require('./property');
 
 /**
@@ -21,10 +22,16 @@ const AlexaProperty = require('./property');
  */
 class ThermostatHold extends AlexaProperty {
   /**
-   * Defines resume state
+   * Defines on state
    * @type {String}
    */
-  static RESUME = 'RESUME';
+  static ON = 'ON';
+
+  /**
+   * Defines off state
+   * @type {String}
+   */
+  static OFF = 'OFF';
 
   /**
    * Returns supported item types
@@ -35,11 +42,21 @@ class ThermostatHold extends AlexaProperty {
   }
 
   /**
+   * Returns supported parameters and their type
+   * @return {Object}
+   */
+  get supportedParameters() {
+    return {
+      [Parameter.REQUIRES_SETPOINT_HOLD]: ParameterType.BOOLEAN
+    };
+  }
+
+  /**
    * Returns supported values
    * @return {Array}
    */
   get supportedValues() {
-    return [ThermostatHold.RESUME];
+    return [ThermostatHold.ON, ThermostatHold.OFF];
   }
 
   /**
@@ -65,14 +82,22 @@ class ThermostatHold extends AlexaProperty {
   get defaultValueMap() {
     switch (this.item.type) {
       case ItemType.NUMBER:
-        return { RESUME: 0 };
+        return { [ThermostatHold.OFF]: 0, [ThermostatHold.ON]: 1 };
       case ItemType.STRING:
-        return { RESUME: 'resume' };
+        return { [ThermostatHold.OFF]: 'schedule', [ThermostatHold.ON]: 'hold' };
       case ItemType.SWITCH:
-        return { RESUME: ItemValue.OFF };
+        return { [ThermostatHold.OFF]: ItemValue.OFF, [ThermostatHold.ON]: ItemValue.ON };
       default:
         return {};
     }
+  }
+
+  /**
+   * Returns if requires setpoint hold based on parameter
+   * @return {Boolean}
+   */
+  get requiresSetpointHold() {
+    return this.parameters[Parameter.REQUIRES_SETPOINT_HOLD] === true;
   }
 }
 

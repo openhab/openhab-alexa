@@ -341,7 +341,7 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'thermostatHold', value: 'resume' }]
+      openhab: [{ name: 'thermostatHold', value: 'schedule' }]
     }
   },
   {
@@ -453,6 +453,43 @@ module.exports = [
         }
       },
       openhab: [{ name: 'thermostatHold', value: 0 }]
+    }
+  },
+  {
+    description: 'resume thermostat schedule invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.ThermostatController',
+        name: 'ResumeSchedule'
+      },
+      endpoint: {
+        endpointId: 'gThermostat',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ThermostatController',
+              property: 'thermostatMode',
+              parameters: { OFF: '0', HEAT: '1', COOL: '2', AUTO: '3' },
+              item: { name: 'thermostatMode', type: 'Number' }
+            }
+          ])
+        }
+      },
+      payload: {}
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'The thermostat has no hold property.'
+          }
+        }
+      }
     }
   },
   {
