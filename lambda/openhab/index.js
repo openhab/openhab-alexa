@@ -152,7 +152,7 @@ class OpenHAB {
   getRootResource() {
     const options = {
       method: 'GET',
-      uri: '/rest',
+      uri: '/rest/',
       json: true
     };
     return this._request(options);
