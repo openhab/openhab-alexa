@@ -47,6 +47,7 @@ class ThermostatHold extends AlexaProperty {
    */
   get supportedParameters() {
     return {
+      [Parameter.INVERTED]: ParameterType.BOOLEAN,
       [Parameter.REQUIRES_SETPOINT_HOLD]: ParameterType.BOOLEAN
     };
   }
@@ -93,11 +94,34 @@ class ThermostatHold extends AlexaProperty {
   }
 
   /**
+   * Returns inverted based on parameter
+   * @return {Boolean}
+   */
+  get inverted() {
+    return this.parameters[Parameter.INVERTED] === true;
+  }
+
+  /**
    * Returns if requires setpoint hold based on parameter
    * @return {Boolean}
    */
   get requiresSetpointHold() {
     return this.parameters[Parameter.REQUIRES_SETPOINT_HOLD] === true;
+  }
+
+  /**
+   * Returns openhab command
+   * @param  {String} value
+   * @return {String}
+   */
+  getCommand(value) {
+    // Invert command value if property inverted and switch item type
+    if (this.inverted && this.item.type === ItemType.SWITCH) {
+      value = value === ThermostatHold.OFF ? ThermostatHold.ON : ThermostatHold.OFF;
+    }
+
+    // Return command map value from parent method
+    return super.getCommand(value);
   }
 }
 

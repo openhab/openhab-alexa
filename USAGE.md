@@ -1549,10 +1549,13 @@ Items that represent the hold setting of a thermostat. This needs to be paired w
 * Supported item types:
   * Number [OFF=0, ON=1]
   * String [OFF="schedule", ON="hold"]
-  * Switch [OFF="OFF", ON="ON"]
+  * Switch (on/off control)
 * Supported metadata parameters:
-  * OFF=`<state>`
-  * ON=`<state>`
+  * OFF=`<state>` (Number/String only)
+  * ON=`<state>` (Number/String only)
+  * inverted=`<boolean>` (Switch only)
+    * set to true to invert item state
+    * defaults to false
   * requiresSetpointHold=`<boolean>`
     * set to true to require thermostat hold to be set on setpoint requests
     * defaults to false
@@ -1687,12 +1690,12 @@ Items that represent components of a device that are characterized by numbers wi
       * predefined [asset ids](#asset-catalog)
       * list of text-based names [not allowed](#capability-names-not-allowed)
     * defaults to `@Setting.RangeValue` if [single endpoint](#single-endpoint), otherwise item label and synonyms metadata if part of [group endpoint](#group-endpoint)
-  * nonControllable=`<boolean>`
-    * set to true for state reporting support only
-    * defaults to item state description read only property if defined, otherwise false
   * inverted=`<boolean>`
     * set to true to invert item state
     * defaults to true for Rollershutter, otherwise false for other supported item types.
+  * nonControllable=`<boolean>`
+    * set to true for state reporting support only
+    * defaults to item state description read only property if defined, otherwise false
   * supportedCommands=`<commands>` (Dimmer/Rollershutter only)
     * each command formatted as:
       * default name => `<command>` (e.g. `supportedCommands="INCREASE,DECREASE"`)
@@ -1774,12 +1777,12 @@ Items that represent components of a device that can be toggled on or off. Multi
       * predefined [asset ids](#asset-catalog)
       * list of text-based names [not allowed](#capability-names-not-allowed)
     * defaults to `@Setting.ToggleState` if [single endpoint](#single-endpoint), otherwise item label and synonyms metadata if part of [group endpoint](#group-endpoint)
+  * inverted=`<boolean>` (Switch only)
+    * set to true to invert item state
+    * defaults to false
   * nonControllable=`<boolean>`
     * set to true for state reporting support only
     * defaults to item state description read only property if defined, otherwise false
-  * inverted=`<boolean>`
-    * set to true to invert item state
-    * defaults to false
   * language=`<code>`
     * text-based name language support
     * two-letter language code: `de`, `en`, `es`, `fr`, `hi`, `it`, `ja`, `pt`

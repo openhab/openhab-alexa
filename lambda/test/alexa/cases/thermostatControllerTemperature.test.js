@@ -597,7 +597,7 @@ module.exports = [
             {
               name: 'ThermostatController',
               property: 'thermostatHold',
-              parameters: { requiresSetpointHold: true },
+              parameters: { inverted: true, requiresSetpointHold: true },
               item: { name: 'thermostatHold', type: 'Switch' }
             },
             {
@@ -648,7 +648,7 @@ module.exports = [
         }
       },
       openhab: [
-        { name: 'thermostatHold', value: 'ON' },
+        { name: 'thermostatHold', value: 'OFF' },
         { name: 'targetTemperature', value: 70 }
       ]
     }
