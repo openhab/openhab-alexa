@@ -578,6 +578,82 @@ module.exports = [
     }
   },
   {
+    description: 'set target temperature single mode with thermostat hold',
+    directive: {
+      header: {
+        namespace: 'Alexa.ThermostatController',
+        name: 'SetTargetTemperature'
+      },
+      endpoint: {
+        endpointId: 'gThermostat',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ThermostatController',
+              property: 'thermostatMode',
+              parameters: { OFF: '0', HEAT: '1', COOL: '2', AUTO: '3' },
+              item: { name: 'thermostatMode', type: 'Number' }
+            },
+            {
+              name: 'ThermostatController',
+              property: 'thermostatHold',
+              parameters: { requiresSetpointHold: true },
+              item: { name: 'thermostatHold', type: 'Switch' }
+            },
+            {
+              name: 'ThermostatController',
+              property: 'targetSetpoint',
+              parameters: { scale: 'FAHRENHEIT' },
+              item: { name: 'targetTemperature', type: 'Number' }
+            }
+          ])
+        }
+      },
+      payload: {
+        targetSetpoint: {
+          value: 70.0,
+          scale: 'FAHRENHEIT'
+        }
+      }
+    },
+    items: [
+      { name: 'thermostatMode', state: '1', type: 'Number' },
+      { name: 'thermostatMode', state: '1', type: 'Number' },
+      { name: 'targetTemperature', state: '70', type: 'Number' }
+    ],
+    expected: {
+      alexa: {
+        context: {
+          properties: [
+            {
+              namespace: 'Alexa.ThermostatController',
+              name: 'thermostatMode',
+              value: 'HEAT'
+            },
+            {
+              namespace: 'Alexa.ThermostatController',
+              name: 'targetSetpoint',
+              value: {
+                value: 70,
+                scale: 'FAHRENHEIT'
+              }
+            }
+          ]
+        },
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'Response'
+          }
+        }
+      },
+      openhab: [
+        { name: 'thermostatHold', value: 'ON' },
+        { name: 'targetTemperature', value: 70 }
+      ]
+    }
+  },
+  {
     description: 'set target temperature single mode with conversion to celsius',
     directive: {
       header: {
@@ -1324,7 +1400,84 @@ module.exports = [
     }
   },
   {
-    description: 'adjust target temperature with conversion to celsuis',
+    description: 'adjust target temperature with thermostat hold',
+    directive: {
+      header: {
+        namespace: 'Alexa.ThermostatController',
+        name: 'AdjustTargetTemperature'
+      },
+      endpoint: {
+        endpointId: 'gThermostat',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ThermostatController',
+              property: 'thermostatMode',
+              parameters: { OFF: '0', HEAT: '1', COOL: '2', AUTO: '3' },
+              item: { name: 'thermostatMode', type: 'Number' }
+            },
+            {
+              name: 'ThermostatController',
+              property: 'thermostatHold',
+              parameters: { requiresSetpointHold: true },
+              item: { name: 'thermostatHold', type: 'String' }
+            },
+            {
+              name: 'ThermostatController',
+              property: 'targetSetpoint',
+              parameters: { scale: 'FAHRENHEIT' },
+              item: { name: 'targetTemperature', type: 'Number' }
+            }
+          ])
+        }
+      },
+      payload: {
+        targetSetpointDelta: {
+          value: 2.0,
+          scale: 'FAHRENHEIT'
+        }
+      }
+    },
+    items: [
+      { name: 'thermostatMode', state: '2', type: 'Number' },
+      { name: 'targetTemperature', state: '76', type: 'Number' },
+      { name: 'thermostatMode', state: '2', type: 'Number' },
+      { name: 'targetTemperature', state: '78', type: 'Number' }
+    ],
+    expected: {
+      alexa: {
+        context: {
+          properties: [
+            {
+              namespace: 'Alexa.ThermostatController',
+              name: 'thermostatMode',
+              value: 'COOL'
+            },
+            {
+              namespace: 'Alexa.ThermostatController',
+              name: 'targetSetpoint',
+              value: {
+                value: 78.0,
+                scale: 'FAHRENHEIT'
+              }
+            }
+          ]
+        },
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'Response'
+          }
+        }
+      },
+      openhab: [
+        { name: 'thermostatHold', value: 'hold' },
+        { name: 'targetTemperature', value: 78 }
+      ]
+    }
+  },
+  {
+    description: 'adjust target temperature with conversion to celsius',
     directive: {
       header: {
         namespace: 'Alexa.ThermostatController',
