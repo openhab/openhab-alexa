@@ -275,7 +275,7 @@ describe('OpenHAB Tests', () => {
       // set environment
       nock(baseURL)
         // root resource
-        .get('/rest')
+        .get('/rest/')
         .reply(200, { version: '2' })
         // service i18n config
         .get('/rest/services/org.eclipse.smarthome.core.i18nprovider/config')
@@ -295,7 +295,7 @@ describe('OpenHAB Tests', () => {
       // set environment
       nock(baseURL)
         // root resource
-        .get('/rest')
+        .get('/rest/')
         .reply(200, { version: '3' })
         // service i18n config
         .get('/rest/services/org.eclipse.smarthome.i18n/config')
@@ -315,7 +315,7 @@ describe('OpenHAB Tests', () => {
       // set environment
       nock(baseURL)
         // root resource
-        .get('/rest')
+        .get('/rest/')
         .reply(200, { version: '4', locale, measurementSystem, runtimeInfo: { version: '3.0.0' } })
         // uuid
         .get('/rest/uuid')
@@ -332,7 +332,7 @@ describe('OpenHAB Tests', () => {
       // set environment
       nock(baseURL)
         // root resource
-        .get('/rest')
+        .get('/rest/')
         .reply(200, { version: '4', locale, measurementSystem, runtimeInfo: { version: '3.0.0' } })
         // uuid
         .get('/rest/uuid')
@@ -349,7 +349,7 @@ describe('OpenHAB Tests', () => {
       // set environment
       nock(baseURL)
         // root resource
-        .get('/rest')
+        .get('/rest/')
         .reply(200)
         // uuid
         .get('/rest/uuid')
@@ -363,7 +363,7 @@ describe('OpenHAB Tests', () => {
       // set environment
       nock(baseURL)
         // root resource
-        .get('/rest')
+        .get('/rest/')
         .replyWithError('error');
       // run test
       try {
