@@ -457,7 +457,7 @@
       "distributionCountries": [],
       "isAvailableWorldwide": true,
       "distributionMode": "PRIVATE",
-      "testingInstructions": "A demo account has been setup on our cloud service myopenhab.org for this skill:\n\nUsername: %TESTING_USERNAME%\nPassword: %TESTING_PASSWORD%\n\nOnce the skill is linked to our cloud service and discovery is run it should find a few lights as well as a thermostat.",
+      "testingInstructions": "A demo account has been setup on our cloud service myopenhab.org for this skill:\n\nUsername: %TESTING_USERNAME%\nPassword: %TESTING_PASSWORD%\n\nOnce the skill is linked to our cloud service and discovery is run, it should find a few lights, a lock, a speaker, a thermostat and a window blind.",
       "category": "SMART_HOME"
     },
     "privacyAndCompliance": {
