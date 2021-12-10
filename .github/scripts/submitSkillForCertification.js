@@ -26,7 +26,7 @@ async function getSkillValidations(id) {
 
   // Retrieve skill validations up to 10 times every 30 seconds while status is in progress
   for (let tries = 0; (!validations || validations.status === 'IN_PROGRESS') && tries < 10; tries++) {
-    // Wait for 30 second
+    // Wait for 30 seconds
     await sleep(30000);
     // Get validations command output
     validations = getCommandOuput(command, { json: true });
@@ -48,7 +48,11 @@ function submitSkillForCertification() {
   const output = getCommandOuput(command);
 
   // Log command output
-  console.log(output);
+  if (output === 'Command executed successfully!') {
+    console.log('The skill has been submitted for certification successfully!');
+  } else {
+    console.log(output);
+  }
 }
 
 /**
