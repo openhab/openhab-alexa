@@ -232,16 +232,19 @@ class ThermostatController extends AlexaHandler {
     // Determine adjust properties based on either target (single mode) or upper/lower (dual mode) setpoints
     const adjustProperties = targetSetpoint ? [targetSetpoint] : [upperSetpoint, lowerSetpoint];
 
-    // Determine commands to send based on adjust properties, clamping adjusted temperature to setpoint range
-    const commands = adjustProperties.map((property) => {
-      const { item, setpointRange, isRetrievable } = property;
+    // Determine items to update based on adjust properties, clamping adjusted temperature to setpoint range
+    const items = await Promise.all(
+      adjustProperties.map(async (property) => {
+        const { item, setpointRange, isRetrievable } = property;
 
-      // Throw invalid value error if property not retrievable
-      if (!isRetrievable) {
-        throw new InvalidValueError(`Cannot retrieve state for item ${item.name}.`);
-      }
+        // Throw invalid value error if property not retrievable
+        if (!isRetrievable) {
+          throw new InvalidValueError(`Cannot retrieve state for item ${item.name}.`);
+        }
 
-      return openhab.getItemState(item.name).then((state) => {
+        // Get item current state
+        const state = await openhab.getItemState(item.name);
+
         // Throw endpoint unreachable error if state not a number
         if (isNaN(state)) {
           throw new EndpointUnreachableError(`Could not get numeric state for item ${item.name}.`);
@@ -254,14 +257,17 @@ class ThermostatController extends AlexaHandler {
           setpointRange[1]
         );
 
-        return openhab.sendCommand(item.name, command);
-      });
-    });
+        return { name: item.name, command };
+      })
+    );
 
     // Set thermostat hold prior to sending setpoint commands if required
     if (thermostatHold && thermostatHold.requiresSetpointHold) {
       await openhab.sendCommand(thermostatHold.item.name, thermostatHold.getCommand(ThermostatHold.ON));
     }
+
+    // Define commands to send
+    const commands = items.map((item) => openhab.sendCommand(item.name, item.command));
 
     await Promise.all(commands);
 
