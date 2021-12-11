@@ -30,6 +30,7 @@ jobs:
         FUNCTION_NAME: openhab-alexa
         LOG_LEVEL: ${{ github.event.release.prerelease && 'info' || 'error' }}
         OPENHAB_BASE_URL: https://myopenhab.org
+        RELEASE_VERSION: ${{ github.event.release.tag_name }}
         S3_BUCKET_NA: ${{ secrets.S3_BUCKET_NA }}
         S3_BUCKET_EU: ${{ secrets.S3_BUCKET_EU }}
         S3_BUCKET_FE: ${{ secrets.S3_BUCKET_FE }}
