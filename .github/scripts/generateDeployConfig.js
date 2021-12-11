@@ -89,7 +89,8 @@ function updateSkillInfraTemplate() {
     Type: 'AWS::Lambda::Version',
     DeletionPolicy: 'Retain',
     Properties: {
-      FunctionName: { Ref: 'AlexaSkillFunction' }
+      FunctionName: { Ref: 'AlexaSkillFunction' },
+      Description: `${schema.Resources.AlexaSkillFunction.Properties.Description} (${process.env.RELEASE_VERSION})`
     }
   };
   // Define skill function version permission resource name
