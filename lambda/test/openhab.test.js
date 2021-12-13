@@ -328,6 +328,23 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
+    it('oh3.x with invalid uuid', async () => {
+      // set environment
+      nock(baseURL)
+        // root resource
+        .get('/rest/')
+        .reply(200, { version: '4', locale, measurementSystem, runtimeInfo: { version: '3.0.0' } })
+        // uuid
+        .get('/rest/uuid')
+        .reply(200, 'invalid');
+      // run test
+      expect(await openhab.getServerSettings()).to.deep.equal({
+        regional: { language, measurementSystem, region },
+        runtime: { version: '3.0.0' }
+      });
+      expect(nock.isDone()).to.be.true;
+    });
+
     it('oh3.x with unauthorized uuid', async () => {
       // set environment
       nock(baseURL)
