@@ -15,6 +15,7 @@ const fs = require('fs');
 const request = require('request-promise-native');
 const Agent = require('agentkeepalive');
 const { sprintf } = require('sprintf-js');
+const { validate: uuidValidate } = require('uuid');
 
 /**
  * Defines openHAB class
@@ -80,7 +81,7 @@ class OpenHAB {
     const [properties, uuid] = await Promise.all([this.getRootResource(), this.getUUID().catch(() => undefined)]);
     const { locale, measurementSystem, runtimeInfo, version } = properties || {};
     const apiVersion = parseFloat(version);
-    const settings = { regional: {}, runtime: { ...(uuid && { uuid }) } };
+    const settings = { regional: {}, runtime: { ...(uuidValidate(uuid) && { uuid }) } };
 
     if (apiVersion >= 4) {
       // Use root resource properties for OH 3.0 and later [API Version >= 4]
