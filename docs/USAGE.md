@@ -7,7 +7,7 @@ description: "Alexa is an intelligent personal assistant developed by Amazon and
 
 # Amazon Alexa Smart Home Skill
 
-<img align="right" width="150px" src="./images/oh_alexa-logo.png">
+<img align="right" width="150px" src="./images/logo.png">
 
 Alexa is an intelligent personal assistant developed by Amazon and designed to run on smart speakers and devices such as the Amazon Echo and Dot.
 
