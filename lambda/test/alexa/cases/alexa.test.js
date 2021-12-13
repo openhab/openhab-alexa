@@ -514,6 +514,54 @@ module.exports = [
     }
   },
   {
+    description: 'report state generic mode with property map cookie',
+    directive: {
+      header: {
+        namespace: 'Alexa',
+        name: 'ReportState'
+      },
+      endpoint: {
+        endpointId: 'mode1',
+        cookie: {
+          // backward compatibility cookie property map load test
+          propertyMap: JSON.stringify({
+            'ModeController:mode1': {
+              mode: {
+                parameters: {
+                  supportedModes: 'FOO=foo,BAR=bar',
+                  friendlyNames: '@Setting.Preset'
+                },
+                item: { name: 'mode1', type: 'String' },
+                schema: { name: 'mode' }
+              }
+            }
+          })
+        }
+      }
+    },
+    items: [{ name: 'mode', state: 'FOO', type: 'String' }],
+    expected: {
+      alexa: {
+        context: {
+          properties: [
+            {
+              namespace: 'Alexa.ModeController',
+              instance: 'mode1',
+              name: 'mode',
+              value: 'FOO'
+            }
+          ]
+        },
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'StateReport'
+          }
+        }
+      }
+    }
+  },
+  {
     description: 'report state partial generic group',
     directive: {
       header: {
