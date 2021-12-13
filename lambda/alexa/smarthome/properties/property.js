@@ -247,7 +247,9 @@ class AlexaProperty {
     const parameters = this.parameters;
 
     // Iterate over property parameters
-    for (const [name, value] of Object.entries(parameters)) {
+    for (const [parameter, value] of Object.entries(parameters)) {
+      // Determine parameter name using alias if defined, fallback to given parameter name
+      const name = this.getParameterAlias(parameter) || parameter;
       // Determine property parameter value type
       const type = this.getParameterType(name);
       // Update property parameter with converted value
