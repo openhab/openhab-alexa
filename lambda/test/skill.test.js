@@ -62,6 +62,17 @@ describe('Skill Event Tests', () => {
           payloadVersion: '2'
         }
       };
+      // run test
+      skill.handler(event, context, callback);
+      expect(smarthome.called).to.be.false;
+      expect(context.called).to.be.false;
+      expect(callback.called).to.be.true;
+      expect(callback.firstCall.args[0]).to.equal('Unsupported payload version');
+    });
+
+    it('unsupported event', () => {
+      // set environment
+      const event = { foo: 1 };
       sinon.stub(log, 'error');
       // run test
       skill.handler(event, context, callback);

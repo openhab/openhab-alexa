@@ -27,6 +27,9 @@ exports.handler = (event, context, callback) => {
 
   if (event.directive && event.directive.header.payloadVersion === '3') {
     AlexaSmarthome.handleRequest(event, callback);
+  } else if (event.header && event.header.payloadVersion === '2') {
+    log.warn('Unsupported payload version:', event);
+    callback('Unsupported payload version');
   } else {
     log.error('Unsupported event:', event);
     callback('Unsupported event');
