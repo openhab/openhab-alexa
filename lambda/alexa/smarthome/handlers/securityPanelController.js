@@ -70,12 +70,18 @@ class SecurityPanelController extends AlexaHandler {
   static async arm(directive, openhab) {
     const properties = directive.endpoint.getCapabilityPropertyMap({ interface: directive.namespace });
     const property = properties[Property.ARM_STATE];
+
+    // Throw invalid value error if no arm state property defined
+    if (typeof property === 'undefined') {
+      throw new InvalidValueError('The security panel has no arm state property');
+    }
+
     const { item, exitDelayInSeconds, supportedArmStates } = property;
     const armState = directive.payload.armState;
 
     // Throw invalid value error if requested arm state not supported
     if (!supportedArmStates.includes(armState)) {
-      throw new InvalidValueError(`${item.name} doesn't support arm state [${armState}]`);
+      throw new InvalidValueError(`The security panel doesn't support arm state [${armState}]`);
     }
 
     // Get items current state for security arm and alert state properties
@@ -147,6 +153,12 @@ class SecurityPanelController extends AlexaHandler {
   static async disarm(directive, openhab) {
     const properties = directive.endpoint.getCapabilityPropertyMap({ interface: directive.namespace });
     const property = properties[Property.ARM_STATE];
+
+    // Throw invalid value error if no arm state property defined
+    if (typeof property === 'undefined') {
+      throw new InvalidValueError('The security panel has no arm state property');
+    }
+
     const { item, pinCodes } = property;
     const authorization = directive.payload.authorization || {};
 

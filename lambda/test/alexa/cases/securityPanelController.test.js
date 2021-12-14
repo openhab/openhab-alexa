@@ -204,6 +204,45 @@ module.exports = [
     }
   },
   {
+    description: 'arm no property invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.SecurityPanelController',
+        name: 'Arm'
+      },
+      endpoint: {
+        endpointId: 'gSecurityPanel',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'SecurityPanelController',
+              property: 'burglaryAlarm',
+              parameters: {},
+              item: { name: 'BurglaryAlarm', type: 'Switch' }
+            }
+          ])
+        }
+      },
+      payload: {
+        armState: 'ARMED_AWAY'
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'The security panel has no arm state property'
+          }
+        }
+      }
+    }
+  },
+  {
     description: 'arm unsupported invalid value error',
     directive: {
       header: {
@@ -240,7 +279,7 @@ module.exports = [
           },
           payload: {
             type: 'INVALID_VALUE',
-            message: "ArmMode doesn't support arm state [ARMED_AWAY]"
+            message: "The security panel doesn't support arm state [ARMED_AWAY]"
           }
         }
       }
@@ -611,6 +650,43 @@ module.exports = [
         }
       },
       openhab: [{ name: 'ArmMode', value: 'disarmed' }]
+    }
+  },
+  {
+    description: 'disarm no property invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.SecurityPanelController',
+        name: 'Disarm'
+      },
+      endpoint: {
+        endpointId: 'gSecurityPanel',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'SecurityPanelController',
+              property: 'burglaryAlarm',
+              parameters: {},
+              item: { name: 'BurglaryAlarm', type: 'Switch' }
+            }
+          ])
+        }
+      },
+      payload: {}
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'The security panel has no arm state property'
+          }
+        }
+      }
     }
   },
   {
