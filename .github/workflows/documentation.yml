@@ -20,4 +20,4 @@ jobs:
     - name: Lint Markdown files
       uses: nosborn/github-action-markdown-cli@v2
       with:
-        files: '**.md'
+        files: .
