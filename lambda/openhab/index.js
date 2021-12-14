@@ -111,7 +111,7 @@ class OpenHAB {
    */
   sendCommand(itemName, command) {
     // Cache posted command
-    this._cache.postedCommands[itemName] = command;
+    this._cache.postedCommands[itemName] = command.toString();
     return this.postItemCommand(itemName, command);
   }
 

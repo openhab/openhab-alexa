@@ -398,7 +398,7 @@ describe('OpenHAB Tests', () => {
       nock(baseURL).post('/rest/items/foo', '42').reply(200);
       // run test
       await openhab.sendCommand('foo', 42);
-      expect(openhab.getLastPostedCommand('foo')).to.equals(42);
+      expect(openhab.getLastPostedCommand('foo')).to.equals('42');
       expect(nock.isDone()).to.be.true;
     });
 
