@@ -13,7 +13,7 @@ This document describes how to configure and deploy the skill for development or
 
 ## Skill Usage
 
-For end-user documentation and general usage, see the [Usage](USAGE.md) page for examples and instructions on configuring items for Amazon Alexa within openHAB.
+For end-user documentation and general usage, see the [Usage](docs/USAGE.md) page for examples and instructions on configuring items for Amazon Alexa within openHAB.
 
 ## Requirements
 
