@@ -135,8 +135,9 @@ class AlexaDirective {
       name: this.name,
       ...(this.hasEndpoint && {
         endpointId: this._directive.endpoint.endpointId,
-        capabilities: JSON.parse(
-          (this._directive.endpoint.cookie && this._directive.endpoint.cookie.capabilities) || '[]'
+        cookie: Object.entries(this._directive.endpoint.cookie || {}).reduce(
+          (cookie, [key, value]) => ({ ...cookie, [key]: JSON.parse(value) }),
+          {}
         ),
         payload: this.payload
       }),

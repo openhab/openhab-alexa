@@ -1266,8 +1266,7 @@ module.exports = [
         name: 'ReportState'
       },
       endpoint: {
-        endpointId: 'switch1',
-        cookie: {}
+        endpointId: 'foobar1'
       }
     },
     error: new RequestError(),
@@ -1294,8 +1293,7 @@ module.exports = [
         name: 'ReportState'
       },
       endpoint: {
-        endpointId: 'switch1',
-        cookie: {}
+        endpointId: 'foobar1'
       }
     },
     error: new StatusCodeError(400),
@@ -1322,8 +1320,7 @@ module.exports = [
         name: 'ReportState'
       },
       endpoint: {
-        endpointId: 'switch1',
-        cookie: {}
+        endpointId: 'foobar1'
       }
     },
     error: new StatusCodeError(401),
@@ -1350,8 +1347,7 @@ module.exports = [
         name: 'ReportState'
       },
       endpoint: {
-        endpointId: 'switch1',
-        cookie: {}
+        endpointId: 'foobar1'
       }
     },
     error: new StatusCodeError(404),
@@ -1378,8 +1374,7 @@ module.exports = [
         name: 'ReportState'
       },
       endpoint: {
-        endpointId: 'foobar1',
-        cookie: {}
+        endpointId: 'foobar1'
       }
     },
     error: new SyntaxError(),
@@ -1406,8 +1401,7 @@ module.exports = [
         name: 'ReportState'
       },
       endpoint: {
-        endpointId: 'foobar1',
-        cookie: {}
+        endpointId: 'foobar1'
       }
     },
     error: new TypeError(),
@@ -1435,7 +1429,8 @@ module.exports = [
         name: 'ReportState'
       },
       endpoint: {
-        endpointId: 'foobar1'
+        endpointId: 'foobar1',
+        cookie: { foobar: '{}' }
       }
     },
     error: new Error(),
