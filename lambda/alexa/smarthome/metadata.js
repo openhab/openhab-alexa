@@ -189,12 +189,17 @@ class AlexaMetadata {
           return (current === 'string' ? value.split(':', 3) : Object.values(value)).map((value) => parseFloat(value));
         case `number->${ParameterType.STRING}`:
           return value.toString();
+        case `boolean->${ParameterType.BOOLEAN}`:
+        case `object->${ParameterType.MAP}`:
+        case `array->${ParameterType.RANGE}`:
+        case `string->${ParameterType.STRING}`:
+        case 'number->undefined':
+        case 'string->undefined':
+          return value;
       }
     } catch {
       // ignore conversion errors
     }
-
-    return value;
   }
 
   /**
