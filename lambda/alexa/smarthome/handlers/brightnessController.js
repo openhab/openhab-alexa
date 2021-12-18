@@ -88,7 +88,12 @@ class BrightnessController extends AlexaHandler {
     }
 
     // Get item current state
-    const state = await openhab.getItemState(item.name);
+    let state = await openhab.getItemState(item.name);
+
+    // Extract brightness level for color item type
+    if (state && state.split(',').length === 3) {
+      state = state.split(',').pop();
+    }
 
     // Throw endpoint unreachable error if state not a number
     if (isNaN(state)) {
