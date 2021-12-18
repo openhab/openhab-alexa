@@ -105,7 +105,7 @@ module.exports = [
     }
   },
   {
-    description: 'adjust brightness',
+    description: 'adjust brightness dimmer item',
     directive: {
       header: {
         namespace: 'Alexa.BrightnessController',
@@ -131,6 +131,55 @@ module.exports = [
     items: [
       { name: 'light1', state: '42', type: 'Dimmer' },
       { name: 'light1', state: '45', type: 'Dimmer' }
+    ],
+    expected: {
+      alexa: {
+        context: {
+          properties: [
+            {
+              namespace: 'Alexa.BrightnessController',
+              name: 'brightness',
+              value: 45
+            }
+          ]
+        },
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'Response'
+          }
+        }
+      },
+      openhab: [{ name: 'light1', value: 45 }]
+    }
+  },
+  {
+    description: 'adjust brightness color item',
+    directive: {
+      header: {
+        namespace: 'Alexa.BrightnessController',
+        name: 'AdjustBrightness'
+      },
+      endpoint: {
+        endpointId: 'light1',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'BrightnessController',
+              property: 'brightness',
+              parameters: {},
+              item: { name: 'light1', type: 'Color' }
+            }
+          ])
+        }
+      },
+      payload: {
+        brightnessDelta: 3
+      }
+    },
+    items: [
+      { name: 'light1', state: '0,0,42', type: 'Color' },
+      { name: 'light1', state: '0,0,45', type: 'Color' }
     ],
     expected: {
       alexa: {
