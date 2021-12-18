@@ -19,13 +19,11 @@ const skill = require('@root');
 const AlexaSmarthome = require('@alexa/smarthome');
 
 describe('Skill Event Tests', () => {
-  let smarthome, context, callback;
+  let smarthome;
 
   beforeEach(() => {
     // set stub environment
     smarthome = sinon.stub(AlexaSmarthome, 'handleRequest');
-    context = sinon.stub();
-    callback = sinon.stub();
   });
 
   afterEach(() => {
@@ -34,7 +32,7 @@ describe('Skill Event Tests', () => {
   });
 
   describe('smarthome', () => {
-    it('payload version 3', () => {
+    it('payload version 3', async () => {
       // set environment
       const event = {
         directive: {
@@ -46,14 +44,12 @@ describe('Skill Event Tests', () => {
         }
       };
       // run test
-      skill.handler(event, context, callback);
+      await skill.handler(event);
       expect(smarthome.called).to.be.true;
-      expect(smarthome.firstCall.args).to.deep.equal([event, callback]);
-      expect(context.called).to.be.false;
-      expect(callback.called).to.be.false;
+      expect(smarthome.firstCall.args).to.deep.equal([event]);
     });
 
-    it('payload version 2', () => {
+    it('payload version 2', async () => {
       // set environment
       const event = {
         header: {
@@ -62,24 +58,12 @@ describe('Skill Event Tests', () => {
           payloadVersion: '2'
         }
       };
+      const logWarn = sinon.stub(log, 'warn');
       // run test
-      skill.handler(event, context, callback);
+      await skill.handler(event);
       expect(smarthome.called).to.be.false;
-      expect(context.called).to.be.false;
-      expect(callback.called).to.be.true;
-      expect(callback.firstCall.args[0]).to.equal('Unsupported payload version');
-    });
-
-    it('unsupported event', () => {
-      // set environment
-      const event = { foo: 1 };
-      sinon.stub(log, 'error');
-      // run test
-      skill.handler(event, context, callback);
-      expect(smarthome.called).to.be.false;
-      expect(context.called).to.be.false;
-      expect(callback.called).to.be.true;
-      expect(callback.firstCall.args[0]).to.equal('Unsupported event');
+      expect(logWarn.called).to.be.true;
+      expect(logWarn.firstCall.args).to.deep.equal(['Unsupported event:', event]);
     });
   });
 });

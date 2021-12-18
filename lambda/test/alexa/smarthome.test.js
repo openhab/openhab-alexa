@@ -27,12 +27,11 @@ use(require('chai-subset'));
 use(require('./chai'));
 
 describe('Alexa Smart Home Tests', () => {
-  let commands, callback;
+  let commands;
 
   beforeEach(() => {
     // set stub environment
     commands = sinon.stub(OpenHAB.prototype, 'postItemCommand');
-    callback = sinon.stub();
   });
 
   afterEach(() => {
@@ -55,11 +54,9 @@ describe('Alexa Smart Home Tests', () => {
             sinon.stub(OpenHAB.prototype, 'getAllItems').resolves(items);
             sinon.stub(OpenHAB.prototype, 'getServerSettings').resolves(settings);
             // run test
-            await AlexaSmarthome.handleRequest({ directive }, callback);
+            const response = await AlexaSmarthome.handleRequest({ directive });
             expect(commands.called).to.be.false;
-            expect(callback.called).to.be.true;
-            expect(callback.firstCall.args[0]).to.be.null;
-            expect(callback.firstCall.args[1])
+            expect(response)
               .to.be.a.validSchema.that.nested.includes({
                 'event.header.namespace': 'Alexa.Discovery',
                 'event.header.name': 'Discover.Response'
@@ -84,12 +81,10 @@ describe('Alexa Smart Home Tests', () => {
               sinon.stub(log, 'error');
             }
             // run test
-            await AlexaSmarthome.handleRequest({ directive }, callback);
+            const response = await AlexaSmarthome.handleRequest({ directive });
             expect(commands.callCount).to.equal(expected.openhab.length);
             expect(commands.args.map(([name, value]) => ({ name, value }))).to.deep.equal(expected.openhab);
-            expect(callback.called).to.be.true;
-            expect(callback.firstCall.args[0]).to.be.null;
-            expect(callback.firstCall.args[1]).to.be.a.validSchema.that.containSubset(expected.alexa);
+            expect(response).to.be.a.validSchema.that.containSubset(expected.alexa);
           });
         }
       }

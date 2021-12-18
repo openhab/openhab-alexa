@@ -16,22 +16,16 @@ const log = require('./log');
 const AlexaSmarthome = require('./alexa/smarthome');
 
 /**
- * Main entry point.
- * Incoming events from Alexa Skill APIs are processed via this method.
- * @param  {Object}   event
- * @param  {Object}   context
- * @param  {Function} callback
+ * Defines skill event handler
+ * @param  {Object}  event
+ * @return {Promise}
  */
-exports.handler = (event, context, callback) => {
+exports.handler = async (event) => {
   log.info('Received event:', event);
 
   if (event.directive && event.directive.header.payloadVersion === '3') {
-    AlexaSmarthome.handleRequest(event, callback);
-  } else if (event.header && event.header.payloadVersion === '2') {
-    log.warn('Unsupported payload version:', event);
-    callback('Unsupported payload version');
-  } else {
-    log.error('Unsupported event:', event);
-    callback('Unsupported event');
+    return AlexaSmarthome.handleRequest(event);
   }
+
+  log.warn('Unsupported event:', event);
 };
