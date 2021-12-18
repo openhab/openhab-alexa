@@ -11,9 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-/**
- * Alexa Smart Home Skill API implementation for openHAB
- */
 const config = require('@root/config');
 const log = require('@root/log');
 const OpenHAB = require('@openhab');
@@ -23,11 +20,11 @@ const AlexaResponse = require('./response');
 const { AlexaError, InvalidDirectiveError } = require('./errors');
 
 /**
- * Handles request
- * @param {Object}   request
- * @param {Function} callback
+ * Defines alexa smart home skill request handler
+ * @param  {Object}  request
+ * @return {Promise}
  */
-exports.handleRequest = async (request, callback) => {
+exports.handleRequest = async (request) => {
   // Initialize directive object
   const directive = new AlexaDirective(request.directive);
   // Initialize openhab object
@@ -69,8 +66,8 @@ exports.handleRequest = async (request, callback) => {
 
   // Log response object
   log.info('Response:', response.toJSON());
-  // Send response object using callback function
-  callback(null, response.toJSON());
+  // Return response object
+  return response.toJSON();
 };
 
 /**
