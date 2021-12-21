@@ -22,27 +22,27 @@ module.exports = {
         alexa: {
           value: 'VacuumCleaner'
         }
-      },
-      members: [
-        {
-          type: 'String',
-          name: 'vacuumMode1',
-          metadata: {
-            alexa: {
-              value: 'VacuumMode'
-            }
-          }
-        },
-        {
-          type: 'Dimmer',
-          name: 'fanSpeed1',
-          metadata: {
-            alexa: {
-              value: 'FanSpeed'
-            }
-          }
+      }
+    },
+    {
+      type: 'String',
+      name: 'vacuumMode1',
+      groupNames: ['gVacuumCleaner1'],
+      metadata: {
+        alexa: {
+          value: 'VacuumMode'
         }
-      ]
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'fanSpeed1',
+      groupNames: ['gVacuumCleaner1'],
+      metadata: {
+        alexa: {
+          value: 'FanSpeed'
+        }
+      }
     },
     {
       type: 'Number',

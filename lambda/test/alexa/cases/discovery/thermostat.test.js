@@ -18,39 +18,43 @@ module.exports = {
       type: 'Group',
       name: 'gThermostat1',
       label: 'Thermostat 1',
-      tags: ['Thermostat', 'Celsius'],
-      members: [
-        {
-          type: 'Number',
-          name: 'currentHumidity1',
-          tags: ['CurrentHumidity']
-        },
-        {
-          type: 'Number',
-          name: 'currentTemperature1',
-          tags: ['CurrentTemperature']
-        },
-        {
-          type: 'Number',
-          name: 'targetTemperature1',
-          tags: ['TargetTemperature']
-        },
-        {
-          type: 'Number',
-          name: 'highTargetTemperature1',
-          tags: ['UpperTemperature']
-        },
-        {
-          type: 'Number',
-          name: 'lowTargetTemperature1',
-          tags: ['LowerTemperature']
-        },
-        {
-          type: 'String',
-          name: 'thermostatMode1',
-          tags: ['homekit:HeatingCoolingMode']
-        }
-      ]
+      tags: ['Thermostat', 'Celsius']
+    },
+    {
+      type: 'Number',
+      name: 'currentHumidity1',
+      groupNames: ['gThermostat1'],
+      tags: ['CurrentHumidity']
+    },
+    {
+      type: 'Number',
+      name: 'currentTemperature1',
+      groupNames: ['gThermostat1'],
+      tags: ['CurrentTemperature']
+    },
+    {
+      type: 'Number',
+      name: 'targetTemperature1',
+      groupNames: ['gThermostat1'],
+      tags: ['TargetTemperature']
+    },
+    {
+      type: 'Number',
+      name: 'highTargetTemperature1',
+      groupNames: ['gThermostat1'],
+      tags: ['UpperTemperature']
+    },
+    {
+      type: 'Number',
+      name: 'lowTargetTemperature1',
+      groupNames: ['gThermostat1'],
+      tags: ['LowerTemperature']
+    },
+    {
+      type: 'String',
+      name: 'thermostatMode1',
+      groupNames: ['gThermostat1'],
+      tags: ['homekit:HeatingCoolingMode']
     },
     {
       type: 'Group',
@@ -60,130 +64,138 @@ module.exports = {
         alexa: {
           value: 'Thermostat'
         }
-      },
-      members: [
-        {
-          type: 'Dimmer',
-          name: 'currentHumidity2',
-          metadata: {
-            alexa: {
-              value: 'CurrentHumidity',
-              config: {
-                scale: 'Fahrenheit'
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'currentTemperature2',
-          metadata: {
-            alexa: {
-              value: 'CurrentTemperature',
-              config: {
-                scale: 'Fahrenheit'
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'targetTemperature2',
-          metadata: {
-            alexa: {
-              value: 'TargetTemperature',
-              config: {
-                scale: 'Fahrenheit'
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'coolingSetpoint2',
-          metadata: {
-            alexa: {
-              value: 'CoolingSetpoint',
-              config: {
-                scale: 'Fahrenheit',
-                comfortRange: 5
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'heatingSetpoint2',
-          metadata: {
-            alexa: {
-              value: 'HeatingSetpoint',
-              config: {
-                scale: 'Fahrenheit',
-                comfortRange: 5
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'ecoCoolingSetpoint2',
-          metadata: {
-            alexa: {
-              value: 'EcoCoolingSetpoint',
-              config: {
-                scale: 'Fahrenheit'
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'ecoHeatingSetpoint2',
-          metadata: {
-            alexa: {
-              value: 'EcoHeatingSetpoint',
-              config: {
-                scale: 'Fahrenheit'
-              }
-            }
-          }
-        },
-        {
-          type: 'String',
-          name: 'thermostatMode2',
-          metadata: {
-            alexa: {
-              value: 'HeatingCoolingMode',
-              config: {
-                OFF: 'off',
-                HEAT: 'heat',
-                FOOBAR: 'foobar'
-              }
-            },
-            channel: {
-              value: 'foobar:thermostat:mode'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'thermostatHold2',
-          metadata: {
-            alexa: {
-              value: 'ThermostatHold'
-            }
-          }
-        },
-        {
-          type: 'String',
-          name: 'thermostatFan2',
-          metadata: {
-            alexa: {
-              value: 'ThermostatFan'
-            }
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'currentHumidity2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'CurrentHumidity',
+          config: {
+            scale: 'Fahrenheit'
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Number',
+      name: 'currentTemperature2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'CurrentTemperature',
+          config: {
+            scale: 'Fahrenheit'
+          }
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'targetTemperature2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'TargetTemperature',
+          config: {
+            scale: 'Fahrenheit'
+          }
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'coolingSetpoint2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'CoolingSetpoint',
+          config: {
+            scale: 'Fahrenheit',
+            comfortRange: 5
+          }
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'heatingSetpoint2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'HeatingSetpoint',
+          config: {
+            scale: 'Fahrenheit',
+            comfortRange: 5
+          }
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'ecoCoolingSetpoint2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'EcoCoolingSetpoint',
+          config: {
+            scale: 'Fahrenheit'
+          }
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'ecoHeatingSetpoint2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'EcoHeatingSetpoint',
+          config: {
+            scale: 'Fahrenheit'
+          }
+        }
+      }
+    },
+    {
+      type: 'String',
+      name: 'thermostatMode2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'HeatingCoolingMode',
+          config: {
+            OFF: 'off',
+            HEAT: 'heat',
+            FOOBAR: 'foobar'
+          }
+        },
+        channel: {
+          value: 'foobar:thermostat:mode'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'thermostatHold2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'ThermostatHold'
+        }
+      }
+    },
+    {
+      type: 'String',
+      name: 'thermostatFan2',
+      groupNames: ['gThermostat2'],
+      metadata: {
+        alexa: {
+          value: 'ThermostatFan'
+        }
+      }
     },
     {
       type: 'Group',
@@ -196,49 +208,51 @@ module.exports = {
             scale: 'Fahrenheit'
           }
         }
-      },
-      members: [
-        {
-          type: 'Number',
-          name: 'targetTemperature3',
-          metadata: {
-            alexa: {
-              value: 'TargetTemperature',
-              config: {
-                setpointRange: '60:90'
-              }
-            }
-          }
-        },
-        {
-          // Ignored due to no CoolingSetpoint item defined
-          type: 'Number',
-          name: 'heatingSetpoint3',
-          metadata: {
-            alexa: {
-              value: 'HeatingSetpoint'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'thermostatMode3',
-          metadata: {
-            alexa: {
-              value: 'HeatingCoolingMode'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'thermostatFan3',
-          metadata: {
-            alexa: {
-              value: 'ThermostatFan'
-            }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'targetTemperature3',
+      groupNames: ['gThermostat3'],
+      metadata: {
+        alexa: {
+          value: 'TargetTemperature',
+          config: {
+            setpointRange: '60:90'
           }
         }
-      ]
+      }
+    },
+    {
+      // Ignored due to no CoolingSetpoint item defined
+      type: 'Number',
+      name: 'heatingSetpoint3',
+      groupNames: ['gThermostat3'],
+      metadata: {
+        alexa: {
+          value: 'HeatingSetpoint'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'thermostatMode3',
+      groupNames: ['gThermostat3'],
+      metadata: {
+        alexa: {
+          value: 'HeatingCoolingMode'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'thermostatFan3',
+      groupNames: ['gThermostat3'],
+      metadata: {
+        alexa: {
+          value: 'ThermostatFan'
+        }
+      }
     },
     {
       type: 'Number',

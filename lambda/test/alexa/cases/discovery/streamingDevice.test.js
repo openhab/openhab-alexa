@@ -22,43 +22,44 @@ module.exports = {
         alexa: {
           value: 'StreamingDevice'
         }
-      },
-      members: [
-        {
-          type: 'Player',
-          name: 'playback1',
-          metadata: {
-            alexa: {
-              value: 'Playback',
-              config: {
-                supportedOperations: 'Play,Pause,Next,Previous,FOOBAR'
-              }
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'playbackStop1',
-          metadata: {
-            alexa: {
-              value: 'PlaybackStop'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'playbackAction1',
-          metadata: {
-            alexa: {
-              // code coverage test for unique supported operation among playback properties
-              value: 'PlaybackController.playbackAction',
-              config: {
-                actionMappings: 'Stop=OFF'
-              }
-            }
+      }
+    },
+    {
+      type: 'Player',
+      name: 'playback1',
+      groupNames: ['gStreamingDevice1'],
+      metadata: {
+        alexa: {
+          value: 'Playback',
+          config: {
+            supportedOperations: 'Play,Pause,Next,Previous,FOOBAR'
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'playbackStop1',
+      groupNames: ['gStreamingDevice1'],
+      metadata: {
+        alexa: {
+          value: 'PlaybackStop'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'playbackAction1',
+      groupNames: ['gStreamingDevice1'],
+      metadata: {
+        alexa: {
+          // code coverage test for unique supported operation among playback properties
+          value: 'PlaybackController.playbackAction',
+          config: {
+            actionMappings: 'Stop=OFF'
+          }
+        }
+      }
     },
     {
       type: 'Player',

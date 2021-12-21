@@ -22,78 +22,82 @@ module.exports = {
         alexa: {
           value: 'Speaker'
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'mute1',
-          metadata: {
-            alexa: {
-              value: 'MuteState'
-            }
-          }
-        },
-        {
-          type: 'Dimmer',
-          name: 'volume1',
-          metadata: {
-            alexa: {
-              value: 'VolumeLevel'
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'equalizerBass1',
-          metadata: {
-            alexa: {
-              value: 'EqualizerBass',
-              config: {
-                defaultLevel: 0,
-                range: '-5:5'
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'equalizerMidrange1',
-          metadata: {
-            alexa: {
-              value: 'EqualizerMidrange',
-              config: {
-                defaultLevel: 0,
-                range: '-5:5'
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'equalizerTreble1',
-          metadata: {
-            alexa: {
-              value: 'EqualizerTreble',
-              config: {
-                defaultLevel: 0,
-                range: '-5:5'
-              }
-            }
-          }
-        },
-        {
-          type: 'String',
-          name: 'equalizerMode1',
-          metadata: {
-            alexa: {
-              value: 'EqualizerMode',
-              config: {
-                supportedModes: 'MOVIE,TV,FOOBAR'
-              }
-            }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'mute1',
+      groupNames: ['gSpeaker1'],
+      metadata: {
+        alexa: {
+          value: 'MuteState'
+        }
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'volume1',
+      groupNames: ['gSpeaker1'],
+      metadata: {
+        alexa: {
+          value: 'VolumeLevel'
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'equalizerBass1',
+      groupNames: ['gSpeaker1'],
+      metadata: {
+        alexa: {
+          value: 'EqualizerBass',
+          config: {
+            defaultLevel: 0,
+            range: '-5:5'
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Number',
+      name: 'equalizerMidrange1',
+      groupNames: ['gSpeaker1'],
+      metadata: {
+        alexa: {
+          value: 'EqualizerMidrange',
+          config: {
+            defaultLevel: 0,
+            range: '-5:5'
+          }
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'equalizerTreble1',
+      groupNames: ['gSpeaker1'],
+      metadata: {
+        alexa: {
+          value: 'EqualizerTreble',
+          config: {
+            defaultLevel: 0,
+            range: '-5:5'
+          }
+        }
+      }
+    },
+    {
+      type: 'String',
+      name: 'equalizerMode1',
+      groupNames: ['gSpeaker1'],
+      metadata: {
+        alexa: {
+          value: 'EqualizerMode',
+          config: {
+            supportedModes: 'MOVIE,TV,FOOBAR'
+          }
+        }
+      }
     },
     {
       type: 'Switch',

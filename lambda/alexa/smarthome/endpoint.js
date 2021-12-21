@@ -311,8 +311,9 @@ class AlexaEndpoint {
    * @param {Object} item
    * @param {Object} metadata
    * @param {Object} settings
+   * @param {Array}  groups
    */
-  addCapability({ name, instance, property, component, tag, parameters, item, metadata, settings }) {
+  addCapability({ name, instance, property, component, tag, parameters, item, metadata, settings, groups }) {
     // Define instance name for multi-instance capability using capability/item names, if not defined already
     if (!instance && item) {
       instance = name.replace(/Controller$/, '') + ':' + item.name;
@@ -327,7 +328,7 @@ class AlexaEndpoint {
     // Add/update capability if defined
     if (typeof capability !== 'undefined') {
       // Add property to capability
-      capability.addProperty({ name: property, component, tag, parameters, item, metadata, settings });
+      capability.addProperty({ name: property, component, tag, parameters, item, metadata, settings, groups });
       // Add capability to list if new instance
       if (index === -1) {
         this._capabilities.push(capability);
@@ -450,8 +451,9 @@ class AlexaEndpoint {
    * Sets group endpoint based on given item
    * @param {Object} item
    * @param {Object} settings
+   * @param {Array}  groups
    */
-  setGroup(item, settings) {
+  setGroup(item, settings, groups) {
     // Initialize alexa metadata object
     const metadata = new AlexaMetadata(item, settings);
 
@@ -466,7 +468,7 @@ class AlexaEndpoint {
         this.group = { deviceType, config: deviceType.getConfig(metadata) };
         // Add device type group capabilities
         for (const capability of deviceType.groupCapabilities) {
-          this.addCapability({ ...capability, item, metadata, settings });
+          this.addCapability({ ...capability, item, metadata, settings, groups });
         }
         // Add device type display categories
         this.addDisplayCategories(deviceType.displayCategories);
@@ -526,9 +528,10 @@ class AlexaEndpoint {
    * Returns new endpoint object based on item object
    * @param  {Object} item
    * @param  {Object} settings
+   * @param  {Array}  groups
    * @return {Object}
    */
-  static fromItem(item, settings) {
+  static fromItem(item, settings, groups) {
     // Initialize alexa endpoint object using item name as id
     const endpoint = new AlexaEndpoint(item.name);
     // Set endpoint details
@@ -536,7 +539,7 @@ class AlexaEndpoint {
 
     // Set group endpoint if is group type, otherwise add item capabilities to endpoint
     if (endpoint.type === ItemType.GROUP) {
-      endpoint.setGroup(item, settings);
+      endpoint.setGroup(item, settings, groups);
     } else {
       endpoint.addItemCapabilities(item, settings);
     }

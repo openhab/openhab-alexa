@@ -22,39 +22,40 @@ module.exports = {
         alexa: {
           value: 'WaterHeater'
         }
-      },
-      members: [
-        {
-          type: 'Number',
-          name: 'temperature',
-          metadata: {
-            alexa: {
-              value: 'CurrentTemperature'
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'targetTemperature',
-          metadata: {
-            alexa: {
-              value: 'TargetTemperature',
-              config: {
-                setpointRange: '90:150'
-              }
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'power',
-          metadata: {
-            alexa: {
-              value: 'PowerState'
-            }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'temperature',
+      groupNames: ['gWaterHeater'],
+      metadata: {
+        alexa: {
+          value: 'CurrentTemperature'
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'targetTemperature',
+      groupNames: ['gWaterHeater'],
+      metadata: {
+        alexa: {
+          value: 'TargetTemperature',
+          config: {
+            setpointRange: '90:150'
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'power',
+      groupNames: ['gWaterHeater'],
+      metadata: {
+        alexa: {
+          value: 'PowerState'
+        }
+      }
     }
   ],
   catalog: {

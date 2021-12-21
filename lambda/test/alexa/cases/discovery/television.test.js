@@ -22,34 +22,34 @@ module.exports = {
         alexa: {
           value: 'Television'
         }
-      },
-      members: [
-        {
-          type: 'Number',
-          name: 'channel1',
-          metadata: {
-            alexa: {
-              value: 'Channel',
-              config: {
-                channelMappings: '12=FOO,34=BAR,56=BAZ,invalid=QUX',
-                range: '10:99'
-              }
-            }
-          }
-        },
-        {
-          type: 'String',
-          name: 'input1',
-          metadata: {
-            alexa: {
-              value: 'Input',
-              config: {
-                supportedInputs: 'HDMI1,HDMI2'
-              }
-            }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'channel1',
+      groupNames: ['gTelevision1'],
+      metadata: {
+        alexa: {
+          value: 'Channel',
+          config: {
+            channelMappings: '12=FOO,34=BAR,56=BAZ,invalid=QUX',
+            range: '10:99'
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'String',
+      name: 'input1',
+      groupNames: ['gTelevision1'],
+      metadata: {
+        alexa: {
+          value: 'Input',
+          config: {
+            supportedInputs: 'HDMI1,HDMI2'
+          }
+        }
+      }
     },
     {
       type: 'Number',

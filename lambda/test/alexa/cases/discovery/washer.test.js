@@ -22,124 +22,130 @@ module.exports = {
         alexa: {
           value: 'Washer'
         }
-      },
-      members: [
-        {
-          type: 'String',
-          name: 'WashCycle',
-          metadata: {
-            alexa: {
-              value: 'Mode',
-              config: {
-                capabilityNames: 'Wash Cycle,Wash Setting',
-                supportedModes: 'Normal=:Cottons,Delicate=@Value.Delicate:Knits:Cottons,Whites'
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'WashTemperature',
-          metadata: {
-            alexa: {
-              value: 'Mode',
-              config: {
-                capabilityNames: 'Wash Temperature,@Setting.WaterTemperature',
-                supportedModes: '0=Cold:Cool,1=Warm,2=Hot',
-                ordered: true
-              }
-            }
-          }
-        },
-        {
-          stateDescription: {
-            options: [
-              { value: 'off', label: 'No Spin' },
-              { value: 'low', label: 'Low' },
-              { value: 'medium', label: 'Medium' },
-              { value: 'high', label: 'High' }
-            ]
-          },
-          type: 'String',
-          name: 'WashSpinSpeed',
-          label: 'Wash Spin Speed',
-          metadata: {
-            alexa: {
-              value: 'Mode'
-            }
-          }
-        },
-        {
-          type: 'String',
-          name: 'WashStatus',
-          metadata: {
-            alexa: {
-              value: 'Mode',
-              config: {
-                capabilityNames: 'État de Lavage',
-                supportedModes: 'Washing=Lavage,Rinsing=Rincage,Spinning=Essorage',
-                nonControllable: true,
-                language: 'fr'
-              }
-            }
-          }
-        },
-        {
-          // No capability name because no item label
-          type: 'String',
-          name: 'InvalidMode1',
-          metadata: {
-            alexa: {
-              value: 'Mode',
-              config: {
-                supportedModes: 'FOO,BAR'
-              }
-            }
-          }
-        },
-        {
-          // No capability name because invalid capability asset id
-          type: 'String',
-          name: 'InvalidMode2',
-          metadata: {
-            alexa: {
-              value: 'Mode',
-              config: {
-                capabilityNames: '@Invalid.AssetId',
-                supportedModes: 'FOO,BAR'
-              }
-            }
-          }
-        },
-        {
-          // No capability name because reserved friendly name
-          type: 'String',
-          name: 'InvalidMode3',
-          metadata: {
-            alexa: {
-              value: 'Mode',
-              config: {
-                capabilityNames: 'Timer',
-                supportedModes: 'FOO,BAR'
-              }
-            }
-          }
-        },
-        {
-          // Only one supported modes because invalid mode asset id
-          type: 'String',
-          name: 'InvalidMode4',
-          metadata: {
-            alexa: {
-              value: 'Mode',
-              config: {
-                capabilityNames: '@Setting.Mode',
-                supportedModes: 'FOO,BAR=@Invalid.AssetId'
-              }
-            }
+      }
+    },
+    {
+      type: 'String',
+      name: 'WashCycle',
+      groupNames: ['gWasher'],
+      metadata: {
+        alexa: {
+          value: 'Mode',
+          config: {
+            capabilityNames: 'Wash Cycle,Wash Setting',
+            supportedModes: 'Normal=:Cottons,Delicate=@Value.Delicate:Knits:Cottons,Whites'
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Number',
+      name: 'WashTemperature',
+      groupNames: ['gWasher'],
+      metadata: {
+        alexa: {
+          value: 'Mode',
+          config: {
+            capabilityNames: 'Wash Temperature,@Setting.WaterTemperature',
+            supportedModes: '0=Cold:Cool,1=Warm,2=Hot',
+            ordered: true
+          }
+        }
+      }
+    },
+    {
+      type: 'String',
+      name: 'WashSpinSpeed',
+      label: 'Wash Spin Speed',
+      groupNames: ['gWasher'],
+      stateDescription: {
+        options: [
+          { value: 'off', label: 'No Spin' },
+          { value: 'low', label: 'Low' },
+          { value: 'medium', label: 'Medium' },
+          { value: 'high', label: 'High' }
+        ]
+      },
+      metadata: {
+        alexa: {
+          value: 'Mode'
+        }
+      }
+    },
+    {
+      type: 'String',
+      name: 'WashStatus',
+      groupNames: ['gWasher'],
+      metadata: {
+        alexa: {
+          value: 'Mode',
+          config: {
+            capabilityNames: 'État de Lavage',
+            supportedModes: 'Washing=Lavage,Rinsing=Rincage,Spinning=Essorage',
+            nonControllable: true,
+            language: 'fr'
+          }
+        }
+      }
+    },
+    {
+      // No capability name because no item label
+      type: 'String',
+      name: 'InvalidMode1',
+      groupNames: ['gWasher'],
+      metadata: {
+        alexa: {
+          value: 'Mode',
+          config: {
+            supportedModes: 'FOO,BAR'
+          }
+        }
+      }
+    },
+    {
+      // No capability name because invalid capability asset id
+      type: 'String',
+      name: 'InvalidMode2',
+      groupNames: ['gWasher'],
+      metadata: {
+        alexa: {
+          value: 'Mode',
+          config: {
+            capabilityNames: '@Invalid.AssetId',
+            supportedModes: 'FOO,BAR'
+          }
+        }
+      }
+    },
+    {
+      // No capability name because reserved friendly name
+      type: 'String',
+      name: 'InvalidMode3',
+      groupNames: ['gWasher'],
+      metadata: {
+        alexa: {
+          value: 'Mode',
+          config: {
+            capabilityNames: 'Timer',
+            supportedModes: 'FOO,BAR'
+          }
+        }
+      }
+    },
+    {
+      // Only one supported modes because invalid mode asset id
+      type: 'String',
+      name: 'InvalidMode4',
+      groupNames: ['gWasher'],
+      metadata: {
+        alexa: {
+          value: 'Mode',
+          config: {
+            capabilityNames: '@Setting.Mode',
+            supportedModes: 'FOO,BAR=@Invalid.AssetId'
+          }
+        }
+      }
     }
   ],
   settings: {
