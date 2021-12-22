@@ -25,71 +25,73 @@ module.exports = {
             description: 'Super Smart Fan'
           }
         }
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'fanSpeed1',
+      groupNames: ['gFan1'],
+      stateDescription: {
+        pattern: '%d %%'
       },
-      members: [
-        {
-          type: 'Dimmer',
-          name: 'fanSpeed1',
-          stateDescription: {
-            pattern: '%d %%'
-          },
-          metadata: {
-            alexa: {
-              value: 'RangeController.rangeValue,InvalidController.property',
-              config: {
-                capabilityNames: '@Setting.FanSpeed,Air Speed',
-                supportedRange: '0:100:10',
-                presets:
-                  // presets 42 (not multiple of precision), 50 (no label) and 142 (above max range) not valid
-                  '10=@Value.Minimum:@Value.Low:Lowest,100=@Value.Maximum:@Value.High:Highest,42=invalid,50,142=invalid'
-              }
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'fanOscillate1',
-          metadata: {
-            alexa: {
-              value: 'ToggleController.toggleState',
-              config: {
-                capabilityNames: ['@Setting.Oscillate', 'Rotate']
-              }
-            }
-          }
-        },
-        {
-          type: 'Number:Angle',
-          name: 'fanAngle1',
-          label: 'Fan Angle',
-          stateDescription: {
-            minimum: 0,
-            maximum: 120,
-            step: 20,
-            options: [
-              { value: '60', label: 'Center' },
-              { value: 'invalid', label: 'Non-numerical' }
-            ]
-          },
-          metadata: {
-            alexa: {
-              value: 'RangeController.rangeValue'
-            },
-            synonyms: {
-              value: 'Orientation'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'power1',
-          metadata: {
-            alexa: {
-              value: 'Switchable'
-            }
+      metadata: {
+        alexa: {
+          value: 'RangeController.rangeValue,InvalidController.property',
+          config: {
+            capabilityNames: '@Setting.FanSpeed,Air Speed',
+            supportedRange: '0:100:10',
+            presets:
+              // presets 42 (not multiple of precision), 50 (no label) and 142 (above max range) not valid
+              '10=@Value.Minimum:@Value.Low:Lowest,100=@Value.Maximum:@Value.High:Highest,42=invalid,50,142=invalid'
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'fanOscillate1',
+      groupNames: ['gFan1'],
+      metadata: {
+        alexa: {
+          value: 'ToggleController.toggleState',
+          config: {
+            capabilityNames: ['@Setting.Oscillate', 'Rotate']
+          }
+        }
+      }
+    },
+    {
+      type: 'Number:Angle',
+      name: 'fanAngle1',
+      label: 'Fan Angle',
+      groupNames: ['gFan1'],
+      stateDescription: {
+        minimum: 0,
+        maximum: 120,
+        step: 20,
+        options: [
+          { value: '60', label: 'Center' },
+          { value: 'invalid', label: 'Non-numerical' }
+        ]
+      },
+      metadata: {
+        alexa: {
+          value: 'RangeController.rangeValue'
+        },
+        synonyms: {
+          value: 'Orientation'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'power1',
+      groupNames: ['gFan1'],
+      metadata: {
+        alexa: {
+          value: 'Switchable'
+        }
+      }
     },
     {
       type: 'Group',
@@ -99,41 +101,42 @@ module.exports = {
         alexa: {
           value: 'Fan'
         }
-      },
-      members: [
-        {
-          type: 'Number',
-          name: 'fanSpeed2',
-          metadata: {
-            alexa: {
-              value: 'FanSpeed,PowerState',
-              config: {
-                speedLevels: 6,
-                OFF: 0,
-                ON: 2
-              }
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'fanOscillate2',
-          metadata: {
-            alexa: {
-              value: 'FanOscillate'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'fanDirection2',
-          metadata: {
-            alexa: {
-              value: 'FanDirection'
-            }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'fanSpeed2',
+      groupNames: ['gFan2'],
+      metadata: {
+        alexa: {
+          value: 'FanSpeed,PowerState',
+          config: {
+            speedLevels: 6,
+            OFF: 0,
+            ON: 2
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'fanOscillate2',
+      groupNames: ['gFan2'],
+      metadata: {
+        alexa: {
+          value: 'FanOscillate'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'fanDirection2',
+      groupNames: ['gFan2'],
+      metadata: {
+        alexa: {
+          value: 'FanDirection'
+        }
+      }
     },
     {
       type: 'Group',
@@ -143,33 +146,33 @@ module.exports = {
         alexa: {
           value: 'Fan'
         }
-      },
-      members: [
-        {
-          type: 'Dimmer',
-          name: 'fanSpeed3',
-          metadata: {
-            alexa: {
-              value: 'FanSpeed',
-              config: {
-                inverted: true
-              }
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'fanDirection3',
-          metadata: {
-            alexa: {
-              value: 'FanDirection',
-              config: {
-                inverted: true
-              }
-            }
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'fanSpeed3',
+      groupNames: ['gFan3'],
+      metadata: {
+        alexa: {
+          value: 'FanSpeed',
+          config: {
+            inverted: true
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'fanDirection3',
+      groupNames: ['gFan3'],
+      metadata: {
+        alexa: {
+          value: 'FanDirection',
+          config: {
+            inverted: true
+          }
+        }
+      }
     },
     {
       type: 'Group',
@@ -179,27 +182,27 @@ module.exports = {
         alexa: {
           value: 'Fan'
         }
-      },
-      members: [
-        {
-          type: 'String',
-          name: 'fanSpeed4',
-          metadata: {
-            alexa: {
-              value: 'FanSpeed'
-            }
-          }
-        },
-        {
-          type: 'String',
-          name: 'fanDirection4',
-          metadata: {
-            alexa: {
-              value: 'FanDirection'
-            }
-          }
+      }
+    },
+    {
+      type: 'String',
+      name: 'fanSpeed4',
+      groupNames: ['gFan4'],
+      metadata: {
+        alexa: {
+          value: 'FanSpeed'
         }
-      ]
+      }
+    },
+    {
+      type: 'String',
+      name: 'fanDirection4',
+      groupNames: ['gFan4'],
+      metadata: {
+        alexa: {
+          value: 'FanDirection'
+        }
+      }
     },
     {
       type: 'Number',

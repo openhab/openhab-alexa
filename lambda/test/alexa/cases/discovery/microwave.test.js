@@ -22,48 +22,49 @@ module.exports = {
         alexa: {
           value: 'Microwave'
         }
-      },
-      members: [
-        {
-          type: 'Dimmer',
-          name: 'MicrowavePowerLevel',
-          label: 'Power Level',
-          metadata: {
-            alexa: {
-              value: 'RangeValue',
-              config: {
-                supportedRange: '0:100:10',
-                unitOfMeasure: 'Percent',
-                presets: { 0: '@Value.Minimum', 100: '@Value.Maximum' }
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'MicrowaveSurfaceLight',
-          label: 'Surface Light',
-          metadata: {
-            alexa: {
-              value: 'RangeValue',
-              config: {
-                supportedRange: '0:2:1',
-                presets: { 0: '@Value.Off', 1: '@Setting.Night', 2: '@Value.On' }
-              }
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'MicrowaveTurnTable',
-          label: 'Turn Table',
-          metadata: {
-            alexa: {
-              value: 'ToggleState'
-            }
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'MicrowavePowerLevel',
+      label: 'Power Level',
+      groupNames: ['gMicrowave'],
+      metadata: {
+        alexa: {
+          value: 'RangeValue',
+          config: {
+            supportedRange: '0:100:10',
+            unitOfMeasure: 'Percent',
+            presets: { 0: '@Value.Minimum', 100: '@Value.Maximum' }
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Number',
+      name: 'MicrowaveSurfaceLight',
+      label: 'Surface Light',
+      groupNames: ['gMicrowave'],
+      metadata: {
+        alexa: {
+          value: 'RangeValue',
+          config: {
+            supportedRange: '0:2:1',
+            presets: { 0: '@Value.Off', 1: '@Setting.Night', 2: '@Value.On' }
+          }
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'MicrowaveTurnTable',
+      label: 'Turn Table',
+      groupNames: ['gMicrowave'],
+      metadata: {
+        alexa: {
+          value: 'ToggleState'
+        }
+      }
     }
   ],
   catalog: {

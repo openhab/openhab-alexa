@@ -22,36 +22,37 @@ module.exports = {
         alexa: {
           value: 'Automobile'
         }
-      },
-      members: [
-        {
-          type: 'Number:Dimensionless',
-          name: 'batteryLevel',
-          metadata: {
-            alexa: {
-              value: 'BatteryLevel'
-            }
-          }
-        },
-        {
-          type: 'Number:Temperature',
-          name: 'temperature',
-          metadata: {
-            alexa: {
-              value: 'CurrentTemperature'
-            }
-          }
-        },
-        {
-          type: 'Number:Temperature',
-          name: 'targetTemperature',
-          metadata: {
-            alexa: {
-              value: 'TargetTemperature'
-            }
-          }
+      }
+    },
+    {
+      type: 'Number:Dimensionless',
+      name: 'batteryLevel',
+      groupNames: ['gAutomobile'],
+      metadata: {
+        alexa: {
+          value: 'BatteryLevel'
         }
-      ]
+      }
+    },
+    {
+      type: 'Number:Temperature',
+      name: 'temperature',
+      groupNames: ['gAutomobile'],
+      metadata: {
+        alexa: {
+          value: 'CurrentTemperature'
+        }
+      }
+    },
+    {
+      type: 'Number:Temperature',
+      name: 'targetTemperature',
+      groupNames: ['gAutomobile'],
+      metadata: {
+        alexa: {
+          value: 'TargetTemperature'
+        }
+      }
     }
   ],
   catalog: {

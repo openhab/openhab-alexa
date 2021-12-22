@@ -42,32 +42,32 @@ module.exports = {
         alexa: {
           value: 'Lock'
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'targetDoorLock3',
-          metadata: {
-            alexa: {
-              value: 'TargetLockState'
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'currentDoorLock3',
-          metadata: {
-            alexa: {
-              value: 'CurrentLockState',
-              config: {
-                LOCKED: 1,
-                UNLOCKED: 2,
-                JAMMED: 42
-              }
-            }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'targetDoorLock3',
+      groupNames: ['gDoorLock3'],
+      metadata: {
+        alexa: {
+          value: 'TargetLockState'
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'currentDoorLock3',
+      groupNames: ['gDoorLock3'],
+      metadata: {
+        alexa: {
+          value: 'CurrentLockState',
+          config: {
+            LOCKED: 1,
+            UNLOCKED: 2,
+            JAMMED: 42
           }
         }
-      ]
+      }
     }
   ],
   expected: {

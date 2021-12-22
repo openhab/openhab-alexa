@@ -22,95 +22,102 @@ module.exports = {
         alexa: {
           value: 'SecurityPanel'
         }
-      },
-      members: [
-        {
-          type: 'String',
-          name: 'armState1',
-          metadata: {
-            alexa: {
-              value: 'ArmState',
-              config: {
-                supportedArmStates: 'DISARMED,ARMED_STAY,ARMED_AWAY',
-                pinCodes: '1234,9876',
-                exitDelay: 180
-              }
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'alarmAlert1',
-          metadata: {
-            alexa: {
-              value: 'AlarmAlert'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'readyAlert1',
-          metadata: {
-            alexa: {
-              value: 'ReadyAlert'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'troubleAlert1',
-          metadata: {
-            alexa: {
-              value: 'TroubleAlert'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'zonesAlert1',
-          metadata: {
-            alexa: {
-              value: 'ZonesAlert'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'burglaryAlarm1',
-          metadata: {
-            alexa: {
-              value: 'BurglaryAlarm'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'fireAlarm1',
-          metadata: {
-            alexa: {
-              value: 'FireAlarm'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'carbonMonoxideAlarm1',
-          metadata: {
-            alexa: {
-              value: 'CarbonMonoxideAlarm'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'waterAlarm1',
-          metadata: {
-            alexa: {
-              value: 'WaterAlarm'
-            }
+      }
+    },
+    {
+      type: 'String',
+      name: 'armState1',
+      groupNames: ['gSecurityPanel1'],
+      metadata: {
+        alexa: {
+          value: 'ArmState',
+          config: {
+            supportedArmStates: 'DISARMED,ARMED_STAY,ARMED_AWAY',
+            pinCodes: '1234,9876',
+            exitDelay: 180
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'alarmAlert1',
+      groupNames: ['gSecurityPanel1'],
+      metadata: {
+        alexa: {
+          value: 'AlarmAlert'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'readyAlert1',
+      groupNames: ['gSecurityPanel1'],
+      metadata: {
+        alexa: {
+          value: 'ReadyAlert'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'troubleAlert1',
+      groupNames: ['gSecurityPanel1'],
+      metadata: {
+        alexa: {
+          value: 'TroubleAlert'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'zonesAlert1',
+      groupNames: ['gSecurityPanel1'],
+      metadata: {
+        alexa: {
+          value: 'ZonesAlert'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'burglaryAlarm1',
+      groupNames: ['gSecurityPanel1'],
+      metadata: {
+        alexa: {
+          value: 'BurglaryAlarm'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'fireAlarm1',
+      groupNames: ['gSecurityPanel1'],
+      metadata: {
+        alexa: {
+          value: 'FireAlarm'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'carbonMonoxideAlarm1',
+      groupNames: ['gSecurityPanel1'],
+      metadata: {
+        alexa: {
+          value: 'CarbonMonoxideAlarm'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'waterAlarm1',
+      groupNames: ['gSecurityPanel1'],
+      metadata: {
+        alexa: {
+          value: 'WaterAlarm'
+        }
+      }
     },
     {
       // Number item type state mapping no supportedArmStates
@@ -162,32 +169,32 @@ module.exports = {
         alexa: {
           value: 'SecurityPanel'
         }
-      },
-      members: [
-        {
-          // Invalid arm state because of missing supportedArmStates
-          type: 'String',
-          name: 'armState99',
-          metadata: {
-            alexa: {
-              value: 'ArmState',
-              config: {
-                supportedArmStates: 'ARMED_AWAY'
-              }
-            }
-          }
-        },
-        {
-          // Ignored security alert because linked arm state not valid
-          type: 'Switch',
-          name: 'alarmAlert99',
-          metadata: {
-            alexa: {
-              value: 'AlarmAlert'
-            }
+      }
+    },
+    {
+      // Invalid arm state because of missing supportedArmStates
+      type: 'String',
+      name: 'armState99',
+      groupNames: ['gSecurityPanel99'],
+      metadata: {
+        alexa: {
+          value: 'ArmState',
+          config: {
+            supportedArmStates: 'ARMED_AWAY'
           }
         }
-      ]
+      }
+    },
+    {
+      // Ignored security alert because linked arm state not valid
+      type: 'Switch',
+      name: 'alarmAlert99',
+      groupNames: ['gSecurityPanel99'],
+      metadata: {
+        alexa: {
+          value: 'AlarmAlert'
+        }
+      }
     }
   ],
   expected: {

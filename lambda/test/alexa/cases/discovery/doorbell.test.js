@@ -22,21 +22,20 @@ module.exports = {
         alexa: {
           value: 'Doorbell'
         }
-      },
-      members: [
-        {
-          type: 'String',
-          name: 'cameraStream',
-          metadata: {
-            alexa: {
-              value: 'CameraStream',
-              config: {
-                proxyBaseUrl: 'https://openhab.myserver.tld'
-              }
-            }
+      }
+    },
+    {
+      type: 'String',
+      name: 'cameraStream',
+      groupNames: ['gDoorbell'],
+      metadata: {
+        alexa: {
+          value: 'CameraStream',
+          config: {
+            proxyBaseUrl: 'https://openhab.myserver.tld'
           }
         }
-      ]
+      }
     }
   ],
   expected: {

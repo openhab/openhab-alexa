@@ -22,33 +22,33 @@ module.exports = {
         alexa: {
           value: 'Speaker'
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'mute1',
-          metadata: {
-            alexa: {
-              value: 'MuteState',
-              config: {
-                stepSpeaker: true
-              }
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'volume1',
-          metadata: {
-            alexa: {
-              value: 'VolumeLevel',
-              config: {
-                stepSpeaker: true
-              }
-            }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'mute1',
+      groupNames: ['gStepSpeaker1'],
+      metadata: {
+        alexa: {
+          value: 'MuteState',
+          config: {
+            stepSpeaker: true
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Number',
+      name: 'volume1',
+      groupNames: ['gStepSpeaker1'],
+      metadata: {
+        alexa: {
+          value: 'VolumeLevel',
+          config: {
+            stepSpeaker: true
+          }
+        }
+      }
     },
     {
       type: 'Number',

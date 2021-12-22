@@ -18,6 +18,7 @@ module.exports = {
       type: 'Group',
       name: 'gComputer1',
       label: 'Computer',
+      groupNames: ['gRouter1'],
       metadata: {
         alexa: {
           value: 'Computer',
@@ -26,44 +27,43 @@ module.exports = {
             macAddress: '00:21:86:B5:6E:10'
           }
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'networkAccess',
-          metadata: {
-            alexa: {
-              value: 'NetworkAccess'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'power',
-          metadata: {
-            alexa: {
-              value: 'PowerState'
-            }
-          }
+      }
+    },
+    {
+      type: 'Group',
+      name: 'gRouter1',
+      label: 'Router',
+      metadata: {
+        alexa: {
+          value: 'Router'
         }
-      ],
-      groups: [
-        {
-          type: 'Group',
-          name: 'gRouter',
-          label: 'Router',
-          metadata: {
-            alexa: {
-              value: 'Router'
-            }
-          }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'networkAccess1',
+      groupNames: ['gComputer1'],
+      metadata: {
+        alexa: {
+          value: 'NetworkAccess'
         }
-      ]
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'power',
+      groupNames: ['gComputer1'],
+      metadata: {
+        alexa: {
+          value: 'PowerState'
+        }
+      }
     },
     {
       type: 'Group',
       name: 'gComputer99',
       label: 'Invalid Computer',
+      groupNames: ['gRouter99'],
       metadata: {
         alexa: {
           value: 'Computer',
@@ -72,24 +72,27 @@ module.exports = {
             macAddress: '00:21:86:B5:6E:10'
           }
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'networkAccess',
-          metadata: {
-            alexa: {
-              value: 'NetworkAccess'
-            }
-          }
+      }
+    },
+    {
+      type: 'Group',
+      name: 'gRouter99',
+      label: 'Invalid Router',
+      metadata: {
+        alexa: {
+          value: 'Invalid'
         }
-      ],
-      groups: [
-        {
-          type: 'Group',
-          name: 'foobar'
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'networkAccess99',
+      groupNames: ['gComputer99'],
+      metadata: {
+        alexa: {
+          value: 'NetworkAccess'
         }
-      ]
+      }
     }
   ],
   expected: {
@@ -117,9 +120,14 @@ module.exports = {
       },
       relationships: {
         isConnectedBy: {
-          endpointId: 'gRouter'
+          endpointId: 'gRouter1'
         }
       }
+    },
+    gRouter1: {
+      capabilities: ['Alexa.Networking.HomeNetworkController', 'Alexa'],
+      displayCategories: ['ROUTER'],
+      friendlyName: 'Router'
     }
   }
 };

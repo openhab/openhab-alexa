@@ -92,7 +92,9 @@ const ItemValue = Object.freeze({
   STOP: 'STOP',
   MOVE: 'MOVE',
   UP: 'UP',
-  DOWN: 'DOWN'
+  DOWN: 'DOWN',
+  NULL: 'NULL',
+  UNDEFINED: 'UNDEF'
 });
 
 /**

@@ -81,35 +81,36 @@ module.exports = {
         alexa: {
           value: 'Light'
         }
-      },
-      members: [
-        {
-          type: 'Color',
-          name: 'light6',
-          metadata: {
-            alexa: {
-              value: 'Light'
-            }
-          }
-        },
-        {
-          type: 'Dimmer',
-          name: 'colorTemperature6',
-          metadata: {
-            alexa: {
-              value: 'ColorTemperature'
-            },
-            channel: {
-              value: 'hue:bulb:brightness'
-            }
-          }
+      }
+    },
+    {
+      type: 'Color',
+      name: 'light6',
+      groupNames: ['gLight6'],
+      metadata: {
+        alexa: {
+          value: 'Light'
         }
-      ]
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'colorTemperature6',
+      groupNames: ['gLight6'],
+      metadata: {
+        alexa: {
+          value: 'ColorTemperature'
+        },
+        channel: {
+          value: 'hue:bulb:brightness'
+        }
+      }
     },
     {
       type: 'Dimmer',
       name: 'light7',
       label: 'Dimmer Light 7',
+      groupNames: ['gLight9'],
       metadata: {
         alexa: {
           value: 'Light'
@@ -120,6 +121,7 @@ module.exports = {
       type: 'Color',
       name: 'light8',
       label: 'Color Light 8',
+      groupNames: ['gLight9'],
       metadata: {
         alexa: {
           value: 'Light'
@@ -135,29 +137,7 @@ module.exports = {
         alexa: {
           value: 'Light'
         }
-      },
-      members: [
-        {
-          type: 'Dimmer',
-          name: 'light7',
-          label: 'Dimmer Light 7',
-          metadata: {
-            alexa: {
-              value: 'Light'
-            }
-          }
-        },
-        {
-          type: 'Color',
-          name: 'light8',
-          label: 'Color Light 8',
-          metadata: {
-            alexa: {
-              value: 'Light'
-            }
-          }
-        }
-      ]
+      }
     },
     {
       type: 'Switch',
@@ -203,8 +183,7 @@ module.exports = {
         alexa: {
           value: 'Light' // Invalid endpoint (group with no capabilities)
         }
-      },
-      members: []
+      }
     }
   ],
   settings: {

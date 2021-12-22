@@ -65,6 +65,7 @@ class Discovery extends AlexaHandler {
     //  - all items
     //  - server settings
     const [items, settings] = await Promise.all([openhab.getAllItems(), openhab.getServerSettings()]);
+    const groups = items.filter((item) => (item.groupType || item.type) === ItemType.GROUP);
     const endpoints = [];
     const groupItems = [];
 
@@ -73,7 +74,7 @@ class Discovery extends AlexaHandler {
     // Iterate over items retrieved
     for (const item of items) {
       // Create new endpoint from item
-      const endpoint = AlexaEndpoint.fromItem(item, settings);
+      const endpoint = AlexaEndpoint.fromItem(item, settings, groups);
       // Skip item if endpoint friendly name not defined or if already part of a group
       if (!endpoint.friendlyName || groupItems.includes(item.name)) {
         continue;
@@ -81,8 +82,13 @@ class Discovery extends AlexaHandler {
 
       // Add group member capabilities if endpoint group
       if (endpoint.isGroup) {
-        item.members
-          .filter((member) => (member.groupType || member.type) !== ItemType.GROUP)
+        items
+          .filter(
+            (member) =>
+              member.groupNames &&
+              member.groupNames.includes(item.name) &&
+              (member.groupType || member.type) !== ItemType.GROUP
+          )
           .forEach((member) => {
             log.debug(`adding ${member.name} to group endpoint ${endpoint.id}`);
             endpoint.addItemCapabilities(member, settings);

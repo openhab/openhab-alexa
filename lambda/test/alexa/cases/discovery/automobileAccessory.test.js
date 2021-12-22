@@ -22,39 +22,40 @@ module.exports = {
         alexa: {
           value: 'AutomobileAccessory'
         }
-      },
-      members: [
-        {
-          type: 'Number',
-          name: 'batteryLevel',
-          metadata: {
-            alexa: {
-              value: 'BatteryLevel'
-            }
-          }
-        },
-        {
-          type: 'String',
-          name: 'cameraStream',
-          metadata: {
-            alexa: {
-              value: 'CameraStream',
-              config: {
-                proxyBaseUrl: 'https://openhab.myserver.tld'
-              }
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'power',
-          metadata: {
-            alexa: {
-              value: 'PowerState'
-            }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'batteryLevel',
+      groupNames: ['gDashCamera'],
+      metadata: {
+        alexa: {
+          value: 'BatteryLevel'
+        }
+      }
+    },
+    {
+      type: 'String',
+      name: 'cameraStream',
+      groupNames: ['gDashCamera'],
+      metadata: {
+        alexa: {
+          value: 'CameraStream',
+          config: {
+            proxyBaseUrl: 'https://openhab.myserver.tld'
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'power',
+      groupNames: ['gDashCamera'],
+      metadata: {
+        alexa: {
+          value: 'PowerState'
+        }
+      }
     }
   ],
   catalog: {

@@ -212,20 +212,13 @@ describe('OpenHAB Tests', () => {
 
     it('successful', async () => {
       // set environment
-      nock(baseURL)
-        .get('/rest/items')
-        .query(qs)
-        .reply(200, [
-          { name: 'foo', type: 'Dimmer', groupNames: [] },
-          { name: 'bar', type: 'Group', groupNames: [] },
-          { name: 'baz', type: 'Switch', groupNames: ['bar'] }
-        ]);
+      const items = [
+        { name: 'foo', type: 'Dimmer' },
+        { name: 'bar', type: 'Switch' }
+      ];
+      nock(baseURL).get('/rest/items').query(qs).reply(200, items);
       // run test
-      expect(await openhab.getAllItems()).to.deep.equal([
-        { name: 'foo', type: 'Dimmer', members: [], groups: [] },
-        { name: 'bar', type: 'Group', members: [{ name: 'baz', type: 'Switch', groupNames: ['bar'] }], groups: [] },
-        { name: 'baz', type: 'Switch', members: [], groups: [{ name: 'bar', type: 'Group', groupNames: [] }] }
-      ]);
+      expect(await openhab.getAllItems()).to.deep.equal(items);
       expect(nock.isDone()).to.be.true;
     });
 
@@ -245,7 +238,7 @@ describe('OpenHAB Tests', () => {
       try {
         await openhab.getAllItems();
       } catch (error) {
-        expect(error).to.include({ name: 'TypeError' });
+        expect(error).to.include({ name: 'TypeError', message: 'Failed to retrieve all items formatted array' });
       }
       expect(nock.isDone()).to.be.true;
     });

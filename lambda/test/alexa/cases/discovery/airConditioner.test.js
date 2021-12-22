@@ -22,36 +22,37 @@ module.exports = {
         alexa: {
           value: 'AirConditioner'
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'power',
-          metadata: {
-            alexa: {
-              value: 'PowerState'
-            }
-          }
-        },
-        {
-          type: 'Number:Temperature',
-          name: 'temperature',
-          metadata: {
-            alexa: {
-              value: 'CurrentTemperature'
-            }
-          }
-        },
-        {
-          type: 'Number:Temperature',
-          name: 'targetTemperature',
-          metadata: {
-            alexa: {
-              value: 'TargetTemperature'
-            }
-          }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'power',
+      groupNames: ['gAirConditioner1'],
+      metadata: {
+        alexa: {
+          value: 'PowerState'
         }
-      ]
+      }
+    },
+    {
+      type: 'Number:Temperature',
+      name: 'temperature',
+      groupNames: ['gAirConditioner1'],
+      metadata: {
+        alexa: {
+          value: 'CurrentTemperature'
+        }
+      }
+    },
+    {
+      type: 'Number:Temperature',
+      name: 'targetTemperature',
+      groupNames: ['gAirConditioner1'],
+      metadata: {
+        alexa: {
+          value: 'TargetTemperature'
+        }
+      }
     },
     {
       type: 'Switch',

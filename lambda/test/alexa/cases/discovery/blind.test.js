@@ -22,27 +22,27 @@ module.exports = {
         alexa: {
           value: 'Blind'
         }
-      },
-      members: [
-        {
-          type: 'Rollershutter',
-          name: 'windowBlindPosition1',
-          metadata: {
-            alexa: {
-              value: 'PositionState'
-            }
-          }
-        },
-        {
-          type: 'Rollershutter',
-          name: 'windowBlindTilt1',
-          metadata: {
-            alexa: {
-              value: 'TiltAngle'
-            }
-          }
+      }
+    },
+    {
+      type: 'Rollershutter',
+      name: 'windowBlindPosition1',
+      groupNames: ['gWindowBlind1'],
+      metadata: {
+        alexa: {
+          value: 'PositionState'
         }
-      ]
+      }
+    },
+    {
+      type: 'Rollershutter',
+      name: 'windowBlindTilt1',
+      groupNames: ['gWindowBlind1'],
+      metadata: {
+        alexa: {
+          value: 'TiltAngle'
+        }
+      }
     },
     {
       type: 'Group',
@@ -55,27 +55,27 @@ module.exports = {
             primaryControl: 'tilt'
           }
         }
-      },
-      members: [
-        {
-          type: 'Rollershutter',
-          name: 'windowBlindPosition2',
-          metadata: {
-            alexa: {
-              value: 'PositionState'
-            }
-          }
-        },
-        {
-          type: 'Rollershutter',
-          name: 'windowBlindTilt2',
-          metadata: {
-            alexa: {
-              value: 'TiltAngle'
-            }
-          }
+      }
+    },
+    {
+      type: 'Rollershutter',
+      name: 'windowBlindPosition2',
+      groupNames: ['gWindowBlind2'],
+      metadata: {
+        alexa: {
+          value: 'PositionState'
         }
-      ]
+      }
+    },
+    {
+      type: 'Rollershutter',
+      name: 'windowBlindTilt2',
+      groupNames: ['gWindowBlind2'],
+      metadata: {
+        alexa: {
+          value: 'TiltAngle'
+        }
+      }
     },
     {
       type: 'Group',
@@ -88,27 +88,27 @@ module.exports = {
             primaryControl: 'tilt'
           }
         }
-      },
-      members: [
-        {
-          type: 'Dimmer',
-          name: 'windowBlindPosition3',
-          metadata: {
-            alexa: {
-              value: 'PositionState'
-            }
-          }
-        },
-        {
-          type: 'Dimmer',
-          name: 'windowBlindTilt3',
-          metadata: {
-            alexa: {
-              value: 'TiltAngle'
-            }
-          }
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'windowBlindPosition3',
+      groupNames: ['gWindowBlind3'],
+      metadata: {
+        alexa: {
+          value: 'PositionState'
         }
-      ]
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'windowBlindTilt3',
+      groupNames: ['gWindowBlind3'],
+      metadata: {
+        alexa: {
+          value: 'TiltAngle'
+        }
+      }
     },
     {
       type: 'Group',
@@ -121,33 +121,33 @@ module.exports = {
             primaryControl: 'tilt'
           }
         }
-      },
-      members: [
-        {
-          type: 'Dimmer',
-          name: 'windowBlindPosition4',
-          metadata: {
-            alexa: {
-              value: 'PositionState',
-              config: {
-                inverted: true
-              }
-            }
-          }
-        },
-        {
-          type: 'Dimmer',
-          name: 'windowBlindTilt4',
-          metadata: {
-            alexa: {
-              value: 'TiltAngle',
-              config: {
-                inverted: true
-              }
-            }
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'windowBlindPosition4',
+      groupNames: ['gWindowBlind4'],
+      metadata: {
+        alexa: {
+          value: 'PositionState',
+          config: {
+            inverted: true
           }
         }
-      ]
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'windowBlindTilt4',
+      groupNames: ['gWindowBlind4'],
+      metadata: {
+        alexa: {
+          value: 'TiltAngle',
+          config: {
+            inverted: true
+          }
+        }
+      }
     },
     {
       type: 'Dimmer',

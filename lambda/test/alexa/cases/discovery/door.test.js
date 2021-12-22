@@ -35,36 +35,37 @@ module.exports = {
         alexa: {
           value: 'GarageDoor'
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'targetGarageDoor2',
-          metadata: {
-            alexa: {
-              value: 'TargetOpenState'
-            }
-          }
-        },
-        {
-          type: 'Contact',
-          name: 'currentGarageDoor2',
-          metadata: {
-            alexa: {
-              value: 'CurrentOpenState'
-            }
-          }
-        },
-        {
-          type: 'Switch',
-          name: 'obstacleGarageDoor2',
-          metadata: {
-            alexa: {
-              value: 'ObstacleAlert'
-            }
-          }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'targetGarageDoor2',
+      groupNames: ['gGarageDoor2'],
+      metadata: {
+        alexa: {
+          value: 'TargetOpenState'
         }
-      ]
+      }
+    },
+    {
+      type: 'Contact',
+      name: 'currentGarageDoor2',
+      groupNames: ['gGarageDoor2'],
+      metadata: {
+        alexa: {
+          value: 'CurrentOpenState'
+        }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'obstacleGarageDoor2',
+      groupNames: ['gGarageDoor2'],
+      metadata: {
+        alexa: {
+          value: 'ObstacleAlert'
+        }
+      }
     },
     {
       type: 'Group',
@@ -74,30 +75,30 @@ module.exports = {
         alexa: {
           value: 'GarageDoor'
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'targetGarageDoor3',
-          metadata: {
-            alexa: {
-              value: 'TargetOpenState'
-            }
-          }
-        },
-        {
-          type: 'Contact',
-          name: 'currentGarageDoor3',
-          metadata: {
-            alexa: {
-              value: 'CurrentOpenState',
-              config: {
-                inverted: true
-              }
-            }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'targetGarageDoor3',
+      groupNames: ['gGarageDoor3'],
+      metadata: {
+        alexa: {
+          value: 'TargetOpenState'
+        }
+      }
+    },
+    {
+      type: 'Contact',
+      name: 'currentGarageDoor3',
+      groupNames: ['gGarageDoor3'],
+      metadata: {
+        alexa: {
+          value: 'CurrentOpenState',
+          config: {
+            inverted: true
           }
         }
-      ]
+      }
     },
     {
       type: 'Switch',
@@ -123,27 +124,27 @@ module.exports = {
         alexa: {
           value: 'Door'
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'targetDoor2',
-          metadata: {
-            alexa: {
-              value: 'TargetOpenState'
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'currentDoor2',
-          metadata: {
-            alexa: {
-              value: 'CurrentOpenState'
-            }
-          }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'targetDoor2',
+      groupNames: ['gDoor2'],
+      metadata: {
+        alexa: {
+          value: 'TargetOpenState'
         }
-      ]
+      }
+    },
+    {
+      type: 'Number',
+      name: 'currentDoor2',
+      groupNames: ['gDoor2'],
+      metadata: {
+        alexa: {
+          value: 'CurrentOpenState'
+        }
+      }
     },
     {
       type: 'Number', // unsupported target item type

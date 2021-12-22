@@ -22,27 +22,27 @@ module.exports = {
         alexa: {
           value: 'Headphones'
         }
-      },
-      members: [
-        {
-          type: 'Player',
-          name: 'playback',
-          metadata: {
-            alexa: {
-              value: 'Playback'
-            }
-          }
-        },
-        {
-          type: 'Dimmer',
-          name: 'volume',
-          metadata: {
-            alexa: {
-              value: 'VolumeLevel'
-            }
-          }
+      }
+    },
+    {
+      type: 'Player',
+      name: 'playback',
+      groupNames: ['gHeadphones1'],
+      metadata: {
+        alexa: {
+          value: 'Playback'
         }
-      ]
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'volume',
+      groupNames: ['gHeadphones1'],
+      metadata: {
+        alexa: {
+          value: 'VolumeLevel'
+        }
+      }
     },
     {
       type: 'Switch',

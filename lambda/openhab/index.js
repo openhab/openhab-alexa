@@ -16,6 +16,7 @@ const request = require('request-promise-native');
 const Agent = require('agentkeepalive');
 const { sprintf } = require('sprintf-js');
 const { validate: uuidValidate } = require('uuid');
+const { ItemValue } = require('./constants');
 
 /**
  * Defines openHAB class
@@ -28,7 +29,7 @@ class OpenHAB {
    * @param {Number} timeout
    */
   constructor(config, token, timeout) {
-    this._cache = { postedCommands: {} };
+    this._cache = { commands: {} };
     this._request = OpenHAB.getRequestDefaults(config, token, timeout);
   }
 
@@ -38,7 +39,7 @@ class OpenHAB {
    * @return {String}
    */
   getLastPostedCommand(itemName) {
-    return this._cache.postedCommands[itemName];
+    return this._cache.commands[itemName];
   }
 
   /**
@@ -49,25 +50,25 @@ class OpenHAB {
   async getItemState(itemName) {
     const item = await this.getItem(itemName);
     // Return formatted item state if item defined and its state is not NULL or UNDEF, otherwise undefined
-    return item && item.state !== 'NULL' && item.state !== 'UNDEF' ? OpenHAB.formatItemState(item) : undefined;
+    return item && item.state !== ItemValue.NULL && item.state !== ItemValue.UNDEFINED
+      ? OpenHAB.formatItemState(item)
+      : undefined;
   }
 
   /**
-   * Returns all items with metadata, members and groups
+   * Returns all items with metadata
    * @return {Promise}
    */
   async getAllItems() {
     let items;
+
     // Retrieve all items up to 3 tries if not an array
-    for (let tries = 0; !Array.isArray(items) && tries < 3; tries++) {
+    for (let tries = 0; !Array.isArray(items); tries++) {
+      if (tries >= 3) throw new TypeError('Failed to retrieve all items formatted array');
       items = await this.getItems();
     }
-    // Return all items adding members and expanding groupNames into groups
-    return items.map(({ groupNames, ...item }) => ({
-      ...item,
-      members: items.filter((member) => member.groupNames.includes(item.name)),
-      groups: items.filter((group) => groupNames.includes(group.name))
-    }));
+
+    return items;
   }
 
   /**
@@ -110,8 +111,8 @@ class OpenHAB {
    * @return {Promise}
    */
   sendCommand(itemName, command) {
-    // Cache posted command
-    this._cache.postedCommands[itemName] = command.toString();
+    // Cache command
+    this._cache.commands[itemName] = command.toString();
     return this.postItemCommand(itemName, command);
   }
 

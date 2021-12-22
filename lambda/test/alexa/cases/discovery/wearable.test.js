@@ -22,34 +22,34 @@ module.exports = {
         alexa: {
           value: 'Wearable'
         }
-      },
-      members: [
-        {
-          type: 'Dimmer',
-          name: 'batteryLevel',
-          metadata: {
-            alexa: {
-              value: 'BatteryLevel'
-            }
-          }
-        },
-        {
-          type: 'Number',
-          name: 'steps',
-          label: 'Steps',
-          stateDescription: {
-            minimum: 0,
-            maximum: 100000,
-            step: 1,
-            readOnly: true
-          },
-          metadata: {
-            alexa: {
-              value: 'RangeValue'
-            }
-          }
+      }
+    },
+    {
+      type: 'Dimmer',
+      name: 'batteryLevel',
+      groupNames: ['gSmartWatch'],
+      metadata: {
+        alexa: {
+          value: 'BatteryLevel'
         }
-      ]
+      }
+    },
+    {
+      type: 'Number',
+      name: 'steps',
+      label: 'Steps',
+      groupNames: ['gSmartWatch'],
+      stateDescription: {
+        minimum: 0,
+        maximum: 100000,
+        step: 1,
+        readOnly: true
+      },
+      metadata: {
+        alexa: {
+          value: 'RangeValue'
+        }
+      }
     }
   ],
   catalog: {

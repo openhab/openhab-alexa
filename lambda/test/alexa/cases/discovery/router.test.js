@@ -22,22 +22,21 @@ module.exports = {
         alexa: {
           value: 'Router'
         }
-      },
-      members: [
-        {
-          type: 'Switch',
-          name: 'guestNetwork',
-          metadata: {
-            alexa: {
-              value: 'ToggleState',
-              config: {
-                capabilityNames: '@Setting.GuestWiFi',
-                actionMappings: 'Resume=ON,Pause=OFF'
-              }
-            }
+      }
+    },
+    {
+      type: 'Switch',
+      name: 'guestNetwork',
+      groupNames: ['gWirelessRouter'],
+      metadata: {
+        alexa: {
+          value: 'ToggleState',
+          config: {
+            capabilityNames: '@Setting.GuestWiFi',
+            actionMappings: 'Resume=ON,Pause=OFF'
           }
         }
-      ]
+      }
     }
   ],
   expected: {

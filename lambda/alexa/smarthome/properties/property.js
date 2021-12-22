@@ -306,9 +306,10 @@ class AlexaProperty {
    * @param  {Object} item
    * @param  {Object} metadata
    * @param  {Object} settings
+   * @param  {Array}  groups
    * @return {Object}
    */
-  static build({ name, component, tag, parameters, item, metadata, settings }) {
+  static build({ name, component, tag, parameters, item, metadata, settings, groups }) {
     const property = new this(name, component, tag, parameters, item);
 
     // Return if property has not required component or supported item type
@@ -318,7 +319,7 @@ class AlexaProperty {
 
     // Update property parameters based on metadata if provided, otherwise normalize existing parameters
     if (metadata) {
-      property.updateParameters(item, metadata, settings);
+      property.updateParameters(item, metadata, settings, groups);
     } else {
       property.normalizeParameters();
     }
