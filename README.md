@@ -45,7 +45,7 @@ To change your deploy region, update the `awsRegion` skill infrastructure user c
 
 If you aren't using your own OAuth2 server (e.g. private openHAB Cloud Connector), it is highly recommended to use [Login with Amazon](https://developer.amazon.com/loginwithamazon/console/site/lwa/overview.html). See [this post](https://developer.amazon.com/public/community/post/Tx3CX1ETRZZ2NPC/Alexa-Account-Linking-5-Steps-to-Seamlessly-Link-Your-Alexa-Skill-with-Login-wit) to set it up for your private skill. Doing so allows [other server level authentication methods](#openhab-server) to be used over the Alexa Smart Home skill requirements for OAuth2 authentication.
 
-If using a private openHAB Cloud Connector, in order to setup the OAuth2 server, make sure it is accessible on port 443, and to create a client profile and scope for Alexa skills in the Mango database, by running the below commands with the `mango` CLI tool. It is recommended to use an online random hex number generator to create a unique client secret.
+If using a private openHAB Cloud Connector, in order to setup the OAuth2 server, make sure it is accessible on port 443, and to create a client profile and scope for Alexa skills in the MongoDB database, by running the below commands with the `mongo` CLI tool. It is recommended to use an online random hex number generator to create a unique client secret.
 
 ```shell
 use openhab
