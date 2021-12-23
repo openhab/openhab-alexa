@@ -1,0 +1,33 @@
+{
+  "assetIds": {
+    "@Setting.Angle": "زاوية",
+    "@Setting.BatteryLevel": "مستوى البطارية",
+    "@Setting.Clean": "لينظف",
+    "@Setting.Dock": "بتر ذيلا",
+    "@Setting.Forward": "كان ألاول",
+    "@Setting.Humidity": "الرطوبة",
+    "@Setting.Input": "مساهمة",
+    "@Setting.Position": "الموضع",
+    "@Setting.RangeValue": "قيمة النطاق",
+    "@Setting.Reverse": "عكس",
+    "@Setting.Speed": "سرعة",
+    "@Setting.Spot": "بقعة",
+    "@Setting.TargetTemperature": "درجة الحرارة المستهدفة",
+    "@Setting.Tilt": "الميل",
+    "@Setting.ToggleState": "تبديل الحالة",
+    "@Value.Decrease": "تناقص",
+    "@Value.Default": "الافتراضي",
+    "@Value.Down": "أسفل",
+    "@Value.Increase": "تزايد",
+    "@Value.Left": "اليسار",
+    "@Value.Move": "تنقل",
+    "@Value.Off": "طافئ",
+    "@Value.On": "على",
+    "@Value.Pause": "إيقاف مؤقت",
+    "@Value.Resume": "استأنف",
+    "@Value.Right": "يمين",
+    "@Value.Start": "ابدأ",
+    "@Value.Stop": "توقف",
+    "@Value.Up": "فوق"
+  }
+}

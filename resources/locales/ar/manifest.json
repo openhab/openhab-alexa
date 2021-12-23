@@ -1,0 +1,35 @@
+{
+  "publishingInformation": {
+    "name": "openHAB",
+    "summary": "تحكم في نظام openHAB الخاص بك مع Amazon Alexa و myopenHAB.org.",
+    "description": "تتيح لك مهارة openHAB لـ Amazon Alexa التحكم في الأضواء وأجهزة تنظيم الحرارة والعناصر الأخرى المتصلة على نظام openHAB من خلال خدمة السحابة myopenHAB.org.\n\nيهدف مشروع open Home Automation Bus (openHAB) إلى توفير منصة تكامل عالمية لجميع الأشياء المتعلقة بأتمتة المنزل. تم تصميمه ليكون محايدًا تمامًا للبائع بالإضافة إلى الأجهزة / البروتوكول. يجمع openHAB بين أنظمة الحافلات والأجهزة المختلفة وبروتوكولات الواجهة. تشمل التقنيات المدعومة KNX و Modbus و DMX و Philips Hue و PLCBus و Sonos و Plugwise و IHC / Elko و RFXCOM و Homematic و Koubachi و Pulseaudio و Samsung TV و Bluetooth و One-Wire و Novelan و Asterisk والأجهزة التسلسلية العامة وغيرها الكثير. يمكنك العثور على openHAB على http://www.openhab.org\n\nابدء\n\nتأكد أولاً من تكوين نظام openHAB الخاص بك وتوصيله بخدمة openHAB Cloud. حسابات openHAB Cloud مجانية ، قم بزيارة https://myopenhab.org لمزيد من المعلومات.\n\nفي تكوين openHAB الخاص بك ، أضف بيانات Alexa الوصفية إلى العناصر التي ترغب في عرضها على Amazon Alexa. يتم دعم أي رقم أو باهتة أو مفتاح أو وضع ترموستات (سلسلة أو رقم).\n\nأخيرًا ، قم بتمكين مهارة openHAB لـ Amazon Alexa. عند المطالبة ، استخدم بيانات اعتماد حساب openHAB Cloud الخاص بك لربط نظامك بـ Amazon Alexa.\n\nبمجرد الارتباط ، ستكون أي عناصر قمت بتكوينها باستخدام بيانات Alexa الوصفية قابلة للاكتشاف ومتاحة تلقائيًا لـ Amazon Alexa. إذا قمت بإضافة عناصر إضافية بعد الربط ، فقط اطلب من Alexa \"اكتشاف الأجهزة\" لإضافتها إلى حساب Amazon Alexa الخاص بك.\n\nيمكنك التحكم في العناصر الموجودة في نظام openHAB الخاص بك مباشرة ، على سبيل المثال:\n - Alexa ، قم بتشغيل المطبخ\n\nيمكنك أيضًا إضافة عناصرك إلى مجموعات Alexa للتحكم في عناصر متعددة في وقت واحد ، على سبيل المثال:\n - Alexa ، ضبط غرفة النوم على 50 بالمائة\n\nيمكن أيضًا استخدام المشاهد والإجراءات الروتينية للتحكم في عدة عناصر openHAB ، على سبيل المثال:\n - Alexa ، قم بتشغيل وقت النوم.",
+    "smallIconUri": "file://assets/images/openhab_smallIcon.png",
+    "largeIconUri": "file://assets/images/openhab_largeIcon.png",
+    "examplePhrases": [
+      "Alexa ، قم بتشغيل المطبخ",
+      "Alexa ، ضبط غرفة النوم على 50 بالمائة",
+      "Alexa ، قم بزيادة ترموستات بمقدار 2 درجة"
+    ],
+    "keywords": [
+      "openHAB",
+      "KNX",
+      "hue",
+      "z-wave",
+      "zwave",
+      "insteon",
+      "homematic",
+      "المنزل",
+      "أتمتة",
+      "one-wire",
+      "Bluetooth",
+      "smarthome",
+      "أتمتة المنزل",
+      "المنزل الذكي",
+      "منزل متصل"
+    ],
+    "updatesDescription": "تم تقديم صيغة بيانات وصفية مبسطة جديدة. يرجى مراجعة أحدث الوثائق لمزيد من المعلومات: https://www.openhab.org/link/alexa"
+  },
+  "privacyAndCompliance": {
+    "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
+  }
+}
