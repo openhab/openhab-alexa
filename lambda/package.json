@@ -1,6 +1,6 @@
 {
   "name": "openHAB.alexa-smarthome",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "openHAB skill for Amazon Alexa",
   "main": "index.js",
   "repository": {
