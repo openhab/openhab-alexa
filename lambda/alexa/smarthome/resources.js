@@ -66,6 +66,7 @@ class AlexaCapabilityResources {
    * @type {Array}
    */
   static LOCALES = [
+    'ar-SA',
     'de-DE',
     'en-AU',
     'en-CA',

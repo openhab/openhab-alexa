@@ -37,6 +37,7 @@ By default, the ASK CLI deploys the skill resources in the `us-east-1` region. Y
 | English (CA), English (US), French (CA), Portuguese (BR),<br>Spanish (MX), Spanish (US) | North America | `us-east-1` |
 | English (UK), French (FR), German, Italian, Spanish (ES) | Europe | `eu-west-1` |
 | English (IN), Hindi (IN) | India | `eu-west-1` |
+| Arabic (SA) | Middle East | `eu-west-1` |
 | English (AU), Japanese | Far East | `us-west-2` |
 
 To change your deploy region, update the `awsRegion` skill infrastructure user config parameter in [`ask-resources.json`](ask-resources.json).
