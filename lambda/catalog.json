@@ -1,6 +1,10 @@
 {
   "@Setting.Angle": [
     {
+      "text": "زاوية",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Winkel",
       "locale": "de-DE"
     },
@@ -67,6 +71,10 @@
   ],
   "@Setting.BatteryLevel": [
     {
+      "text": "مستوى البطارية",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Batterieladung",
       "locale": "de-DE"
     },
@@ -128,6 +136,10 @@
     }
   ],
   "@Setting.Clean": [
+    {
+      "text": "لينظف",
+      "locale": "ar-SA"
+    },
     {
       "text": "Sauber",
       "locale": "de-DE"
@@ -191,6 +203,10 @@
   ],
   "@Setting.Dock": [
     {
+      "text": "بتر ذيلا",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Dock",
       "locale": "de-DE"
     },
@@ -253,6 +269,10 @@
   ],
   "@Setting.Forward": [
     {
+      "text": "كان ألاول",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Vorwärts",
       "locale": "de-DE"
     },
@@ -314,6 +334,10 @@
     }
   ],
   "@Setting.Humidity": [
+    {
+      "text": "الرطوبة",
+      "locale": "ar-SA"
+    },
     {
       "text": "Luftfeuchtigkeit",
       "locale": "de-DE"
@@ -381,6 +405,10 @@
   ],
   "@Setting.Input": [
     {
+      "text": "مساهمة",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Eingang",
       "locale": "de-DE"
     },
@@ -442,6 +470,10 @@
     }
   ],
   "@Setting.Position": [
+    {
+      "text": "الموضع",
+      "locale": "ar-SA"
+    },
     {
       "text": "Position",
       "locale": "de-DE"
@@ -505,6 +537,10 @@
   ],
   "@Setting.RangeValue": [
     {
+      "text": "قيمة النطاق",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Bereichswert",
       "locale": "de-DE"
     },
@@ -566,6 +602,10 @@
     }
   ],
   "@Setting.Reverse": [
+    {
+      "text": "عكس",
+      "locale": "ar-SA"
+    },
     {
       "text": "Umkehren",
       "locale": "de-DE"
@@ -629,6 +669,10 @@
   ],
   "@Setting.Speed": [
     {
+      "text": "سرعة",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Geschwindigkeit",
       "locale": "de-DE"
     },
@@ -690,6 +734,10 @@
     }
   ],
   "@Setting.Spot": [
+    {
+      "text": "بقعة",
+      "locale": "ar-SA"
+    },
     {
       "text": "Spot",
       "locale": "de-DE"
@@ -753,6 +801,10 @@
   ],
   "@Setting.TargetTemperature": [
     {
+      "text": "درجة الحرارة المستهدفة",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Zieltemperatur",
       "locale": "de-DE"
     },
@@ -814,6 +866,10 @@
     }
   ],
   "@Setting.Tilt": [
+    {
+      "text": "الميل",
+      "locale": "ar-SA"
+    },
     {
       "text": "Neigung",
       "locale": "de-DE"
@@ -877,6 +933,10 @@
   ],
   "@Setting.ToggleState": [
     {
+      "text": "تبديل الحالة",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Schaltzustand",
       "locale": "de-DE"
     },
@@ -938,6 +998,10 @@
     }
   ],
   "@Value.Decrease": [
+    {
+      "text": "تناقص",
+      "locale": "ar-SA"
+    },
     {
       "text": "Verringern",
       "locale": "de-DE"
@@ -1001,6 +1065,10 @@
   ],
   "@Value.Default": [
     {
+      "text": "الافتراضي",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Standard",
       "locale": "de-DE"
     },
@@ -1062,6 +1130,10 @@
     }
   ],
   "@Value.Down": [
+    {
+      "text": "أسفل",
+      "locale": "ar-SA"
+    },
     {
       "text": "Runter",
       "locale": "de-DE"
@@ -1125,6 +1197,10 @@
   ],
   "@Value.Increase": [
     {
+      "text": "تزايد",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Erhöhung",
       "locale": "de-DE"
     },
@@ -1186,6 +1262,10 @@
     }
   ],
   "@Value.Left": [
+    {
+      "text": "اليسار",
+      "locale": "ar-SA"
+    },
     {
       "text": "Links",
       "locale": "de-DE"
@@ -1249,6 +1329,10 @@
   ],
   "@Value.Move": [
     {
+      "text": "تنقل",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Bewegung",
       "locale": "de-DE"
     },
@@ -1310,6 +1394,10 @@
     }
   ],
   "@Value.Off": [
+    {
+      "text": "طافئ",
+      "locale": "ar-SA"
+    },
     {
       "text": "Aus",
       "locale": "de-DE"
@@ -1373,6 +1461,10 @@
   ],
   "@Value.On": [
     {
+      "text": "على",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Auf",
       "locale": "de-DE"
     },
@@ -1434,6 +1526,10 @@
     }
   ],
   "@Value.Pause": [
+    {
+      "text": "إيقاف مؤقت",
+      "locale": "ar-SA"
+    },
     {
       "text": "Pause",
       "locale": "de-DE"
@@ -1497,6 +1593,10 @@
   ],
   "@Value.Resume": [
     {
+      "text": "استأنف",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Lebenslauf",
       "locale": "de-DE"
     },
@@ -1558,6 +1658,10 @@
     }
   ],
   "@Value.Right": [
+    {
+      "text": "يمين",
+      "locale": "ar-SA"
+    },
     {
       "text": "Rechte",
       "locale": "de-DE"
@@ -1621,6 +1725,10 @@
   ],
   "@Value.Start": [
     {
+      "text": "ابدأ",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Start",
       "locale": "de-DE"
     },
@@ -1683,6 +1791,10 @@
   ],
   "@Value.Stop": [
     {
+      "text": "توقف",
+      "locale": "ar-SA"
+    },
+    {
       "text": "Halt",
       "locale": "de-DE"
     },
@@ -1744,6 +1856,10 @@
     }
   ],
   "@Value.Up": [
+    {
+      "text": "فوق",
+      "locale": "ar-SA"
+    },
     {
       "text": "Hoch",
       "locale": "de-DE"
