@@ -107,10 +107,31 @@ module.exports = {
       }
     },
     {
+      type: 'Switch',
+      name: 'connectivity6',
+      groupNames: ['gLight6'],
+      metadata: {
+        alexa: {
+          value: 'EndpointHealth.connectivity' // Not configurable capability
+        }
+      }
+    },
+    {
+      groupType: 'Switch',
+      type: 'Group',
+      name: 'gLight7',
+      label: 'Light Group 7',
+      metadata: {
+        alexa: {
+          value: 'Light'
+        }
+      }
+    },
+    {
       type: 'Dimmer',
-      name: 'light7',
-      label: 'Dimmer Light 7',
-      groupNames: ['gLight9'],
+      name: 'light8',
+      label: 'Dimmer Light 8',
+      groupNames: ['gLight7'],
       metadata: {
         alexa: {
           value: 'Light'
@@ -119,20 +140,9 @@ module.exports = {
     },
     {
       type: 'Color',
-      name: 'light8',
-      label: 'Color Light 8',
-      groupNames: ['gLight9'],
-      metadata: {
-        alexa: {
-          value: 'Light'
-        }
-      }
-    },
-    {
-      groupType: 'Switch',
-      type: 'Group',
-      name: 'gLight9',
-      label: 'Light Group 9',
+      name: 'light9',
+      label: 'Color Light 9',
+      groupNames: ['gLight7'],
       metadata: {
         alexa: {
           value: 'Light'
@@ -338,10 +348,20 @@ module.exports = {
           property: 'colorTemperatureInKelvin',
           parameters: { binding: 'hue:bulb' },
           item: { name: 'colorTemperature6', type: 'Dimmer' }
+        },
+        {
+          name: 'EndpointHealth',
+          property: 'connectivity',
+          parameters: {}
         }
       ]
     },
-    light7: {
+    gLight7: {
+      capabilities: ['Alexa.PowerController.powerState', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
+      displayCategories: ['LIGHT'],
+      friendlyName: 'Light Group 7'
+    },
+    light8: {
       capabilities: [
         'Alexa.PowerController.powerState',
         'Alexa.BrightnessController.brightness',
@@ -349,9 +369,9 @@ module.exports = {
         'Alexa'
       ],
       displayCategories: ['LIGHT'],
-      friendlyName: 'Dimmer Light 7'
+      friendlyName: 'Dimmer Light 8'
     },
-    light8: {
+    light9: {
       capabilities: [
         'Alexa.PowerController.powerState',
         'Alexa.BrightnessController.brightness',
@@ -360,12 +380,7 @@ module.exports = {
         'Alexa'
       ],
       displayCategories: ['LIGHT'],
-      friendlyName: 'Color Light 8'
-    },
-    gLight9: {
-      capabilities: ['Alexa.PowerController.powerState', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
-      displayCategories: ['LIGHT'],
-      friendlyName: 'Light Group 9'
+      friendlyName: 'Color Light 9'
     },
     light10: {
       capabilities: ['Alexa.PowerController.powerState', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
