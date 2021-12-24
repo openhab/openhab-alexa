@@ -31,14 +31,6 @@ class Connectivity extends AlexaProperty {
   static UNREACHABLE = 'UNREACHABLE';
 
   /**
-   * Returns if is valid
-   * @return {Boolean}
-   */
-  get isValid() {
-    return !this.item;
-  }
-
-  /**
    * Returns alexa state
    * @param  {Array} items
    * @return {Object}
