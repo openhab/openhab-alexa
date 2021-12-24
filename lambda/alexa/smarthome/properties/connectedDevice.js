@@ -12,6 +12,7 @@
  */
 
 const { isMACAddress } = require('@root/utils');
+const { ItemType } = require('@openhab/constants');
 const { Capability } = require('../constants');
 const AlexaDevice = require('../device');
 const { Parameter, ParameterType } = require('../metadata');
@@ -22,6 +23,14 @@ const AlexaProperty = require('./property');
  * @extends AlexaProperty
  */
 class ConnectedDevice extends AlexaProperty {
+  /**
+   * Returns supported item types
+   * @return {Array}
+   */
+  get supportedItemTypes() {
+    return [ItemType.GROUP];
+  }
+
   /**
    * Returns supported parameters and their type
    * @return {Object}

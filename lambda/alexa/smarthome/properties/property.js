@@ -150,7 +150,7 @@ class AlexaProperty {
    * @return {Boolean}
    */
   get hasSupportedItemType() {
-    return !this.supportedItemTypes.length || this.supportedItemTypes.includes(this.item.type);
+    return !this.item || this.supportedItemTypes.includes(this.item.type);
   }
 
   /**
