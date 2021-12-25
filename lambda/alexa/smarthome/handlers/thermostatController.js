@@ -86,6 +86,12 @@ class ThermostatController extends AlexaHandler {
    */
   static async setTargetTemperature(directive, openhab) {
     const capability = directive.endpoint.getCapability({ interface: directive.namespace });
+
+    // Throw invalid value error if no thermostat capability defined
+    if (typeof capability === 'undefined') {
+      throw new InvalidValueError('The thermostat has no capability defined.');
+    }
+
     const properties = capability.getPropertyMap();
     const thermostatHold = properties[Property.THERMOSTAT_HOLD];
     const thermostatMode = properties[Property.THERMOSTAT_MODE];
@@ -204,6 +210,12 @@ class ThermostatController extends AlexaHandler {
    */
   static async adjustTargetTemperature(directive, openhab) {
     const capability = directive.endpoint.getCapability({ interface: directive.namespace });
+
+    // Throw invalid value error if no thermostat capability defined
+    if (typeof capability === 'undefined') {
+      throw new InvalidValueError('The thermostat has no capability defined.');
+    }
+
     const properties = capability.getPropertyMap();
     const thermostatHold = properties[Property.THERMOSTAT_HOLD];
     const thermostatMode = properties[Property.THERMOSTAT_MODE];
