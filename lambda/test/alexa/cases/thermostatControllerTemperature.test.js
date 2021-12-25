@@ -963,7 +963,45 @@ module.exports = [
     }
   },
   {
-    description: 'set target temperature invalid value error',
+    description: 'set target temperature no capability invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.ThermostatController',
+        name: 'SetTargetTemperature'
+      },
+      endpoint: {
+        endpointId: 'gThermostat',
+        cookie: {
+          // workaround bug introduced by previous version
+          propertyMap: JSON.stringify({
+            ThermostatController: {}
+          })
+        }
+      },
+      payload: {
+        targetSetpoint: {
+          value: 70,
+          scale: 'FAHRENHEIT'
+        }
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'The thermostat has no capability defined.'
+          }
+        }
+      }
+    }
+  },
+  {
+    description: 'set target temperature no setpoints invalid value error',
     directive: {
       header: {
         namespace: 'Alexa.ThermostatController',
@@ -1685,6 +1723,44 @@ module.exports = [
           payload: {
             type: 'THERMOSTAT_IS_OFF',
             message: 'The thermostat is off.'
+          }
+        }
+      }
+    }
+  },
+  {
+    description: 'adjust target temperature no capability invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.ThermostatController',
+        name: 'AdjustTargetTemperature'
+      },
+      endpoint: {
+        endpointId: 'gThermostat',
+        cookie: {
+          // workaround bug introduced by previous version
+          propertyMap: JSON.stringify({
+            ThermostatController: {}
+          })
+        }
+      },
+      payload: {
+        targetSetpointDelta: {
+          value: -2.0,
+          scale: 'FAHRENHEIT'
+        }
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'The thermostat has no capability defined.'
           }
         }
       }
