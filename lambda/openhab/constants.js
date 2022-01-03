@@ -123,8 +123,8 @@ const SymbolUnit = Object.freeze({
   PINT: 'pt',
   QUART: 'qt',
   LITER: 'l',
-  CUBIC_FOOT: 'ft3',
-  CUBIC_METER: 'm3'
+  CUBIC_FOOT: 'ft³',
+  CUBIC_METER: 'm³'
 });
 
 /**
