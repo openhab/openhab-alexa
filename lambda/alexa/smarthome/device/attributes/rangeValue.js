@@ -37,7 +37,7 @@ class RangeValue extends DeviceAttribute {
    * @return {Array}
    */
   static getCapabilities(item) {
-    const itemType = item.groupType || item.type;
+    const [itemType, dimension] = (item.groupType || item.type).split(':', 2);
 
     switch (itemType) {
       // Dimmer range with command and action controls
@@ -47,21 +47,17 @@ class RangeValue extends DeviceAttribute {
           { name: Capability.MODE_CONTROLLER, property: Property.MODE },
           { name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_ACTION }
         ];
-      // Number range with switch and action controls
+      // Number range with switch and action controls if dimension not defined
       case ItemType.NUMBER:
         return [
           { name: Capability.RANGE_CONTROLLER, property: Property.RANGE_VALUE },
-          { name: Capability.POWER_CONTROLLER, property: Property.POWER_STATE },
-          { name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_ACTION }
+          ...(!dimension
+            ? [
+                { name: Capability.POWER_CONTROLLER, property: Property.POWER_STATE },
+                { name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_ACTION }
+              ]
+            : [])
         ];
-      // Number with dimension range control
-      case ItemType.NUMBER_ANGLE:
-      case ItemType.NUMBER_DIMENSIONLESS:
-      case ItemType.NUMBER_LENGTH:
-      case ItemType.NUMBER_MASS:
-      case ItemType.NUMBER_TEMPERATURE:
-      case ItemType.NUMBER_VOLUME:
-        return [{ name: Capability.RANGE_CONTROLLER, property: Property.RANGE_VALUE }];
       // Rollershutter range with command and action controls
       case ItemType.ROLLERSHUTTER:
         return [
