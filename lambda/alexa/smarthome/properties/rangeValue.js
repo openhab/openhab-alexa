@@ -27,17 +27,7 @@ class RangeValue extends Generic {
    * @return {Array}
    */
   get supportedItemTypes() {
-    return [
-      ItemType.DIMMER,
-      ItemType.NUMBER,
-      ItemType.NUMBER_ANGLE,
-      ItemType.NUMBER_DIMENSIONLESS,
-      ItemType.NUMBER_LENGTH,
-      ItemType.NUMBER_MASS,
-      ItemType.NUMBER_TEMPERATURE,
-      ItemType.NUMBER_VOLUME,
-      ItemType.ROLLERSHUTTER
-    ];
+    return [ItemType.DIMMER, ItemType.NUMBER, ItemType.ROLLERSHUTTER];
   }
 
   /**
@@ -52,6 +42,14 @@ class RangeValue extends Generic {
       [Parameter.UNIT_OF_MEASURE]: ParameterType.STRING,
       [Parameter.INVERTED]: ParameterType.BOOLEAN
     };
+  }
+
+  /**
+   * Returns if has supported item type
+   * @return {Boolean}
+   */
+  get hasSupportedItemType() {
+    return this.supportedItemTypes.includes(this.item.type.split(':')[0]);
   }
 
   /**
