@@ -308,7 +308,7 @@ class ThermostatController extends AlexaHandler {
 
     // Throw thermostat mode unsupported error if no command defined
     if (typeof command === 'undefined') {
-      throw new ThermostatModeUnsupportedError(`${property.item.name} doesn't support thermostat mode [${mode}].`);
+      throw new ThermostatModeUnsupportedError(`The thermostat doesn't support ${mode} mode.`);
     }
 
     await openhab.sendCommand(property.item.name, command);

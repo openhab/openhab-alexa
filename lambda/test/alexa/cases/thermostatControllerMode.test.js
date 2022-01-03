@@ -232,7 +232,7 @@ module.exports = [
           },
           payload: {
             type: 'UNSUPPORTED_THERMOSTAT_MODE',
-            message: "thermostatMode doesn't support thermostat mode [ECO]."
+            message: "The thermostat doesn't support ECO mode."
           }
         }
       }
