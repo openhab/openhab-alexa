@@ -40,6 +40,20 @@ module.exports = {
     },
     {
       type: 'String',
+      name: 'channelKey1',
+      groupNames: ['gTelevision1'],
+      metadata: {
+        alexa: {
+          value: 'ChannelKey',
+          config: {
+            CHANNEL_UP: 'CHUP',
+            CHANNEL_DOWN: 'CHDOWN'
+          }
+        }
+      }
+    },
+    {
+      type: 'String',
       name: 'input1',
       groupNames: ['gTelevision1'],
       metadata: {
@@ -52,7 +66,7 @@ module.exports = {
       }
     },
     {
-      type: 'Number',
+      type: 'String',
       name: 'channel2',
       label: 'Television Channel 2',
       metadata: {
@@ -62,10 +76,9 @@ module.exports = {
       },
       stateDescription: {
         options: [
-          { value: '12', label: 'FOO' },
-          { value: '34', label: 'BAR' },
-          { value: '56', label: 'BAZ' },
-          { value: 'invalid', label: 'QUX' }
+          { value: 'foo', label: 'FOO' },
+          { value: 'bar', label: 'BAR' },
+          { value: 'baz', label: 'BAZ' }
         ]
       }
     },
@@ -73,6 +86,33 @@ module.exports = {
       type: 'String',
       name: 'channel3',
       label: 'Television Channel 3',
+      metadata: {
+        alexa: {
+          value: 'Channel',
+          config: {
+            channelMappings: 'FOO,BAR,BAZ'
+          }
+        }
+      }
+    },
+    {
+      type: 'String',
+      name: 'channel4',
+      label: 'Television Channel 4',
+      metadata: {
+        alexa: {
+          value: 'ChannelKey',
+          config: {
+            CHANNEL_UP: 'CHUP',
+            CHANNEL_DOWN: 'CHDOWN'
+          }
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'channel5',
+      label: 'Television Channel 5',
       metadata: {
         alexa: {
           value: 'Channel'
@@ -195,6 +235,15 @@ module.exports = {
           item: { name: 'channel1', type: 'Number' }
         },
         {
+          name: 'ChannelController',
+          property: 'channelKey',
+          parameters: {
+            CHANNEL_UP: 'CHUP',
+            CHANNEL_DOWN: 'CHDOWN'
+          },
+          item: { name: 'channelKey1', type: 'String' }
+        },
+        {
           name: 'ModeController',
           instance: 'Input',
           property: 'mode',
@@ -215,16 +264,47 @@ module.exports = {
           name: 'ChannelController',
           property: 'channel',
           parameters: {
-            channelMappings: { 12: 'FOO', 34: 'BAR', 56: 'BAZ' }
+            channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' }
           },
-          item: { name: 'channel2', type: 'Number' }
+          item: { name: 'channel2', type: 'String' }
         }
       ]
     },
     channel3: {
       capabilities: ['Alexa.ChannelController.channel', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
       displayCategories: ['TV'],
-      friendlyName: 'Television Channel 3'
+      friendlyName: 'Television Channel 3',
+      cookie: [
+        {
+          name: 'ChannelController',
+          property: 'channel',
+          parameters: {
+            channelMappings: { FOO: 'FOO', BAR: 'BAR', BAZ: 'BAZ' }
+          },
+          item: { name: 'channel3', type: 'String' }
+        }
+      ]
+    },
+    channel4: {
+      capabilities: ['Alexa.ChannelController', 'Alexa'],
+      displayCategories: ['TV'],
+      friendlyName: 'Television Channel 4',
+      cookie: [
+        {
+          name: 'ChannelController',
+          property: 'channelKey',
+          parameters: {
+            CHANNEL_UP: 'CHUP',
+            CHANNEL_DOWN: 'CHDOWN'
+          },
+          item: { name: 'channel4', type: 'String' }
+        }
+      ]
+    },
+    channel5: {
+      capabilities: ['Alexa.ChannelController.channel', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
+      displayCategories: ['TV'],
+      friendlyName: 'Television Channel 5'
     },
     input2: {
       capabilities: ['Alexa.ModeController:Input.mode', 'Alexa.EndpointHealth.connectivity', 'Alexa'],

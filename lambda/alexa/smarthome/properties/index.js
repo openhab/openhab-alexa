@@ -23,6 +23,7 @@ module.exports = {
   Brightness: require('./brightness'),
   CameraStream: require('./cameraStream'),
   Channel: require('./channel'),
+  ChannelKey: require('./channelKey'),
   Color: require('./color'),
   ColorTemperature: require('./colorTemperature'),
   ConnectedDevice: require('./connectedDevice'),

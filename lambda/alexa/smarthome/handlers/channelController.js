@@ -11,8 +11,11 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+const { clamp } = require('@root/utils');
+const { ItemType } = require('@openhab/constants');
 const { Interface, Property } = require('../constants');
 const { EndpointUnreachableError, InvalidValueError, ValueOutOfRangeError } = require('../errors');
+const { ChannelKey } = require('../properties');
 const AlexaHandler = require('./handler');
 
 /**
@@ -59,27 +62,50 @@ class ChannelController extends AlexaHandler {
    * @return {Promise}
    */
   static async changeChannel(directive, openhab) {
-    const { item, channelMappings, range } = directive.endpoint.getCapabilityProperty({
+    const property = directive.endpoint.getCapabilityProperty({
       interface: directive.namespace,
       property: Property.CHANNEL
     });
-    // Determine channel number using channel name if provided, otherwise using provided channel number
+
+    // Throw invalid value error if no channel property defined
+    if (typeof property === 'undefined') {
+      throw new InvalidValueError('No channel property defined.');
+    }
+
+    const { item, channelMappings, range } = property;
     const channelName = directive.payload.channelMetadata.name;
-    const channelNumber = channelName
-      ? Object.keys(channelMappings).find((num) => channelMappings[num].toUpperCase() === channelName.toUpperCase())
-      : directive.payload.channel.number;
+    const channelNumber = directive.payload.channel.number;
 
-    // Throw invalid value error if channel number not valid
-    if (isNaN(channelNumber)) {
-      throw new InvalidValueError(`The channel cannot be changed to ${channelNumber || channelName}.`);
+    // Determine command as follow:
+    //  1) using directive payload channel metadata name if defined
+    //  2) using directive payload channel number if number item type
+    //  3) undefined
+    const command = channelName
+      ? Object.keys(channelMappings).find(
+          (channel) => channelMappings[channel].toUpperCase() === channelName.toUpperCase()
+        )
+      : item.type === ItemType.NUMBER
+      ? channelNumber
+      : undefined;
+
+    // Throw invalid value error if command not defined
+    if (typeof command === 'undefined') {
+      throw new InvalidValueError(`The channel cannot be changed to ${channelName || channelNumber}.`);
     }
 
-    // Throw value out of range error if channel number out of range
-    if (channelNumber < range[0] || channelNumber > range[1]) {
-      throw new ValueOutOfRangeError(`The channel cannot be changed to ${channelNumber}.`, { validRange: range });
+    if (item.type === ItemType.NUMBER) {
+      // Throw invalid value error if command not a number
+      if (isNaN(command)) {
+        throw new InvalidValueError(`The channel cannot be changed to ${command}.`);
+      }
+
+      // Throw value out of range error if command out of range
+      if (command < range[0] || command > range[1]) {
+        throw new ValueOutOfRangeError(`The channel cannot be changed to ${command}.`, { validRange: range });
+      }
     }
 
-    await openhab.sendCommand(item.name, channelNumber);
+    await openhab.sendCommand(item.name, command);
 
     return directive.response();
   }
@@ -91,33 +117,53 @@ class ChannelController extends AlexaHandler {
    * @return {Promise}
    */
   static async adjustChannel(directive, openhab) {
-    const { item, range, isRetrievable } = directive.endpoint.getCapabilityProperty({
-      interface: directive.namespace,
-      property: Property.CHANNEL
-    });
+    const properties = directive.endpoint.getCapabilityPropertyMap({ interface: directive.namespace });
+    const channel = properties[Property.CHANNEL];
+    const channelKey = properties[Property.CHANNEL_KEY];
+    const channelCount = directive.payload.channelCount;
+    let item, command;
 
-    // Throw invalid value error if property not retrievable
-    if (!isRetrievable) {
-      throw new InvalidValueError(`Cannot retrieve state for item ${item.name}.`);
+    if (channelKey) {
+      // Define item to send command to
+      item = channelKey.item;
+      // Determine command sending channel up/down key based on directive payload channel count value
+      command = channelKey.getCommand(channelCount > 0 ? ChannelKey.UP : ChannelKey.DOWN);
+    } else {
+      const { channelMappings, range, isRetrievable } = channel;
+      // Define item to send command to
+      item = channel.item;
+
+      // Throw invalid value error if property not retrievable
+      if (!isRetrievable) {
+        throw new InvalidValueError(`Cannot retrieve state for item ${item.name}.`);
+      }
+
+      // Get item current state
+      const state = await openhab.getItemState(item.name);
+
+      if (item.type === ItemType.NUMBER) {
+        // Throw endpoint unreachable error if state not a number
+        if (isNaN(state)) {
+          throw new EndpointUnreachableError(`Could not get numeric state for item ${item.name}.`);
+        }
+
+        // Determine command adding directive payload channel count value to current state
+        command = clamp(parseInt(state) + channelCount, range[0], range[1]);
+      } else {
+        const channels = Object.keys(channelMappings);
+        const index = channels.indexOf(state);
+
+        // Throw invalid value error if current state not defined in channel mappings
+        if (index === -1) {
+          throw new InvalidValueError(`Current channel ${state} is not defined in channel mappings.`);
+        }
+
+        // Determine command adding directive payload channel count value to current channel mappings index
+        command = channels[clamp(index + channelCount, 0, channels.length - 1)];
+      }
     }
 
-    // Get item current state
-    const state = await openhab.getItemState(item.name);
-
-    // Throw endpoint unreachable error if state not a number
-    if (isNaN(state)) {
-      throw new EndpointUnreachableError(`Could not get numeric state for item ${item.name}.`);
-    }
-
-    // Determine adjusted channel number adding directive payload channel count value to current state
-    const channelNumber = parseInt(state) + directive.payload.channelCount;
-
-    // Throw value out of range error if adjusted channel number out of range
-    if (channelNumber < range[0] || channelNumber > range[1]) {
-      throw new ValueOutOfRangeError(`The channel cannot be adjusted to ${channelNumber}.`, { validRange: range });
-    }
-
-    await openhab.sendCommand(item.name, channelNumber);
+    await openhab.sendCommand(item.name, command);
 
     return directive.response();
   }

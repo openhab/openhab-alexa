@@ -72,7 +72,7 @@ class PowerState extends AlexaProperty {
    * @return {Boolean}
    */
   get isValid() {
-    return !this.requiresValueMap || this.supportedValues.every((value) => typeof this.valueMap[value] !== 'undefined');
+    return !this.requiresValueMap || this.hasSupportedValuesMapped;
   }
 
   /**
