@@ -56,14 +56,34 @@ class Channel extends AlexaProperty {
   }
 
   /**
+   * Returns if is valid
+   * @return {Boolean}
+   */
+  get isValid() {
+    return this.item.type === ItemType.NUMBER || Object.keys(this.channelMappings).length > 0;
+  }
+
+  /**
    * Returns alexa state
    * @param  {String} value
    * @return {Object}
    */
   getState(value) {
-    // Return formatted state if value defined
-    if (typeof value !== 'undefined') {
-      return { number: value.toString() };
+    const channel = {};
+
+    // Set channel number if numerical value
+    if (!isNaN(value)) {
+      channel.number = value.toString();
+    }
+
+    // Set channel call sign if has a channel mapping
+    if (this.channelMappings[value]) {
+      channel.callSign = this.channelMappings[value];
+    }
+
+    // Return formatted state if channel object not empty
+    if (Object.keys(channel).length > 0) {
+      return channel;
     }
   }
 
@@ -89,8 +109,8 @@ class Channel extends AlexaProperty {
       : {};
     // Update channel mappings parameter removing invalid mappings if defined
     parameters[Parameter.CHANNEL_MAPPINGS] = Object.entries(channels)
-      .filter(([number]) => !isNaN(number))
-      .reduce((channels, [number, name]) => ({ ...channels, [number]: name }), undefined);
+      .filter(([channel]) => this.item.type !== ItemType.NUMBER || !isNaN(channel))
+      .reduce((channels, [channel, label]) => ({ ...channels, [channel]: label || channel }), undefined);
 
     const range = parameters[Parameter.RANGE] || [];
     // Update range parameter if valid (min < max), otherwise set to undefined

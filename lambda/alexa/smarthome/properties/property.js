@@ -154,6 +154,14 @@ class AlexaProperty {
   }
 
   /**
+   * Returns if has supported values mapped
+   * @return {Boolean}
+   */
+  get hasSupportedValuesMapped() {
+    return this.supportedValues.every((value) => typeof this.valueMap[value] !== 'undefined');
+  }
+
+  /**
    * Returns default value map
    * @return {Object}
    */
