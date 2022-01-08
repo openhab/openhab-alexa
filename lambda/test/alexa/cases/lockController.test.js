@@ -52,7 +52,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'doorLock', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'doorLock', value: 'ON' }]
+      }
     }
   },
   {
@@ -95,7 +97,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'doorLock', value: 'OFF' }]
+      openhab: {
+        commands: [{ name: 'doorLock', value: 'OFF' }]
+      }
     }
   },
   {
@@ -138,7 +142,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'doorLock', value: 'OFF' }]
+      openhab: {
+        commands: [{ name: 'doorLock', value: 'OFF' }]
+      }
     }
   },
   {
@@ -181,7 +187,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'doorLock', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'doorLock', value: 'ON' }]
+      }
     }
   },
   {
@@ -231,7 +239,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetDoorLock', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'targetDoorLock', value: 'ON' }]
+      }
     }
   },
   {
@@ -281,7 +291,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetDoorLock', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'targetDoorLock', value: 'ON' }]
+      }
     }
   },
   {
@@ -331,7 +343,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetDoorLock', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'targetDoorLock', value: 'ON' }]
+      }
     }
   },
   {
@@ -381,7 +395,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetDoorLock', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'targetDoorLock', value: 'ON' }]
+      }
     }
   }
 ];

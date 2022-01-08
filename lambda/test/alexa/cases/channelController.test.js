@@ -60,7 +60,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'channel', value: '1234' }]
+      openhab: {
+        commands: [{ name: 'channel', value: '1234' }]
+      }
     }
   },
   {
@@ -200,7 +202,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'channel', value: '56' }]
+      openhab: {
+        commands: [{ name: 'channel', value: '56' }]
+      }
     }
   },
   {
@@ -251,7 +255,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'channel', value: 'baz' }]
+      openhab: {
+        commands: [{ name: 'channel', value: 'baz' }]
+      }
     }
   },
   {
@@ -428,7 +434,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'channel', value: 42 }]
+      openhab: {
+        commands: [{ name: 'channel', value: 42 }]
+      }
     }
   },
   {
@@ -479,7 +487,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'channel', value: 'baz' }]
+      openhab: {
+        commands: [{ name: 'channel', value: 'baz' }]
+      }
     }
   },
   {
@@ -516,7 +526,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'channelKey', value: 'CHUP' }]
+      openhab: {
+        commands: [{ name: 'channelKey', value: 'CHUP' }]
+      }
     }
   },
   {
@@ -553,7 +565,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'channelKey', value: 'CHDOWN' }]
+      openhab: {
+        commands: [{ name: 'channelKey', value: 'CHDOWN' }]
+      }
     }
   },
   {

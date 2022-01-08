@@ -52,7 +52,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'light1', value: 'ON' }]
+      }
     }
   },
   {
@@ -95,7 +97,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'light1', value: 'ON' }]
+      }
     }
   },
   {
@@ -138,7 +142,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'device1', value: '10' }]
+      openhab: {
+        commands: [{ name: 'device1', value: '10' }]
+      }
     }
   },
   {
@@ -180,7 +186,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'light1', value: 'ON' }]
+      }
     }
   },
   {
@@ -223,7 +231,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: 'OFF' }]
+      openhab: {
+        commands: [{ name: 'light1', value: 'OFF' }]
+      }
     }
   },
   {
@@ -266,7 +276,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'device1', value: 'off' }]
+      openhab: {
+        commands: [{ name: 'device1', value: 'off' }]
+      }
     }
   },
   {

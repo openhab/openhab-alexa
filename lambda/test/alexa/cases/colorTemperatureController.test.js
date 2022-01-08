@@ -55,7 +55,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 100 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 100 }]
+      }
     }
   },
   {
@@ -101,7 +103,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 0 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 0 }]
+      }
     }
   },
   {
@@ -147,7 +151,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 100 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 100 }]
+      }
     }
   },
   {
@@ -193,7 +199,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 0 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 0 }]
+      }
     }
   },
   {
@@ -239,7 +247,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 100 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 100 }]
+      }
     }
   },
   {
@@ -285,7 +295,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 0 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 0 }]
+      }
     }
   },
   {
@@ -331,7 +343,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 100 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 100 }]
+      }
     }
   },
   {
@@ -377,7 +391,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 0 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 0 }]
+      }
     }
   },
   {
@@ -423,7 +439,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 100 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 100 }]
+      }
     }
   },
   {
@@ -469,7 +487,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 0 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 0 }]
+      }
     }
   },
   {
@@ -515,7 +535,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 100 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 100 }]
+      }
     }
   },
   {
@@ -561,7 +583,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 0 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 0 }]
+      }
     }
   },
   {
@@ -607,7 +631,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 100 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 100 }]
+      }
     }
   },
   {
@@ -653,7 +679,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 2700 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 2700 }]
+      }
     }
   },
   {
@@ -704,7 +732,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 2700 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 2700 }]
+      }
     }
   },
   {
@@ -793,7 +823,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 'DECREASE' }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 'DECREASE' }]
+      }
     }
   },
   {
@@ -839,7 +871,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 40 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 40 }]
+      }
     }
   },
   {
@@ -885,7 +919,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 6400 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 6400 }]
+      }
     }
   },
   {
@@ -931,7 +967,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 'INCREASE' }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 'INCREASE' }]
+      }
     }
   },
   {
@@ -977,7 +1015,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 50 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 50 }]
+      }
     }
   },
   {
@@ -1023,7 +1063,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'colorTemperature', value: 5500 }]
+      openhab: {
+        commands: [{ name: 'colorTemperature', value: 5500 }]
+      }
     }
   },
   {

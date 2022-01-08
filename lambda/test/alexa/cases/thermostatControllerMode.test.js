@@ -57,7 +57,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'thermostatMode', value: '2' }]
+      openhab: {
+        commands: [{ name: 'thermostatMode', value: '2' }]
+      }
     }
   },
   {
@@ -105,7 +107,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'thermostatMode', value: 0 }]
+      openhab: {
+        commands: [{ name: 'thermostatMode', value: 0 }]
+      }
     }
   },
   {
@@ -153,7 +157,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'thermostatMode', value: 'HEAT_COOL' }]
+      openhab: {
+        commands: [{ name: 'thermostatMode', value: 'HEAT_COOL' }]
+      }
     }
   },
   {
@@ -288,7 +294,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'thermostatHold', value: 0 }]
+      openhab: {
+        commands: [{ name: 'thermostatHold', value: 0 }]
+      }
     }
   },
   {
@@ -341,7 +349,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'thermostatHold', value: 'schedule' }]
+      openhab: {
+        commands: [{ name: 'thermostatHold', value: 'schedule' }]
+      }
     }
   },
   {
@@ -409,7 +419,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'thermostatHold', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'thermostatHold', value: 'ON' }]
+      }
     }
   },
   {
@@ -452,7 +464,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'thermostatHold', value: 0 }]
+      openhab: {
+        commands: [{ name: 'thermostatHold', value: 0 }]
+      }
     }
   },
   {

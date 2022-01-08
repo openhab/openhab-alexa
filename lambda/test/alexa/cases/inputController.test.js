@@ -55,7 +55,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'tvSource', value: 'HDMI1' }]
+      openhab: {
+        commands: [{ name: 'tvSource', value: 'HDMI1' }]
+      }
     }
   },
   {

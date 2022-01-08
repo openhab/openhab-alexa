@@ -45,7 +45,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerPlayer', value: 'PLAY' }]
+      openhab: {
+        commands: [{ name: 'speakerPlayer', value: 'PLAY' }]
+      }
     }
   },
   {
@@ -87,7 +89,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerPlayerStop', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'speakerPlayerStop', value: 'ON' }]
+      }
     }
   },
   {
@@ -129,7 +133,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerPlayerStop', value: 'OFF' }]
+      openhab: {
+        commands: [{ name: 'speakerPlayerStop', value: 'OFF' }]
+      }
     }
   },
   {
@@ -165,7 +171,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'vacuumControl', value: 'RESUME' }]
+      openhab: {
+        commands: [{ name: 'vacuumControl', value: 'RESUME' }]
+      }
     }
   },
   {

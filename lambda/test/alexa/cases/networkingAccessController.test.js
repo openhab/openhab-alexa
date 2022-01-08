@@ -65,7 +65,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'networkAccess', value: 'OFF' }]
+      openhab: {
+        commands: [{ name: 'networkAccess', value: 'OFF' }]
+      }
     }
   },
   {
@@ -123,7 +125,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'networkAccess', value: 'OFF' }]
+      openhab: {
+        commands: [{ name: 'networkAccess', value: 'OFF' }]
+      }
     }
   },
   {
@@ -181,7 +185,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'networkAccess', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'networkAccess', value: 'ON' }]
+      }
     }
   }
 ];
