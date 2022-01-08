@@ -55,7 +55,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'device1', value: 42 }]
+      openhab: {
+        commands: [{ name: 'device1', value: 42 }]
+      }
     }
   },
   {
@@ -104,7 +106,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'device1', value: 45 }]
+      openhab: {
+        commands: [{ name: 'device1', value: 45 }]
+      }
     }
   },
   {

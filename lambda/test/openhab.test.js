@@ -407,4 +407,27 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
   });
+
+  describe('update item state', () => {
+    it('successful', async () => {
+      // set environment
+      nock(baseURL).put('/rest/items/foo/state', '42').reply(202);
+      // run test
+      await openhab.postUpdate('foo', 42);
+      expect(openhab.getLastUpdatedState('foo')).to.equals('42');
+      expect(nock.isDone()).to.be.true;
+    });
+
+    it('item state null error', async () => {
+      // set environment
+      nock(baseURL).put('/rest/items/foo/state', 'invalid').reply(400);
+      // run test
+      try {
+        await openhab.postUpdate('foo', 'invalid');
+      } catch (error) {
+        expect(error).to.include({ name: 'StatusCodeError', statusCode: 400 });
+      }
+      expect(nock.isDone()).to.be.true;
+    });
+  });
 });

@@ -66,7 +66,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: '350.5,71.38,65.24' }]
+      openhab: {
+        commands: [{ name: 'light1', value: '350.5,71.38,65.24' }]
+      }
     }
   },
   {
@@ -123,7 +125,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: '350.5,71.38,100' }]
+      openhab: {
+        commands: [{ name: 'light1', value: '350.5,71.38,100' }]
+      }
     }
   },
   {
@@ -177,7 +181,76 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: '350.5,71.38,65.24' }]
+      openhab: {
+        commands: [{ name: 'light1', value: '350.5,71.38,65.24' }]
+      }
+    }
+  },
+  {
+    description: 'set color reset temperature',
+    directive: {
+      header: {
+        namespace: 'Alexa.ColorController',
+        name: 'SetColor'
+      },
+      endpoint: {
+        endpointId: 'light1',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ColorController',
+              property: 'color',
+              parameters: {},
+              item: { name: 'color', type: 'Color' }
+            },
+            {
+              name: 'ColorTemperatureController',
+              property: 'colorTemperatureInKelvin',
+              parameters: { requiresSetColorReset: true },
+              item: { name: 'colorTemperature', type: 'Number' }
+            }
+          ])
+        }
+      },
+      payload: {
+        color: {
+          hue: 350.5,
+          saturation: 0.7138,
+          brightness: 0.6524
+        }
+      }
+    },
+    items: [
+      { name: 'color', state: 'NULL', type: 'Color' },
+      { name: 'color', state: '350.5,71.38,65.24', type: 'Color' },
+      { name: 'colorTemperature', state: 'NULL', type: 'Number' }
+    ],
+    expected: {
+      alexa: {
+        context: {
+          properties: [
+            {
+              namespace: 'Alexa.ColorController',
+              name: 'color',
+              value: {
+                hue: 350.5,
+                saturation: 0.7138,
+                brightness: 0.6524
+              }
+            }
+          ]
+        },
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'Response'
+          }
+        }
+      },
+      openhab: {
+        commands: [{ name: 'color', value: '350.5,71.38,65.24' }],
+        updates: [{ name: 'colorTemperature', value: 'NULL' }]
+      }
     }
   }
 ];

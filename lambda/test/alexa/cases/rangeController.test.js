@@ -61,7 +61,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'BasementFan', value: 50 }]
+      openhab: {
+        commands: [{ name: 'BasementFan', value: 50 }]
+      }
     }
   },
   {
@@ -113,7 +115,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'BasementFan', value: 7 }]
+      openhab: {
+        commands: [{ name: 'BasementFan', value: 7 }]
+      }
     }
   },
   {
@@ -165,7 +169,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'WindowBlind', value: 60 }]
+      openhab: {
+        commands: [{ name: 'WindowBlind', value: 60 }]
+      }
     }
   },
   {
@@ -221,7 +227,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'BasementFan', value: 4 }]
+      openhab: {
+        commands: [{ name: 'BasementFan', value: 4 }]
+      }
     }
   },
   {
@@ -278,7 +286,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'BasementFan', value: 8 }]
+      openhab: {
+        commands: [{ name: 'BasementFan', value: 8 }]
+      }
     }
   },
   {

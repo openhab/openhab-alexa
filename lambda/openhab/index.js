@@ -29,7 +29,7 @@ class OpenHAB {
    * @param {Number} timeout
    */
   constructor(config, token, timeout) {
-    this._cache = { commands: {} };
+    this._cache = { commands: {}, states: {} };
     this._request = OpenHAB.getRequestDefaults(config, token, timeout);
   }
 
@@ -40,6 +40,15 @@ class OpenHAB {
    */
   getLastPostedCommand(itemName) {
     return this._cache.commands[itemName];
+  }
+
+  /**
+   * Returns the last updated state for a given item name
+   * @param  {String} itemName
+   * @return {String}
+   */
+  getLastUpdatedState(itemName) {
+    return this._cache.states[itemName];
   }
 
   /**
@@ -114,6 +123,18 @@ class OpenHAB {
     // Cache command
     this._cache.commands[itemName] = command.toString();
     return this.postItemCommand(itemName, command);
+  }
+
+  /**
+   * Updates the state of an item and cache its value
+   * @param  {String}  itemName
+   * @param  {String}  state
+   * @return {Promise}
+   */
+  postUpdate(itemName, state) {
+    // Cache state
+    this._cache.states[itemName] = state.toString();
+    return this.putItemState(itemName, state);
   }
 
   /**
@@ -196,6 +217,24 @@ class OpenHAB {
     const options = {
       method: 'POST',
       uri: `/rest/items/${itemName}`,
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: value.toString()
+    };
+    return this._request(options);
+  }
+
+  /**
+   * Updates the state of an item
+   * @param  {String}  itemName
+   * @param  {String}  value
+   * @return {Promise}
+   */
+  putItemState(itemName, value) {
+    const options = {
+      method: 'PUT',
+      uri: `/rest/items/${itemName}/state`,
       headers: {
         'Content-Type': 'text/plain'
       },

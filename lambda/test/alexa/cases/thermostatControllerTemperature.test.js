@@ -101,11 +101,13 @@ module.exports = [
           }
         }
       },
-      openhab: [
-        { name: 'targetTemperature', value: 73 },
-        { name: 'highTargetTemperature', value: 78 },
-        { name: 'lowTargetTemperature', value: 68 }
-      ]
+      openhab: {
+        commands: [
+          { name: 'targetTemperature', value: 73 },
+          { name: 'highTargetTemperature', value: 78 },
+          { name: 'lowTargetTemperature', value: 68 }
+        ]
+      }
     }
   },
   {
@@ -174,10 +176,12 @@ module.exports = [
           }
         }
       },
-      openhab: [
-        { name: 'highTargetTemperature', value: 24 },
-        { name: 'lowTargetTemperature', value: 22 }
-      ]
+      openhab: {
+        commands: [
+          { name: 'highTargetTemperature', value: 24 },
+          { name: 'lowTargetTemperature', value: 22 }
+        ]
+      }
     }
   },
   {
@@ -246,10 +250,12 @@ module.exports = [
           }
         }
       },
-      openhab: [
-        { name: 'highTargetTemperature', value: 75 },
-        { name: 'lowTargetTemperature', value: 71 }
-      ]
+      openhab: {
+        commands: [
+          { name: 'highTargetTemperature', value: 75 },
+          { name: 'lowTargetTemperature', value: 71 }
+        ]
+      }
     }
   },
   {
@@ -318,10 +324,12 @@ module.exports = [
           }
         }
       },
-      openhab: [
-        { name: 'highTargetTemperature', value: 78 },
-        { name: 'lowTargetTemperature', value: 68 }
-      ]
+      openhab: {
+        commands: [
+          { name: 'highTargetTemperature', value: 78 },
+          { name: 'lowTargetTemperature', value: 68 }
+        ]
+      }
     }
   },
   {
@@ -423,10 +431,12 @@ module.exports = [
           }
         }
       },
-      openhab: [
-        { name: 'ecoHighTargetTemperature', value: 82 },
-        { name: 'ecoLowTargetTemperature', value: 64 }
-      ]
+      openhab: {
+        commands: [
+          { name: 'ecoHighTargetTemperature', value: 82 },
+          { name: 'ecoLowTargetTemperature', value: 64 }
+        ]
+      }
     }
   },
   {
@@ -500,7 +510,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'highTargetTemperature', value: 78 }]
+      openhab: {
+        commands: [{ name: 'highTargetTemperature', value: 78 }]
+      }
     }
   },
   {
@@ -574,7 +586,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'lowTargetTemperature', value: 70 }]
+      openhab: {
+        commands: [{ name: 'lowTargetTemperature', value: 70 }]
+      }
     }
   },
   {
@@ -647,10 +661,12 @@ module.exports = [
           }
         }
       },
-      openhab: [
-        { name: 'thermostatHold', value: 'OFF' },
-        { name: 'targetTemperature', value: 70 }
-      ]
+      openhab: {
+        commands: [
+          { name: 'thermostatHold', value: 'OFF' },
+          { name: 'targetTemperature', value: 70 }
+        ]
+      }
     }
   },
   {
@@ -731,7 +747,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetTemperature', value: 22.5 }]
+      openhab: {
+        commands: [{ name: 'targetTemperature', value: 22.5 }]
+      }
     }
   },
   {
@@ -812,7 +830,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetTemperature', value: 72.5 }]
+      openhab: {
+        commands: [{ name: 'targetTemperature', value: 72.5 }]
+      }
     }
   },
   {
@@ -1285,7 +1305,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetTemperature', value: 75 }]
+      openhab: {
+        commands: [{ name: 'targetTemperature', value: 75 }]
+      }
     }
   },
   {
@@ -1356,10 +1378,12 @@ module.exports = [
           }
         }
       },
-      openhab: [
-        { name: 'highTargetTemperature', value: 77 },
-        { name: 'lowTargetTemperature', value: 73 }
-      ]
+      openhab: {
+        commands: [
+          { name: 'highTargetTemperature', value: 77 },
+          { name: 'lowTargetTemperature', value: 73 }
+        ]
+      }
     }
   },
   {
@@ -1434,7 +1458,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'highTargetTemperature', value: 78 }]
+      openhab: {
+        commands: [{ name: 'highTargetTemperature', value: 78 }]
+      }
     }
   },
   {
@@ -1508,10 +1534,12 @@ module.exports = [
           }
         }
       },
-      openhab: [
-        { name: 'thermostatHold', value: 'hold' },
-        { name: 'targetTemperature', value: 78 }
-      ]
+      openhab: {
+        commands: [
+          { name: 'thermostatHold', value: 'hold' },
+          { name: 'targetTemperature', value: 78 }
+        ]
+      }
     }
   },
   {
@@ -1566,7 +1594,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetTemperature', value: 24 }]
+      openhab: {
+        commands: [{ name: 'targetTemperature', value: 24 }]
+      }
     }
   },
   {
@@ -1621,7 +1651,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetTemperature', value: 75.6 }]
+      openhab: {
+        commands: [{ name: 'targetTemperature', value: 75.6 }]
+      }
     }
   },
   {
@@ -1676,7 +1708,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'targetTemperature', value: 60 }]
+      openhab: {
+        commands: [{ name: 'targetTemperature', value: 60 }]
+      }
     }
   },
   {

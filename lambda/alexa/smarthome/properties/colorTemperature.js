@@ -37,7 +37,8 @@ class ColorTemperature extends AlexaProperty {
     return {
       [Parameter.BINDING]: ParameterType.STRING,
       [Parameter.INCREMENT]: ParameterType.INTEGER,
-      [Parameter.RANGE]: ParameterType.RANGE
+      [Parameter.RANGE]: ParameterType.RANGE,
+      [Parameter.REQUIRES_SET_COLOR_RESET]: ParameterType.BOOLEAN
     };
   }
 
@@ -105,6 +106,14 @@ class ColorTemperature extends AlexaProperty {
   }
 
   /**
+   * Returns if requires set color reset based on item type and parameter
+   * @return {Boolean}
+   */
+  get requiresSetColorReset() {
+    return this.item.type === ItemType.NUMBER && this.parameters[Parameter.REQUIRES_SET_COLOR_RESET] === true;
+  }
+
+  /**
    * Returns openhab command
    * @param  {String} value
    * @return {Number}
@@ -143,7 +152,7 @@ class ColorTemperature extends AlexaProperty {
   }
 
   /**
-   * Returns if is in color mode based on temperature and color saturation states
+   * Returns if is in color mode
    * @param  {String}  color
    * @param  {String}  temperature
    * @return {Boolean}
@@ -152,13 +161,13 @@ class ColorTemperature extends AlexaProperty {
     // Return false if color state not defined
     if (typeof color === 'undefined') return false;
 
-    // Extract saturation from color state
-    const saturation = color.split(',')[1];
+    // Return true if temperature state not defined
+    if (typeof temperature === 'undefined') return true;
 
     return this.item.type === ItemType.DIMMER
-      ? // based on temperature being defined or on color saturation depending on binding for dimmer
-        isNaN(temperature) || (saturation > 0 && this.hasSaturationColorMode)
-      : // based on temperature equal to 0 for number
+      ? // based on color saturation depending on binding for dimmer
+        color.split(',')[1] > 0 && this.hasSaturationColorMode
+      : // based on temperature state for number
         parseInt(temperature) === 0;
   }
 

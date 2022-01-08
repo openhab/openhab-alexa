@@ -55,7 +55,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerVolume', value: 50 }]
+      openhab: {
+        commands: [{ name: 'speakerVolume', value: 50 }]
+      }
     }
   },
   {
@@ -144,7 +146,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerVolume', value: 50 }]
+      openhab: {
+        commands: [{ name: 'speakerVolume', value: 50 }]
+      }
     }
   },
   {
@@ -194,7 +198,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerVolume', value: 40 }]
+      openhab: {
+        commands: [{ name: 'speakerVolume', value: 40 }]
+      }
     }
   },
   {
@@ -244,7 +250,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerVolume', value: 50 }]
+      openhab: {
+        commands: [{ name: 'speakerVolume', value: 50 }]
+      }
     }
   },
   {
@@ -294,7 +302,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerVolume', value: 45 }]
+      openhab: {
+        commands: [{ name: 'speakerVolume', value: 45 }]
+      }
     }
   },
   {
@@ -461,7 +471,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerMute', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'speakerMute', value: 'ON' }]
+      }
     }
   },
   {
@@ -507,7 +519,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'speakerMute', value: 'OFF' }]
+      openhab: {
+        commands: [{ name: 'speakerMute', value: 'OFF' }]
+      }
     }
   },
   {

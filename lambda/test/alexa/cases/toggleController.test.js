@@ -57,7 +57,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'FanOscillate', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'FanOscillate', value: 'ON' }]
+      }
     }
   },
   {
@@ -106,7 +108,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'FanOscillate', value: 'OFF' }]
+      openhab: {
+        commands: [{ name: 'FanOscillate', value: 'OFF' }]
+      }
     }
   },
   {
@@ -156,7 +160,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'FanLight', value: '2' }]
+      openhab: {
+        commands: [{ name: 'FanLight', value: '2' }]
+      }
     }
   },
   {
@@ -205,7 +211,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'FanOscillate', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'FanOscillate', value: 'ON' }]
+      }
     }
   },
   {
@@ -255,7 +263,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'FanLight', value: '0' }]
+      openhab: {
+        commands: [{ name: 'FanLight', value: '0' }]
+      }
     }
   },
   {

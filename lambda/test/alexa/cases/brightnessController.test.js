@@ -55,7 +55,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: 42 }]
+      openhab: {
+        commands: [{ name: 'light1', value: 42 }]
+      }
     }
   },
   {
@@ -101,7 +103,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: 42 }]
+      openhab: {
+        commands: [{ name: 'light1', value: 42 }]
+      }
     }
   },
   {
@@ -150,7 +154,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: 45 }]
+      openhab: {
+        commands: [{ name: 'light1', value: 45 }]
+      }
     }
   },
   {
@@ -199,7 +205,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'light1', value: 45 }]
+      openhab: {
+        commands: [{ name: 'light1', value: 45 }]
+      }
     }
   },
   {

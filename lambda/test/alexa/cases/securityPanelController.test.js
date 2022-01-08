@@ -82,7 +82,9 @@ module.exports = [
           payload: {}
         }
       },
-      openhab: [{ name: 'ArmMode', value: 'away' }]
+      openhab: {
+        commands: [{ name: 'ArmMode', value: 'away' }]
+      }
     }
   },
   {
@@ -144,7 +146,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'ArmMode', value: 'away' }]
+      openhab: {
+        commands: [{ name: 'ArmMode', value: 'away' }]
+      }
     }
   },
   {
@@ -200,7 +204,9 @@ module.exports = [
           payload: {}
         }
       },
-      openhab: [{ name: 'ArmMode', value: 1 }]
+      openhab: {
+        commands: [{ name: 'ArmMode', value: 1 }]
+      }
     }
   },
   {
@@ -603,7 +609,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'ArmMode', value: 'disarmed' }]
+      openhab: {
+        commands: [{ name: 'ArmMode', value: 'disarmed' }]
+      }
     }
   },
   {
@@ -649,7 +657,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'ArmMode', value: 'disarmed' }]
+      openhab: {
+        commands: [{ name: 'ArmMode', value: 'disarmed' }]
+      }
     }
   },
   {

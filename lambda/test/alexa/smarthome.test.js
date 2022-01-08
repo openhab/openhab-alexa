@@ -27,11 +27,12 @@ use(require('chai-subset'));
 use(require('./chai'));
 
 describe('Alexa Smart Home Tests', () => {
-  let commands;
+  let commands, updates;
 
   beforeEach(() => {
     // set stub environment
     commands = sinon.stub(OpenHAB.prototype, 'postItemCommand');
+    updates = sinon.stub(OpenHAB.prototype, 'putItemState');
   });
 
   afterEach(() => {
@@ -56,6 +57,7 @@ describe('Alexa Smart Home Tests', () => {
             // run test
             const response = await AlexaSmarthome.handleRequest({ directive });
             expect(commands.called).to.be.false;
+            expect(updates.called).to.be.false;
             expect(response)
               .to.be.a.validSchema.that.nested.includes({
                 'event.header.namespace': 'Alexa.Discovery',
@@ -68,7 +70,10 @@ describe('Alexa Smart Home Tests', () => {
           // Controller Test
           const { description, error, items = [] } = test;
           const directive = getDirective(test.directive);
-          const expected = { alexa: {}, openhab: [], ...test.expected };
+          const expected = {
+            alexa: { ...test.expected.alexa },
+            openhab: { commands: [], updates: [], ...test.expected.openhab }
+          };
 
           it(description, async () => {
             // set stub environment
@@ -82,8 +87,10 @@ describe('Alexa Smart Home Tests', () => {
             }
             // run test
             const response = await AlexaSmarthome.handleRequest({ directive });
-            expect(commands.callCount).to.equal(expected.openhab.length);
-            expect(commands.args.map(([name, value]) => ({ name, value }))).to.deep.equal(expected.openhab);
+            expect(commands.callCount).to.equal(expected.openhab.commands.length);
+            expect(commands.args.map(([name, value]) => ({ name, value }))).to.deep.equal(expected.openhab.commands);
+            expect(updates.callCount).to.equal(expected.openhab.updates.length);
+            expect(updates.args.map(([name, value]) => ({ name, value }))).to.deep.equal(expected.openhab.updates);
             expect(response).to.be.a.validSchema.that.containSubset(expected.alexa);
           });
         }

@@ -50,7 +50,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'scene1', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'scene1', value: 'ON' }]
+      }
     }
   },
   {
@@ -91,7 +93,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'scene1', value: 'OFF' }]
+      openhab: {
+        commands: [{ name: 'scene1', value: 'OFF' }]
+      }
     }
   }
 ];

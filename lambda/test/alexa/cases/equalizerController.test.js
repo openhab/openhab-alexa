@@ -99,7 +99,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'equalizerBass', value: -2 }]
+      openhab: {
+        commands: [{ name: 'equalizerBass', value: -2 }]
+      }
     }
   },
   {
@@ -166,7 +168,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'equalizerBass', value: -5 }]
+      openhab: {
+        commands: [{ name: 'equalizerBass', value: -5 }]
+      }
     }
   },
   {
@@ -221,7 +225,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'equalizerBass', value: -2 }]
+      openhab: {
+        commands: [{ name: 'equalizerBass', value: -2 }]
+      }
     }
   },
   {
@@ -276,7 +282,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'equalizerBass', value: 2 }]
+      openhab: {
+        commands: [{ name: 'equalizerBass', value: 2 }]
+      }
     }
   },
   {
@@ -331,7 +339,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'equalizerBass', value: 'INCREASE' }]
+      openhab: {
+        commands: [{ name: 'equalizerBass', value: 'INCREASE' }]
+      }
     }
   },
   {
@@ -386,7 +396,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'equalizerBass', value: 'DECREASE' }]
+      openhab: {
+        commands: [{ name: 'equalizerBass', value: 'DECREASE' }]
+      }
     }
   },
   {
@@ -519,7 +531,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'equalizerBass', value: 1 }]
+      openhab: {
+        commands: [{ name: 'equalizerBass', value: 1 }]
+      }
     }
   },
   {
@@ -565,7 +579,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'equalizerMode', value: 'movie' }]
+      openhab: {
+        commands: [{ name: 'equalizerMode', value: 'movie' }]
+      }
     }
   }
 ];

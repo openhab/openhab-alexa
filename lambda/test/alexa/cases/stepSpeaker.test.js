@@ -49,7 +49,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'stepSpeakerVolume', value: 10 }]
+      openhab: {
+        commands: [{ name: 'stepSpeakerVolume', value: 10 }]
+      }
     }
   },
   {
@@ -89,7 +91,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'stepSpeakerVolume', value: -10 }]
+      openhab: {
+        commands: [{ name: 'stepSpeakerVolume', value: -10 }]
+      }
     }
   },
   {
@@ -129,7 +133,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'stepSpeakerVolume', value: 5 }]
+      openhab: {
+        commands: [{ name: 'stepSpeakerVolume', value: 5 }]
+      }
     }
   },
   {
@@ -169,7 +175,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'stepSpeakerVolume', value: -5 }]
+      openhab: {
+        commands: [{ name: 'stepSpeakerVolume', value: -5 }]
+      }
     }
   },
   {
@@ -248,7 +256,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'stepSpeakerMute', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'stepSpeakerMute', value: 'ON' }]
+      }
     }
   }
 ];

@@ -65,7 +65,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'WashCycle', value: 'Normal' }]
+      openhab: {
+        commands: [{ name: 'WashCycle', value: 'Normal' }]
+      }
     }
   },
   {
@@ -121,7 +123,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'GarageDoor', value: 'ON' }]
+      openhab: {
+        commands: [{ name: 'GarageDoor', value: 'ON' }]
+      }
     }
   },
   {
@@ -236,7 +240,9 @@ module.exports = [
           }
         }
       },
-      openhab: [{ name: 'WashTemperature', value: '1' }]
+      openhab: {
+        commands: [{ name: 'WashTemperature', value: '1' }]
+      }
     }
   },
   {

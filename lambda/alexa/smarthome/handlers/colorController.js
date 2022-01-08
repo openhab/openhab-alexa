@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+const { ItemValue } = require('@openhab/constants');
 const { Interface, Property } = require('../constants');
 const AlexaHandler = require('./handler');
 
@@ -51,12 +52,17 @@ class ColorController extends AlexaHandler {
    * @return {Promise}
    */
   static async setColor(directive, openhab) {
-    const { item, isRetrievable } = directive.endpoint.getCapabilityProperty({
+    const color = directive.endpoint.getCapabilityProperty({
       interface: directive.namespace,
       property: Property.COLOR
     });
-    // Get item current state if retrievable
-    const state = isRetrievable ? await openhab.getItemState(item.name) : undefined;
+    const temperature = directive.endpoint.getCapabilityProperty({
+      interface: Interface.ALEXA_COLOR_TEMPERATURE_CONTROLLER,
+      property: Property.COLOR_TEMPERATURE
+    });
+
+    // Get color item current state if retrievable
+    const state = color.isRetrievable ? await openhab.getItemState(color.item.name) : undefined;
     // Maintain the current brightness level if available
     const hsb = [
       directive.payload.color.hue,
@@ -64,7 +70,12 @@ class ColorController extends AlexaHandler {
       (state && parseFloat(state.split(',')[2])) || directive.payload.color.brightness * 100
     ];
 
-    await openhab.sendCommand(item.name, hsb.join(','));
+    // Reset color temperature state if required
+    if (temperature && temperature.requiresSetColorReset) {
+      await openhab.postUpdate(temperature.item.name, ItemValue.NULL);
+    }
+
+    await openhab.sendCommand(color.item.name, hsb.join(','));
 
     return directive.response();
   }

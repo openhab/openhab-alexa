@@ -37,6 +37,7 @@ const Parameter = Object.freeze({
   PRIMARY_CONTROL: 'primaryControl',
   PROXY_BASE_URL: 'proxyBaseUrl',
   RANGE: 'range',
+  REQUIRES_SET_COLOR_RESET: 'requiresSetColorReset',
   REQUIRES_SETPOINT_HOLD: 'requiresSetpointHold',
   RESOLUTION: 'resolution',
   RETRIEVABLE: 'retrievable',
