@@ -2012,6 +2012,7 @@ Asset Identifier | Supported Friendly Names
 `@Setting.Reverse` | Reverse
 `@Setting.Speed` | Speed
 `@Setting.Spot` | Spot
+`@Setting.TargetTemperature` | Target Temperature
 `@Setting.Tilt` | Tilt
 `@Setting.ToggleState` | Toggle State
 `@Value.Decrease` | Decrease
