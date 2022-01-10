@@ -11,19 +11,50 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const MuteState = require('./muteState');
+const { ItemType } = require('@openhab/constants');
+const AlexaProperty = require('./property');
 
 /**
  * Defines mute step property class
- * @extends MuteState
+ * @extends AlexaProperty
  */
-class MuteStep extends MuteState {
+class MuteStep extends AlexaProperty {
+  /**
+   * Defines mute step
+   * @type {String}
+   */
+  static MUTE = 'MUTE';
+
+  /**
+   * Returns supported item types
+   * @return {Array}
+   */
+  get supportedItemTypes() {
+    return [ItemType.STRING];
+  }
+
+  /**
+   * Returns supported values
+   * @return {Array}
+   */
+  get supportedValues() {
+    return [MuteStep.MUTE];
+  }
+
   /**
    * Returns if is reportable
    * @return {Boolean}
    */
   get isReportable() {
     return false;
+  }
+
+  /**
+   * Returns if is valid
+   * @return {Boolean}
+   */
+  get isValid() {
+    return this.hasSupportedValuesMapped;
   }
 }
 

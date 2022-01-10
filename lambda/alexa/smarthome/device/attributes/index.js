@@ -49,6 +49,7 @@ module.exports = {
   Mode: require('./mode'),
   MotionDetectionState: require('./motionDetectionState'),
   MuteState: require('./muteState'),
+  MuteStep: require('./muteStep'),
   NetworkAccess: require('./networkAccess'),
   ObstacleAlert: require('./obstacleAlert'),
   OpenState: require('./openState'),
@@ -70,6 +71,7 @@ module.exports = {
   TroubleAlert: require('./troubleAlert'),
   VacuumMode: require('./vacuumMode'),
   VolumeLevel: require('./volumeLevel'),
+  VolumeStep: require('./volumeStep'),
   WaterAlarm: require('./waterAlarm'),
   ZonesAlert: require('./zonesAlert')
 };

@@ -429,7 +429,7 @@ module.exports = [
     }
   },
   {
-    description: 'set mute volume',
+    description: 'set mute',
     directive: {
       header: {
         namespace: 'Alexa.Speaker',
@@ -477,7 +477,7 @@ module.exports = [
     }
   },
   {
-    description: 'set mute volume inverted',
+    description: 'set mute inverted',
     directive: {
       header: {
         namespace: 'Alexa.Speaker',
@@ -525,7 +525,7 @@ module.exports = [
     }
   },
   {
-    description: 'set mute volume invalid value error',
+    description: 'set mute invalid value error',
     directive: {
       header: {
         namespace: 'Alexa.Speaker',

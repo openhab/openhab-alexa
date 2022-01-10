@@ -12,7 +12,6 @@
  */
 
 const { Capability, Property } = require('@alexa/smarthome/constants');
-const { Parameter, ParameterType } = require('@alexa/smarthome/metadata');
 const DeviceAttribute = require('./attribute');
 
 /**
@@ -33,19 +32,10 @@ class MuteState extends DeviceAttribute {
 
   /**
    * Returns capabilities
-   * @param  {Object} item
-   * @param  {Object} metadata
    * @return {Array}
    */
-  static getCapabilities(item, metadata) {
-    const isStepSpeaker = metadata.getConfigParameter(Parameter.STEP_SPEAKER, ParameterType.BOOLEAN);
-
-    return [
-      {
-        name: isStepSpeaker ? Capability.STEP_SPEAKER : Capability.SPEAKER,
-        property: Property.MUTED
-      }
-    ];
+  static getCapabilities() {
+    return [{ name: Capability.SPEAKER, property: Property.MUTED }];
   }
 }
 

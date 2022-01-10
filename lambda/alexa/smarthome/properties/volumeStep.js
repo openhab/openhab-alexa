@@ -12,19 +12,39 @@
  */
 
 const { ItemType } = require('@openhab/constants');
-const VolumeLevel = require('./volumeLevel');
+const AlexaProperty = require('./property');
 
 /**
- * Defines volume steps property class
- * @extends VolumeLevel
+ * Defines volume step property class
+ * @extends AlexaProperty
  */
-class VolumeSteps extends VolumeLevel {
+class VolumeStep extends AlexaProperty {
+  /**
+   * Defines volume step up
+   * @type {String}
+   */
+  static UP = 'VOLUME_UP';
+
+  /**
+   * Defines volume step down
+   * @type {String}
+   */
+  static DOWN = 'VOLUME_DOWN';
+
   /**
    * Returns supported item types
    * @return {Array}
    */
   get supportedItemTypes() {
-    return [ItemType.NUMBER];
+    return [ItemType.STRING];
+  }
+
+  /**
+   * Returns supported values
+   * @return {Array}
+   */
+  get supportedValues() {
+    return [VolumeStep.UP, VolumeStep.DOWN];
   }
 
   /**
@@ -34,6 +54,14 @@ class VolumeSteps extends VolumeLevel {
   get isReportable() {
     return false;
   }
+
+  /**
+   * Returns if is valid
+   * @return {Boolean}
+   */
+  get isValid() {
+    return this.hasSupportedValuesMapped;
+  }
 }
 
-module.exports = VolumeSteps;
+module.exports = VolumeStep;
