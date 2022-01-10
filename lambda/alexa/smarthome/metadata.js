@@ -45,7 +45,6 @@ const Parameter = Object.freeze({
   SETPOINT_RANGE: 'setpointRange',
   SPEED_LEVELS: 'speedLevels',
   STATE_MAPPINGS: 'stateMappings',
-  STEP_SPEAKER: 'stepSpeaker',
   SUPPORTED_ARM_STATES: 'supportedArmStates',
   SUPPORTED_COMMANDS: 'supportedCommands',
   SUPPORTED_INPUTS: 'supportedInputs',
