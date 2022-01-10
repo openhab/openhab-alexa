@@ -352,14 +352,14 @@ module.exports = [
         name: 'ChangeChannel'
       },
       endpoint: {
-        endpointId: 'channelKey',
+        endpointId: 'channelStep',
         cookie: {
           capabilities: JSON.stringify([
             {
               name: 'ChannelController',
-              property: 'channelKey',
+              property: 'channelStep',
               parameters: { CHANNEL_UP: 'CHUP', CHANNEL_DOWN: 'CHDOWN' },
-              item: { name: 'channel', type: 'String' }
+              item: { name: 'channelStep', type: 'String' }
             }
           ])
         }
@@ -493,21 +493,21 @@ module.exports = [
     }
   },
   {
-    description: 'skip channel key up',
+    description: 'skip channel step up',
     directive: {
       header: {
         namespace: 'Alexa.ChannelController',
         name: 'SkipChannels'
       },
       endpoint: {
-        endpointId: 'channelKey',
+        endpointId: 'channelStep',
         cookie: {
           capabilities: JSON.stringify([
             {
               name: 'ChannelController',
-              property: 'channelKey',
+              property: 'channelStep',
               parameters: { CHANNEL_UP: 'CHUP', CHANNEL_DOWN: 'CHDOWN' },
-              item: { name: 'channelKey', type: 'String' }
+              item: { name: 'channelStep', type: 'String' }
             }
           ])
         }
@@ -527,26 +527,26 @@ module.exports = [
         }
       },
       openhab: {
-        commands: [{ name: 'channelKey', value: 'CHUP' }]
+        commands: [{ name: 'channelStep', value: 'CHUP' }]
       }
     }
   },
   {
-    description: 'skip channel key down',
+    description: 'skip channel step down',
     directive: {
       header: {
         namespace: 'Alexa.ChannelController',
         name: 'SkipChannels'
       },
       endpoint: {
-        endpointId: 'channelKey',
+        endpointId: 'channelStep',
         cookie: {
           capabilities: JSON.stringify([
             {
               name: 'ChannelController',
-              property: 'channelKey',
+              property: 'channelStep',
               parameters: { CHANNEL_UP: 'CHUP', CHANNEL_DOWN: 'CHDOWN' },
-              item: { name: 'channelKey', type: 'String' }
+              item: { name: 'channelStep', type: 'String' }
             }
           ])
         }
@@ -566,7 +566,7 @@ module.exports = [
         }
       },
       openhab: {
-        commands: [{ name: 'channelKey', value: 'CHDOWN' }]
+        commands: [{ name: 'channelStep', value: 'CHDOWN' }]
       }
     }
   },

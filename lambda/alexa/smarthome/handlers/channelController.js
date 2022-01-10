@@ -15,7 +15,7 @@ const { clamp } = require('@root/utils');
 const { ItemType } = require('@openhab/constants');
 const { Interface, Property } = require('../constants');
 const { EndpointUnreachableError, InvalidValueError, ValueOutOfRangeError } = require('../errors');
-const { ChannelKey } = require('../properties');
+const { ChannelStep } = require('../properties');
 const AlexaHandler = require('./handler');
 
 /**
@@ -119,15 +119,15 @@ class ChannelController extends AlexaHandler {
   static async adjustChannel(directive, openhab) {
     const properties = directive.endpoint.getCapabilityPropertyMap({ interface: directive.namespace });
     const channel = properties[Property.CHANNEL];
-    const channelKey = properties[Property.CHANNEL_KEY];
+    const channelStep = properties[Property.CHANNEL_STEP];
     const channelCount = directive.payload.channelCount;
     let item, command;
 
-    if (channelKey) {
+    if (channelStep) {
       // Define item to send command to
-      item = channelKey.item;
-      // Determine command sending channel up/down key based on directive payload channel count value
-      command = channelKey.getCommand(channelCount > 0 ? ChannelKey.UP : ChannelKey.DOWN);
+      item = channelStep.item;
+      // Determine command using channel step up/down based on directive payload channel count value
+      command = channelStep.getCommand(channelCount >= 0 ? ChannelStep.UP : ChannelStep.DOWN);
     } else {
       const { channelMappings, range, isRetrievable } = channel;
       // Define item to send command to

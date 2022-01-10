@@ -24,7 +24,7 @@ module.exports = {
   CameraStream: require('./cameraStream'),
   CarbonMonoxideAlarm: require('./carbonMonoxideAlarm'),
   Channel: require('./channel'),
-  ChannelKey: require('./channelKey'),
+  ChannelStep: require('./channelStep'),
   Color: require('./color'),
   ColorTemperature: require('./colorTemperature'),
   ContactDetectionState: require('./contactDetectionState'),

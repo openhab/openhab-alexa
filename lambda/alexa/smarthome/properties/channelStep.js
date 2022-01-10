@@ -15,18 +15,18 @@ const { ItemType } = require('@openhab/constants');
 const AlexaProperty = require('./property');
 
 /**
- * Defines channel key property class
+ * Defines channel step property class
  * @extends AlexaProperty
  */
-class ChannelKey extends AlexaProperty {
+class ChannelStep extends AlexaProperty {
   /**
-   * Defines channel key up
+   * Defines channel step up
    * @type {String}
    */
   static UP = 'CHANNEL_UP';
 
   /**
-   * Defines channel key down
+   * Defines channel step down
    * @type {String}
    */
   static DOWN = 'CHANNEL_DOWN';
@@ -44,7 +44,7 @@ class ChannelKey extends AlexaProperty {
    * @return {Array}
    */
   get supportedValues() {
-    return [ChannelKey.UP, ChannelKey.DOWN];
+    return [ChannelStep.UP, ChannelStep.DOWN];
   }
 
   /**
@@ -64,4 +64,4 @@ class ChannelKey extends AlexaProperty {
   }
 }
 
-module.exports = ChannelKey;
+module.exports = ChannelStep;

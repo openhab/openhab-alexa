@@ -14,7 +14,7 @@
 const AlexaCapability = require('./capability');
 const AlexaDisplayCategory = require('../category');
 const { Interface, Property } = require('../constants');
-const { Channel, ChannelKey } = require('../properties');
+const { Channel, ChannelStep } = require('../properties');
 
 /**
  * Defines Alexa.ChannelController interface capability class
@@ -37,7 +37,7 @@ class ChannelController extends AlexaCapability {
   get supportedProperties() {
     return {
       [Property.CHANNEL]: Channel,
-      [Property.CHANNEL_KEY]: ChannelKey
+      [Property.CHANNEL_STEP]: ChannelStep
     };
   }
 
