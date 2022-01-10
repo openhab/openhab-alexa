@@ -14,7 +14,7 @@
 const AlexaCapability = require('./capability');
 const AlexaDisplayCategory = require('../category');
 const { Interface, Property } = require('../constants');
-const { MuteStep, VolumeSteps } = require('../properties');
+const { MuteStep, VolumeStep } = require('../properties');
 
 /**
  * Defines Alexa.StepSpeaker interface capability class
@@ -37,7 +37,7 @@ class StepSpeaker extends AlexaCapability {
   get supportedProperties() {
     return {
       [Property.MUTED]: MuteStep,
-      [Property.VOLUME]: VolumeSteps
+      [Property.VOLUME]: VolumeStep
     };
   }
 

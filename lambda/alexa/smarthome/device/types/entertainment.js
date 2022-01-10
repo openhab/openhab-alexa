@@ -14,7 +14,9 @@
 const GenericDevice = require('./genericDevice');
 const {
   VolumeLevel,
+  VolumeStep,
   MuteState,
+  MuteStep,
   Channel,
   ChannelStep,
   Input,
@@ -38,7 +40,9 @@ class Entertainment extends GenericDevice {
   static get supportedAttributes() {
     return [
       VolumeLevel,
+      VolumeStep,
       MuteState,
+      MuteStep,
       Channel,
       ChannelStep,
       Input,

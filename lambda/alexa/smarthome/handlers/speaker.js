@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+const { clamp } = require('@root/utils');
 const { Interface, Property } = require('../constants');
 const { EndpointUnreachableError, InvalidValueError } = require('../errors');
 const AlexaHandler = require('./handler');
@@ -116,8 +117,11 @@ class Speaker extends AlexaHandler {
     // Define adjusted volume using either volume default and increment parameter, if defined, otherwise volume value
     const volumeAdjust = directive.payload.volume;
     const volumeDefault = directive.payload.volumeDefault;
-    const volume =
-      parseInt(state) + (volumeDefault && increment > 0 ? (volumeAdjust >= 0 ? 1 : -1) * increment : volumeAdjust);
+    const volume = clamp(
+      parseInt(state) + (volumeDefault && increment > 0 ? (volumeAdjust >= 0 ? 1 : -1) * increment : volumeAdjust),
+      0,
+      100
+    );
 
     await openhab.sendCommand(item.name, volume);
 

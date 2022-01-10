@@ -15,19 +15,16 @@ const { Capability, Property } = require('@alexa/smarthome/constants');
 const DeviceAttribute = require('./attribute');
 
 /**
- * Defines volume level attribute class
+ * Defines volume step attribute class
  * @extends DeviceAttribute
  */
-class VolumeLevel extends DeviceAttribute {
+class VolumeStep extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
    */
   static get supportedNames() {
-    return [
-      'VolumeLevel',
-      'SpeakerVolume' // For backward compatibility (deprecated)
-    ];
+    return ['VolumeStep'];
   }
 
   /**
@@ -35,8 +32,8 @@ class VolumeLevel extends DeviceAttribute {
    * @return {Array}
    */
   static getCapabilities() {
-    return [{ name: Capability.SPEAKER, property: Property.VOLUME }];
+    return [{ name: Capability.STEP_SPEAKER, property: Property.VOLUME }];
   }
 }
 
-module.exports = VolumeLevel;
+module.exports = VolumeStep;

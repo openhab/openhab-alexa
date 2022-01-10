@@ -25,40 +25,42 @@ module.exports = {
       }
     },
     {
-      type: 'Switch',
+      type: 'String',
       name: 'mute1',
       groupNames: ['gStepSpeaker1'],
       metadata: {
         alexa: {
-          value: 'MuteState',
+          value: 'MuteStep',
           config: {
-            stepSpeaker: true
+            MUTE: 'MUTE'
           }
         }
       }
     },
     {
-      type: 'Number',
+      type: 'String',
       name: 'volume1',
       groupNames: ['gStepSpeaker1'],
       metadata: {
         alexa: {
-          value: 'VolumeLevel',
+          value: 'VolumeStep',
           config: {
-            stepSpeaker: true
+            VOLUME_UP: 'VOLUP',
+            VOLUME_DOWN: 'VOLDOWN'
           }
         }
       }
     },
     {
-      type: 'Number',
+      type: 'String',
       name: 'volume2',
       label: 'Step Speaker Volume 2',
       metadata: {
         alexa: {
-          value: 'VolumeLevel',
+          value: 'VolumeStep',
           config: {
-            stepSpeaker: true
+            VOLUME_UP: 'VOLUP',
+            VOLUME_DOWN: 'VOLDOWN'
           }
         }
       }
@@ -73,14 +75,14 @@ module.exports = {
         {
           name: 'StepSpeaker',
           property: 'muted',
-          parameters: {},
-          item: { name: 'mute1', type: 'Switch' }
+          parameters: { MUTE: 'MUTE' },
+          item: { name: 'mute1', type: 'String' }
         },
         {
           name: 'StepSpeaker',
           property: 'volume',
-          parameters: {},
-          item: { name: 'volume1', type: 'Number' }
+          parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
+          item: { name: 'volume1', type: 'String' }
         }
       ]
     },
@@ -92,8 +94,8 @@ module.exports = {
         {
           name: 'StepSpeaker',
           property: 'volume',
-          parameters: {},
-          item: { name: 'volume2', type: 'Number' }
+          parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
+          item: { name: 'volume2', type: 'String' }
         }
       ]
     }

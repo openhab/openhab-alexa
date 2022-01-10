@@ -13,7 +13,7 @@
 
 module.exports = [
   {
-    description: 'adjust volume steps no default',
+    description: 'adjust volume steps',
     directive: {
       header: {
         namespace: 'Alexa.StepSpeaker',
@@ -26,14 +26,14 @@ module.exports = [
             {
               name: 'StepSpeaker',
               property: 'volume',
-              parameters: {},
-              item: { name: 'stepSpeakerVolume', type: 'Number' }
+              parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
+              item: { name: 'stepSpeakerVolume', type: 'String' }
             }
           ])
         }
       },
       payload: {
-        volumeSteps: 10,
+        volumeSteps: 2,
         volumeStepsDefault: false
       }
     },
@@ -50,12 +50,15 @@ module.exports = [
         }
       },
       openhab: {
-        commands: [{ name: 'stepSpeakerVolume', value: 10 }]
+        commands: [
+          { name: 'stepSpeakerVolume', value: 'VOLUP' },
+          { name: 'stepSpeakerVolume', value: 'VOLUP' }
+        ]
       }
     }
   },
   {
-    description: 'adjust volume steps default no increment parameter',
+    description: 'adjust volume steps default up',
     directive: {
       header: {
         namespace: 'Alexa.StepSpeaker',
@@ -68,50 +71,8 @@ module.exports = [
             {
               name: 'StepSpeaker',
               property: 'volume',
-              parameters: {},
-              item: { name: 'stepSpeakerVolume', type: 'Number' }
-            }
-          ])
-        }
-      },
-      payload: {
-        volumeSteps: -10,
-        volumeStepsDefault: true
-      }
-    },
-    expected: {
-      alexa: {
-        context: {
-          properties: []
-        },
-        event: {
-          header: {
-            namespace: 'Alexa',
-            name: 'Response'
-          }
-        }
-      },
-      openhab: {
-        commands: [{ name: 'stepSpeakerVolume', value: -10 }]
-      }
-    }
-  },
-  {
-    description: 'adjust volume steps up default with increment parameter',
-    directive: {
-      header: {
-        namespace: 'Alexa.StepSpeaker',
-        name: 'AdjustVolume'
-      },
-      endpoint: {
-        endpointId: 'gStepSpeaker',
-        cookie: {
-          capabilities: JSON.stringify([
-            {
-              name: 'StepSpeaker',
-              property: 'volume',
-              parameters: { increment: 5 },
-              item: { name: 'stepSpeakerVolume', type: 'Number' }
+              parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
+              item: { name: 'stepSpeakerVolume', type: 'String' }
             }
           ])
         }
@@ -134,12 +95,12 @@ module.exports = [
         }
       },
       openhab: {
-        commands: [{ name: 'stepSpeakerVolume', value: 5 }]
+        commands: [{ name: 'stepSpeakerVolume', value: 'VOLUP' }]
       }
     }
   },
   {
-    description: 'adjust volume steps down default with increment parameter',
+    description: 'adjust volume steps default down',
     directive: {
       header: {
         namespace: 'Alexa.StepSpeaker',
@@ -152,8 +113,8 @@ module.exports = [
             {
               name: 'StepSpeaker',
               property: 'volume',
-              parameters: { increment: 5 },
-              item: { name: 'stepSpeakerVolume', type: 'Number' }
+              parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
+              item: { name: 'stepSpeakerVolume', type: 'String' }
             }
           ])
         }
@@ -176,7 +137,7 @@ module.exports = [
         }
       },
       openhab: {
-        commands: [{ name: 'stepSpeakerVolume', value: -5 }]
+        commands: [{ name: 'stepSpeakerVolume', value: 'VOLDOWN' }]
       }
     }
   },
@@ -194,8 +155,8 @@ module.exports = [
             {
               name: 'StepSpeaker',
               property: 'muted',
-              parameters: {},
-              item: { name: 'stepSpeakerMute', type: 'Switch' }
+              parameters: { MUTE: 'MUTE' },
+              item: { name: 'stepSpeakerMute', type: 'String' }
             }
           ])
         }
@@ -221,7 +182,7 @@ module.exports = [
     }
   },
   {
-    description: 'set mute volume',
+    description: 'set mute',
     directive: {
       header: {
         namespace: 'Alexa.StepSpeaker',
@@ -234,8 +195,8 @@ module.exports = [
             {
               name: 'StepSpeaker',
               property: 'muted',
-              parameters: {},
-              item: { name: 'stepSpeakerMute', type: 'Switch' }
+              parameters: { MUTE: 'MUTE' },
+              item: { name: 'stepSpeakerMute', type: 'String' }
             }
           ])
         }
@@ -257,7 +218,46 @@ module.exports = [
         }
       },
       openhab: {
-        commands: [{ name: 'stepSpeakerMute', value: 'ON' }]
+        commands: [{ name: 'stepSpeakerMute', value: 'MUTE' }]
+      }
+    }
+  },
+  {
+    description: 'set mute invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.StepSpeaker',
+        name: 'SetMute'
+      },
+      endpoint: {
+        endpointId: 'gStepSpeaker',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'StepSpeaker',
+              property: 'volume',
+              parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
+              item: { name: 'stepSpeakerVolume', type: 'String' }
+            }
+          ])
+        }
+      },
+      payload: {
+        mute: true
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'No muted property defined.'
+          }
+        }
       }
     }
   }

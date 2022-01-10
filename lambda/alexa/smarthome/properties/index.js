@@ -56,5 +56,5 @@ module.exports = {
   ToggleState: require('./toggleState'),
   UpperSetpoint: require('./upperSetpoint'),
   VolumeLevel: require('./volumeLevel'),
-  VolumeSteps: require('./volumeSteps')
+  VolumeStep: require('./volumeStep')
 };
