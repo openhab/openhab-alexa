@@ -26,19 +26,19 @@
     "test:coverage": "nyc npm test"
   },
   "dependencies": {
-    "agentkeepalive": "^4.1.4",
+    "agentkeepalive": "^4.2.0",
     "module-alias": "^2.2.2",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.9",
     "sprintf-js": "^1.1.2",
     "uuid": "^8.3.2",
-    "winston": "^3.3.3"
+    "winston": "^3.3.4"
   },
   "devDependencies": {
     "ajv": "^6.12.6",
     "chai": "^4.3.4",
     "chai-subset": "^1.6.0",
-    "eslint": "^8.4.1",
+    "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
