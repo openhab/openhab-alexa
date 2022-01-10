@@ -15,16 +15,16 @@ const { Capability, Property } = require('@alexa/smarthome/constants');
 const DeviceAttribute = require('./attribute');
 
 /**
- * Defines channel key attribute class
+ * Defines channel step attribute class
  * @extends DeviceAttribute
  */
-class ChannelKey extends DeviceAttribute {
+class ChannelStep extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
    */
   static get supportedNames() {
-    return ['ChannelKey'];
+    return ['ChannelStep'];
   }
 
   /**
@@ -32,8 +32,8 @@ class ChannelKey extends DeviceAttribute {
    * @return {Array}
    */
   static getCapabilities() {
-    return [{ name: Capability.CHANNEL_CONTROLLER, property: Property.CHANNEL_KEY }];
+    return [{ name: Capability.CHANNEL_CONTROLLER, property: Property.CHANNEL_STEP }];
   }
 }
 
-module.exports = ChannelKey;
+module.exports = ChannelStep;

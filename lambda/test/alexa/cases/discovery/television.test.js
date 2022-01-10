@@ -40,11 +40,11 @@ module.exports = {
     },
     {
       type: 'String',
-      name: 'channelKey1',
+      name: 'channelStep1',
       groupNames: ['gTelevision1'],
       metadata: {
         alexa: {
-          value: 'ChannelKey',
+          value: 'ChannelStep',
           config: {
             CHANNEL_UP: 'CHUP',
             CHANNEL_DOWN: 'CHDOWN'
@@ -101,7 +101,7 @@ module.exports = {
       label: 'Television Channel 4',
       metadata: {
         alexa: {
-          value: 'ChannelKey',
+          value: 'ChannelStep',
           config: {
             CHANNEL_UP: 'CHUP',
             CHANNEL_DOWN: 'CHDOWN'
@@ -236,12 +236,12 @@ module.exports = {
         },
         {
           name: 'ChannelController',
-          property: 'channelKey',
+          property: 'channelStep',
           parameters: {
             CHANNEL_UP: 'CHUP',
             CHANNEL_DOWN: 'CHDOWN'
           },
-          item: { name: 'channelKey1', type: 'String' }
+          item: { name: 'channelStep1', type: 'String' }
         },
         {
           name: 'ModeController',
@@ -292,7 +292,7 @@ module.exports = {
       cookie: [
         {
           name: 'ChannelController',
-          property: 'channelKey',
+          property: 'channelStep',
           parameters: {
             CHANNEL_UP: 'CHUP',
             CHANNEL_DOWN: 'CHDOWN'

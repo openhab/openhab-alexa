@@ -97,7 +97,7 @@ const Property = Object.freeze({
   CAMERA_STREAM: 'cameraStream',
   CARBON_MONOXIDE_ALARM: 'carbonMonoxideAlarm',
   CHANNEL: 'channel',
-  CHANNEL_KEY: 'channelKey',
+  CHANNEL_STEP: 'channelStep',
   COLOR: 'color',
   COLOR_TEMPERATURE: 'colorTemperatureInKelvin',
   CONNECTED_DEVICE: 'connectedDevice',
