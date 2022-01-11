@@ -303,7 +303,7 @@ Switch Power          "Power"                     (WaterHeater) {alexa="PowerSta
 
 Item states, reported back to Alexa, are formatted based on their [item state presentation](https://www.openhab.org/docs/configuration/items.html#state-presentation) definition if configured. This means you can control the precision of number values (e.g. `%.1f °C` will limit reported temperature value to one decimal point).
 
-For items that don't have a state, these can be configured as not retrievable, automatically when the item [parameter `autoupdate`](https://www.openhab.org/docs/configuration/items.html#parameter-autoupdate) is set as `autoupdate="false"` or by using metadata parameter `retrievable="false"`. In that case, Alexa will not retrieve the given item state, and when a command is issued against that item, the requested state will be returned back without checking the current state in openHAB. If using this feature in a group endpoint, keep in mind that all associated items will need to be configured to either report or not report a state, otherwise the Alexa integration for that endpoint will be broken.
+For items that don't have a state, these can be configured as not retrievable, automatically when the item [parameter `autoupdate`](https://www.openhab.org/docs/configuration/items.html#parameter-autoupdate) is set as `autoupdate="false"` or by using metadata parameter `retrievable="false"`. In that case, the skill will not report back the state of the given item to Alexa. It is important to note that this will affect the usability of some of the advanced features in the Alexa app that require state reporting.
 
 ```xtend
 Switch Switch1 "Switch 1" {alexa="Switch", autoupdate="false"}

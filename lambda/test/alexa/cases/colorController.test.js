@@ -162,17 +162,7 @@ module.exports = [
     expected: {
       alexa: {
         context: {
-          properties: [
-            {
-              namespace: 'Alexa.ColorController',
-              name: 'color',
-              value: {
-                hue: 350.5,
-                saturation: 0.7138,
-                brightness: 0.6524
-              }
-            }
-          ]
+          properties: []
         },
         event: {
           header: {

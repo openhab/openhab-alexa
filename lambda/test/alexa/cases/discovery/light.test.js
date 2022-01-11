@@ -244,28 +244,10 @@ module.exports = {
       }
     },
     light4: {
-      capabilities: [
-        'Alexa.PowerController.powerState',
-        'Alexa.BrightnessController.brightness',
-        'Alexa.ColorController.color',
-        'Alexa'
-      ],
+      capabilities: ['Alexa.PowerController', 'Alexa.BrightnessController', 'Alexa.ColorController', 'Alexa'],
       displayCategories: ['SWITCH', 'LIGHT'],
       friendlyName: 'Color Light 4',
-      propertyFlags: {
-        'Alexa.PowerController': {
-          proactivelyReported: false,
-          retrievable: false
-        },
-        'Alexa.BrightnessController': {
-          proactivelyReported: false,
-          retrievable: false
-        },
-        'Alexa.ColorController': {
-          proactivelyReported: false,
-          retrievable: false
-        }
-      },
+      propertyFlags: {}, // no property flags expected
       cookie: [
         {
           name: 'PowerController',
@@ -288,28 +270,10 @@ module.exports = {
       ]
     },
     light5: {
-      capabilities: [
-        'Alexa.PowerController.powerState',
-        'Alexa.BrightnessController.brightness',
-        'Alexa.ColorController.color',
-        'Alexa'
-      ],
+      capabilities: ['Alexa.PowerController', 'Alexa.BrightnessController', 'Alexa.ColorController', 'Alexa'],
       displayCategories: ['LIGHT'],
       friendlyName: 'Color Light 5',
-      propertyFlags: {
-        'Alexa.PowerController': {
-          proactivelyReported: false,
-          retrievable: false
-        },
-        'Alexa.BrightnessController': {
-          proactivelyReported: false,
-          retrievable: false
-        },
-        'Alexa.ColorController': {
-          proactivelyReported: false,
-          retrievable: false
-        }
-      },
+      propertyFlags: {}, // no property flags expected
       cookie: [
         {
           name: 'PowerController',

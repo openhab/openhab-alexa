@@ -171,13 +171,7 @@ module.exports = [
     expected: {
       alexa: {
         context: {
-          properties: [
-            {
-              namespace: 'Alexa.PowerController',
-              name: 'powerState',
-              value: 'ON'
-            }
-          ]
+          properties: []
         },
         event: {
           header: {

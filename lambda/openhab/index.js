@@ -29,26 +29,7 @@ class OpenHAB {
    * @param {Number} timeout
    */
   constructor(config, token, timeout) {
-    this._cache = { commands: {}, states: {} };
     this._request = OpenHAB.getRequestDefaults(config, token, timeout);
-  }
-
-  /**
-   * Returns the last posted command for a given item name
-   * @param  {String} itemName
-   * @return {String}
-   */
-  getLastPostedCommand(itemName) {
-    return this._cache.commands[itemName];
-  }
-
-  /**
-   * Returns the last updated state for a given item name
-   * @param  {String} itemName
-   * @return {String}
-   */
-  getLastUpdatedState(itemName) {
-    return this._cache.states[itemName];
   }
 
   /**
@@ -111,30 +92,6 @@ class OpenHAB {
     }
 
     return settings;
-  }
-
-  /**
-   * Sends a command to an item and cache its value
-   * @param  {String}  itemName
-   * @param  {String}  command
-   * @return {Promise}
-   */
-  sendCommand(itemName, command) {
-    // Cache command
-    this._cache.commands[itemName] = command.toString();
-    return this.postItemCommand(itemName, command);
-  }
-
-  /**
-   * Updates the state of an item and cache its value
-   * @param  {String}  itemName
-   * @param  {String}  state
-   * @return {Promise}
-   */
-  postUpdate(itemName, state) {
-    // Cache state
-    this._cache.states[itemName] = state.toString();
-    return this.putItemState(itemName, state);
   }
 
   /**
@@ -210,17 +167,17 @@ class OpenHAB {
   /**
    * Sends a command to an item
    * @param  {String}  itemName
-   * @param  {String}  value
+   * @param  {String}  command
    * @return {Promise}
    */
-  postItemCommand(itemName, value) {
+  sendCommand(itemName, command) {
     const options = {
       method: 'POST',
       uri: `/rest/items/${itemName}`,
       headers: {
         'Content-Type': 'text/plain'
       },
-      body: value.toString()
+      body: command.toString()
     };
     return this._request(options);
   }
@@ -228,17 +185,17 @@ class OpenHAB {
   /**
    * Updates the state of an item
    * @param  {String}  itemName
-   * @param  {String}  value
+   * @param  {String}  state
    * @return {Promise}
    */
-  putItemState(itemName, value) {
+  postUpdate(itemName, state) {
     const options = {
       method: 'PUT',
       uri: `/rest/items/${itemName}/state`,
       headers: {
         'Content-Type': 'text/plain'
       },
-      body: value.toString()
+      body: state.toString()
     };
     return this._request(options);
   }

@@ -717,13 +717,7 @@ module.exports = [
     expected: {
       alexa: {
         context: {
-          properties: [
-            {
-              namespace: 'Alexa.ColorTemperatureController',
-              name: 'colorTemperatureInKelvin',
-              value: 2700
-            }
-          ]
+          properties: []
         },
         event: {
           header: {

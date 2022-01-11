@@ -263,10 +263,10 @@ module.exports = {
   expected: {
     gWindowBlind1: {
       capabilities: [
-        'Alexa.ModeController:PositionCommand.mode',
+        'Alexa.ModeController:PositionCommand',
         'Alexa.RangeController:PositionState.rangeValue',
         'Alexa.PlaybackController',
-        'Alexa.ModeController:TiltCommand.mode',
+        'Alexa.ModeController:TiltCommand',
         'Alexa.RangeController:TiltAngle.rangeValue',
         'Alexa.EndpointHealth.connectivity',
         'Alexa'
@@ -274,19 +274,9 @@ module.exports = {
       displayCategories: ['INTERIOR_BLIND'],
       friendlyName: 'Window Blind 1',
       propertyFlags: {
-        'Alexa.ModeController:PositionCommand': {
-          proactivelyReported: false,
-          retrievable: false,
-          nonControllable: false
-        },
         'Alexa.RangeController:PositionState': {
           proactivelyReported: false,
           retrievable: true,
-          nonControllable: false
-        },
-        'Alexa.ModeController:TiltCommand': {
-          proactivelyReported: false,
-          retrievable: false,
           nonControllable: false
         },
         'Alexa.RangeController:TiltAngle': {
@@ -443,9 +433,9 @@ module.exports = {
     },
     gWindowBlind2: {
       capabilities: [
-        'Alexa.ModeController:PositionCommand.mode',
+        'Alexa.ModeController:PositionCommand',
         'Alexa.RangeController:PositionState.rangeValue',
-        'Alexa.ModeController:TiltCommand.mode',
+        'Alexa.ModeController:TiltCommand',
         'Alexa.RangeController:TiltAngle.rangeValue',
         'Alexa.PlaybackController',
         'Alexa.EndpointHealth.connectivity',
@@ -454,19 +444,9 @@ module.exports = {
       displayCategories: ['INTERIOR_BLIND'],
       friendlyName: 'Window Blind 2',
       propertyFlags: {
-        'Alexa.ModeController:PositionCommand': {
-          proactivelyReported: false,
-          retrievable: false,
-          nonControllable: false
-        },
         'Alexa.RangeController:PositionState': {
           proactivelyReported: false,
           retrievable: true,
-          nonControllable: false
-        },
-        'Alexa.ModeController:TiltCommand': {
-          proactivelyReported: false,
-          retrievable: false,
           nonControllable: false
         },
         'Alexa.RangeController:TiltAngle': {
@@ -825,7 +805,7 @@ module.exports = {
     },
     windowBlindPosition7: {
       capabilities: [
-        'Alexa.ModeController:PositionCommand.mode',
+        'Alexa.ModeController:PositionCommand',
         'Alexa.RangeController:PositionState.rangeValue',
         'Alexa.PlaybackController',
         'Alexa.EndpointHealth.connectivity',
@@ -938,7 +918,7 @@ module.exports = {
     },
     windowBlindTilt7: {
       capabilities: [
-        'Alexa.ModeController:TiltCommand.mode',
+        'Alexa.ModeController:TiltCommand',
         'Alexa.RangeController:TiltAngle.rangeValue',
         'Alexa.PlaybackController',
         'Alexa.EndpointHealth.connectivity',
