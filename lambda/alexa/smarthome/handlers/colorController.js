@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemValue } = require('@openhab/constants');
 const { Interface, Property } = require('../constants');
 const AlexaHandler = require('./handler');
 
@@ -70,9 +69,9 @@ class ColorController extends AlexaHandler {
       (state && parseFloat(state.split(',')[2])) || directive.payload.color.brightness * 100
     ];
 
-    // Reset color temperature state if required
-    if (temperature && temperature.requiresSetColorReset) {
-      await openhab.postUpdate(temperature.item.name, ItemValue.NULL);
+    // Reset color temperature state if retrievable and required
+    if (temperature && temperature.isRetrievable && temperature.requiresSetColorReset) {
+      await openhab.postUpdate(temperature.item.name, 0);
     }
 
     await openhab.sendCommand(color.item.name, hsb.join(','));

@@ -239,7 +239,7 @@ module.exports = [
       },
       openhab: {
         commands: [{ name: 'color', value: '350.5,71.38,65.24' }],
-        updates: [{ name: 'colorTemperature', value: 'NULL' }]
+        updates: [{ name: 'colorTemperature', value: 0 }]
       }
     }
   }
