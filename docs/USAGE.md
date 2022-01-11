@@ -1924,30 +1924,30 @@ The availability of a given capability depends on the location setting of your A
 
 Alexa Interfaces | Supported Attributes | Supported Languages
 -----------------|------------------------|--------------------
-BrightnessController | [`Brightness`](#brightness) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
-CameraStreamController | [`CameraStream`](#camerastream) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
-ChannelController | [`Channel`](#channel), [`ChannelStep`](#channelstep) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
-ColorController | [`Color`](#color) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
-ColorTemperatureController | [`ColorTemperature`](#colortemperature) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
-ContactSensor | [`ContactDetectionState`](#contactdetectionstate) | `de-DE`, `en-AU`, `en-CA`, `en-IN`, `en-US`, `es-ES`, `it-IT`, `ja-JP`
-EqualizerController | [`EqualizerBass`](#equalizerbass), [`EqualizerMidrange`](#equalizermidrange), [`EqualizerTreble`](#equalizertreble), [`EqualizerMode`](#equalizermode) | `de-DE`, `en-IN`, `en-US`, `es-ES`, `it-IT`, `ja-JP`, `pt-BR`
-LockController | [`LockState`](#lockstate) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt_BR`
-ModeController | [`Mode`](#mode), [`FanDirection`](#fandirection), [`FanSpeed`](#fanspeed), [`Input`](#input), [`OpenState`](#openstate), [`PositionState`](#positionstate), [`TiltAngle`](#tiltangle), [`ThermostatFan`](#thermostatfan), [`VacuumMode`](#vacuummode) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-CA`, `fr-FR`, `it-IT`, `ja-JP`
-MotionSensor | [`MotionDetectionState`](#motiondetectionstate) | `de-DE`, `en-AU`, `en-CA`, `en-IN`, `en-US`, `es-ES`, `it-IT`, `ja-JP`, `pt-BR`
+BrightnessController | [`Brightness`](#brightness) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+CameraStreamController | [`CameraStream`](#camerastream) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+ChannelController | [`Channel`](#channel), [`ChannelStep`](#channelstep) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+ColorController | [`Color`](#color) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+ColorTemperatureController | [`ColorTemperature`](#colortemperature) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+ContactSensor | [`ContactDetectionState`](#contactdetectionstate) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+EqualizerController | [`EqualizerBass`](#equalizerbass), [`EqualizerMidrange`](#equalizermidrange), [`EqualizerTreble`](#equalizertreble), [`EqualizerMode`](#equalizermode) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+LockController | [`LockState`](#lockstate) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+ModeController | [`Mode`](#mode), [`FanDirection`](#fandirection), [`FanSpeed`](#fanspeed), [`Input`](#input), [`OpenState`](#openstate), [`PositionState`](#positionstate), [`TiltAngle`](#tiltangle), [`ThermostatFan`](#thermostatfan), [`VacuumMode`](#vacuummode) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+MotionSensor | [`MotionDetectionState`](#motiondetectionstate) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
 Networking | [`HomeNetwork`](#homenetwork), [`ConnectedDevice`](#connecteddevice), [`NetworkAccess`](#networkaccess) | `en-US`
-PercentageController | [`Percentage`](#percentage) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `it-IT`, `ja-JP`
-PlaybackController | [`Playback`](#playback), [`PlaybackStop`](#playbackstop) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `fr-FR`
-PowerController | [`PowerState`](#powerstate) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-FR`, `it-IT`, `ja-JP`
-PowerLevelController | [`PowerLevel`](#powerlevel) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `it-IT`, `ja-JP`
-RangeController | [`RangeValue`](#rangevalue), [`BatteryLevel`](#batterylevel), [`CurrentHumidity`](#currenthumidity), [`FanSpeed`](#fanspeed), [`PositionState`](#positionstate), [`TiltAngle`](#tiltangle) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-CA`, `fr-FR`, `it-IT`, `ja-JP`
+PercentageController | [`Percentage`](#percentage) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+PlaybackController | [`Playback`](#playback), [`PlaybackStop`](#playbackstop) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+PowerController | [`PowerState`](#powerstate) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+PowerLevelController | [`PowerLevel`](#powerlevel) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-CA`, `fr-FR`, `it-IT`, `ja-JP`
+RangeController | [`RangeValue`](#rangevalue), [`BatteryLevel`](#batterylevel), [`CurrentHumidity`](#currenthumidity), [`FanSpeed`](#fanspeed), [`PositionState`](#positionstate), [`TiltAngle`](#tiltangle) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
 Safety | [`ObstacleAlert`](#obstaclealert) | `en-US`
-SceneController | [`Scene`](#scene), [`Activity`](#activity) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `it-IT`, `ja-JP`
+SceneController | [`Scene`](#scene), [`Activity`](#activity) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
 SecurityPanelController | [`ArmState`](#armstate), [`BurglaryAlarm`](#burglaryalarm), [`CarbonMonoxideAlarm`](#carbonmonoxidealarm), [`FireAlarm`](#firealarm), [`WaterAlarm`](#wateralarm) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `it-IT`, `ja-JP`, `pt-BR`
 Speaker | [`VolumeLevel`](#volumelevel), [`MuteState`](#mutestate) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `it-IT`, `ja-JP`
 StepSpeaker | [`VolumeStep`](#volumestep), [`MuteStep`](#mutestep) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `it-IT`
-TemperatureSensor | [`CurrentTemperature`](#currenttemperature) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `it-IT`, `ja-JP`
-ThermostatController | [`TargetTemperature`](#targettemperature), [`CoolingSetpoint`](#coolingsetpoint), [`HeatingSetpoint`](#heatingsetpoint), [`HeatingCoolingMode`](#heatingcoolingmode), [`ThermostatHold`](#thermostathold) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `fr-FR`, `it-IT`, `ja-JP`, `pt-BR`
-ToggleController | [`ToggleState`](#togglestate), [`FanOscillate`](#fanoscillate), [`ThermostatFan`](#thermostatfan) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-CA`, `fr-FR`, `it-IT`, `ja-JP`
+TemperatureSensor | [`CurrentTemperature`](#currenttemperature) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+ThermostatController | [`TargetTemperature`](#targettemperature), [`CoolingSetpoint`](#coolingsetpoint), [`HeatingSetpoint`](#heatingsetpoint), [`HeatingCoolingMode`](#heatingcoolingmode), [`ThermostatHold`](#thermostathold) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
+ToggleController | [`ToggleState`](#togglestate), [`FanOscillate`](#fanoscillate), [`ThermostatFan`](#thermostatfan) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
 
 ## Asset Catalog
 
