@@ -110,7 +110,7 @@ class AlexaProperty {
    * @return {Boolean}
    */
   get isReportable() {
-    return true;
+    return this.isProactivelyReported || this.isRetrievable;
   }
 
   /**

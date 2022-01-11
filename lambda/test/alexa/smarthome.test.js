@@ -31,8 +31,8 @@ describe('Alexa Smart Home Tests', () => {
 
   beforeEach(() => {
     // set stub environment
-    commands = sinon.stub(OpenHAB.prototype, 'postItemCommand');
-    updates = sinon.stub(OpenHAB.prototype, 'putItemState');
+    commands = sinon.stub(OpenHAB.prototype, 'sendCommand');
+    updates = sinon.stub(OpenHAB.prototype, 'postUpdate');
   });
 
   afterEach(() => {

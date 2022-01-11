@@ -65,7 +65,7 @@ module.exports = {
       friendlyName: 'Headphones 1'
     },
     headphones2: {
-      capabilities: ['Alexa.PowerController.powerState', 'Alexa'],
+      capabilities: ['Alexa.PowerController', 'Alexa'],
       displayCategories: ['HEADPHONES'],
       friendlyName: 'Headphones 2'
     }

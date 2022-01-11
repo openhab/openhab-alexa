@@ -177,14 +177,14 @@ class AlexaEndpoint {
   }
 
   /**
-   * Returns capabilities retrievable item names
+   * Returns capabilities reportable item names
    * @return {Array}
    */
-  getCapabilitiesRetrievableItemNames() {
+  getCapabilitiesReportableItemNames() {
     return this.capabilities
       .map((capability) => capability.getContextProperties())
       .flat()
-      .filter((property) => property.item && property.isReportable && property.isRetrievable)
+      .filter((property) => property.item && property.isReportable)
       .map((property) => property.item.name)
       .filter((name, index, array) => array.indexOf(name) === index);
   }
@@ -198,9 +198,9 @@ class AlexaEndpoint {
     const contextProperties = [];
     // Get capabilities property map
     const properties = this.getCapabilitiesPropertyMap();
-    // Get latest retrievable item states from server
+    // Get latest reportable item states from server
     const items = await Promise.all(
-      this.getCapabilitiesRetrievableItemNames().map((name) =>
+      this.getCapabilitiesReportableItemNames().map((name) =>
         openhab.getItemState(name).then((state) => ({ name, state }))
       )
     );
@@ -213,12 +213,8 @@ class AlexaEndpoint {
     // Iterate over endpoint capabilities
     for (const capability of this.capabilities) {
       for (const property of capability.getReportableProperties(items, properties)) {
-        // Define property item state using latest state if retrievable, otherwise last posted command if available
-        const item = property.item && {
-          ...(property.isRetrievable
-            ? items.find((item) => item.name === property.item.name)
-            : { state: openhab.getLastPostedCommand(property.item.name) })
-        };
+        // Define property item using latest item state
+        const item = property.item && items.find((item) => item.name === property.item.name);
         // Define context property namespace and instance based on capability interface and instance
         const { interface: namespace, instance } = capability;
         // Define context property name based on property report name if defined, fallback to property name

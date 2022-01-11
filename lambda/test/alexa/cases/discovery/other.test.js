@@ -485,7 +485,7 @@ module.exports = {
     },
     range1: {
       capabilities: [
-        'Alexa.ModeController:range1.mode',
+        'Alexa.ModeController:range1',
         'Alexa.RangeController:range1.rangeValue',
         'Alexa.PlaybackController',
         'Alexa.EndpointHealth.connectivity',
@@ -494,11 +494,6 @@ module.exports = {
       displayCategories: ['OTHER'],
       friendlyName: 'Range Value 1',
       propertyFlags: {
-        'Alexa.ModeController:range1': {
-          proactivelyReported: false,
-          retrievable: false,
-          nonControllable: false
-        },
         'Alexa.RangeController:range1': {
           proactivelyReported: false,
           retrievable: true,
@@ -645,7 +640,7 @@ module.exports = {
     },
     range4: {
       capabilities: [
-        'Alexa.ModeController:range4.mode',
+        'Alexa.ModeController:range4',
         'Alexa.RangeController:range4.rangeValue',
         'Alexa.PlaybackController',
         'Alexa.EndpointHealth.connectivity',
@@ -654,11 +649,6 @@ module.exports = {
       displayCategories: ['OTHER'],
       friendlyName: 'Range Value 4',
       propertyFlags: {
-        'Alexa.ModeController:range4': {
-          proactivelyReported: false,
-          retrievable: false,
-          nonControllable: false
-        },
         'Alexa.RangeController:range4': {
           proactivelyReported: false,
           retrievable: true,
