@@ -72,19 +72,19 @@ class ChannelController extends AlexaHandler {
       throw new InvalidValueError('No channel property defined.');
     }
 
-    const { item, channelMappings, range } = property;
+    const { item, channelMappings, range, supportsChannelNumber } = property;
     const channelName = directive.payload.channelMetadata.name;
     const channelNumber = directive.payload.channel.number;
 
     // Determine command as follow:
     //  1) using directive payload channel metadata name if defined
-    //  2) using directive payload channel number if number item type
+    //  2) using directive payload channel number if supported
     //  3) undefined
     const command = channelName
       ? Object.keys(channelMappings).find(
           (channel) => channelMappings[channel].toUpperCase() === channelName.toUpperCase()
         )
-      : item.type === ItemType.NUMBER
+      : supportsChannelNumber
       ? channelNumber
       : undefined;
 
