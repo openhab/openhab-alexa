@@ -66,6 +66,59 @@ module.exports = [
     }
   },
   {
+    description: 'change channel by number supported parameter',
+    directive: {
+      header: {
+        namespace: 'Alexa.ChannelController',
+        name: 'ChangeChannel'
+      },
+      endpoint: {
+        endpointId: 'channel',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ChannelController',
+              property: 'channel',
+              parameters: { supportsChannelNumber: true },
+              item: { name: 'channel', type: 'String' }
+            }
+          ])
+        }
+      },
+      payload: {
+        channel: {
+          number: '12-34'
+        },
+        channelMetadata: {}
+      }
+    },
+    items: [{ name: 'channel', state: '12-34', type: 'String' }],
+    expected: {
+      alexa: {
+        context: {
+          properties: [
+            {
+              namespace: 'Alexa.ChannelController',
+              name: 'channel',
+              value: {
+                number: '12-34'
+              }
+            }
+          ]
+        },
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'Response'
+          }
+        }
+      },
+      openhab: {
+        commands: [{ name: 'channel', value: '12-34' }]
+      }
+    }
+  },
+  {
     description: 'change channel by number invalid value error',
     directive: {
       header: {

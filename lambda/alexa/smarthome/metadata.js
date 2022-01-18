@@ -51,6 +51,7 @@ const Parameter = Object.freeze({
   SUPPORTED_MODES: 'supportedModes',
   SUPPORTED_OPERATIONS: 'supportedOperations',
   SUPPORTED_RANGE: 'supportedRange',
+  SUPPORTS_CHANNEL_NUMBER: 'supportsChannelNumber',
   SUPPORTS_DEACTIVATION: 'supportsDeactivation',
   SUPPORTS_SETPOINT_MODE: 'supportsSetpointMode',
   UNIT_OF_MEASURE: 'unitOfMeasure'

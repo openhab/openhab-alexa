@@ -21,6 +21,12 @@ const AlexaProperty = require('./property');
  */
 class Channel extends AlexaProperty {
   /**
+   * Defines channel number pattern
+   * @type {RegExp}
+   */
+  static #NUMBER_PATTERN = /^\d+(?:[.-]\d+)?$/;
+
+  /**
    * Returns supported item types
    * @return {Array}
    */
@@ -35,7 +41,8 @@ class Channel extends AlexaProperty {
   get supportedParameters() {
     return {
       [Parameter.CHANNEL_MAPPINGS]: ParameterType.MAP,
-      [Parameter.RANGE]: ParameterType.RANGE
+      [Parameter.RANGE]: ParameterType.RANGE,
+      [Parameter.SUPPORTS_CHANNEL_NUMBER]: ParameterType.BOOLEAN
     };
   }
 
@@ -56,11 +63,19 @@ class Channel extends AlexaProperty {
   }
 
   /**
+   * Returns if supports channel number
+   * @return {Boolean}
+   */
+  get supportsChannelNumber() {
+    return this.item.type === ItemType.NUMBER || this.parameters[Parameter.SUPPORTS_CHANNEL_NUMBER] === true;
+  }
+
+  /**
    * Returns if is valid
    * @return {Boolean}
    */
   get isValid() {
-    return this.item.type === ItemType.NUMBER || Object.keys(this.channelMappings).length > 0;
+    return this.supportsChannelNumber || Object.keys(this.channelMappings).length > 0;
   }
 
   /**
@@ -71,8 +86,8 @@ class Channel extends AlexaProperty {
   getState(value) {
     const channel = {};
 
-    // Set channel number if numerical value
-    if (!isNaN(value)) {
+    // Set channel number if valid
+    if (Channel.#NUMBER_PATTERN.test(value)) {
       channel.number = value.toString();
     }
 
@@ -98,15 +113,7 @@ class Channel extends AlexaProperty {
     // Update parameters from parent method
     super.updateParameters(item, metadata, settings);
 
-    // Define channel mappings as follow:
-    //  1) using parameter if defined
-    //  2) using item state description options if available
-    //  3) empty object
-    const channels = parameters[Parameter.CHANNEL_MAPPINGS]
-      ? parameters[Parameter.CHANNEL_MAPPINGS]
-      : item.stateDescription && item.stateDescription.options
-      ? Object.fromEntries(item.stateDescription.options.map((option) => [option.value, option.label]))
-      : {};
+    const channels = parameters[Parameter.CHANNEL_MAPPINGS] || {};
     // Update channel mappings parameter removing invalid mappings if defined
     parameters[Parameter.CHANNEL_MAPPINGS] = Object.entries(channels)
       .filter(([channel]) => this.item.type !== ItemType.NUMBER || !isNaN(channel))

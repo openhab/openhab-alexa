@@ -71,34 +71,18 @@ module.exports = {
       label: 'Television Channel 2',
       metadata: {
         alexa: {
-          value: 'Channel'
-        }
-      },
-      stateDescription: {
-        options: [
-          { value: 'foo', label: 'FOO' },
-          { value: 'bar', label: 'BAR' },
-          { value: 'baz', label: 'BAZ' }
-        ]
-      }
-    },
-    {
-      type: 'String',
-      name: 'channel3',
-      label: 'Television Channel 3',
-      metadata: {
-        alexa: {
           value: 'Channel',
           config: {
-            channelMappings: 'FOO,BAR,BAZ'
+            channelMappings: 'FOO,BAR,BAZ',
+            supportsChannelNumber: 'true'
           }
         }
       }
     },
     {
       type: 'String',
-      name: 'channel4',
-      label: 'Television Channel 4',
+      name: 'channel3',
+      label: 'Television Channel 3',
       metadata: {
         alexa: {
           value: 'ChannelStep',
@@ -111,8 +95,8 @@ module.exports = {
     },
     {
       type: 'Number',
-      name: 'channel5',
-      label: 'Television Channel 5',
+      name: 'channel4',
+      label: 'Television Channel 4',
       metadata: {
         alexa: {
           value: 'Channel'
@@ -264,31 +248,17 @@ module.exports = {
           name: 'ChannelController',
           property: 'channel',
           parameters: {
-            channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' }
+            channelMappings: { FOO: 'FOO', BAR: 'BAR', BAZ: 'BAZ' },
+            supportsChannelNumber: true
           },
           item: { name: 'channel2', type: 'String' }
         }
       ]
     },
     channel3: {
-      capabilities: ['Alexa.ChannelController.channel', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
-      displayCategories: ['TV'],
-      friendlyName: 'Television Channel 3',
-      cookie: [
-        {
-          name: 'ChannelController',
-          property: 'channel',
-          parameters: {
-            channelMappings: { FOO: 'FOO', BAR: 'BAR', BAZ: 'BAZ' }
-          },
-          item: { name: 'channel3', type: 'String' }
-        }
-      ]
-    },
-    channel4: {
       capabilities: ['Alexa.ChannelController', 'Alexa'],
       displayCategories: ['TV'],
-      friendlyName: 'Television Channel 4',
+      friendlyName: 'Television Channel 3',
       cookie: [
         {
           name: 'ChannelController',
@@ -297,14 +267,14 @@ module.exports = {
             CHANNEL_UP: 'CHUP',
             CHANNEL_DOWN: 'CHDOWN'
           },
-          item: { name: 'channel4', type: 'String' }
+          item: { name: 'channel3', type: 'String' }
         }
       ]
     },
-    channel5: {
+    channel4: {
       capabilities: ['Alexa.ChannelController.channel', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
       displayCategories: ['TV'],
-      friendlyName: 'Television Channel 5'
+      friendlyName: 'Television Channel 4'
     },
     input2: {
       capabilities: ['Alexa.ModeController:Input.mode', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
