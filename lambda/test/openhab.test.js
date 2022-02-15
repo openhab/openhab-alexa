@@ -84,17 +84,16 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('http no auth/timeout', async () => {
+    it('http no auth', async () => {
       // set environment
       const baseURL = 'http://foobar';
       sinon.stub(fs, 'existsSync').returns(false);
       nock(baseURL)
         .get('/')
         .reply(200)
-        .on('request', ({ headers, options, socket }) => {
+        .on('request', ({ headers, options }) => {
           expect(headers).to.not.have.property('authorization');
           expect(options).to.include({ agentClass: Agent });
-          expect(socket).to.include({ timeout: 0 });
         });
       // run test
       await OpenHAB.getRequestDefaults({ baseURL }).get('/');
