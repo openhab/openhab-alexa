@@ -69,11 +69,17 @@ class SecurityPanelController extends AlexaHandler {
    */
   static async arm(directive, openhab) {
     const properties = directive.endpoint.getCapabilityPropertyMap({ interface: directive.namespace });
+
+    // Throw invalid value error if no security panel properties defined
+    if (typeof properties === 'undefined') {
+      throw new InvalidValueError('The security panel has no properties defined.');
+    }
+
     const property = properties[Property.ARM_STATE];
 
     // Throw invalid value error if no arm state property defined
     if (typeof property === 'undefined') {
-      throw new InvalidValueError('The security panel has no arm state property');
+      throw new InvalidValueError('The security panel has no arm state property.');
     }
 
     const { item, exitDelayInSeconds, supportedArmStates } = property;
@@ -81,7 +87,7 @@ class SecurityPanelController extends AlexaHandler {
 
     // Throw invalid value error if requested arm state not supported
     if (!supportedArmStates.includes(armState)) {
-      throw new InvalidValueError(`The security panel doesn't support arm state [${armState}]`);
+      throw new InvalidValueError(`The security panel doesn't support ${armState} state.`);
     }
 
     // Get items current state for security arm and alert state properties
@@ -105,19 +111,19 @@ class SecurityPanelController extends AlexaHandler {
       switch (alert.name) {
         case Property.ZONES_ALERT:
           throw new SecurityPanelBypassNeededError(
-            'Unable to arm the security panel because it has open zones that must be bypassed'
+            'Unable to arm the security panel because it has open zones that must be bypassed.'
           );
         case Property.READY_ALERT:
           throw new SecurityPanelNotReadyError(
-            'Unable to arm the security panel because it is not ready'
+            'Unable to arm the security panel because it is not ready.'
           );
         case Property.ALARM_ALERT:
           throw new SecurityPanelUnclearedAlarmError(
-            'Unable to arm the security panel because it is in alarm status'
+            'Unable to arm the security panel because it is in alarm status.'
           );
         case Property.TROUBLE_ALERT:
           throw new SecurityPanelUnclearedTroubleError(
-            'Unable to arm the security panel because it is in trouble status'
+            'Unable to arm the security panel because it is in trouble status.'
           );
       }
     }
@@ -129,7 +135,7 @@ class SecurityPanelController extends AlexaHandler {
     // Throw authorization required error when currently in armed away state and request to arm stay or night
     if (currentState === ArmState.ARMED_AWAY && [ArmState.ARMED_STAY, ArmState.ARMED_NIGHT].includes(armState)) {
       throw new SecurityPanelAuthorizationRequiredError(
-        'Unable to arm the security panel because it is currently in armed away mode'
+        'Unable to arm the security panel because it is currently in armed away mode.'
       );
     }
 
@@ -152,11 +158,17 @@ class SecurityPanelController extends AlexaHandler {
    */
   static async disarm(directive, openhab) {
     const properties = directive.endpoint.getCapabilityPropertyMap({ interface: directive.namespace });
+
+    // Throw invalid value error if no security panel properties defined
+    if (typeof properties === 'undefined') {
+      throw new InvalidValueError('The security panel has no properties defined.');
+    }
+
     const property = properties[Property.ARM_STATE];
 
     // Throw invalid value error if no arm state property defined
     if (typeof property === 'undefined') {
-      throw new InvalidValueError('The security panel has no arm state property');
+      throw new InvalidValueError('The security panel has no arm state property.');
     }
 
     const { item, pinCodes } = property;
@@ -165,7 +177,7 @@ class SecurityPanelController extends AlexaHandler {
     // Throw unauthorized error when provided pin code not valid
     if (authorization.type === ArmState.AuthType.FOUR_DIGIT_PIN && !pinCodes.includes(authorization.value)) {
       throw new SecurityPanelUnauthorizedError(
-        'Unable to disarm the security panel because the PIN code is not correct'
+        'Unable to disarm the security panel because the PIN code is not correct.'
       );
     }
 
@@ -178,7 +190,7 @@ class SecurityPanelController extends AlexaHandler {
     if (readyState === AlertState.ALERT) {
       // prettier-ignore
       throw new SecurityPanelNotReadyError(
-        'Unable to disarm the security panel because it is not ready'
+        'Unable to disarm the security panel because it is not ready.'
       );
     }
 
