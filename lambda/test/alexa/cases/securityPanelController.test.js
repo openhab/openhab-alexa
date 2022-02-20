@@ -210,7 +210,42 @@ module.exports = [
     }
   },
   {
-    description: 'arm no property invalid value error',
+    description: 'arm no properties invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.SecurityPanelController',
+        name: 'Arm'
+      },
+      endpoint: {
+        endpointId: 'gSecurityPanel',
+        cookie: {
+          // workaround bug introduced by previous version
+          propertyMap: JSON.stringify({
+            SecurityPanelController: {}
+          })
+        }
+      },
+      payload: {
+        armState: 'ARMED_AWAY'
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'The security panel has no properties defined.'
+          }
+        }
+      }
+    }
+  },
+  {
+    description: 'arm no state property invalid value error',
     directive: {
       header: {
         namespace: 'Alexa.SecurityPanelController',
@@ -242,7 +277,7 @@ module.exports = [
           },
           payload: {
             type: 'INVALID_VALUE',
-            message: 'The security panel has no arm state property'
+            message: 'The security panel has no arm state property.'
           }
         }
       }
@@ -285,7 +320,7 @@ module.exports = [
           },
           payload: {
             type: 'INVALID_VALUE',
-            message: "The security panel doesn't support arm state [ARMED_AWAY]"
+            message: "The security panel doesn't support ARMED_AWAY state."
           }
         }
       }
@@ -327,7 +362,7 @@ module.exports = [
           },
           payload: {
             type: 'AUTHORIZATION_REQUIRED',
-            message: 'Unable to arm the security panel because it is currently in armed away mode'
+            message: 'Unable to arm the security panel because it is currently in armed away mode.'
           }
         }
       }
@@ -378,7 +413,7 @@ module.exports = [
           },
           payload: {
             type: 'BYPASS_NEEDED',
-            message: 'Unable to arm the security panel because it has open zones that must be bypassed'
+            message: 'Unable to arm the security panel because it has open zones that must be bypassed.'
           }
         }
       }
@@ -429,7 +464,7 @@ module.exports = [
           },
           payload: {
             type: 'NOT_READY',
-            message: 'Unable to arm the security panel because it is not ready'
+            message: 'Unable to arm the security panel because it is not ready.'
           }
         }
       }
@@ -480,7 +515,7 @@ module.exports = [
           },
           payload: {
             type: 'UNCLEARED_ALARM',
-            message: 'Unable to arm the security panel because it is in alarm status'
+            message: 'Unable to arm the security panel because it is in alarm status.'
           }
         }
       }
@@ -531,7 +566,7 @@ module.exports = [
           },
           payload: {
             type: 'UNCLEARED_TROUBLE',
-            message: 'Unable to arm the security panel because it is in trouble status'
+            message: 'Unable to arm the security panel because it is in trouble status.'
           }
         }
       }
@@ -663,7 +698,40 @@ module.exports = [
     }
   },
   {
-    description: 'disarm no property invalid value error',
+    description: 'disarm no properties invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.SecurityPanelController',
+        name: 'Disarm'
+      },
+      endpoint: {
+        endpointId: 'gSecurityPanel',
+        cookie: {
+          // workaround bug introduced by previous version
+          propertyMap: JSON.stringify({
+            SecurityPanelController: {}
+          })
+        }
+      },
+      payload: {}
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'The security panel has no properties defined.'
+          }
+        }
+      }
+    }
+  },
+  {
+    description: 'disarm no state property invalid value error',
     directive: {
       header: {
         namespace: 'Alexa.SecurityPanelController',
@@ -693,7 +761,7 @@ module.exports = [
           },
           payload: {
             type: 'INVALID_VALUE',
-            message: 'The security panel has no arm state property'
+            message: 'The security panel has no arm state property.'
           }
         }
       }
@@ -738,7 +806,7 @@ module.exports = [
           },
           payload: {
             type: 'UNAUTHORIZED',
-            message: 'Unable to disarm the security panel because the PIN code is not correct'
+            message: 'Unable to disarm the security panel because the PIN code is not correct.'
           }
         }
       }
@@ -784,7 +852,7 @@ module.exports = [
           },
           payload: {
             type: 'NOT_READY',
-            message: 'Unable to disarm the security panel because it is not ready'
+            message: 'Unable to disarm the security panel because it is not ready.'
           }
         }
       }
