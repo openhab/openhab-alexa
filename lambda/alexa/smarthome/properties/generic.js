@@ -49,7 +49,7 @@ class Generic extends DecoupleState {
   }
 
   /**
-   * Returns if is non-controlable
+   * Returns if is non-controllable
    * @return {Boolean}
    */
   get isNonControllable() {
@@ -126,7 +126,7 @@ class Generic extends DecoupleState {
    * @return {Boolean}
    */
   get isValid() {
-    return this.friendlyNames.length > 0;
+    return this.friendlyNames.length > 0 && (this.isRetrievable || !this.isNonControllable);
   }
 
   /**

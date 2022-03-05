@@ -57,12 +57,12 @@ class CameraStreamController extends AlexaCapability {
   }
 
   /**
-   * Returns alexa interface
+   * Returns capability interface
    * @return {Object}
    */
-  getAlexaInterface() {
+  getCapabilityInterface() {
     // Get capability interface from parent method
-    const capability = super.getAlexaInterface();
+    const capability = super.getCapabilityInterface();
     const cameraStream = this.getProperty({ name: Property.CAMERA_STREAM });
     const { protocol, resolution, authorizationType, videoCodec, audioCodec } = cameraStream;
 

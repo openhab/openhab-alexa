@@ -72,7 +72,7 @@ class ToggleState extends Generic {
    * @return {Boolean}
    */
   get isValid() {
-    return !this.requiresValueMap || this.supportedValues.every((value) => typeof this.valueMap[value] !== 'undefined');
+    return super.isValid && (!this.requiresValueMap || this.hasSupportedValuesMapped);
   }
 
   /**

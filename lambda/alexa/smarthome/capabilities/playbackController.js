@@ -53,12 +53,12 @@ class PlaybackController extends AlexaCapability {
   }
 
   /**
-   * Returns alexa interface
+   * Returns capability interface
    * @return {Object}
    */
-  getAlexaInterface() {
+  getCapabilityInterface() {
     // Get capability interface from parent method
-    const capability = super.getAlexaInterface();
+    const capability = super.getCapabilityInterface();
 
     // Initialize capability supported operations array
     capability.supportedOperations = [];

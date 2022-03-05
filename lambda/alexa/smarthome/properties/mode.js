@@ -74,7 +74,7 @@ class Mode extends Generic {
   }
 
   /**
-   * Returns if is non-controlable
+   * Returns if is non-controllable
    * @return {Boolean}
    */
   get isNonControllable() {

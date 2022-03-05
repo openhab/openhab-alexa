@@ -161,6 +161,21 @@ module.exports = {
       }
     },
     {
+      type: 'Number',
+      name: 'range99',
+      label: 'Range Value Invalid',
+      metadata: {
+        alexa: {
+          value: 'RangeValue',
+          config: {
+            // Cannot be non-controllable & non-retrievable
+            nonControllable: true,
+            retrievable: false
+          }
+        }
+      }
+    },
+    {
       type: 'Switch',
       name: 'toggle1',
       label: 'Toggle State 1',

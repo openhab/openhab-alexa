@@ -11,20 +11,19 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
 const { Interface, Property } = require('../constants');
 const RangeControllerHandler = require('../handlers/rangeController');
 const { RangeValue } = require('../properties');
 const { AlexaPresetResources } = require('../resources');
 const AlexaSemantics = require('../semantics');
+const GenericController = require('./genericController');
 
 /**
  * Defines Alexa.RangeController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-rangecontroller.html
- * @extends AlexaCapability
+ * @extends GenericController
  */
-class RangeController extends AlexaCapability {
+class RangeController extends GenericController {
   /**
    * Returns interface
    * @return {String}
@@ -41,22 +40,6 @@ class RangeController extends AlexaCapability {
     return {
       [Property.RANGE_VALUE]: RangeValue
     };
-  }
-
-  /**
-   * Returns default display categories
-   * @return {Array}
-   */
-  get defaultDisplayCategories() {
-    return [AlexaDisplayCategory.OTHER];
-  }
-
-  /**
-   * Returns if is multi-instance
-   * @return {Boolean}
-   */
-  get isMultiInstance() {
-    return true;
   }
 
   /**

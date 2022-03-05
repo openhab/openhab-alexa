@@ -13,7 +13,7 @@
 
 /**
  * Defines alexa semantics class
- *  https://developer.amazon.com/docs/alexa-voice-service/generic-controllers.html#semantics-syntax
+ *  https://developer.amazon.com/docs/alexa-voice-service/generic-controllers.html#semantics
  */
 class AlexaSemantics {
   /**
