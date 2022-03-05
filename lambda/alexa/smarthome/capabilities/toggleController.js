@@ -12,19 +12,18 @@
  */
 
 const { ItemValue } = require('@openhab/constants');
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
 const { Interface, Property } = require('../constants');
 const ToggleControllerHandler = require('../handlers/toggleController');
 const { ToggleState } = require('../properties');
 const AlexaSemantics = require('../semantics');
+const GenericController = require('./genericController');
 
 /**
  * Defines Alexa.ToggleController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-togglecontroller.html
- * @extends AlexaCapability
+ * @extends GenericController
  */
-class ToggleController extends AlexaCapability {
+class ToggleController extends GenericController {
   /**
    * Returns interface
    * @return {String}
@@ -41,22 +40,6 @@ class ToggleController extends AlexaCapability {
     return {
       [Property.TOGGLE_STATE]: ToggleState
     };
-  }
-
-  /**
-   * Returns default display categories
-   * @return {Array}
-   */
-  get defaultDisplayCategories() {
-    return [AlexaDisplayCategory.OTHER];
-  }
-
-  /**
-   * Returns if is multi-instance
-   * @return {Boolean}
-   */
-  get isMultiInstance() {
-    return true;
   }
 
   /**

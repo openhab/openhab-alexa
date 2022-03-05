@@ -49,12 +49,12 @@ class SceneController extends AlexaCapability {
   }
 
   /**
-   * Returns alexa interface
+   * Returns capability interface
    * @return {Object}
    */
-  getAlexaInterface() {
+  getCapabilityInterface() {
     // Get capability interface from parent method
-    const capability = super.getAlexaInterface();
+    const capability = super.getCapabilityInterface();
     const { supportsDeactivation } = this.getProperty({ name: Property.SCENE });
 
     capability.supportsDeactivation = supportsDeactivation;

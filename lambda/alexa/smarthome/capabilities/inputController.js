@@ -49,12 +49,12 @@ class InputController extends AlexaCapability {
   }
 
   /**
-   * Returns alexa interface
+   * Returns capability interface
    * @return {Object}
    */
-  getAlexaInterface() {
+  getCapabilityInterface() {
     // Get capability interface from parent method
-    const capability = super.getAlexaInterface();
+    const capability = super.getCapabilityInterface();
     const { supportedInputs } = this.getProperty({ name: Property.INPUT });
 
     capability.inputs = supportedInputs.map((input) => ({ name: input }));

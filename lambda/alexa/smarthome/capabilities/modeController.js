@@ -11,20 +11,19 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
 const { Interface, Property } = require('../constants');
 const ModeControllerHandler = require('../handlers/modeController');
 const { Mode } = require('../properties');
 const { AlexaModeResources } = require('../resources');
 const AlexaSemantics = require('../semantics');
+const GenericController = require('./genericController');
 
 /**
  * Defines Alexa.ModeController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-modecontroller.html
- * @extends AlexaCapability
+ * @extends GenericController
  */
-class ModeController extends AlexaCapability {
+class ModeController extends GenericController {
   /**
    * Returns interface
    * @return {String}
@@ -41,22 +40,6 @@ class ModeController extends AlexaCapability {
     return {
       [Property.MODE]: Mode
     };
-  }
-
-  /**
-   * Returns default display categories
-   * @return {Array}
-   */
-  get defaultDisplayCategories() {
-    return [AlexaDisplayCategory.OTHER];
-  }
-
-  /**
-   * Returns if is multi-instance
-   * @return {Boolean}
-   */
-  get isMultiInstance() {
-    return true;
   }
 
   /**

@@ -257,11 +257,11 @@ class AlexaEndpoint {
   }
 
   /**
-   * Returns capability alexa interfaces
+   * Returns capability interfaces
    * @return {Array}
    */
   getCapabilityInterfaces() {
-    return this.discoverableCapabilities.map((capability) => capability.getAlexaInterface());
+    return this.discoverableCapabilities.map((capability) => capability.getCapabilityInterface());
   }
 
   /**
@@ -310,13 +310,13 @@ class AlexaEndpoint {
    * @param {Array}  groups
    */
   addCapability({ name, instance, property, component, tag, parameters, item, metadata, settings, groups }) {
-    // Define instance name for multi-instance capability using capability/item names, if not defined already
+    // Define instance name for generic capabilities using capability/item names, if not defined already
     if (!instance && item) {
-      instance = name.replace(/Controller$/, '') + ':' + item.name;
+      instance = `${name.replace(/Controller$/, '')}:${item.name}`;
     }
     // Find existing capability index based on capability and instance names
     const index = this._capabilities.findIndex(
-      (capability) => capability.name === name && (!capability.isMultiInstance || capability.instance === instance)
+      (capability) => capability.name === name && (!capability.instance || capability.instance === instance)
     );
     // Use existing capability if found, otherwise build a new one
     const capability = index !== -1 ? this._capabilities[index] : AlexaCapabilities.build(name, instance);
@@ -475,6 +475,7 @@ class AlexaEndpoint {
 
   /**
    * Returns serialized endpoint object
+   *  https://developer.amazon.com/docs/device-apis/alexa-discovery-objects.html#endpoint-object
    * @return {Object}
    */
   toJSON() {

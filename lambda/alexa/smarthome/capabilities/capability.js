@@ -12,7 +12,6 @@
  */
 
 const { DecoupleState } = require('../properties');
-const { AlexaCapabilityResources } = require('../resources');
 
 /**
  * Defines alexa base capability class
@@ -21,11 +20,9 @@ class AlexaCapability {
   /**
    * Constructor
    * @param {String} name
-   * @param {String} instance
    */
-  constructor(name, instance) {
+  constructor(name) {
     this.name = name;
-    if (this.isMultiInstance) this.instance = instance;
     this._properties = [];
   }
 
@@ -67,14 +64,6 @@ class AlexaCapability {
    */
   get requiredLinkedCapabilities() {
     return [];
-  }
-
-  /**
-   * Returns if is multi-instance
-   * @return {Boolean}
-   */
-  get isMultiInstance() {
-    return false;
   }
 
   /**
@@ -128,14 +117,6 @@ class AlexaCapability {
   }
 
   /**
-   * Returns if has non-controlable properties
-   * @return {Boolean}
-   */
-  get hasNonControllableProperties() {
-    return this.properties.every((property) => property.isReportable && property.isNonControllable);
-  }
-
-  /**
    * Returns if is valid
    * @return {Boolean}
    */
@@ -163,10 +144,11 @@ class AlexaCapability {
   }
 
   /**
-   * Returns alexa interface
+   * Returns capability interface
+   *  https://developer.amazon.com/docs/device-apis/alexa-discovery-objects.html#capability-object
    * @return {Object}
    */
-  getAlexaInterface() {
+  getCapabilityInterface() {
     // Define capability properties
     const properties = this.getCapabilityProperties();
     // Define capability resources
@@ -201,12 +183,10 @@ class AlexaCapability {
       )
       .map((property) => ({ name: property.name }));
 
-    // Return capability properties object including non-controllable property if instance defined
     return {
       supported,
       proactivelyReported: this.hasProactivelyReportedProperties,
-      retrievable: this.hasRetrievableProperties,
-      ...(this.instance && { nonControllable: this.hasNonControllableProperties })
+      retrievable: this.hasRetrievableProperties
     };
   }
 
@@ -215,12 +195,7 @@ class AlexaCapability {
    * @return {Object}
    */
   getCapabilityResources() {
-    // Determine capability resources labels and language
-    const { friendlyNames: labels, language } =
-      this.properties.find(({ friendlyNames, language }) => friendlyNames && language) || {};
-
-    // Return capability resources object based on labels and language
-    return { ...(labels && AlexaCapabilityResources.getResources(labels, language)) };
+    return {};
   }
 
   /**
