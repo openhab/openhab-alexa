@@ -68,7 +68,7 @@ class GenericController extends AlexaCapability {
     const { friendlyNames: labels, language } = this.properties.find((property) => property instanceof Generic);
 
     // Return capability resources object based on labels and language
-    return { ...(labels && AlexaCapabilityResources.getResources(labels, language)) };
+    return AlexaCapabilityResources.getResources(labels, language);
   }
 }
 
