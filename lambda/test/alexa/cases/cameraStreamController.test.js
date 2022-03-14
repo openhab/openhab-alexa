@@ -110,8 +110,9 @@ module.exports = [
             name: 'ErrorResponse'
           },
           payload: {
-            type: 'INVALID_VALUE',
-            message: 'Could not determine a valid camera stream URL'
+            type: 'NOT_SUPPORTED_IN_CURRENT_MODE',
+            message: 'Invalid camera stream URL',
+            currentDeviceMode: 'NOT_PROVISIONED'
           }
         }
       }
