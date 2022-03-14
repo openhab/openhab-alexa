@@ -13,7 +13,7 @@
 
 const { parseUrl } = require('@root/utils');
 const { Interface, Property } = require('../constants');
-const { InvalidValueError } = require('../errors');
+const { CurrentModeNotSupportedError } = require('../errors');
 const AlexaHandler = require('./handler');
 
 /**
@@ -61,9 +61,9 @@ class CameraStreamController extends AlexaHandler {
     // Determine camera stream url based on item current state
     const streamUrl = await openhab.getItemState(item.name).then((state) => parseUrl(state, proxyBaseUrl));
 
-    // Throw invalid value error if camera stream url not defined, not https protocol or has non-standard port
+    // Throw current mode not supported error if stream url not defined, not https protocol or has non-standard port
     if (!streamUrl || streamUrl.protocol !== 'https:' || streamUrl.port) {
-      throw new InvalidValueError('Could not determine a valid camera stream URL');
+      throw new CurrentModeNotSupportedError('Invalid camera stream URL', { currentDeviceMode: 'NOT_PROVISIONED' });
     }
 
     // Return directive response including camera stream and image information
