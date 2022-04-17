@@ -33,7 +33,8 @@ class Color extends AlexaProperty {
    * @return {Object}
    */
   getState(value) {
-    const [hue, saturation, brightness] = (value && value.split(',').map((value) => parseFloat(value))) || [];
+    const [hue, saturation, brightness] =
+      typeof value === 'string' ? value.split(',').map((value) => parseFloat(value)) : [];
 
     // Return formatted hsb state if valid
     if (!isNaN(hue) && !isNaN(saturation) && !isNaN(brightness)) {

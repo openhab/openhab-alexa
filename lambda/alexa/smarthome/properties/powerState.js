@@ -106,7 +106,7 @@ class PowerState extends AlexaProperty {
     }
 
     // Extract brightness level for color item type
-    if (value.split(',').length === 3) {
+    if (typeof value === 'string' && value.split(',').length === 3) {
       value = value.split(',').pop();
     }
 
