@@ -9,3 +9,6 @@ updates:
     directory: "/lambda"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "ajv"
+        update-types: ["version-update:semver-major"]
