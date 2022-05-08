@@ -72,9 +72,17 @@ class ModeController extends AlexaHandler {
       await Safety.checkAlerts(directive, openhab);
     }
 
-    const command = property.getCommand(directive.payload.mode);
+    const { item, supportedModes } = property;
+    const mode = directive.payload.mode;
 
-    await openhab.sendCommand(property.item.name, command);
+    // Throw invalid value error if mode not supported
+    if (!Object.keys(supportedModes).includes(mode)) {
+      throw new InvalidValueError(`${mode} mode isn't supported.`);
+    }
+
+    const command = property.getCommand(mode);
+
+    await openhab.sendCommand(item.name, command);
 
     return directive.response();
   }

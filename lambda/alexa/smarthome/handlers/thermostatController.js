@@ -303,15 +303,17 @@ class ThermostatController extends AlexaHandler {
       throw new InvalidValueError('The thermostat has no mode property.');
     }
 
+    const { item, supportedModes } = property;
     const mode = directive.payload.thermostatMode.value;
-    const command = property.getCommand(mode);
 
-    // Throw thermostat mode unsupported error if no command defined
-    if (typeof command === 'undefined') {
+    // Throw thermostat mode unsupported error if mode not supported
+    if (!supportedModes.includes(mode)) {
       throw new ThermostatModeUnsupportedError(`The thermostat doesn't support ${mode} mode.`);
     }
 
-    await openhab.sendCommand(property.item.name, command);
+    const command = property.getCommand(mode);
+
+    await openhab.sendCommand(item.name, command);
 
     return directive.response();
   }

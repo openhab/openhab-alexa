@@ -583,5 +583,44 @@ module.exports = [
         commands: [{ name: 'equalizerMode', value: 'movie' }]
       }
     }
+  },
+  {
+    description: 'set mode invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.EqualizerController',
+        name: 'SetMode'
+      },
+      endpoint: {
+        endpointId: 'gSpeaker',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'EqualizerController',
+              property: 'mode',
+              parameters: { supportedModes: ['MOVIE', 'TV'] },
+              item: { name: 'equalizerMode', type: 'String' }
+            }
+          ])
+        }
+      },
+      payload: {
+        mode: 'SPORT'
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: "SPORT equalizer mode isn't supported."
+          }
+        }
+      }
+    }
   }
 ];
