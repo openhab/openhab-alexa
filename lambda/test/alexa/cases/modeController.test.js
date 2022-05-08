@@ -184,6 +184,54 @@ module.exports = [
     }
   },
   {
+    description: 'set mode invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.ModeController',
+        instance: 'Mode:WashCycle',
+        name: 'SetMode'
+      },
+      endpoint: {
+        endpointId: 'gWasher',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ModeController',
+              instance: 'Mode:WashCycle',
+              property: 'mode',
+              parameters: {
+                capabilityNames: ['Wash Cycle', 'Wash Setting'],
+                supportedModes: {
+                  Normal: ['Normal', 'Cottons'],
+                  Delicate: ['@Value.Delicate', 'Knites'],
+                  Whites: ['Whites']
+                }
+              },
+              item: { name: 'WashCycle', type: 'String' }
+            }
+          ])
+        }
+      },
+      payload: {
+        mode: 'Color'
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: "Color mode isn't supported."
+          }
+        }
+      }
+    }
+  },
+  {
     description: 'adjust mode',
     directive: {
       header: {

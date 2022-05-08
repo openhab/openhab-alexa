@@ -162,9 +162,17 @@ class EqualizerController extends AlexaHandler {
       interface: directive.namespace,
       property: Property.EQUALIZER_MODE
     });
-    const command = property.getCommand(directive.payload.mode);
+    const { item, supportedModes } = property;
+    const mode = directive.payload.mode;
 
-    await openhab.sendCommand(property.item.name, command);
+    // Throw invalid value error if mode not supported
+    if (!supportedModes.includes(mode)) {
+      throw new InvalidValueError(`${mode} equalizer mode isn't supported.`);
+    }
+
+    const command = property.getCommand(mode);
+
+    await openhab.sendCommand(item.name, command);
 
     return directive.response();
   }
