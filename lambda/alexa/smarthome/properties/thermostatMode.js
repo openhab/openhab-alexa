@@ -228,12 +228,11 @@ class ThermostatMode extends AlexaProperty {
 
     const binding = parameters[Parameter.BINDING];
     // Update binding parameter using item channel metadata value if not defined
-    parameters[Parameter.BINDING] =
-      binding || (item.metadata && item.metadata.channel && item.metadata.channel.value.split(':')[0]);
+    parameters[Parameter.BINDING] = binding || item.metadata?.channel?.value.split(':')[0];
 
     const modes = parameters[Parameter.SUPPORTED_MODES];
     // Update supported modes parameter removing unsupported values if defined
-    parameters[Parameter.SUPPORTED_MODES] = modes && modes.filter((value) => this.supportedValues.includes(value));
+    parameters[Parameter.SUPPORTED_MODES] = modes?.filter((value) => this.supportedValues.includes(value));
   }
 }
 

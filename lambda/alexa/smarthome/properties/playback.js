@@ -149,8 +149,7 @@ class Playback extends AlexaProperty {
 
     const operations = parameters[Parameter.SUPPORTED_OPERATIONS];
     // Update supported operations parameter if defined, removing invalid values
-    parameters[Parameter.SUPPORTED_OPERATIONS] =
-      operations && operations.filter((value) => this.defaultOperations.includes(value));
+    parameters[Parameter.SUPPORTED_OPERATIONS] = operations?.filter((value) => this.defaultOperations.includes(value));
   }
 }
 

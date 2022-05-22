@@ -116,7 +116,7 @@ class ColorTemperatureController extends AlexaHandler {
     // Get temperature and color item current state if retrievable
     const [temperatureState, colorState] = await Promise.all([
       openhab.getItemState(temperature.item.name),
-      color && color.isRetrievable && openhab.getItemState(color.item.name)
+      color?.isRetrievable && openhab.getItemState(color.item.name)
     ]);
 
     // Throw endpoint unreachable error if temperature state not a number

@@ -81,7 +81,7 @@ function getCapabilitiesNamespaces(capabilities) {
   for (const capability of capabilities) {
     const interfaceName = getCapabilityInterfaceName(capability);
 
-    if (capability.properties && capability.properties.supported) {
+    if (capability.properties?.supported) {
       for (const property of capability.properties.supported) {
         result.push(interfaceName + '.' + property.name);
       }

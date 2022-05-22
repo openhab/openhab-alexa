@@ -181,7 +181,7 @@ class RangeValue extends Generic {
     //  3) empty object
     const presets = parameters[Parameter.PRESETS]
       ? parameters[Parameter.PRESETS]
-      : item.stateDescription && item.stateDescription.options
+      : item.stateDescription?.options
       ? Object.fromEntries(item.stateDescription.options.map((option) => [option.value, option.label]))
       : {};
     // Update presets parameter, removing duplicate labels and entries
@@ -216,8 +216,8 @@ class RangeValue extends Generic {
       ? parameters[Parameter.UNIT_OF_MEASURE]
       : AlexaUnitOfMeasure.getId({
           dimension: item.type.split(':')[1],
-          statePresentation: item.stateDescription && item.stateDescription.pattern,
-          system: settings.regional.measurementSystem || settings.regional.region
+          statePresentation: item.stateDescription?.pattern,
+          system: settings.regional?.measurementSystem || settings.regional?.region
         });
     // Update unit of measure parameter if valid, otherwise set to undefined
     parameters[Parameter.UNIT_OF_MEASURE] = AlexaUnitOfMeasure.isSupported(uom) ? uom : undefined;

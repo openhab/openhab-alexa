@@ -100,8 +100,8 @@ class Temperature extends AlexaProperty {
       ? parameters[Parameter.SCALE].toUpperCase()
       : AlexaUnitOfMeasure.getUnit({
           dimension: Dimension.TEMPERATURE,
-          statePresentation: item.stateDescription && item.stateDescription.pattern,
-          system: settings.regional.measurementSystem || settings.regional.region
+          statePresentation: item.stateDescription?.pattern,
+          system: settings.regional?.measurementSystem || settings.regional?.region
         });
     // Update scale parameter
     parameters[Parameter.SCALE] =

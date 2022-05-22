@@ -103,7 +103,7 @@ class ThermostatController extends AlexaHandler {
 
     // Get current alexa thermostat mode if property defined, retrievable and supports setpoint mode
     const mode =
-      thermostatMode && thermostatMode.isRetrievable && thermostatMode.supportsSetpointMode !== false
+      thermostatMode?.isRetrievable && thermostatMode.supportsSetpointMode !== false
         ? await openhab.getItemState(thermostatMode.item.name).then((state) => thermostatMode.getState(state))
         : undefined;
 
@@ -190,7 +190,7 @@ class ThermostatController extends AlexaHandler {
     }
 
     // Set thermostat hold prior to sending setpoint commands if required
-    if (thermostatHold && thermostatHold.requiresSetpointHold) {
+    if (thermostatHold?.requiresSetpointHold) {
       await openhab.sendCommand(thermostatHold.item.name, thermostatHold.getCommand(ThermostatHold.ON));
     }
 
@@ -222,7 +222,7 @@ class ThermostatController extends AlexaHandler {
 
     // Get current alexa thermostat mode if property defined, retrievable and supports setpoint mode
     const mode =
-      thermostatMode && thermostatMode.isRetrievable && thermostatMode.supportsSetpointMode !== false
+      thermostatMode?.isRetrievable && thermostatMode.supportsSetpointMode !== false
         ? await openhab.getItemState(thermostatMode.item.name).then((state) => thermostatMode.getState(state))
         : undefined;
 
@@ -274,7 +274,7 @@ class ThermostatController extends AlexaHandler {
     );
 
     // Set thermostat hold prior to sending setpoint commands if required
-    if (thermostatHold && thermostatHold.requiresSetpointHold) {
+    if (thermostatHold?.requiresSetpointHold) {
       await openhab.sendCommand(thermostatHold.item.name, thermostatHold.getCommand(ThermostatHold.ON));
     }
 
@@ -335,10 +335,9 @@ class ThermostatController extends AlexaHandler {
     }
 
     // Get current alexa thermostat mode if property defined and retrievable
-    const mode =
-      thermostatMode && thermostatMode.isRetrievable
-        ? await openhab.getItemState(thermostatMode.item.name).then((state) => thermostatMode.getState(state))
-        : undefined;
+    const mode = thermostatMode?.isRetrievable
+      ? await openhab.getItemState(thermostatMode.item.name).then((state) => thermostatMode.getState(state))
+      : undefined;
 
     // Throw thermostat off error if mode is off
     if (mode === ThermostatMode.OFF) {

@@ -97,14 +97,13 @@ class AlexaMetadata {
   constructor(item, settings, groupConfig) {
     this._metadata = {
       // Use item alexa metadata value if defined, fallback to item tags for OH 2.x only
-      values:
-        item.metadata && item.metadata.alexa
-          ? AlexaMetadata.convertValue(item.metadata.alexa.value, ParameterType.LIST)
-          : item.tags && settings.runtime.version === '2'
-          ? item.tags
-          : [],
+      values: item.metadata?.alexa
+        ? AlexaMetadata.convertValue(item.metadata.alexa.value, ParameterType.LIST)
+        : item.tags && settings.runtime.version === '2'
+        ? item.tags
+        : [],
       // Use item alexa metadata config if defined
-      config: (item.metadata && item.metadata.alexa && item.metadata.alexa.config) || {},
+      config: item.metadata?.alexa?.config || {},
       // Add group config if defined
       groupConfig
     };
@@ -210,7 +209,7 @@ class AlexaMetadata {
    */
   static parseCapability(value) {
     const match = value.match(this.#CAPABILITY_PATTERN);
-    return match && match.groups;
+    return match?.groups;
   }
 
   /**
@@ -220,7 +219,7 @@ class AlexaMetadata {
    */
   static parseGroupEndpoint(value) {
     const match = value.match(this.#GROUP_ENDPOINT_PATTERN);
-    return match && match.groups;
+    return match?.groups;
   }
 }
 

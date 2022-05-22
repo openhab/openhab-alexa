@@ -286,7 +286,7 @@ class AlexaProperty {
     }
 
     // Use autoupdate metadata value if available, to determine retrievable parameter if not already defined
-    if (typeof parameters[Parameter.RETRIEVABLE] !== 'boolean' && item.metadata && item.metadata.autoupdate) {
+    if (typeof parameters[Parameter.RETRIEVABLE] !== 'boolean' && item.metadata?.autoupdate) {
       parameters[Parameter.RETRIEVABLE] = convertValue(item.metadata.autoupdate.value, ParameterType.BOOLEAN);
     }
   }
