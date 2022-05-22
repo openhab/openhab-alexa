@@ -78,8 +78,8 @@ class ThermostatController extends AlexaCapability {
     const thermostatMode = properties[Property.THERMOSTAT_MODE];
 
     if (thermostatMode) {
-      const item = items.find((item) => item.name === thermostatMode.item.name) || {};
-      const mode = thermostatMode.getState(item.state);
+      const item = items.find((item) => item.name === thermostatMode.item.name);
+      const mode = thermostatMode.getState(item?.state);
       const setpointProperties = this.getSetpointProperties(mode, properties);
       // Return thermostat mode and relevant setpoint properties
       return [thermostatMode, ...Object.values(setpointProperties)];

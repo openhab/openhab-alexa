@@ -59,11 +59,11 @@ class ColorController extends AlexaCapability {
     const temperature = properties[Property.COLOR_TEMPERATURE];
 
     if (color && temperature) {
-      const colorItem = items.find((item) => item.name === color.item.name) || {};
-      const temperatureItem = items.find((item) => item.name === temperature.item.name) || {};
+      const colorItem = items.find((item) => item.name === color.item.name);
+      const temperatureItem = items.find((item) => item.name === temperature.item.name);
 
       // Exclude color property if not in color mode
-      if (!temperature.isInColorMode(colorItem.state, temperatureItem.state)) {
+      if (!temperature.isInColorMode(colorItem?.state, temperatureItem?.state)) {
         return this.properties.filter((property) => !(property instanceof Color));
       }
     }
