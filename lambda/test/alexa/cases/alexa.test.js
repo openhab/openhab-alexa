@@ -185,6 +185,58 @@ module.exports = [
     }
   },
   {
+    description: 'report state color in color mode (temperature not retrievable)',
+    directive: {
+      header: {
+        namespace: 'Alexa',
+        name: 'ReportState'
+      },
+      endpoint: {
+        endpointId: 'gColorLight',
+        cookie: {
+          capabilities: JSON.stringify([
+            {
+              name: 'ColorController',
+              property: 'color',
+              parameters: {},
+              item: { name: 'color', type: 'Color' }
+            },
+            {
+              name: 'ColorTemperatureController',
+              property: 'colorTemperatureInKelvin',
+              parameters: { range: [2700, 6500], retrievable: false },
+              item: { name: 'colorTemperature', type: 'Dimmer' }
+            }
+          ])
+        }
+      }
+    },
+    items: [{ name: 'color', state: '42,50,100', type: 'Color' }],
+    expected: {
+      alexa: {
+        context: {
+          properties: [
+            {
+              namespace: 'Alexa.ColorController',
+              name: 'color',
+              value: {
+                hue: 42,
+                saturation: 0.5,
+                brightness: 1
+              }
+            }
+          ]
+        },
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'StateReport'
+          }
+        }
+      }
+    }
+  },
+  {
     description: 'report state color temperature in white mode',
     directive: {
       header: {
