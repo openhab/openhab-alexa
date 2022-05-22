@@ -88,7 +88,5 @@ module.exports.genericAttributes = [require('./mode'), require('./rangeValue'), 
  * @return {Object}
  */
 module.exports.get = function (name) {
-  return Object.values(this).find(
-    (deviceAttribute) => deviceAttribute.supportedNames && deviceAttribute.supportedNames.includes(name)
-  );
+  return Object.values(this).find((deviceAttribute) => deviceAttribute.supportedNames?.includes(name));
 };

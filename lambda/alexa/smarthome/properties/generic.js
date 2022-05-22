@@ -147,7 +147,7 @@ class Generic extends DecoupleState {
     const capabilityNames = parameters[Parameter.CAPABILITY_NAMES]
       ? parameters[Parameter.CAPABILITY_NAMES]
       : metadata.isPartOfGroupEndpoint
-      ? [].concat(item.label, item.metadata && item.metadata.synonyms && item.metadata.synonyms.value.split(','))
+      ? [].concat(item.label, item.metadata?.synonyms?.value.split(','))
       : this.defaultCapabilityNames;
     // Update capability names parameter removing duplicate and invalid labels
     parameters[Parameter.CAPABILITY_NAMES] = capabilityNames
@@ -160,12 +160,12 @@ class Generic extends DecoupleState {
     parameters[Parameter.LANGUAGE] =
       AlexaCapabilityResources.getSupportedLocales(language).length > 0
         ? language.toLowerCase()
-        : settings.regional.language;
+        : settings.regional?.language;
 
     const nonControllable = parameters[Parameter.NON_CONTROLLABLE];
     // Upate non-controllable parameter using item state description read only property if not defined
     parameters[Parameter.NON_CONTROLLABLE] =
-      typeof nonControllable === 'boolean' ? nonControllable : item.stateDescription && item.stateDescription.readOnly;
+      typeof nonControllable === 'boolean' ? nonControllable : item.stateDescription?.readOnly;
 
     const actionMappings = parameters[Parameter.ACTION_MAPPINGS] || {};
     // Update action mappings parameter removing unsupported action semantics

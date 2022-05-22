@@ -78,7 +78,7 @@ class ColorTemperature extends AlexaProperty {
    * @return {Array}
    */
   get binding() {
-    return this.parameters[Parameter.BINDING] && this.parameters[Parameter.BINDING].split(':')[0];
+    return this.parameters[Parameter.BINDING]?.split(':')[0];
   }
 
   /**
@@ -86,7 +86,7 @@ class ColorTemperature extends AlexaProperty {
    * @return {Array}
    */
   get thingType() {
-    return this.parameters[Parameter.BINDING] && this.parameters[Parameter.BINDING].split(':')[1];
+    return this.parameters[Parameter.BINDING]?.split(':')[1];
   }
 
   /**
@@ -184,8 +184,7 @@ class ColorTemperature extends AlexaProperty {
 
     const binding = parameters[Parameter.BINDING];
     // Update binding parameter using item channel metadata value if not defined
-    parameters[Parameter.BINDING] =
-      binding || (item.metadata && item.metadata.channel && item.metadata.channel.value.split(':', 2).join(':'));
+    parameters[Parameter.BINDING] = binding || item.metadata?.channel?.value.split(':', 2).join(':');
 
     const range = parameters[Parameter.RANGE] || [];
     // Update range parameter if valid (min < max), otherwise set to undefined

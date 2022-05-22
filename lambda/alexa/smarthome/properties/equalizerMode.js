@@ -141,7 +141,7 @@ class EqualizerMode extends AlexaProperty {
 
     const modes = parameters[Parameter.SUPPORTED_MODES];
     // Update supported modes parameter removing alexa equalizer unsupported values if defined
-    parameters[Parameter.SUPPORTED_MODES] = modes && modes.filter((value) => this.supportedValues.includes(value));
+    parameters[Parameter.SUPPORTED_MODES] = modes?.filter((value) => this.supportedValues.includes(value));
   }
 }
 

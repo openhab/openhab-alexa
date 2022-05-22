@@ -66,11 +66,11 @@ class ColorController extends AlexaHandler {
     const hsb = [
       directive.payload.color.hue,
       directive.payload.color.saturation * 100,
-      (state && parseFloat(state.split(',')[2])) || directive.payload.color.brightness * 100
+      parseFloat(state?.split(',')[2]) || directive.payload.color.brightness * 100
     ];
 
     // Reset color temperature state if retrievable and required
-    if (temperature && temperature.isRetrievable && temperature.requiresSetColorReset) {
+    if (temperature?.isRetrievable && temperature.requiresSetColorReset) {
       await openhab.postUpdate(temperature.item.name, 0);
     }
 

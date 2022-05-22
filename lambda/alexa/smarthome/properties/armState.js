@@ -177,12 +177,11 @@ class ArmState extends AlexaProperty {
 
     const states = parameters[Parameter.SUPPORTED_ARM_STATES];
     // Update supported arm states parameter removing unsupported values if defined
-    parameters[Parameter.SUPPORTED_ARM_STATES] =
-      states && states.filter((value) => this.supportedValues.includes(value));
+    parameters[Parameter.SUPPORTED_ARM_STATES] = states?.filter((value) => this.supportedValues.includes(value));
 
     const pinCodes = parameters[Parameter.PIN_CODES];
     // Update pin codes parameter removing invalid values if defined
-    parameters[Parameter.PIN_CODES] = pinCodes && pinCodes.filter((value) => ArmState.#PIN_CODE_PATTERN.test(value));
+    parameters[Parameter.PIN_CODES] = pinCodes?.filter((value) => ArmState.#PIN_CODE_PATTERN.test(value));
 
     const exitDelay = parameters[Parameter.EXIT_DELAY];
     // Update exit delay parameters within alexa supported spread if valid, otherwise set to undefined

@@ -206,10 +206,7 @@ class OpenHAB {
    * @return {String}
    */
   static formatItemState(item) {
-    const format =
-      item.stateDescription &&
-      item.stateDescription.pattern &&
-      item.stateDescription.pattern.match(/%(?:[.0]\d+)?[dfs]/);
+    const format = item.stateDescription?.pattern?.match(/%(?:[.0]\d+)?[dfs]/);
     const state = item.state;
     const type = item.groupType || item.type;
 

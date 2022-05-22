@@ -105,9 +105,9 @@ class RangeController extends GenericController {
 
     // Iterate over state mappings
     for (const [name, value] of Object.entries(stateMappings)) {
-      const values = value && value.split(':', 2);
+      const values = value?.split(':', 2);
       // Add state mapping object if value(s) valid
-      if (values && values.every((value) => value >= supportedRange[0] && value <= supportedRange[1])) {
+      if (values?.every((value) => value >= supportedRange[0] && value <= supportedRange[1])) {
         if (values.length === 1) {
           semantics.addStateToValue(name, parseFloat(values[0]));
         } else if (values[0] < values[1]) {

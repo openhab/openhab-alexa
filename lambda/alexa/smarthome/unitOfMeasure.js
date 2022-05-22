@@ -458,7 +458,7 @@ class AlexaUnitOfMeasure {
    */
   static getId(query) {
     const uom = this.getUnitOfMeasure(query);
-    return uom && uom.id;
+    return uom?.id;
   }
 
   /**
@@ -468,7 +468,7 @@ class AlexaUnitOfMeasure {
    */
   static getUnit(query) {
     const uom = this.getUnitOfMeasure(query);
-    return uom && uom.unit;
+    return uom?.unit;
   }
 
   /**

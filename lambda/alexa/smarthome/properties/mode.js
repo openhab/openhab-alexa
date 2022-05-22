@@ -178,7 +178,7 @@ class Mode extends Generic {
           .reduce((modes, [command, labels]) => ({ ...modes, [command]: labels }), {})
       : parameters[Parameter.SUPPORTED_MODES]
       ? parameters[Parameter.SUPPORTED_MODES]
-      : item.stateDescription && item.stateDescription.options
+      : item.stateDescription?.options
       ? Object.fromEntries(item.stateDescription.options.map((option) => [option.value, option.label]))
       : {};
 

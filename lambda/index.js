@@ -23,7 +23,7 @@ const AlexaSmarthome = require('./alexa/smarthome');
 exports.handler = async (event) => {
   log.info('Received event:', event);
 
-  if (event.directive && event.directive.header.payloadVersion === '3') {
+  if (event.directive?.header.payloadVersion === '3') {
     return AlexaSmarthome.handleRequest(event);
   }
 

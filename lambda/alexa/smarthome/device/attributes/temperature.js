@@ -102,8 +102,8 @@ class Temperature extends DeviceAttribute {
     // Return scale based on item state description and server regional settings otherwise
     return AlexaUnitOfMeasure.getUnit({
       dimension: Dimension.TEMPERATURE,
-      statePresentation: item.stateDescription && item.stateDescription.pattern,
-      system: settings.regional.measurementSystem || settings.regional.region
+      statePresentation: item.stateDescription?.pattern,
+      system: settings.regional?.measurementSystem || settings.regional?.region
     });
   }
 
