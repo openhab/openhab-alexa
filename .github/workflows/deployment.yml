@@ -30,12 +30,12 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 16.x
+        node-version: 14.x
         cache: npm
         cache-dependency-path: lambda/package-lock.json
 
     - name: Install ASK CLI
-      run: npm install -g jsetton/ask-cli
+      run: npm install -g https://github.com/jsetton/ask-cli
 
     - name: Generate deployment config
       run: node .github/scripts/generateDeployConfig.js
