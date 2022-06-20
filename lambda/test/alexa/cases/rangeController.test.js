@@ -175,6 +175,37 @@ module.exports = [
     }
   },
   {
+    description: 'set range value no property invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.RangeController',
+        instance: 'Range:BasementFan',
+        name: 'SetRangeValue'
+      },
+      endpoint: {
+        endpointId: 'BasementFan',
+        cookie: {}
+      },
+      payload: {
+        rangeValue: 7
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'No range value property defined.'
+          }
+        }
+      }
+    }
+  },
+  {
     description: 'adjust range value',
     directive: {
       header: {
@@ -292,7 +323,39 @@ module.exports = [
     }
   },
   {
-    description: 'adjust range value invalid value error',
+    description: 'adjust range value no property invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.RangeController',
+        instance: 'Range:BasementFan',
+        name: 'AdjustRangeValue'
+      },
+      endpoint: {
+        endpointId: 'BasementFan',
+        cookie: {}
+      },
+      payload: {
+        rangeValueDelta: -3,
+        rangeValueDeltaDefault: false
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'No range value property defined.'
+          }
+        }
+      }
+    }
+  },
+  {
+    description: 'adjust range value not retrievable invalid value error',
     directive: {
       header: {
         namespace: 'Alexa.RangeController',
