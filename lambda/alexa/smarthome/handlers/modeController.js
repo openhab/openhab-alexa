@@ -67,6 +67,11 @@ class ModeController extends AlexaHandler {
       property: Property.MODE
     });
 
+    // Throw invalid value error if no mode property defined
+    if (typeof property === 'undefined') {
+      throw new InvalidValueError('No mode property defined.');
+    }
+
     // Check safety alerts for open state attribute closed requests
     if (directive.instance === OpenState.name && directive.payload.mode === OpenState.CLOSED) {
       await Safety.checkAlerts(directive, openhab);
@@ -99,6 +104,12 @@ class ModeController extends AlexaHandler {
       instance: directive.instance,
       property: Property.MODE
     });
+
+    // Throw invalid value error if no mode property defined
+    if (typeof property === 'undefined') {
+      throw new InvalidValueError('No mode property defined.');
+    }
+
     const { item, supportedModes, isRetrievable } = property;
 
     // Throw invalid value error if property not retrievable

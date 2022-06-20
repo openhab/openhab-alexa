@@ -184,7 +184,38 @@ module.exports = [
     }
   },
   {
-    description: 'set mode invalid value error',
+    description: 'set mode no property invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.ModeController',
+        instance: 'Mode:WashCycle',
+        name: 'SetMode'
+      },
+      endpoint: {
+        endpointId: 'gWasher',
+        cookie: {}
+      },
+      payload: {
+        mode: 'Normal'
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'No mode property defined.'
+          }
+        }
+      }
+    }
+  },
+  {
+    description: 'set mode not supported invalid value error',
     directive: {
       header: {
         namespace: 'Alexa.ModeController',
@@ -290,6 +321,37 @@ module.exports = [
       },
       openhab: {
         commands: [{ name: 'WashTemperature', value: '1' }]
+      }
+    }
+  },
+  {
+    description: 'adjust mode no property invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.ModeController',
+        instance: 'Mode:WashTemperature',
+        name: 'AdjustMode'
+      },
+      endpoint: {
+        endpointId: 'gWasher',
+        cookie: {}
+      },
+      payload: {
+        modeDelta: -1
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'No mode property defined.'
+          }
+        }
       }
     }
   },

@@ -65,6 +65,12 @@ class RangeController extends AlexaHandler {
       instance: directive.instance,
       property: Property.RANGE_VALUE
     });
+
+    // Throw invalid value error if no range value property defined
+    if (typeof property === 'undefined') {
+      throw new InvalidValueError('No range value property defined.');
+    }
+
     const command = property.getCommand(directive.payload.rangeValue);
 
     await openhab.sendCommand(property.item.name, command);
@@ -84,6 +90,12 @@ class RangeController extends AlexaHandler {
       instance: directive.instance,
       property: Property.RANGE_VALUE
     });
+
+    // Throw invalid value error if no range value property defined
+    if (typeof property === 'undefined') {
+      throw new InvalidValueError('No range value property defined.');
+    }
+
     const { item, supportedRange, isRetrievable } = property;
 
     // Throw invalid value error if property not retrievable
