@@ -43,7 +43,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "mocha": "^10.0.0",
-    "nock": "^13.2.6",
+    "nock": "^13.2.8",
     "nyc": "^15.1.0",
     "prettier": "^2.6.2",
     "sinon": "^14.0.0"
