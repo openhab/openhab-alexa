@@ -30,12 +30,12 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 14.x
+        node-version: 16.x
         cache: npm
         cache-dependency-path: lambda/package-lock.json
 
     - name: Install ASK CLI
-      run: npm install -g https://github.com/jsetton/ask-cli
+      run: npm install -g ask-cli
 
     - name: Generate deployment config
       run: node .github/scripts/generateDeployConfig.js
@@ -45,10 +45,10 @@ jobs:
         LOG_LEVEL: ${{ github.event.release.prerelease && 'info' || 'error' }}
         OPENHAB_BASE_URL: https://myopenhab.org
         RELEASE_VERSION: ${{ github.event.release.tag_name }}
+        SKILL_ID: ${{ secrets.SKILL_ID }}
         S3_BUCKET_NA: ${{ secrets.S3_BUCKET_NA }}
         S3_BUCKET_EU: ${{ secrets.S3_BUCKET_EU }}
         S3_BUCKET_FE: ${{ secrets.S3_BUCKET_FE }}
-        SKILL_ID: ${{ secrets.SKILL_ID }}
         STACK_ID_NA: ${{ secrets.STACK_ID_NA }}
         STACK_ID_EU: ${{ secrets.STACK_ID_EU }}
         STACK_ID_FE: ${{ secrets.STACK_ID_FE }}
@@ -59,7 +59,7 @@ jobs:
       run: ask deploy
       env:
         ASK_ACCESS_TOKEN: ${{ secrets.ASK_ACCESS_TOKEN }}
-        ASK_REFRESH_TOKEN : ${{ secrets.ASK_REFRESH_TOKEN }}
+        ASK_REFRESH_TOKEN: ${{ secrets.ASK_REFRESH_TOKEN }}
         ASK_VENDOR_ID: ${{ secrets.ASK_VENDOR_ID }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -69,7 +69,7 @@ jobs:
       run: node .github/scripts/submitSkillForCertification.js
       env:
         ASK_ACCESS_TOKEN: ${{ secrets.ASK_ACCESS_TOKEN }}
-        ASK_REFRESH_TOKEN : ${{ secrets.ASK_REFRESH_TOKEN }}
+        ASK_REFRESH_TOKEN: ${{ secrets.ASK_REFRESH_TOKEN }}
         ASK_VENDOR_ID: ${{ secrets.ASK_VENDOR_ID }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
