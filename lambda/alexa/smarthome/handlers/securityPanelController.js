@@ -172,10 +172,10 @@ class SecurityPanelController extends AlexaHandler {
     }
 
     const { item, pinCodes } = property;
-    const authorization = directive.payload.authorization || {};
+    const authorization = directive.payload.authorization;
 
     // Throw unauthorized error when provided pin code not valid
-    if (authorization.type === ArmState.AuthType.FOUR_DIGIT_PIN && !pinCodes.includes(authorization.value)) {
+    if (authorization?.type === ArmState.AuthType.FOUR_DIGIT_PIN && !pinCodes.includes(authorization.value)) {
       throw new SecurityPanelUnauthorizedError(
         'Unable to disarm the security panel because the PIN code is not correct.'
       );

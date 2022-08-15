@@ -108,8 +108,8 @@ class ConnectedDevice extends AlexaProperty {
     const router = groups
       .filter((group) => item.groupNames.includes(group.name) && group.metadata?.alexa)
       .find(({ metadata }) => {
-        const { groupCapabilities = [] } = AlexaDevice.getDeviceType(metadata.alexa.value) || {};
-        return groupCapabilities.some(({ name }) => name === Capability.NETWORKING_HOME_NETWORK_CONTROLLER);
+        const { groupCapabilities } = AlexaDevice.getDeviceType(metadata.alexa.value) || {};
+        return groupCapabilities?.some(({ name }) => name === Capability.NETWORKING_HOME_NETWORK_CONTROLLER);
       });
     // Set connected to parameter using router group name if found
     parameters[Parameter.CONNECTED_TO] = router?.name;

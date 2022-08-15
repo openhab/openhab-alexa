@@ -357,14 +357,14 @@ class AlexaEndpoint {
    */
   addItemCapabilities(item, settings) {
     const categories = [];
-    const group = this.group || {};
+    const group = this.group;
     // Initialize alexa metadata object with group metadata config if defined
-    const metadata = new AlexaMetadata(item, settings, group.config);
+    const metadata = new AlexaMetadata(item, settings, group?.config);
 
     // Iterate over metadata values
     for (const value of metadata.values) {
       // Determine device based on metadata value
-      const device = AlexaDevice.getDevice(value, group.deviceType);
+      const device = AlexaDevice.getDevice(value, group?.deviceType);
 
       // Add capabilities based on device if defined, otherwise fallback to capability pattern matching
       if (device) {
