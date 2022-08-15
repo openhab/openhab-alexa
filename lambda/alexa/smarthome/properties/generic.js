@@ -164,8 +164,7 @@ class Generic extends DecoupleState {
 
     const nonControllable = parameters[Parameter.NON_CONTROLLABLE];
     // Upate non-controllable parameter using item state description read only property if not defined
-    parameters[Parameter.NON_CONTROLLABLE] =
-      typeof nonControllable === 'boolean' ? nonControllable : item.stateDescription?.readOnly;
+    parameters[Parameter.NON_CONTROLLABLE] = nonControllable ?? item.stateDescription?.readOnly;
 
     const actionMappings = parameters[Parameter.ACTION_MAPPINGS] || {};
     // Update action mappings parameter removing unsupported action semantics
