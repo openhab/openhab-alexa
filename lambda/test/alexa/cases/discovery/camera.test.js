@@ -33,23 +33,12 @@ module.exports = {
       label: 'Camera 2',
       metadata: {
         alexa: {
-          value: 'Camera',
-          config: {
-            proxyBaseUrl: 'https://openhab.myserver.tld',
-            resolution: '720p'
-          }
-        }
-      }
-    },
-    {
-      type: 'String',
-      name: 'camera3',
-      label: 'Camera 3',
-      metadata: {
-        alexa: {
           value: 'CameraStream',
           config: {
-            proxyBaseUrl: 'https://openhab.myserver.tld'
+            proxyBaseUrl: 'https://openhab.myserver.tld',
+            resolution: '720p',
+            username: 'foo',
+            password: 'bar'
           }
         }
       }
@@ -94,23 +83,7 @@ module.exports = {
           {
             protocols: ['HLS'],
             resolutions: [{ width: 1280, height: 720 }],
-            authorizationTypes: ['NONE'],
-            videoCodecs: ['H264'],
-            audioCodecs: ['AAC']
-          }
-        ]
-      }
-    },
-    camera3: {
-      capabilities: ['Alexa.CameraStreamController', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
-      displayCategories: ['CAMERA'],
-      friendlyName: 'Camera 3',
-      parameters: {
-        'Alexa.CameraStreamController.cameraStreamConfigurations': [
-          {
-            protocols: ['HLS'],
-            resolutions: [{ width: 1920, height: 1080 }],
-            authorizationTypes: ['NONE'],
+            authorizationTypes: ['BASIC'],
             videoCodecs: ['H264'],
             audioCodecs: ['AAC']
           }

@@ -90,7 +90,9 @@ class CameraStream extends AlexaProperty {
   get supportedParameters() {
     return {
       [Parameter.PROXY_BASE_URL]: ParameterType.STRING,
-      [Parameter.RESOLUTION]: ParameterType.STRING
+      [Parameter.RESOLUTION]: ParameterType.STRING,
+      [Parameter.USERNAME]: ParameterType.STRING,
+      [Parameter.PASSWORD]: ParameterType.STRING
     };
   }
 
@@ -151,7 +153,7 @@ class CameraStream extends AlexaProperty {
    * @return {String}
    */
   get authorizationType() {
-    return AuthType.NONE;
+    return this.username && this.password ? AuthType.BASIC : AuthType.NONE;
   }
 
   /**
@@ -169,6 +171,23 @@ class CameraStream extends AlexaProperty {
   get audioCodec() {
     return AudioCodec.AAC;
   }
+
+  /**
+   * Returns basic auth username based on parameter
+   * @return {String}
+   */
+  get username() {
+    return this.parameters[Parameter.USERNAME] || '';
+  }
+
+  /**
+   * Returns basic auth password based on parameter
+   * @return {String}
+   */
+  get password() {
+    return this.parameters[Parameter.PASSWORD] || '';
+  }
 }
 
 module.exports = CameraStream;
+module.exports.AuthType = AuthType;
