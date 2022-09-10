@@ -63,7 +63,7 @@ function submitSkillForCertification() {
 async function validateSkill() {
   // Retrieve skill locales from manifest
   const { manifest } = loadSchema(SKILL_MANIFEST_FILE);
-  const locales = Object.keys(manifest.publishingInformation.locales).join(',');
+  const locales = Object.keys(manifest.publishingInformation.locales).filter(locale => locale !== 'ar-SA').join(',');
 
   // Request skill validation
   const command = `ask smapi submit-skill-validation -s ${process.env.SKILL_ID} -l ${locales} -g development`;
