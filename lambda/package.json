@@ -31,7 +31,7 @@
     "request": "^2.88.2",
     "request-promise-native": "^1.0.9",
     "sprintf-js": "^1.1.2",
-    "uuid": "^8.3.2",
+    "uuid": "^9.0.0",
     "winston": "^3.8.1"
   },
   "devDependencies": {
