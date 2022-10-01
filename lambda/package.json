@@ -32,7 +32,7 @@
     "request-promise-native": "^1.0.9",
     "sprintf-js": "^1.1.2",
     "uuid": "^9.0.0",
-    "winston": "^3.8.1"
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "ajv": "^6.12.6",
