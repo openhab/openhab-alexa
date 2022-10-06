@@ -141,7 +141,7 @@
       "locale": "ar-SA"
     },
     {
-      "text": "Sauber",
+      "text": "Reinigen",
       "locale": "de-DE"
     },
     {
@@ -607,7 +607,7 @@
       "locale": "ar-SA"
     },
     {
-      "text": "Umkehren",
+      "text": "Rückwärts",
       "locale": "de-DE"
     },
     {
@@ -806,6 +806,10 @@
     },
     {
       "text": "Zieltemperatur",
+      "locale": "de-DE"
+    },
+    {
+      "text": "Solltemperatur",
       "locale": "de-DE"
     },
     {
@@ -1201,7 +1205,7 @@
       "locale": "ar-SA"
     },
     {
-      "text": "Erhöhung",
+      "text": "Erhöhen",
       "locale": "de-DE"
     },
     {
@@ -1465,7 +1469,7 @@
       "locale": "ar-SA"
     },
     {
-      "text": "Auf",
+      "text": "An",
       "locale": "de-DE"
     },
     {
@@ -1597,7 +1601,7 @@
       "locale": "ar-SA"
     },
     {
-      "text": "Lebenslauf",
+      "text": "Fortsetzen",
       "locale": "de-DE"
     },
     {
@@ -1663,7 +1667,7 @@
       "locale": "ar-SA"
     },
     {
-      "text": "Rechte",
+      "text": "Rechts",
       "locale": "de-DE"
     },
     {
@@ -1795,7 +1799,7 @@
       "locale": "ar-SA"
     },
     {
-      "text": "Halt",
+      "text": "Stopp",
       "locale": "de-DE"
     },
     {
