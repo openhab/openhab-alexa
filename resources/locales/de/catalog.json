@@ -27,7 +27,7 @@
     "@Value.Resume": "Lebenslauf",
     "@Value.Right": "Rechte",
     "@Value.Start": "Start",
-    "@Value.Stop": "Halt",
+    "@Value.Stop": "Stopp",
     "@Value.Up": "Hoch"
   }
 }
