@@ -490,7 +490,7 @@ Device Types | Supported Attributes | Description
 `Dryer` | *[`PowerState`](#powerstate)* | A device that dries wet clothing.
 `Fan` | *[`PowerState`](#powerstate)*, *[`FanSpeed`](#fanspeed)*, [`FanDirection`](#fandirection), [`FanOscillate`](#fanoscillate) | A fan.
 `GameConsole` | *[`PowerState`](#powerstate)*, [`NetworkAccess`](#networkaccess) | A game console, such as Microsoft Xbox or Nintendo Switch.
-`GarageDoor` | *[`OpenState`](#openstate)*, [`TargetOpenState`](#targetopenstate), [`CurrentOpenState`](#currentopenstate), [`ObstacleAlert`](#obstaclealert) | A garage door. Supports unlock by voice code. Only supported in `en-US`. For other languages, use `Door` instead.
+`GarageDoor` | *[`OpenState`](#openstate)*, [`TargetOpenState`](#targetopenstate), [`CurrentOpenState`](#currentopenstate), [`ObstacleAlert`](#obstaclealert) | A garage door. Supports unlock by voice code. Only supported in `de-DE`, `en-GB`, `en-US`, `es-ES`, `fr-FR`, and `it-IT`. For other languages, use `Door` instead.
 `Headphones` | Same as `BluetoothSpeaker` | A wearable device that transmits audio directly into the ear.
 `Hub` | *[`PowerState`](#powerstate)* | A smart-home hub.
 `Laptop` | *[`PowerState`](#powerstate)*, [`BatteryLevel`](#batterylevel), [`NetworkAccess`](#networkaccess) | A laptop or other mobile computer.
@@ -1923,7 +1923,7 @@ PlaybackController | [`Playback`](#playback), [`PlaybackStop`](#playbackstop) | 
 PowerController | [`PowerState`](#powerstate) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
 PowerLevelController | [`PowerLevel`](#powerlevel) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `fr-CA`, `fr-FR`, `it-IT`, `ja-JP`
 RangeController | [`RangeValue`](#rangevalue), [`BatteryLevel`](#batterylevel), [`CurrentHumidity`](#currenthumidity), [`FanSpeed`](#fanspeed), [`PositionState`](#positionstate), [`TiltAngle`](#tiltangle) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
-Safety | [`ObstacleAlert`](#obstaclealert) | `en-US`
+Safety | [`ObstacleAlert`](#obstaclealert) | `de-DE`, `en-GB`, `en-US`, `es-ES`, `fr-FR`, `it-IT`
 SceneController | [`Scene`](#scene), [`Activity`](#activity) | `ar-SA`, `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `hi-IN`, `it-IT`, `ja-JP`, `pt-BR`
 SecurityPanelController | [`ArmState`](#armstate), [`BurglaryAlarm`](#burglaryalarm), [`CarbonMonoxideAlarm`](#carbonmonoxidealarm), [`FireAlarm`](#firealarm), [`WaterAlarm`](#wateralarm) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `es-US`, `fr-CA`, `fr-FR`, `it-IT`, `ja-JP`, `pt-BR`
 Speaker | [`VolumeLevel`](#volumelevel), [`MuteState`](#mutestate) | `de-DE`, `en-AU`, `en-CA`, `en-GB`, `en-IN`, `en-US`, `es-ES`, `es-MX`, `it-IT`, `ja-JP`
