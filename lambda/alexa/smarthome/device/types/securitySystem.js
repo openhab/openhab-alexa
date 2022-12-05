@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const SecurityPanel = require('./securityPanel');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import SecurityPanel from './securityPanel.js';
 
 /**
  * Defines security system device type class
  * @extends SecurityPanel
  */
-class SecuritySystem extends SecurityPanel {
+export default class SecuritySystem extends SecurityPanel {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class SecuritySystem extends SecurityPanel {
     return [AlexaDisplayCategory.SECURITY_SYSTEM];
   }
 }
-
-module.exports = SecuritySystem;

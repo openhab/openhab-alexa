@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const DeviceType = require('./type');
-const { LockState, CurrentLockState, BatteryLevel, genericAttributes } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import DeviceType from './type.js';
+import { LockState, CurrentLockState, BatteryLevel, genericAttributes } from '../attributes/index.js';
 
 /**
  * Defines lock device type class
  * @extends DeviceType
  */
-class Lock extends DeviceType {
+export default class Lock extends DeviceType {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class Lock extends DeviceType {
     return [AlexaDisplayCategory.SMARTLOCK];
   }
 }
-
-module.exports = Lock;

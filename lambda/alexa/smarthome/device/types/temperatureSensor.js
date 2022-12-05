@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Sensor = require('./sensor');
-const { Temperature } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Sensor from './sensor.js';
+import { Temperature } from '../attributes/index.js';
 
 /**
  * Defines temperature sensor device type class
  * @extends Sensor
  */
-class TemperatureSensor extends Sensor {
+export default class TemperatureSensor extends Sensor {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class TemperatureSensor extends Sensor {
     return [AlexaDisplayCategory.TEMPERATURE_SENSOR];
   }
 }
-
-module.exports = TemperatureSensor;

@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { Input } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { Input } from '../properties/index.js';
 
 /**
  * Defines Alexa.InputController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-inputcontroller.html
  * @extends AlexaCapability
  */
-class InputController extends AlexaCapability {
+export default class InputController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.INPUT_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -62,5 +70,3 @@ class InputController extends AlexaCapability {
     return capability;
   }
 }
-
-module.exports = InputController;

@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const AlexaProperty = require('./property');
+import { ItemType } from '#openhab/constants.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines mute step property class
  * @extends AlexaProperty
  */
-class MuteStep extends AlexaProperty {
+export default class MuteStep extends AlexaProperty {
   /**
    * Defines mute step
    * @type {String}
@@ -57,5 +57,3 @@ class MuteStep extends AlexaProperty {
     return this.hasSupportedValuesMapped;
   }
 }
-
-module.exports = MuteStep;

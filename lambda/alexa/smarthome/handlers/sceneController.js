@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemValue } = require('@openhab/constants');
-const { Interface, Property } = require('../constants');
-const { CauseType } = require('./alexa');
-const AlexaHandler = require('./handler');
+import { ItemValue } from '#openhab/constants.js';
+import { Interface, Property } from '../constants.js';
+import { CauseType } from './alexa.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.SceneController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-scenecontroller.html#directives
  * @extends AlexaHandler
  */
-class SceneController extends AlexaHandler {
+export default class SceneController extends AlexaHandler {
   /**
    * Defines activate directive
    * @type {String}
@@ -90,5 +90,3 @@ class SceneController extends AlexaHandler {
     });
   }
 }
-
-module.exports = SceneController;

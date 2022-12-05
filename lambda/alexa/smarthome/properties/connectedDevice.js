@@ -11,18 +11,18 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { isMACAddress } = require('@root/utils');
-const { ItemType } = require('@openhab/constants');
-const { Capability } = require('../constants');
-const AlexaDevice = require('../device');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { isMACAddress } from '#root/utils.js';
+import { ItemType } from '#openhab/constants.js';
+import { Capability } from '../constants.js';
+import AlexaDevice from '../device/index.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines connected device property class
  * @extends AlexaProperty
  */
-class ConnectedDevice extends AlexaProperty {
+export default class ConnectedDevice extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -117,5 +117,3 @@ class ConnectedDevice extends AlexaProperty {
     parameters[Parameter.DEVICE_NAME] = metadata.config.name || item.label;
   }
 }
-
-module.exports = ConnectedDevice;

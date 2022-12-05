@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { Interface, Property } = require('../constants');
-const { EndpointUnreachableError, InvalidValueError } = require('../errors');
-const AlexaHandler = require('./handler');
+import { clamp } from '#root/utils.js';
+import { Interface, Property } from '../constants.js';
+import { EndpointUnreachableError, InvalidValueError } from '../errors.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.PercentageController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-percentagecontroller.html#directives
  * @extends AlexaHandler
  */
-class PercentageController extends AlexaHandler {
+export default class PercentageController extends AlexaHandler {
   /**
    * Defines set percentage directive
    * @type {String}
@@ -109,5 +109,3 @@ class PercentageController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = PercentageController;

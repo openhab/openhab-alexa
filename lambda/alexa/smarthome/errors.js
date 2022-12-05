@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface } = require('./constants');
+import { Interface } from './constants.js';
 
 /**
  * Defines alexa error class
  *  https://developer.amazon.com/docs/device-apis/alexa-errorresponse.html
  * @extends Error
  */
-class AlexaError extends Error {
+export class AlexaError extends Error {
   /**
    * Constructor
    * @param {String} message
@@ -53,11 +53,11 @@ class AlexaError extends Error {
   }
 
   /**
-   * Returns new alexa error object based on generic error
+   * Returns new alexa error object based on error
    * @param  {Object} error
    * @return {Object}
    */
-  static fromGenericError(error) {
+  static from(error) {
     switch (error.name) {
       case 'RequestError':
       case 'StatusCodeError':
@@ -84,7 +84,7 @@ class AlexaError extends Error {
  * Defines bridge unreachable error class
  * @extends AlexaError
  */
-class BridgeUnreachableError extends AlexaError {
+export class BridgeUnreachableError extends AlexaError {
   /**
    * Returns error type
    * @return {String}
@@ -98,7 +98,7 @@ class BridgeUnreachableError extends AlexaError {
  * Defines endpoint unreachable error class
  * @extends AlexaError
  */
-class EndpointUnreachableError extends AlexaError {
+export class EndpointUnreachableError extends AlexaError {
   /**
    * Returns error type
    * @return {String}
@@ -112,7 +112,7 @@ class EndpointUnreachableError extends AlexaError {
  * Defines internal error class
  * @extends AlexaError
  */
-class InternalError extends AlexaError {
+export class InternalError extends AlexaError {
   /**
    * Returns error type
    * @return {String}
@@ -126,7 +126,7 @@ class InternalError extends AlexaError {
  * Defines invalid authorization credential error class
  * @extends AlexaError
  */
-class InvalidAuthorizationCredentialError extends AlexaError {
+export class InvalidAuthorizationCredentialError extends AlexaError {
   /**
    * Returns error type
    * @return {String}
@@ -140,7 +140,7 @@ class InvalidAuthorizationCredentialError extends AlexaError {
  * Defines invalid directive error class
  * @extends AlexaError
  */
-class InvalidDirectiveError extends AlexaError {
+export class InvalidDirectiveError extends AlexaError {
   /**
    * Returns error type
    * @return {String}
@@ -154,7 +154,7 @@ class InvalidDirectiveError extends AlexaError {
  * Defines invalid value error class
  * @extends AlexaError
  */
-class InvalidValueError extends AlexaError {
+export class InvalidValueError extends AlexaError {
   /**
    * Returns error type
    * @return {String}
@@ -168,7 +168,7 @@ class InvalidValueError extends AlexaError {
  * Defines invalid endpoint error class
  * @extends AlexaError
  */
-class InvalidEndpointError extends AlexaError {
+export class InvalidEndpointError extends AlexaError {
   /**
    * Returns error type
    * @return {String}
@@ -182,7 +182,7 @@ class InvalidEndpointError extends AlexaError {
  * Defines current mode not supported error class
  * @extends AlexaError
  */
-class CurrentModeNotSupportedError extends AlexaError {
+export class CurrentModeNotSupportedError extends AlexaError {
   /**
    * Constructor
    * @param {String} message
@@ -226,7 +226,7 @@ class CurrentModeNotSupportedError extends AlexaError {
  * Defines temperature out of range error class
  * @extends AlexaError
  */
-class TemperatureOutOfRangeError extends AlexaError {
+export class TemperatureOutOfRangeError extends AlexaError {
   /**
    * Constructor
    * @param {String} message
@@ -271,7 +271,7 @@ class TemperatureOutOfRangeError extends AlexaError {
  * Defines value out of range error class
  * @extends AlexaError
  */
-class ValueOutOfRangeError extends AlexaError {
+export class ValueOutOfRangeError extends AlexaError {
   /**
    * Constructor
    * @param {String} message
@@ -311,7 +311,7 @@ class ValueOutOfRangeError extends AlexaError {
  *  https://developer.amazon.com/docs/device-apis/alexa-authorization.html#acceptgrant-error-handling
  * @extends AlexaError
  */
-class AuthorizationAcceptGrantError extends AlexaError {
+export class AuthorizationAcceptGrantError extends AlexaError {
   /**
    * Returns error namespace
    * @return {String}
@@ -348,7 +348,7 @@ class SafetyError extends AlexaError {
  * Defines safety obstacle detected error class
  * @extends SafetyError
  */
-class SafetyObstacleDetectedError extends SafetyError {
+export class SafetyObstacleDetectedError extends SafetyError {
   /**
    * Returns error type
    * @return {String}
@@ -377,7 +377,7 @@ class SecurityPanelError extends AlexaError {
  * Defines security panel authorization required error class
  * @extends SecurityPanelError
  */
-class SecurityPanelAuthorizationRequiredError extends SecurityPanelError {
+export class SecurityPanelAuthorizationRequiredError extends SecurityPanelError {
   /**
    * Returns error type
    * @return {String}
@@ -391,7 +391,7 @@ class SecurityPanelAuthorizationRequiredError extends SecurityPanelError {
  * Defines security panel bypass needed error class
  * @extends SecurityPanelError
  */
-class SecurityPanelBypassNeededError extends SecurityPanelError {
+export class SecurityPanelBypassNeededError extends SecurityPanelError {
   /**
    * Constructor
    * @param {String} message
@@ -425,7 +425,7 @@ class SecurityPanelBypassNeededError extends SecurityPanelError {
  * Defines security panel not ready needed error class
  * @extends SecurityPanelError
  */
-class SecurityPanelNotReadyError extends SecurityPanelError {
+export class SecurityPanelNotReadyError extends SecurityPanelError {
   /**
    * Returns error type
    * @return {String}
@@ -439,7 +439,7 @@ class SecurityPanelNotReadyError extends SecurityPanelError {
  * Defines security panel unauthorized error class
  * @extends SecurityPanelError
  */
-class SecurityPanelUnauthorizedError extends SecurityPanelError {
+export class SecurityPanelUnauthorizedError extends SecurityPanelError {
   /**
    * Returns error type
    * @return {String}
@@ -453,7 +453,7 @@ class SecurityPanelUnauthorizedError extends SecurityPanelError {
  * Defines security panel uncleared alarm error class
  * @extends SecurityPanelError
  */
-class SecurityPanelUnclearedAlarmError extends SecurityPanelError {
+export class SecurityPanelUnclearedAlarmError extends SecurityPanelError {
   /**
    * Returns error type
    * @return {String}
@@ -467,7 +467,7 @@ class SecurityPanelUnclearedAlarmError extends SecurityPanelError {
  * Defines security panel uncleared trouble error class
  * @extends SecurityPanelError
  */
-class SecurityPanelUnclearedTroubleError extends SecurityPanelError {
+export class SecurityPanelUnclearedTroubleError extends SecurityPanelError {
   /**
    * Returns error type
    * @return {String}
@@ -496,7 +496,7 @@ class ThermostatError extends AlexaError {
  * Defines thermostat off error class
  * @extends ThermostatError
  */
-class ThermostatOffError extends ThermostatError {
+export class ThermostatOffError extends ThermostatError {
   /**
    * Returns error type
    * @return {String}
@@ -510,7 +510,7 @@ class ThermostatOffError extends ThermostatError {
  * Defines thermostat mode unsupported error class
  * @extends ThermostatError
  */
-class ThermostatModeUnsupportedError extends ThermostatError {
+export class ThermostatModeUnsupportedError extends ThermostatError {
   /**
    * Returns error type
    * @return {String}
@@ -524,7 +524,7 @@ class ThermostatModeUnsupportedError extends ThermostatError {
  * Defines thermostat dual/triple setpoints unsupported error class
  * @extends ThermostatError
  */
-class ThermostatSetpointsUnsupportedError extends ThermostatError {
+export class ThermostatSetpointsUnsupportedError extends ThermostatError {
   /**
    * Constructor
    * @param {String} message
@@ -547,7 +547,7 @@ class ThermostatSetpointsUnsupportedError extends ThermostatError {
  * Defines thermostat setpoints too close error class
  * @extends ThermostatError
  */
-class ThermostatSetpointsTooCloseError extends ThermostatError {
+export class ThermostatSetpointsTooCloseError extends ThermostatError {
   /**
    * Constructor
    * @param {String} message
@@ -586,7 +586,7 @@ class ThermostatSetpointsTooCloseError extends ThermostatError {
  * Defines thermostat schedule request error class
  * @extends ThermostatError
  */
-class ThermostatScheduleRequestError extends ThermostatError {
+export class ThermostatScheduleRequestError extends ThermostatError {
   /**
    * Returns error type
    * @return {String}
@@ -595,30 +595,3 @@ class ThermostatScheduleRequestError extends ThermostatError {
     return 'UNWILLING_TO_SET_SCHEDULE';
   }
 }
-
-module.exports = {
-  AlexaError,
-  BridgeUnreachableError,
-  EndpointUnreachableError,
-  InternalError,
-  InvalidAuthorizationCredentialError,
-  InvalidDirectiveError,
-  InvalidValueError,
-  InvalidEndpointError,
-  CurrentModeNotSupportedError,
-  TemperatureOutOfRangeError,
-  ValueOutOfRangeError,
-  AuthorizationAcceptGrantError,
-  SafetyObstacleDetectedError,
-  SecurityPanelAuthorizationRequiredError,
-  SecurityPanelBypassNeededError,
-  SecurityPanelNotReadyError,
-  SecurityPanelUnauthorizedError,
-  SecurityPanelUnclearedAlarmError,
-  SecurityPanelUnclearedTroubleError,
-  ThermostatOffError,
-  ThermostatModeUnsupportedError,
-  ThermostatSetpointsUnsupportedError,
-  ThermostatSetpointsTooCloseError,
-  ThermostatScheduleRequestError
-};

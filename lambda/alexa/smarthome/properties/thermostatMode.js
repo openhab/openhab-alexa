@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Binding, ItemType, ItemValue } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { Binding, ItemType, ItemValue } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines thermostat mode property class
  * @extends AlexaProperty
  */
-class ThermostatMode extends AlexaProperty {
+export default class ThermostatMode extends AlexaProperty {
   /**
    * Defines auto mode
    * @type {String}
@@ -235,5 +235,3 @@ class ThermostatMode extends AlexaProperty {
     parameters[Parameter.SUPPORTED_MODES] = modes?.filter((value) => this.supportedValues.includes(value));
   }
 }
-
-module.exports = ThermostatMode;

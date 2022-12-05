@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const ThermostatMode = require('@alexa/smarthome/properties/thermostatMode');
-const CoolingSetpoint = require('./coolingSetpoint');
+import { ThermostatMode } from '#alexa/smarthome/properties/index.js';
+import CoolingSetpoint from './coolingSetpoint.js';
 
 /**
  * Defines eco cooling setpoint attribute class
  * @extends CoolingSetpoint
  */
-class EcoCoolingSetpoint extends CoolingSetpoint {
+export default class EcoCoolingSetpoint extends CoolingSetpoint {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class EcoCoolingSetpoint extends CoolingSetpoint {
     return ThermostatMode.ECO.toLowerCase();
   }
 }
-
-module.exports = EcoCoolingSetpoint;

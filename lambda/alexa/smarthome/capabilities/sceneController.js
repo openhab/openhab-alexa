@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { Scene } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { Scene } from '../properties/index.js';
 
 /**
  * Defines Alexa.SceneController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-scenecontroller.html
  * @extends AlexaCapability
  */
-class SceneController extends AlexaCapability {
+export default class SceneController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.SCENE_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -62,5 +70,3 @@ class SceneController extends AlexaCapability {
     return capability;
   }
 }
-
-module.exports = SceneController;

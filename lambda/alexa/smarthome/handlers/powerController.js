@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const { InvalidValueError } = require('../errors');
-const { PowerState } = require('../properties');
-const AlexaHandler = require('./handler');
+import { Interface, Property } from '../constants.js';
+import { InvalidValueError } from '../errors.js';
+import { PowerState } from '../properties/index.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.PowerController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-powercontroller.html#directives
  * @extends AlexaHandler
  */
-class PowerController extends AlexaHandler {
+export default class PowerController extends AlexaHandler {
   /**
    * Defines turn on directive
    * @type {String}
@@ -77,5 +77,3 @@ class PowerController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = PowerController;

@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { LockState } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { LockState } from '../properties/index.js';
 
 /**
  * Defines Alexa.LockController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-lockcontroller.html
  * @extends AlexaCapability
  */
-class LockController extends AlexaCapability {
+export default class LockController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.LOCK_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -48,5 +56,3 @@ class LockController extends AlexaCapability {
     return [AlexaDisplayCategory.SMARTLOCK];
   }
 }
-
-module.exports = LockController;

@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { CameraStream } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { CameraStream } from '../properties/index.js';
 
 /**
  * Defines Alexa.CameraStreamController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-camerastreamcontroller.html
  * @extends AlexaCapability
  */
-class CameraStreamController extends AlexaCapability {
+export default class CameraStreamController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.CAMERA_STREAM_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -80,5 +88,3 @@ class CameraStreamController extends AlexaCapability {
     return capability;
   }
 }
-
-module.exports = CameraStreamController;

@@ -11,10 +11,10 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const { Parameter } = require('@alexa/smarthome/metadata');
-const DeviceType = require('./type');
-const {
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import { Parameter } from '#alexa/smarthome/metadata.js';
+import DeviceType from './type.js';
+import {
   HeatingCoolingMode,
   TargetTemperature,
   CoolingSetpoint,
@@ -27,13 +27,13 @@ const {
   Humidity,
   BatteryLevel,
   genericAttributes
-} = require('../attributes');
+} from '../attributes/index.js';
 
 /**
  * Defines thermostat device type class
  * @extends DeviceType
  */
-class Thermostat extends DeviceType {
+export default class Thermostat extends DeviceType {
   /**
    * Returns supported names
    * @return {Array}
@@ -93,5 +93,3 @@ class Thermostat extends DeviceType {
     return super.getConfig(metadata);
   }
 }
-
-module.exports = Thermostat;

@@ -11,15 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { decompressJSON } = require('@root/utils');
-const { Interface } = require('./constants');
-const AlexaEndpoint = require('./endpoint');
-const AlexaResponse = require('./response');
+import { decompressJSON } from '#root/utils.js';
+import { Interface } from './constants.js';
+import AlexaEndpoint from './endpoint.js';
+import * as AlexaHandlers from './handlers/index.js';
+import AlexaResponse from './response.js';
 
 /**
  * Defines alexa directive class
  */
-class AlexaDirective {
+export default class AlexaDirective {
   /**
    * Constructor
    * @param {Object} directive
@@ -85,6 +86,18 @@ class AlexaDirective {
   }
 
   /**
+   * Returns handler function
+   * @return {Function}
+   */
+  getHandler() {
+    for (const handler of Object.values(AlexaHandlers)) {
+      if (handler.namespace === this.namespace) {
+        return handler.directives[this.name];
+      }
+    }
+  }
+
+  /**
    * Loads endpoint
    */
   loadEndpoint() {
@@ -146,5 +159,3 @@ class AlexaDirective {
     };
   }
 }
-
-module.exports = AlexaDirective;

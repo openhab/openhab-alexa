@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Light = require('./light');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Light from './light.js';
 
 /**
  * Defines christmas tree device type class
  * @extends Light
  */
-class ChristmasTree extends Light {
+export default class ChristmasTree extends Light {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class ChristmasTree extends Light {
     return [AlexaDisplayCategory.CHRISTMAS_TREE];
   }
 }
-
-module.exports = ChristmasTree;

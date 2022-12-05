@@ -11,12 +11,12 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { DecoupleState } = require('../properties');
+import { DecoupleState } from '../properties/index.js';
 
 /**
  * Defines alexa base capability class
  */
-class AlexaCapability {
+export default class AlexaCapability {
   /**
    * Constructor
    * @param {String} name
@@ -249,7 +249,7 @@ class AlexaCapability {
     const { name } = config;
     // Add property if is supported
     if (typeof this.supportedProperties[name] === 'function') {
-      const property = this.supportedProperties[name].build(config);
+      const property = this.supportedProperties[name].create(config);
       // Add property to list if defined and not already added
       if (property && !this.hasProperty(property)) {
         this._properties.push(property);
@@ -304,5 +304,3 @@ class AlexaCapability {
     }));
   }
 }
-
-module.exports = AlexaCapability;

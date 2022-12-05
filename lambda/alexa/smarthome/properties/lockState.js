@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const DecoupleState = require('./decoupleState');
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import DecoupleState from './decoupleState.js';
 
 /**
  * Defines lock state property class
  * @extends DecoupleState
  */
-class LockState extends DecoupleState {
+export default class LockState extends DecoupleState {
   /**
    * Defines locked state
    * @type {String}
@@ -130,5 +130,3 @@ class LockState extends DecoupleState {
     return value;
   }
 }
-
-module.exports = LockState;

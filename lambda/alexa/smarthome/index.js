@@ -11,20 +11,19 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const config = require('@root/config');
-const log = require('@root/log');
-const OpenHAB = require('@openhab');
-const AlexaDirective = require('./directive');
-const AlexaHandlers = require('./handlers');
-const AlexaResponse = require('./response');
-const { AlexaError, InvalidDirectiveError } = require('./errors');
+import config from '#root/config.js';
+import log from '#root/log.js';
+import OpenHAB from '#openhab/index.js';
+import AlexaDirective from './directive.js';
+import AlexaResponse from './response.js';
+import { AlexaError, InvalidDirectiveError } from './errors.js';
 
 /**
- * Defines alexa smart home skill request handler
+ * Handles alexa smart home skill request
  * @param  {Object}  request
  * @return {Promise}
  */
-exports.handleRequest = async (request) => {
+export const handleRequest = async (request) => {
   // Initialize directive object
   const directive = new AlexaDirective(request.directive);
   // Initialize openhab object
@@ -34,7 +33,7 @@ exports.handleRequest = async (request) => {
 
   try {
     // Get directive handler function
-    const handler = AlexaHandlers.get(directive.namespace, directive.name);
+    const handler = directive.getHandler();
 
     // Throw invalid directive error if handler function not defined
     if (typeof handler !== 'function') {
@@ -61,7 +60,7 @@ exports.handleRequest = async (request) => {
     }
 
     // Get alexa error response
-    response = directive.error(error instanceof AlexaError ? error : AlexaError.fromGenericError(error));
+    response = directive.error(error instanceof AlexaError ? error : AlexaError.from(error));
   }
 
   // Log response object
@@ -72,10 +71,10 @@ exports.handleRequest = async (request) => {
 
 /**
  * Logs error based on error type
- * @param  {Object} error
- * @param  {Object} directive
+ * @param {Object} error
+ * @param {Object} directive
  */
-function logError(error, directive) {
+const logError = (error, directive) => {
   let level, message;
 
   // Define log level channel and error message based on error type
@@ -94,4 +93,4 @@ function logError(error, directive) {
   log.debug('Error:', error);
   // Log error message in defined log level channel with directive object essential properties
   log[level](message, { directive: directive.toJSON() });
-}
+};

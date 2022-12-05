@@ -11,19 +11,27 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemValue } = require('@openhab/constants');
-const { Interface, Property } = require('../constants');
-const ToggleControllerHandler = require('../handlers/toggleController');
-const { ToggleState } = require('../properties');
-const AlexaSemantics = require('../semantics');
-const GenericController = require('./genericController');
+import { ItemValue } from '#openhab/constants.js';
+import { Capability, Interface, Property } from '../constants.js';
+import ToggleControllerHandler from '../handlers/toggleController.js';
+import { ToggleState } from '../properties/index.js';
+import AlexaSemantics from '../semantics.js';
+import GenericController from './genericController.js';
 
 /**
  * Defines Alexa.ToggleController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-togglecontroller.html
  * @extends GenericController
  */
-class ToggleController extends GenericController {
+export default class ToggleController extends GenericController {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.TOGGLE_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -72,5 +80,3 @@ class ToggleController extends GenericController {
     return semantics.toJSON();
   }
 }
-
-module.exports = ToggleController;

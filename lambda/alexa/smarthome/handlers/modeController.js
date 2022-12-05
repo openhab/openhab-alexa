@@ -11,18 +11,18 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const { OpenState } = require('../device/attributes');
-const { InvalidValueError, ValueOutOfRangeError } = require('../errors');
-const AlexaHandler = require('./handler');
-const Safety = require('./safety');
+import { Interface, Property } from '../constants.js';
+import { OpenState } from '../device/attributes/index.js';
+import { InvalidValueError, ValueOutOfRangeError } from '../errors.js';
+import AlexaHandler from './handler.js';
+import Safety from './safety.js';
 
 /**
  * Defines Alexa.ModeController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-modecontroller.html#directives
  * @extends AlexaHandler
  */
-class ModeController extends AlexaHandler {
+export default class ModeController extends AlexaHandler {
   /**
    * Defines set mode directive
    * @type {String}
@@ -144,5 +144,3 @@ class ModeController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = ModeController;

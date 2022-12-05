@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { ItemType } from '#openhab/constants.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines toggle state attribute class
  * @extends DeviceAttribute
  */
-class ToggleState extends DeviceAttribute {
+export default class ToggleState extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -51,5 +51,3 @@ class ToggleState extends DeviceAttribute {
     }
   }
 }
-
-module.exports = ToggleState;

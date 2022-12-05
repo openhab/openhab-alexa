@@ -11,15 +11,23 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const { Interface } = require('../constants');
+import AlexaCapability from './capability.js';
+import { Capability, Interface } from '../constants.js';
 
 /**
  * Defines Alexa interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-interface.html
  * @extends AlexaCapability
  */
-class Alexa extends AlexaCapability {
+export default class Alexa extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.ALEXA;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -28,5 +36,3 @@ class Alexa extends AlexaCapability {
     return Interface.ALEXA;
   }
 }
-
-module.exports = Alexa;

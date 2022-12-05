@@ -11,20 +11,20 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { v5: uuidv5 } = require('uuid');
-const { compressJSON, decompressJSON, stripPunctuation } = require('@root/utils');
-const { ItemType } = require('@openhab/constants');
-const AlexaCapabilities = require('./capabilities');
-const AlexaDisplayCategory = require('./category');
-const { Capability, Property } = require('./constants');
-const AlexaDevice = require('./device');
-const AlexaMetadata = require('./metadata');
-const { EndpointUnreachableError } = require('./errors');
+import { v5 as uuidv5 } from 'uuid';
+import { compressJSON, decompressJSON, stripPunctuation } from '#root/utils.js';
+import { ItemType } from '#openhab/constants.js';
+import * as AlexaCapabilities from './capabilities/index.js';
+import AlexaDisplayCategory from './category.js';
+import { Capability, Property } from './constants.js';
+import AlexaDevice from './device/index.js';
+import AlexaMetadata from './metadata.js';
+import { EndpointUnreachableError } from './errors.js';
 
 /**
  * Defines alexa endpoint class
  */
-class AlexaEndpoint {
+export default class AlexaEndpoint {
   /**
    * Defines alexa discovery capabilities limit per endpoint
    *  https://developer.amazon.com/docs/device-apis/alexa-discovery.html#limits
@@ -318,13 +318,15 @@ class AlexaEndpoint {
     const index = this._capabilities.findIndex(
       (capability) => capability.name === name && (!capability.instance || capability.instance === instance)
     );
-    // Use existing capability if found, otherwise build a new one
-    const capability = index !== -1 ? this._capabilities[index] : AlexaCapabilities.build(name, instance);
+    // Use existing capability if found, otherwise create a new one
+    const capability = index !== -1 ? this._capabilities[index] : AlexaEndpoint.createCapability(name, instance);
 
     // Add/update capability if defined
     if (typeof capability !== 'undefined') {
-      // Add property to capability
-      capability.addProperty({ name: property, component, tag, parameters, item, metadata, settings, groups });
+      // Add property to capability if name defined
+      if (typeof property !== 'undefined') {
+        capability.addProperty({ name: property, component, tag, parameters, item, metadata, settings, groups });
+      }
       // Add capability to list if new instance
       if (index === -1) {
         this._capabilities.push(capability);
@@ -364,7 +366,7 @@ class AlexaEndpoint {
     // Iterate over metadata values
     for (const value of metadata.values) {
       // Determine device based on metadata value
-      const device = AlexaDevice.getDevice(value, group?.deviceType);
+      const device = AlexaDevice.from(value, group?.deviceType);
 
       // Add capabilities based on device if defined, otherwise fallback to capability pattern matching
       if (device) {
@@ -501,6 +503,20 @@ class AlexaEndpoint {
   }
 
   /**
+   * Returns new capability object for a given name and instance
+   * @param  {String} name
+   * @param  {String} instance
+   * @return {Object}
+   */
+  static createCapability(name, instance) {
+    for (const Capability of Object.values(AlexaCapabilities)) {
+      if (Capability.name === name) {
+        return new Capability(name, instance);
+      }
+    }
+  }
+
+  /**
    * Returns new endpoint object based on directive endpoint object
    * @param  {String} endpointId
    * @param  {Object} cookie
@@ -544,5 +560,3 @@ class AlexaEndpoint {
     return endpoint;
   }
 }
-
-module.exports = AlexaEndpoint;

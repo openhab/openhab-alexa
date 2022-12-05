@@ -11,19 +11,22 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-require('module-alias/register');
-const { expect } = require('chai');
-const sinon = require('sinon');
-const log = require('@root/log');
-const skill = require('@root');
-const AlexaSmarthome = require('@alexa/smarthome');
+import { expect } from 'chai';
+import sinon from 'sinon';
+import esmock from 'esmock';
+import log from '#root/log.js';
 
 describe('Skill Event Tests', () => {
-  let smarthome;
+  let smarthomeStub, skill;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     // set stub environment
-    smarthome = sinon.stub(AlexaSmarthome, 'handleRequest');
+    smarthomeStub = sinon.stub();
+    skill = await esmock('#root/index.js', {
+      '#alexa/smarthome/index.js': {
+        handleRequest: smarthomeStub
+      }
+    });
   });
 
   afterEach(() => {
@@ -45,8 +48,8 @@ describe('Skill Event Tests', () => {
       };
       // run test
       await skill.handler(event);
-      expect(smarthome.called).to.be.true;
-      expect(smarthome.firstCall.args).to.deep.equal([event]);
+      expect(smarthomeStub.called).to.be.true;
+      expect(smarthomeStub.firstCall.args).to.deep.equal([event]);
     });
 
     it('payload version 2', async () => {
@@ -61,7 +64,7 @@ describe('Skill Event Tests', () => {
       const logWarn = sinon.stub(log, 'warn');
       // run test
       await skill.handler(event);
-      expect(smarthome.called).to.be.false;
+      expect(smarthomeStub.called).to.be.false;
       expect(logWarn.called).to.be.true;
       expect(logWarn.firstCall.args).to.deep.equal(['Unsupported event:', event]);
     });

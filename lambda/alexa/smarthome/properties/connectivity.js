@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaProperty = require('./property');
+import AlexaProperty from './property.js';
 
 /**
  * Defines connectivity property class
  * @extends AlexaProperty
  */
-class Connectivity extends AlexaProperty {
+export default class Connectivity extends AlexaProperty {
   /**
    * Defines ok state
    * @type {String}
@@ -42,5 +42,3 @@ class Connectivity extends AlexaProperty {
     return { value: isEndpointHealthy ? Connectivity.OK : Connectivity.UNREACHABLE };
   }
 }
-
-module.exports = Connectivity;

@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { EqualizerBands, EqualizerMode } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { EqualizerBands, EqualizerMode } from '../properties/index.js';
 
 /**
  * Defines Alexa.EqualizerController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-equalizercontroller.html
  * @extends AlexaCapability
  */
-class EqualizerController extends AlexaCapability {
+export default class EqualizerController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.EQUALIZER_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -76,5 +84,3 @@ class EqualizerController extends AlexaCapability {
     return capability;
   }
 }
-
-module.exports = EqualizerController;

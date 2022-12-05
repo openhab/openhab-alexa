@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const { Capability } = require('@alexa/smarthome/constants');
-const GenericDevice = require('./genericDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import { Capability } from '#alexa/smarthome/constants.js';
+import GenericDevice from './genericDevice.js';
 
 /**
  * Defines network hardware device type class
  * @extends GenericDevice
  */
-class NetworkHardware extends GenericDevice {
+export default class NetworkHardware extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -44,5 +44,3 @@ class NetworkHardware extends GenericDevice {
     return [AlexaDisplayCategory.NETWORK_HARDWARE];
   }
 }
-
-module.exports = NetworkHardware;

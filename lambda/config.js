@@ -41,7 +41,7 @@
  *
  * @type {Object}
  */
-module.exports = {
+export default {
   openhab: {
     baseURL: process.env.OPENHAB_BASE_URL || 'https://myopenhab.org',
     user: process.env.OPENHAB_USERNAME || '',

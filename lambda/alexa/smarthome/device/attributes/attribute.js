@@ -14,7 +14,7 @@
 /**
  * Defines device attribute base class
  */
-class DeviceAttribute {
+export default class DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -31,5 +31,3 @@ class DeviceAttribute {
     return [];
   }
 }
-
-module.exports = DeviceAttribute;

@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines playback stop attribute class
  * @extends DeviceAttribute
  */
-class PlaybackStop extends DeviceAttribute {
+export default class PlaybackStop extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class PlaybackStop extends DeviceAttribute {
     return [{ name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_STOP }];
   }
 }
-
-module.exports = PlaybackStop;

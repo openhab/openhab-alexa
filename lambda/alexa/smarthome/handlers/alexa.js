@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface } = require('../constants');
-const AlexaHandler = require('./handler');
+import { Interface } from '../constants.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines alexa state reporting cause type enum
  *  https://developer.amazon.com/docs/smarthome/state-reporting-for-a-smart-home-skill.html#cause-object
  * @type {Object}
  */
-const CauseType = Object.freeze({
+export const CauseType = Object.freeze({
   APP_INTERACTION: 'APP_INTERACTION',
   PERIODIC_POLL: 'PERIODIC_POLL',
   PHYSICAL_INTERACTION: 'PHYSICAL_INTERACTION',
@@ -31,7 +31,7 @@ const CauseType = Object.freeze({
  * Defines Alexa interface handler class
  * @extends AlexaHandler
  */
-class Alexa extends AlexaHandler {
+export default class Alexa extends AlexaHandler {
   /**
    * Defines report state directive
    * @type {String}
@@ -71,6 +71,3 @@ class Alexa extends AlexaHandler {
     return directive.response({ name: Alexa.STATE_REPORT });
   }
 }
-
-module.exports = Alexa;
-module.exports.CauseType = CauseType;

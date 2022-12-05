@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { ItemType, ItemValue } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { clamp } from '#root/utils.js';
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines arm state authorization type enum
  * @type {Object}
  */
-const AuthType = Object.freeze({
+export const AuthType = Object.freeze({
   FOUR_DIGIT_PIN: 'FOUR_DIGIT_PIN'
 });
 
@@ -28,7 +28,7 @@ const AuthType = Object.freeze({
  * Defines arm state property class
  * @extends AlexaProperty
  */
-class ArmState extends AlexaProperty {
+export default class ArmState extends AlexaProperty {
   /**
    * Defines maximum exit delay in seconds
    * @type {Number}
@@ -190,6 +190,3 @@ class ArmState extends AlexaProperty {
       : undefined;
   }
 }
-
-module.exports = ArmState;
-module.exports.AuthType = AuthType;

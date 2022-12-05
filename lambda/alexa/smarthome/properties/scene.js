@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines scene property class
  * @extends AlexaProperty
  */
-class Scene extends AlexaProperty {
+export default class Scene extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -54,5 +54,3 @@ class Scene extends AlexaProperty {
     return this.parameters[Parameter.SUPPORTS_DEACTIVATION] !== false;
   }
 }
-
-module.exports = Scene;

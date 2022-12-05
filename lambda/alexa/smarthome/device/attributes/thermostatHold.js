@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines thermostat hold attribute class
  * @extends DeviceAttribute
  */
-class ThermostatHold extends DeviceAttribute {
+export default class ThermostatHold extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class ThermostatHold extends DeviceAttribute {
     return [{ name: Capability.THERMOSTAT_CONTROLLER, property: Property.THERMOSTAT_HOLD }];
   }
 }
-
-module.exports = ThermostatHold;

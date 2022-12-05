@@ -16,7 +16,7 @@
  *  https://www.openhab.org/addons/
  * @type {Object}
  */
-const Binding = Object.freeze({
+export const Binding = Object.freeze({
   BROADLINK_THERMOSTAT: 'broadlinkthermostat',
   DAIKIN: 'daikin',
   ECOBEE: 'ecobee',
@@ -39,7 +39,7 @@ const Binding = Object.freeze({
  *  https://www.openhab.org/docs/concepts/units-of-measurement.html
  * @type {Object}
  */
-const Dimension = Object.freeze({
+export const Dimension = Object.freeze({
   ANGLE: 'Angle',
   DIMENSIONLESS: 'Dimensionless',
   LENGTH: 'Length',
@@ -53,7 +53,7 @@ const Dimension = Object.freeze({
  *  https://www.openhab.org/docs/concepts/items.html
  * @type {Object}
  */
-const ItemType = Object.freeze({
+export const ItemType = Object.freeze({
   COLOR: 'Color',
   CONTACT: 'Contact',
   DIMMER: 'Dimmer',
@@ -76,7 +76,7 @@ const ItemType = Object.freeze({
  *  https://www.openhab.org/docs/concepts/items.html#enum-types
  * @type {Object}
  */
-const ItemValue = Object.freeze({
+export const ItemValue = Object.freeze({
   INCREASE: 'INCREASE',
   DECREASE: 'DECREASE',
   NEXT: 'NEXT',
@@ -102,7 +102,7 @@ const ItemValue = Object.freeze({
  *  https://www.openhab.org/docs/concepts/units-of-measurement.html#list-of-units
  * @type {Object}
  */
-const SymbolUnit = Object.freeze({
+export const SymbolUnit = Object.freeze({
   DEGREE: '°',
   RADIAN: 'rad',
   PERCENT: '%',
@@ -132,16 +132,7 @@ const SymbolUnit = Object.freeze({
  *  https://www.openhab.org/docs/concepts/units-of-measurement.html#list-of-units
  * @type {Object}
  */
-const SystemUnit = Object.freeze({
+export const SystemUnit = Object.freeze({
   METRIC: 'SI',
   IMPERIAL_US: 'US'
 });
-
-module.exports = {
-  Binding,
-  Dimension,
-  ItemType,
-  ItemValue,
-  SymbolUnit,
-  SystemUnit
-};

@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemValue } = require('@openhab/constants');
-const { Interface, Property } = require('../constants');
-const AlexaHandler = require('./handler');
+import { ItemValue } from '#openhab/constants.js';
+import { Interface, Property } from '../constants.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.LockController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-lockcontroller.html#directives
  * @extends AlexaHandler
  */
-class LockController extends AlexaHandler {
+export default class LockController extends AlexaHandler {
   /**
    * Defines lock directive
    * @type {String}
@@ -70,5 +70,3 @@ class LockController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = LockController;

@@ -11,19 +11,19 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const { Parameter, ParameterType } = require('@alexa/smarthome/metadata');
-const DecoupleState = require('@alexa/smarthome/properties/decoupleState');
-const { AlexaActionSemantic, AlexaStateSemantic } = require('@alexa/smarthome/semantics');
-const DeviceAttribute = require('./attribute');
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import { Parameter, ParameterType } from '#alexa/smarthome/metadata.js';
+import { DecoupleState } from '#alexa/smarthome/properties/index.js';
+import { AlexaActionSemantic, AlexaStateSemantic } from '#alexa/smarthome/semantics.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines open state attribute class
  * @extends DeviceAttribute
  */
-class OpenState extends DeviceAttribute {
+export default class OpenState extends DeviceAttribute {
   /**
    * Defines open state
    * @type {String}
@@ -114,5 +114,3 @@ class OpenState extends DeviceAttribute {
     }
   }
 }
-
-module.exports = OpenState;

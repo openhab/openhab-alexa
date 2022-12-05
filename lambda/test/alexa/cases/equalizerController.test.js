@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-module.exports = [
+export default [
   {
     description: 'set bands',
     directive: {
@@ -101,6 +101,41 @@ module.exports = [
       },
       openhab: {
         commands: [{ name: 'equalizerBass', value: -2 }]
+      }
+    }
+  },
+  {
+    description: 'set bands no properties invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.EqualizerController',
+        name: 'SetBands'
+      },
+      endpoint: {
+        endpointId: 'gSpeaker',
+        cookie: {
+          // workaround bug introduced by previous version
+          propertyMap: JSON.stringify({
+            EqualizerController: {}
+          })
+        }
+      },
+      payload: {
+        bands: [{ name: 'BASS', level: -2 }]
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'No equalizer bands properties defined.'
+          }
+        }
       }
     }
   },
@@ -402,7 +437,42 @@ module.exports = [
     }
   },
   {
-    description: 'adjust bands invalid value error',
+    description: 'adjust bands no properties invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.EqualizerController',
+        name: 'AdjustBands'
+      },
+      endpoint: {
+        endpointId: 'gSpeaker',
+        cookie: {
+          // workaround bug introduced by previous version
+          propertyMap: JSON.stringify({
+            EqualizerController: {}
+          })
+        }
+      },
+      payload: {
+        bands: [{ name: 'BASS', levelDirection: 'DOWN' }]
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'No equalizer bands properties defined.'
+          }
+        }
+      }
+    }
+  },
+  {
+    description: 'adjust bands not retrievable invalid value error',
     directive: {
       header: {
         namespace: 'Alexa.EqualizerController',
@@ -585,7 +655,42 @@ module.exports = [
     }
   },
   {
-    description: 'set mode invalid value error',
+    description: 'set mode no property invalid value error',
+    directive: {
+      header: {
+        namespace: 'Alexa.EqualizerController',
+        name: 'SetMode'
+      },
+      endpoint: {
+        endpointId: 'gSpeaker',
+        cookie: {
+          // workaround bug introduced by previous version
+          propertyMap: JSON.stringify({
+            EqualizerController: {}
+          })
+        }
+      },
+      payload: {
+        mode: 'MOVIE'
+      }
+    },
+    expected: {
+      alexa: {
+        event: {
+          header: {
+            namespace: 'Alexa',
+            name: 'ErrorResponse'
+          },
+          payload: {
+            type: 'INVALID_VALUE',
+            message: 'No equalizer mode property defined.'
+          }
+        }
+      }
+    }
+  },
+  {
+    description: 'set mode not supported invalid value error',
     directive: {
       header: {
         namespace: 'Alexa.EqualizerController',

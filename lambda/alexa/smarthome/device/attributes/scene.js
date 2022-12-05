@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines scene attribute class
  * @extends DeviceAttribute
  */
-class Scene extends DeviceAttribute {
+export default class Scene extends DeviceAttribute {
   /**
    * Returns capabilities
    * @return {Array}
@@ -27,5 +27,3 @@ class Scene extends DeviceAttribute {
     return [{ name: Capability.SCENE_CONTROLLER, property: Property.SCENE }];
   }
 }
-
-module.exports = Scene;

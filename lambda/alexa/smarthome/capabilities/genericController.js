@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { AlexaCapabilityResources } = require('../resources');
-const Generic = require('../properties/generic');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Generic } from '../properties/index.js';
+import { AlexaCapabilityResources } from '../resources.js';
 
 /**
  * Defines alexa generic controller capability class
  *  https://developer.amazon.com/docs/device-apis/generic-controllers.html
  * @extends AlexaCapability
  */
-class GenericController extends AlexaCapability {
+export default class GenericController extends AlexaCapability {
   /**
    * Constructor
    * @param {String} name
@@ -71,5 +71,3 @@ class GenericController extends AlexaCapability {
     return AlexaCapabilityResources.getResources(labels, language);
   }
 }
-
-module.exports = GenericController;

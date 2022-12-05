@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
 
 /**
  * Defines oven device type class
  * @extends GenericDevice
  */
-class Oven extends GenericDevice {
+export default class Oven extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Oven extends GenericDevice {
     return [AlexaDisplayCategory.OVEN];
   }
 }
-
-module.exports = Oven;

@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const fs = require('fs');
-const request = require('request-promise-native');
-const Agent = require('agentkeepalive');
-const { sprintf } = require('sprintf-js');
-const { validate: uuidValidate } = require('uuid');
-const { ItemValue } = require('./constants');
+import fs from 'fs';
+import request from 'request-promise-native';
+import Agent from 'agentkeepalive';
+import { sprintf } from 'sprintf-js';
+import { validate as uuidValidate } from 'uuid';
+import { ItemType, ItemValue } from './constants.js';
 
 /**
  * Defines openHAB class
  */
-class OpenHAB {
+export default class OpenHAB {
   /**
    * Constructor
    * @param {Object} config
@@ -213,11 +213,11 @@ class OpenHAB {
     if (format) {
       try {
         switch (type.split(':')[0]) {
-          case 'Dimmer':
-          case 'Number':
-          case 'Rollershutter':
+          case ItemType.DIMMER:
+          case ItemType.NUMBER:
+          case ItemType.ROLLERSHUTTER:
             return sprintf(format[0], parseFloat(state));
-          case 'String':
+          case ItemType.STRING:
             return sprintf(format[0], state);
         }
       } catch {
@@ -266,5 +266,3 @@ class OpenHAB {
     return request.defaults(options);
   }
 }
-
-module.exports = OpenHAB;

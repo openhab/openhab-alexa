@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines alarm alert attribute class
  * @extends DeviceAttribute
  */
-class AlarmAlert extends DeviceAttribute {
+export default class AlarmAlert extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class AlarmAlert extends DeviceAttribute {
     return [{ name: Capability.SECURITY_PANEL_CONTROLLER, property: Property.ALARM_ALERT }];
   }
 }
-
-module.exports = AlarmAlert;

@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
-const { Property } = require('../constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
-const Playback = require('./playback');
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import { Property } from '../constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
+import Playback from './playback.js';
 
 /**
  * Defines playback stop property class
  * @extends AlexaProperty
  */
-class PlaybackStop extends AlexaProperty {
+export default class PlaybackStop extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -80,5 +80,3 @@ class PlaybackStop extends AlexaProperty {
     return this.inverted ? ItemValue.OFF : ItemValue.ON;
   }
 }
-
-module.exports = PlaybackStop;

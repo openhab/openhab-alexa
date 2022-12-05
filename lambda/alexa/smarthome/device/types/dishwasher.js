@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
 
 /**
  * Defines dishwasher device type class
  * @extends GenericDevice
  */
-class Dishwasher extends GenericDevice {
+export default class Dishwasher extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Dishwasher extends GenericDevice {
     return [AlexaDisplayCategory.DISHWASHER];
   }
 }
-
-module.exports = Dishwasher;

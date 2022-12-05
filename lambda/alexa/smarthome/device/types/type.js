@@ -14,7 +14,7 @@
 /**
  * Defines device type base class
  */
-class DeviceType {
+export default class DeviceType {
   /**
    * Returns supported names
    * @return {Array}
@@ -64,5 +64,3 @@ class DeviceType {
     return metadata.config;
   }
 }
-
-module.exports = DeviceType;

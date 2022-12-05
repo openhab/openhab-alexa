@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines camera stream attribute class
  * @extends DeviceAttribute
  */
-class CameraStream extends DeviceAttribute {
+export default class CameraStream extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class CameraStream extends DeviceAttribute {
     return [{ name: Capability.CAMERA_STREAM_CONTROLLER, property: Property.CAMERA_STREAM }];
   }
 }
-
-module.exports = CameraStream;

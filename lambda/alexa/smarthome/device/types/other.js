@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const DeviceType = require('./type');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import DeviceType from './type.js';
 
 /**
  * Defines other device type class
  * @extends DeviceType
  */
-class Other extends DeviceType {
+export default class Other extends DeviceType {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Other extends DeviceType {
     return [AlexaDisplayCategory.OTHER];
   }
 }
-
-module.exports = Other;

@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const DeviceType = require('./type');
-const { Scene: SceneAttribute } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import DeviceType from './type.js';
+import { Scene as SceneAttribute } from '../attributes/index.js';
 
 /**
  * Defines scene device type class
  * @extends DeviceType
  */
-class Scene extends DeviceType {
+export default class Scene extends DeviceType {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class Scene extends DeviceType {
     return [AlexaDisplayCategory.SCENE_TRIGGER];
   }
 }
-
-module.exports = Scene;

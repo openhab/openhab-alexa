@@ -15,7 +15,7 @@
  * Defines alexa capability enum
  * @type {Object}
  */
-const Capability = Object.freeze({
+export const Capability = Object.freeze({
   ALEXA: 'Alexa',
   BRIGHTNESS_CONTROLLER: 'BrightnessController',
   CAMERA_STREAM_CONTROLLER: 'CameraStreamController',
@@ -51,7 +51,7 @@ const Capability = Object.freeze({
  * Defines alexa interface enum
  * @type {Object}
  */
-const Interface = Object.freeze({
+export const Interface = Object.freeze({
   ALEXA: 'Alexa',
   ALEXA_AUTHORIZATION: 'Alexa.Authorization',
   ALEXA_BRIGHTNESS_CONTROLLER: 'Alexa.BrightnessController',
@@ -89,7 +89,7 @@ const Interface = Object.freeze({
  * Defines alexa property enum
  * @type {Object}
  */
-const Property = Object.freeze({
+export const Property = Object.freeze({
   ALARM_ALERT: 'alarmAlert',
   ARM_STATE: 'armState',
   BRIGHTNESS: 'brightness',
@@ -133,9 +133,3 @@ const Property = Object.freeze({
   WATER_ALARM: 'waterAlarm',
   ZONES_ALERT: 'zonesAlert'
 });
-
-module.exports = {
-  Capability,
-  Interface,
-  Property
-};

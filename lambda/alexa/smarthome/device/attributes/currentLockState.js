@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const DecoupleState = require('@alexa/smarthome/properties/decoupleState');
-const LockState = require('./lockState');
+import { DecoupleState } from '#alexa/smarthome/properties/index.js';
+import LockState from './lockState.js';
 
 /**
  * Defines current lock state attribute class
  * @extends LockState
  */
-class CurrentLockState extends LockState {
+export default class CurrentLockState extends LockState {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class CurrentLockState extends LockState {
     return DecoupleState.TAG_NAME;
   }
 }
-
-module.exports = CurrentLockState;

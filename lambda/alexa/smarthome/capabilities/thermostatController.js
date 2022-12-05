@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { TargetSetpoint, UpperSetpoint, LowerSetpoint, ThermostatMode, ThermostatHold } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { TargetSetpoint, UpperSetpoint, LowerSetpoint, ThermostatMode, ThermostatHold } from '../properties/index.js';
 
 /**
  * Defines Alexa.ThermostatController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-thermostatcontroller.html
  * @extends AlexaCapability
  */
-class ThermostatController extends AlexaCapability {
+export default class ThermostatController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.THERMOSTAT_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -141,5 +149,3 @@ class ThermostatController extends AlexaCapability {
     };
   }
 }
-
-module.exports = ThermostatController;

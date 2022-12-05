@@ -11,19 +11,19 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { stripPunctuation } = require('@root/utils');
-const AlexaAssetCatalog = require('../catalog');
-const { Property } = require('../constants');
-const { Parameter, ParameterType } = require('../metadata');
-const { AlexaCapabilityResources } = require('../resources');
-const { AlexaActionSemantic, AlexaStateSemantic } = require('../semantics');
-const DecoupleState = require('./decoupleState');
+import { stripPunctuation } from '#root/utils.js';
+import AlexaAssetCatalog from '../catalog.js';
+import { Property } from '../constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import { AlexaCapabilityResources } from '../resources.js';
+import { AlexaActionSemantic, AlexaStateSemantic } from '../semantics.js';
+import DecoupleState from './decoupleState.js';
 
 /**
  * Defines generic property class
  * @extends DecoupleState
  */
-class Generic extends DecoupleState {
+export default class Generic extends DecoupleState {
   /**
    * Returns supported parameters and their type
    * @return {Object}
@@ -179,5 +179,3 @@ class Generic extends DecoupleState {
       .reduce((states, [state, mapping]) => ({ ...states, [state]: mapping }), undefined);
   }
 }
-
-module.exports = Generic;

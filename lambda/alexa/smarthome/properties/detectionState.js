@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const BinaryState = require('./binaryState');
+import BinaryState from './binaryState.js';
 
 /**
  * Defines detection state property class
  * @extends BinaryState
  */
-class DetectionState extends BinaryState {
+export default class DetectionState extends BinaryState {
   /**
    * Defines detected state
    * @type {String}
@@ -38,5 +38,3 @@ class DetectionState extends BinaryState {
     return [DetectionState.DETECTED, DetectionState.NOT_DETECTED];
   }
 }
-
-module.exports = DetectionState;

@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const GenericDevice = require('./genericDevice');
-const { NetworkAccess } = require('../attributes');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import GenericDevice from './genericDevice.js';
+import { NetworkAccess } from '../attributes/index.js';
 
 /**
  * Defines network device type class
  * @extends GenericDevice
  */
-class NetworkDevice extends GenericDevice {
+export default class NetworkDevice extends GenericDevice {
   /**
    * Returns supported attributes
    * @return {Array}
@@ -36,5 +36,3 @@ class NetworkDevice extends GenericDevice {
     return [{ name: Capability.NETWORKING_CONNECTED_DEVICE, property: Property.CONNECTED_DEVICE }];
   }
 }
-
-module.exports = NetworkDevice;

@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const { AlexaPresetResources } = require('../resources');
-const AlexaUnitOfMeasure = require('../unitOfMeasure');
-const Generic = require('./generic');
+import { ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import { AlexaPresetResources } from '../resources.js';
+import AlexaUnitOfMeasure from '../unitOfMeasure.js';
+import Generic from './generic.js';
 
 /**
  * Defines range value property class
  * @extends Generic
  */
-class RangeValue extends Generic {
+export default class RangeValue extends Generic {
   /**
    * Defines presets limit
    * @type {Number}
@@ -230,5 +230,3 @@ class RangeValue extends Generic {
     parameters[Parameter.UNIT_OF_MEASURE] = AlexaUnitOfMeasure.isSupported(uom) ? uom : undefined;
   }
 }
-
-module.exports = RangeValue;

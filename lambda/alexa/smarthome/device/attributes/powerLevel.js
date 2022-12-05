@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines power level attribute class
  * @extends DeviceAttribute
  */
-class PowerLevel extends DeviceAttribute {
+export default class PowerLevel extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class PowerLevel extends DeviceAttribute {
     return [{ name: Capability.POWER_LEVEL_CONTROLLER, property: Property.POWER_LEVEL }];
   }
 }
-
-module.exports = PowerLevel;

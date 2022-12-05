@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines lock state attribute class
  * @extends DeviceAttribute
  */
-class LockState extends DeviceAttribute {
+export default class LockState extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class LockState extends DeviceAttribute {
     return [{ name: Capability.LOCK_CONTROLLER, property: Property.LOCK_STATE, tag: this.tag }];
   }
 }
-
-module.exports = LockState;

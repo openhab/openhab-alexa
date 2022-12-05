@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-/* istanbul ignore file */
-const { createLogger, format, transports } = require('winston');
+import { createLogger, format, transports } from 'winston';
 
 const LEVEL = Symbol.for('level');
 const MESSAGE = Symbol.for('message');
 
-const logger = createLogger({
+/* c8 ignore start */
+export default createLogger({
   level: !process.env.LOG_LEVEL || process.env.NODE_ENV === 'test' ? 'error' : process.env.LOG_LEVEL.toLowerCase(),
   levels: { error: 0, warn: 1, info: 2, debug: 3 },
   format: format.printf(
@@ -39,5 +39,3 @@ const logger = createLogger({
     })
   ]
 });
-
-module.exports = logger;

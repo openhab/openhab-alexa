@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { Channel, ChannelStep } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { Channel, ChannelStep } from '../properties/index.js';
 
 /**
  * Defines Alexa.ChannelController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-channelcontroller.html
  * @extends AlexaCapability
  */
-class ChannelController extends AlexaCapability {
+export default class ChannelController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.CHANNEL_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -49,5 +57,3 @@ class ChannelController extends AlexaCapability {
     return [AlexaDisplayCategory.TV];
   }
 }
-
-module.exports = ChannelController;

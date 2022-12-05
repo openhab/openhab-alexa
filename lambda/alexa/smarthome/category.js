@@ -15,7 +15,7 @@
  * Defines alexa display category class
  *  https://developer.amazon.com/docs/device-apis/alexa-discovery.html#display-categories
  */
-class AlexaDisplayCategory {
+export default class AlexaDisplayCategory {
   /**
    * Defines activity trigger display category
    * @type {String}
@@ -343,5 +343,3 @@ class AlexaDisplayCategory {
     return Object.values(this).includes(category);
   }
 }
-
-module.exports = AlexaDisplayCategory;

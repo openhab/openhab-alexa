@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const AlexaProperty = require('./property');
+import { ItemType } from '#openhab/constants.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines color property class
  * @extends AlexaProperty
  */
-class Color extends AlexaProperty {
+export default class Color extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -42,5 +42,3 @@ class Color extends AlexaProperty {
     }
   }
 }
-
-module.exports = Color;

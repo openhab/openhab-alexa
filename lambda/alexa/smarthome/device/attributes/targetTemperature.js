@@ -11,20 +11,20 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const { Parameter, ParameterType } = require('@alexa/smarthome/metadata');
-const TargetSetpoint = require('@alexa/smarthome/properties/targetSetpoint');
-const AlexaUnitOfMeasure = require('@alexa/smarthome/unitOfMeasure');
-const Temperature = require('./temperature');
+import { ItemType } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import { Parameter, ParameterType } from '#alexa/smarthome/metadata.js';
+import { TargetSetpoint } from '#alexa/smarthome/properties/index.js';
+import AlexaUnitOfMeasure from '#alexa/smarthome/unitOfMeasure.js';
+import Temperature from './temperature.js';
 
 /**
  * Defines target temperature attribute class
  * @extends Temperature
  */
-class TargetTemperature extends Temperature {
+export default class TargetTemperature extends Temperature {
   /**
    * Returns supported names
    * @return {Array}
@@ -92,5 +92,3 @@ class TargetTemperature extends Temperature {
     }
   }
 }
-
-module.exports = TargetTemperature;

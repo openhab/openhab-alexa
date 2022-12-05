@@ -11,12 +11,12 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { convertValue, Parameter, ParameterType } = require('../metadata');
+import AlexaMetadata, { Parameter, ParameterType } from '../metadata.js';
 
 /**
  * Defines alexa property base class
  */
-class AlexaProperty {
+export default class AlexaProperty {
   /**
    * Defines default alias parameters for backward compatibility
    * @type {Object}
@@ -261,7 +261,7 @@ class AlexaProperty {
       // Determine property parameter value type
       const type = this.getParameterType(name);
       // Update property parameter with converted value
-      parameters[name] = convertValue(value, type);
+      parameters[name] = AlexaMetadata.convertValue(value, type);
     }
   }
 
@@ -287,7 +287,10 @@ class AlexaProperty {
 
     // Use autoupdate metadata value if available, to determine retrievable parameter if not already defined
     if (typeof parameters[Parameter.RETRIEVABLE] !== 'boolean' && item.metadata?.autoupdate) {
-      parameters[Parameter.RETRIEVABLE] = convertValue(item.metadata.autoupdate.value, ParameterType.BOOLEAN);
+      parameters[Parameter.RETRIEVABLE] = AlexaMetadata.convertValue(
+        item.metadata.autoupdate.value,
+        ParameterType.BOOLEAN
+      );
     }
   }
 
@@ -317,7 +320,7 @@ class AlexaProperty {
    * @param  {Array}  groups
    * @return {Object}
    */
-  static build({ name, component, tag, parameters, item, metadata, settings, groups }) {
+  static create({ name, component, tag, parameters, item, metadata, settings, groups }) {
     const property = new this(name, component, tag, parameters, item);
 
     // Return if property has not required component or supported item type
@@ -335,5 +338,3 @@ class AlexaProperty {
     return property;
   }
 }
-
-module.exports = AlexaProperty;

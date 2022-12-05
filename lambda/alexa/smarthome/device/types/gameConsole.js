@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const NetworkDevice = require('./networkDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import NetworkDevice from './networkDevice.js';
 
 /**
  * Defines game console device type class
  * @extends NetworkDevice
  */
-class GameConsole extends NetworkDevice {
+export default class GameConsole extends NetworkDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class GameConsole extends NetworkDevice {
     return [AlexaDisplayCategory.GAME_CONSOLE];
   }
 }
-
-module.exports = GameConsole;

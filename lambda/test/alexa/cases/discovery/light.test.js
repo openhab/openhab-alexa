@@ -11,7 +11,11 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-module.exports = {
+import { v4 as uuidv4, v5 as uuidv5 } from 'uuid';
+
+const uuid = uuidv4();
+
+export default {
   description: 'light',
   items: [
     {
@@ -198,7 +202,7 @@ module.exports = {
   ],
   settings: {
     runtime: {
-      uuid: '00000000-0000-0000-0000-000000000000',
+      uuid,
       version: '2'
     }
   },
@@ -240,7 +244,7 @@ module.exports = {
         manufacturer: 'openHAB',
         model: 'Color light3',
         softwareVersion: '2',
-        customIdentifier: 'ca60d77f-479a-5fb4-9586-38d5adb736de'
+        customIdentifier: uuidv5('light3', uuid)
       }
     },
     light4: {

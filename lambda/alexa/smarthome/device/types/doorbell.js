@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Camera = require('./camera');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Camera from './camera.js';
 
 /**
  * Defines doorbell device type class
  * @extends Camera
  */
-class Doorbell extends Camera {
+export default class Doorbell extends Camera {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Doorbell extends Camera {
     return [AlexaDisplayCategory.DOORBELL];
   }
 }
-
-module.exports = Doorbell;

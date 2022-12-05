@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { PowerState } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { PowerState } from '../properties/index.js';
 
 /**
  * Defines Alexa.PowerController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-powercontroller.html
  * @extends AlexaCapability
  */
-class PowerController extends AlexaCapability {
+export default class PowerController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.POWER_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -48,5 +56,3 @@ class PowerController extends AlexaCapability {
     return [AlexaDisplayCategory.SWITCH];
   }
 }
-
-module.exports = PowerController;

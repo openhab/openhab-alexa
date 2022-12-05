@@ -11,12 +11,10 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const DeviceType = require('./type');
+import DeviceType from './type.js';
 
 /**
  * Defines dummy device type class
  * @extends DeviceType
  */
-class Dummy extends DeviceType {}
-
-module.exports = Dummy;
+export default class Dummy extends DeviceType {}

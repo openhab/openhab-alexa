@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Dimension, ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaUnitOfMeasure = require('../unitOfMeasure');
-const AlexaProperty = require('./property');
+import { Dimension, ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaUnitOfMeasure from '../unitOfMeasure.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines temperature property class
  * @extends AlexaProperty
  */
-class Temperature extends AlexaProperty {
+export default class Temperature extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -110,5 +110,3 @@ class Temperature extends AlexaProperty {
         : AlexaUnitOfMeasure.UNIT_CELSIUS;
   }
 }
-
-module.exports = Temperature;

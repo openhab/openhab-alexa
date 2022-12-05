@@ -11,8 +11,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const {
+import { Interface, Property } from '../constants.js';
+import {
   InvalidValueError,
   SecurityPanelAuthorizationRequiredError,
   SecurityPanelBypassNeededError,
@@ -20,16 +20,17 @@ const {
   SecurityPanelUnauthorizedError,
   SecurityPanelUnclearedAlarmError,
   SecurityPanelUnclearedTroubleError
-} = require('../errors');
-const { ArmState, AlertState } = require('../properties');
-const AlexaHandler = require('./handler');
+} from '../errors.js';
+import { ArmState, AlertState } from '../properties/index.js';
+import { AuthType } from '../properties/armState.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.SecurityPanelController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-securitypanelcontroller.html#directives
  * @extends AlexaHandler
  */
-class SecurityPanelController extends AlexaHandler {
+export default class SecurityPanelController extends AlexaHandler {
   /**
    * Defines arm directive
    * @type {String}
@@ -106,26 +107,24 @@ class SecurityPanelController extends AlexaHandler {
       });
 
     // Throw relevant security panel error based on alert name found
-    if (alert) {
-      // prettier-ignore
-      switch (alert.name) {
-        case Property.ZONES_ALERT:
-          throw new SecurityPanelBypassNeededError(
-            'Unable to arm the security panel because it has open zones that must be bypassed.'
-          );
-        case Property.READY_ALERT:
-          throw new SecurityPanelNotReadyError(
-            'Unable to arm the security panel because it is not ready.'
-          );
-        case Property.ALARM_ALERT:
-          throw new SecurityPanelUnclearedAlarmError(
-            'Unable to arm the security panel because it is in alarm status.'
-          );
-        case Property.TROUBLE_ALERT:
-          throw new SecurityPanelUnclearedTroubleError(
-            'Unable to arm the security panel because it is in trouble status.'
-          );
-      }
+    // prettier-ignore
+    switch (alert?.name) {
+      case Property.ZONES_ALERT:
+        throw new SecurityPanelBypassNeededError(
+          'Unable to arm the security panel because it has open zones that must be bypassed.'
+        );
+      case Property.READY_ALERT:
+        throw new SecurityPanelNotReadyError(
+          'Unable to arm the security panel because it is not ready.'
+        );
+      case Property.ALARM_ALERT:
+        throw new SecurityPanelUnclearedAlarmError(
+          'Unable to arm the security panel because it is in alarm status.'
+        );
+      case Property.TROUBLE_ALERT:
+        throw new SecurityPanelUnclearedTroubleError(
+          'Unable to arm the security panel because it is in trouble status.'
+        );
     }
 
     // Get current arm alexa state
@@ -175,7 +174,7 @@ class SecurityPanelController extends AlexaHandler {
     const authorization = directive.payload.authorization;
 
     // Throw unauthorized error when provided pin code not valid
-    if (authorization?.type === ArmState.AuthType.FOUR_DIGIT_PIN && !pinCodes.includes(authorization.value)) {
+    if (authorization?.type === AuthType.FOUR_DIGIT_PIN && !pinCodes.includes(authorization.value)) {
       throw new SecurityPanelUnauthorizedError(
         'Unable to disarm the security panel because the PIN code is not correct.'
       );
@@ -201,5 +200,3 @@ class SecurityPanelController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = SecurityPanelController;

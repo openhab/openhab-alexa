@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
-const { CameraStream, BatteryLevel, PowerState } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
+import { CameraStream, BatteryLevel, PowerState } from '../attributes/index.js';
 
 /**
  * Defines camera device type class
  * @extends GenericDevice
  */
-class Camera extends GenericDevice {
+export default class Camera extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class Camera extends GenericDevice {
     return [AlexaDisplayCategory.CAMERA];
   }
 }
-
-module.exports = Camera;

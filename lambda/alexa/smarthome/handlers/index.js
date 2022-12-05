@@ -12,47 +12,30 @@
  */
 
 /**
- * Defines supported handler classes
- * @type {Object}
+ * Exports supported handler classes
  */
-module.exports = {
-  Alexa: require('./alexa'),
-  Authorization: require('./authorization'),
-  BrightnessController: require('./brightnessController'),
-  CameraStreamController: require('./cameraStreamController'),
-  ChannelController: require('./channelController'),
-  ColorController: require('./colorController'),
-  ColorTemperatureController: require('./colorTemperatureController'),
-  Discovery: require('./discovery'),
-  EqualizerController: require('./equalizerController'),
-  InputController: require('./inputController'),
-  LockController: require('./lockController'),
-  ModeController: require('./modeController'),
-  NetworkingAccessController: require('./networkingAccessController'),
-  PercentageController: require('./percentageController'),
-  PlaybackController: require('./playbackController'),
-  PowerController: require('./powerController'),
-  PowerLevelController: require('./powerLevelController'),
-  RangeController: require('./rangeController'),
-  Safety: require('./safety'),
-  SceneController: require('./sceneController'),
-  SecurityPanelController: require('./securityPanelController'),
-  Speaker: require('./speaker'),
-  StepSpeaker: require('./stepSpeaker'),
-  ThermostatController: require('./thermostatController'),
-  ToggleController: require('./toggleController')
-};
-
-/**
- * Returns handler function for a given directive namespace and name
- * @param  {String} namespace
- * @param  {String} name
- * @return {AsyncFunction}
- */
-module.exports.get = function (namespace, name) {
-  for (const handler of Object.values(this)) {
-    if (handler.namespace === namespace) {
-      return handler.directives[name];
-    }
-  }
-};
+export { default as Alexa } from './alexa.js';
+export { default as Authorization } from './authorization.js';
+export { default as BrightnessController } from './brightnessController.js';
+export { default as CameraStreamController } from './cameraStreamController.js';
+export { default as ChannelController } from './channelController.js';
+export { default as ColorController } from './colorController.js';
+export { default as ColorTemperatureController } from './colorTemperatureController.js';
+export { default as Discovery } from './discovery.js';
+export { default as EqualizerController } from './equalizerController.js';
+export { default as InputController } from './inputController.js';
+export { default as LockController } from './lockController.js';
+export { default as ModeController } from './modeController.js';
+export { default as NetworkingAccessController } from './networkingAccessController.js';
+export { default as PercentageController } from './percentageController.js';
+export { default as PlaybackController } from './playbackController.js';
+export { default as PowerController } from './powerController.js';
+export { default as PowerLevelController } from './powerLevelController.js';
+export { default as RangeController } from './rangeController.js';
+export { default as Safety } from './safety.js';
+export { default as SceneController } from './sceneController.js';
+export { default as SecurityPanelController } from './securityPanelController.js';
+export { default as Speaker } from './speaker.js';
+export { default as StepSpeaker } from './stepSpeaker.js';
+export { default as ThermostatController } from './thermostatController.js';
+export { default as ToggleController } from './toggleController.js';

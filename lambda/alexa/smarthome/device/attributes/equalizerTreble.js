@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const EqualizerBands = require('@alexa/smarthome/properties/equalizerBands');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import { EqualizerBands } from '#alexa/smarthome/properties/index.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines equalizer band treble attribute class
  * @extends DeviceAttribute
  */
-class EqualizerTreble extends DeviceAttribute {
+export default class EqualizerTreble extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -42,5 +42,3 @@ class EqualizerTreble extends DeviceAttribute {
     ];
   }
 }
-
-module.exports = EqualizerTreble;

@@ -11,23 +11,23 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { ItemType, ItemValue } = require('@openhab/constants');
-const { Interface, Property } = require('../constants');
-const {
+import { clamp } from '#root/utils.js';
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import { Interface, Property } from '../constants.js';
+import {
   CurrentModeNotSupportedError,
   EndpointUnreachableError,
   InvalidValueError,
   ValueOutOfRangeError
-} = require('../errors');
-const AlexaHandler = require('./handler');
+} from '../errors.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.ColorTemperatureController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-colortemperaturecontroller.html#directives
  * @extends AlexaHandler
  */
-class ColorTemperatureController extends AlexaHandler {
+export default class ColorTemperatureController extends AlexaHandler {
   /**
    * Defines set color temperature directive
    * @type {String}
@@ -154,5 +154,3 @@ class ColorTemperatureController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = ColorTemperatureController;

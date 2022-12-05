@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
-const AlexaAssetCatalog = require('../catalog');
-const { Parameter, ParameterType } = require('../metadata');
-const { AlexaModeResources } = require('../resources');
-const Generic = require('./generic');
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import AlexaAssetCatalog from '../catalog.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import { AlexaModeResources } from '../resources.js';
+import Generic from './generic.js';
 
 /**
  * Defines mode property class
  * @extends Generic
  */
-class Mode extends Generic {
+export default class Mode extends Generic {
   /**
    * Defines supported modes limit
    * @type {Number}
@@ -212,5 +212,3 @@ class Mode extends Generic {
     delete parameters[Parameter.SUPPORTED_COMMANDS];
   }
 }
-
-module.exports = Mode;

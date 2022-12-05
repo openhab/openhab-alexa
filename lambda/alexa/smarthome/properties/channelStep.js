@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const AlexaProperty = require('./property');
+import { ItemType } from '#openhab/constants.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines channel step property class
  * @extends AlexaProperty
  */
-class ChannelStep extends AlexaProperty {
+export default class ChannelStep extends AlexaProperty {
   /**
    * Defines channel step up
    * @type {String}
@@ -63,5 +63,3 @@ class ChannelStep extends AlexaProperty {
     return this.hasSupportedValuesMapped;
   }
 }
-
-module.exports = ChannelStep;

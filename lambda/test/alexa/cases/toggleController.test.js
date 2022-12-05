@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-module.exports = [
+export default [
   {
     description: 'turn on toggle state switch item',
     directive: {

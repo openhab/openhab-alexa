@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Defines alexa response class
  *  https://developer.amazon.com/docs/device-apis/alexa-response.html
  */
-class AlexaResponse {
+export default class AlexaResponse {
   /**
    * Defines response timeout in milliseconds
    * @type {Number}
@@ -85,5 +85,3 @@ class AlexaResponse {
     return this._response;
   }
 }
-
-module.exports = AlexaResponse;

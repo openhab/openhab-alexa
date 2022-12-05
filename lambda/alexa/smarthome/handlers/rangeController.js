@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { Interface, Property } = require('../constants');
-const { EndpointUnreachableError, InvalidValueError } = require('../errors');
-const AlexaHandler = require('./handler');
+import { clamp } from '#root/utils.js';
+import { Interface, Property } from '../constants.js';
+import { EndpointUnreachableError, InvalidValueError } from '../errors.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.RangeController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-rangecontroller.html#directives
  * @extends AlexaHandler
  */
-class RangeController extends AlexaHandler {
+export default class RangeController extends AlexaHandler {
   /**
    * Defines set range value directive
    * @type {String}
@@ -124,5 +124,3 @@ class RangeController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = RangeController;

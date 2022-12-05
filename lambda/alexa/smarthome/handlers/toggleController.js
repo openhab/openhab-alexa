@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const { InvalidValueError } = require('../errors');
-const { ToggleState } = require('../properties');
-const AlexaHandler = require('./handler');
+import { Interface, Property } from '../constants.js';
+import { InvalidValueError } from '../errors.js';
+import { ToggleState } from '../properties/index.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.ToggleController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-togglecontroller.html#directives
  * @extends AlexaHandler
  */
-class ToggleController extends AlexaHandler {
+export default class ToggleController extends AlexaHandler {
   /**
    * Defines turn on directive
    * @type {String}
@@ -78,5 +78,3 @@ class ToggleController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = ToggleController;

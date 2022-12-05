@@ -11,8 +11,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const GenericDevice = require('./genericDevice');
-const {
+import GenericDevice from './genericDevice.js';
+import {
   VolumeLevel,
   VolumeStep,
   MuteState,
@@ -26,13 +26,13 @@ const {
   EqualizerMidrange,
   EqualizerTreble,
   EqualizerMode
-} = require('../attributes');
+} from '../attributes/index.js';
 
 /**
  * Defines entertainment device type class
  * @extends GenericDevice
  */
-class Entertainment extends GenericDevice {
+export default class Entertainment extends GenericDevice {
   /**
    * Returns supported attributes
    * @return {Array}
@@ -56,5 +56,3 @@ class Entertainment extends GenericDevice {
     ];
   }
 }
-
-module.exports = Entertainment;

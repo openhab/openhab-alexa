@@ -11,16 +11,24 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const { Interface, Property } = require('../constants');
-const { Connectivity } = require('../properties');
+import AlexaCapability from './capability.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { Connectivity } from '../properties/index.js';
 
 /**
  * Defines Alexa.EndpointHealth interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-endpointhealth.html
  * @extends AlexaCapability
  */
-class EndpointHealth extends AlexaCapability {
+export default class EndpointHealth extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.ENDPOINT_HEALTH;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -39,5 +47,3 @@ class EndpointHealth extends AlexaCapability {
     };
   }
 }
-
-module.exports = EndpointHealth;

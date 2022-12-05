@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const Temperature = require('./temperature');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import Temperature from './temperature.js';
 
 /**
  * Defines cooling setpoint attribute class
  * @extends Temperature
  */
-class CoolingSetpoint extends Temperature {
+export default class CoolingSetpoint extends Temperature {
   /**
    * Returns supported names
    * @return {Array}
@@ -49,5 +49,3 @@ class CoolingSetpoint extends Temperature {
     ];
   }
 }
-
-module.exports = CoolingSetpoint;

@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Television = require('./television');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Television from './television.js';
 
 /**
  * Defines screne device type class
  * @extends Television
  */
-class Screen extends Television {
+export default class Screen extends Television {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Screen extends Television {
     return [AlexaDisplayCategory.SCREEN];
   }
 }
-
-module.exports = Screen;

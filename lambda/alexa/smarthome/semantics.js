@@ -15,7 +15,7 @@
  * Defines alexa semantics class
  *  https://developer.amazon.com/docs/alexa-voice-service/generic-controllers.html#semantics
  */
-class AlexaSemantics {
+export default class AlexaSemantics {
   /**
    * Constructor
    */
@@ -31,7 +31,7 @@ class AlexaSemantics {
   addActionToDirective(name, directive) {
     const actionMappings = this._semantics.actionMappings;
     // Define alexa action semantic id
-    const action = AlexaActionSemantic.get(name);
+    const action = AlexaActionSemantic.getId(name);
     // Find defined action mappings index with same directive
     const index = actionMappings.findIndex((map) => JSON.stringify(map.directive) === JSON.stringify(directive));
     // Update existing mapping actions list if found, otherwise add new mapping
@@ -54,7 +54,7 @@ class AlexaSemantics {
   addStateToRange(name, range) {
     const stateMappings = this._semantics.stateMappings;
     // Define alexa state semantic id
-    const state = AlexaStateSemantic.get(name);
+    const state = AlexaStateSemantic.getId(name);
     // Find defined state mappings index with same range
     const index = stateMappings.findIndex((map) => JSON.stringify(map.range) === JSON.stringify(range));
     // Update existing mapping states list if found, otherwise add new mapping
@@ -77,7 +77,7 @@ class AlexaSemantics {
   addStateToValue(name, value) {
     const stateMappings = this._semantics.stateMappings;
     // Define alexa state semantic id
-    const state = AlexaStateSemantic.get(name);
+    const state = AlexaStateSemantic.getId(name);
     // Find defined state mappings index with same value
     const index = stateMappings.findIndex((map) => map.value === value);
     // Update existing mapping states list if found, otherwise add new mapping
@@ -109,7 +109,7 @@ class AlexaSemantics {
 /**
  * Defines alexa action semantic class
  */
-class AlexaActionSemantic {
+export class AlexaActionSemantic {
   /**
    * Defines open action semantic
    * @type {String}
@@ -139,7 +139,7 @@ class AlexaActionSemantic {
    * @param  {String} name
    * @return {String}
    */
-  static get(name) {
+  static getId(name) {
     return 'Alexa.Actions.' + name;
   }
 }
@@ -147,7 +147,7 @@ class AlexaActionSemantic {
 /**
  * Defines alexa state semantic class
  */
-class AlexaStateSemantic {
+export class AlexaStateSemantic {
   /**
    * Defines open state semantic
    * @type {String}
@@ -165,7 +165,7 @@ class AlexaStateSemantic {
    * @param  {String} name
    * @return {String}
    */
-  static get(name) {
+  static getId(name) {
     return 'Alexa.States.' + name;
   }
 }
@@ -173,7 +173,7 @@ class AlexaStateSemantic {
 /**
  * Defines custom action semantic class
  */
-class CustomActionSemantic {
+export class CustomActionSemantic {
   /**
    * Defines resume action semantic
    * @type {String}
@@ -204,8 +204,3 @@ class CustomActionSemantic {
    */
   static TURN_OFF = 'TurnOff';
 }
-
-module.exports = AlexaSemantics;
-module.exports.AlexaActionSemantic = AlexaActionSemantic;
-module.exports.AlexaStateSemantic = AlexaStateSemantic;
-module.exports.CustomActionSemantic = CustomActionSemantic;

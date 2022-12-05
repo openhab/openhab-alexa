@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines percentage attribute class
  * @extends DeviceAttribute
  */
-class Percentage extends DeviceAttribute {
+export default class Percentage extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Percentage extends DeviceAttribute {
     return [{ name: Capability.PERCENTAGE_CONTROLLER, property: Property.PERCENTAGE }];
   }
 }
-
-module.exports = Percentage;

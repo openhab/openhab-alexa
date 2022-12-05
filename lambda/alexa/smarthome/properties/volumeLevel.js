@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines volume level property class
  * @extends AlexaProperty
  */
-class VolumeLevel extends AlexaProperty {
+export default class VolumeLevel extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -58,5 +58,3 @@ class VolumeLevel extends AlexaProperty {
     }
   }
 }
-
-module.exports = VolumeLevel;

@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
-const { VacuumMode, FanSpeed, BatteryLevel, PowerState } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
+import { VacuumMode, FanSpeed, BatteryLevel, PowerState } from '../attributes/index.js';
 
 /**
  * Defines vacuum cleaner device type class
  * @extends GenericDevice
  */
-class VacuumCleaner extends GenericDevice {
+export default class VacuumCleaner extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class VacuumCleaner extends GenericDevice {
     return [AlexaDisplayCategory.VACUUM_CLEANER];
   }
 }
-
-module.exports = VacuumCleaner;

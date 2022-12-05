@@ -12,49 +12,46 @@
  */
 
 /**
- * Defines supported property classes
- * @type {Object}
+ * Exports supported property classes
  */
-module.exports = {
-  AlarmState: require('./alarmState'),
-  AlertState: require('./alertState'),
-  ArmState: require('./armState'),
-  BinaryState: require('./binaryState'),
-  Brightness: require('./brightness'),
-  CameraStream: require('./cameraStream'),
-  Channel: require('./channel'),
-  ChannelStep: require('./channelStep'),
-  Color: require('./color'),
-  ColorTemperature: require('./colorTemperature'),
-  ConnectedDevice: require('./connectedDevice'),
-  Connectivity: require('./connectivity'),
-  DecoupleState: require('./decoupleState'),
-  DetectionState: require('./detectionState'),
-  EqualizerBands: require('./equalizerBands'),
-  EqualizerMode: require('./equalizerMode'),
-  Generic: require('./generic'),
-  Input: require('./input'),
-  LockState: require('./lockState'),
-  LowerSetpoint: require('./lowerSetpoint'),
-  Mode: require('./mode'),
-  MuteState: require('./muteState'),
-  MuteStep: require('./muteStep'),
-  NetworkAccess: require('./networkAccess'),
-  Percentage: require('./percentage'),
-  Playback: require('./playback'),
-  PlaybackAction: require('./playbackAction'),
-  PlaybackStop: require('./playbackStop'),
-  PowerLevel: require('./powerLevel'),
-  PowerState: require('./powerState'),
-  RangeValue: require('./rangeValue'),
-  Scene: require('./scene'),
-  SecurityAlert: require('./securityAlert'),
-  TargetSetpoint: require('./targetSetpoint'),
-  Temperature: require('./temperature'),
-  ThermostatHold: require('./thermostatHold'),
-  ThermostatMode: require('./thermostatMode'),
-  ToggleState: require('./toggleState'),
-  UpperSetpoint: require('./upperSetpoint'),
-  VolumeLevel: require('./volumeLevel'),
-  VolumeStep: require('./volumeStep')
-};
+export { default as AlarmState } from './alarmState.js';
+export { default as AlertState } from './alertState.js';
+export { default as ArmState } from './armState.js';
+export { default as BinaryState } from './binaryState.js';
+export { default as Brightness } from './brightness.js';
+export { default as CameraStream } from './cameraStream.js';
+export { default as Channel } from './channel.js';
+export { default as ChannelStep } from './channelStep.js';
+export { default as Color } from './color.js';
+export { default as ColorTemperature } from './colorTemperature.js';
+export { default as ConnectedDevice } from './connectedDevice.js';
+export { default as Connectivity } from './connectivity.js';
+export { default as DecoupleState } from './decoupleState.js';
+export { default as DetectionState } from './detectionState.js';
+export { default as EqualizerBands } from './equalizerBands.js';
+export { default as EqualizerMode } from './equalizerMode.js';
+export { default as Generic } from './generic.js';
+export { default as Input } from './input.js';
+export { default as LockState } from './lockState.js';
+export { default as LowerSetpoint } from './lowerSetpoint.js';
+export { default as Mode } from './mode.js';
+export { default as MuteState } from './muteState.js';
+export { default as MuteStep } from './muteStep.js';
+export { default as NetworkAccess } from './networkAccess.js';
+export { default as Percentage } from './percentage.js';
+export { default as Playback } from './playback.js';
+export { default as PlaybackAction } from './playbackAction.js';
+export { default as PlaybackStop } from './playbackStop.js';
+export { default as PowerLevel } from './powerLevel.js';
+export { default as PowerState } from './powerState.js';
+export { default as RangeValue } from './rangeValue.js';
+export { default as Scene } from './scene.js';
+export { default as SecurityAlert } from './securityAlert.js';
+export { default as TargetSetpoint } from './targetSetpoint.js';
+export { default as Temperature } from './temperature.js';
+export { default as ThermostatHold } from './thermostatHold.js';
+export { default as ThermostatMode } from './thermostatMode.js';
+export { default as ToggleState } from './toggleState.js';
+export { default as UpperSetpoint } from './upperSetpoint.js';
+export { default as VolumeLevel } from './volumeLevel.js';
+export { default as VolumeStep } from './volumeStep.js';

@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Speaker = require('./speaker');
-const { BatteryLevel } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Speaker from './speaker.js';
+import { BatteryLevel } from '../attributes/index.js';
 
 /**
  * Defines bluetooth speaker device type class
  * @extends Speaker
  */
-class BluetoothSpeaker extends Speaker {
+export default class BluetoothSpeaker extends Speaker {
   /**
    * Returns supported names
    * @return {Array}
@@ -44,5 +44,3 @@ class BluetoothSpeaker extends Speaker {
     return [AlexaDisplayCategory.BLUETOOTH_SPEAKER];
   }
 }
-
-module.exports = BluetoothSpeaker;
