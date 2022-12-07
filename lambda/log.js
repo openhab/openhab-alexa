@@ -22,7 +22,8 @@ export default createLogger({
   levels: { error: 0, warn: 1, info: 2, debug: 3 },
   format: format.printf(
     // eslint-disable-next-line no-unused-vars
-    ({ level, message, ...meta }) => `${message} ${Object.keys(meta).length > 0 ? JSON.stringify(meta) : ''}`
+    ({ level, message, ...meta }) =>
+      `${message} ${Object.keys(meta).length > 0 ? JSON.stringify(meta, getCircularReplacer()) : ''}`
   ),
   transports: [
     new transports.Console({
@@ -39,3 +40,20 @@ export default createLogger({
     })
   ]
 });
+
+/**
+ * Returns circular replacer
+ * @return {Function}
+ */
+const getCircularReplacer = () => {
+  const seen = new WeakSet();
+  return (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+    }
+    return value;
+  };
+};
