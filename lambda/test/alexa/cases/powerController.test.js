@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
               parameters: {},
               item: { name: 'light1', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -67,14 +67,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
               parameters: {},
               item: { name: 'light1', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       }
     },
@@ -112,14 +112,14 @@ module.exports = [
       endpoint: {
         endpointId: 'device1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
               parameters: { OFF: '0', ON: '10' },
               item: { name: 'device1', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },
@@ -157,14 +157,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
               parameters: { retrievable: false },
               item: { name: 'light1', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -195,14 +195,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
               parameters: {},
               item: { name: 'light1', type: 'Color' }
             }
-          ])
+          ]
         }
       }
     },
@@ -240,14 +240,14 @@ module.exports = [
       endpoint: {
         endpointId: 'device1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
               parameters: { OFF: 'off', ON: 'on' },
               item: { name: 'device1', type: 'String' }
             }
-          ])
+          ]
         }
       }
     },
@@ -285,14 +285,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
               parameters: {},
               item: { name: 'light1', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },
@@ -321,14 +321,14 @@ module.exports = [
       endpoint: {
         endpointId: 'device1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
               parameters: { OFF: 'OFF', ON: 'LOW' },
               item: { name: 'device1', type: 'String' }
             }
-          ])
+          ]
         }
       }
     },

@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: {},
               item: { name: 'channel', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -75,14 +75,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { supportsChannelNumber: true },
               item: { name: 'channel', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -128,14 +128,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' } },
               item: { name: 'channel', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -170,14 +170,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { range: [100, 499] },
               item: { name: 'channel', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -216,14 +216,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { channelMappings: { 12: 'FOO', 34: 'BAR', 56: 'BAZ' } },
               item: { name: 'channel', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -270,14 +270,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' } },
               item: { name: 'channel', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -323,14 +323,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { channelMappings: { 12: 'FOO', 34: 'BAR' } },
               item: { name: 'channel', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -365,14 +365,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' } },
               item: { name: 'channel', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -407,14 +407,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channelStep',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channelStep',
               parameters: { CHANNEL_UP: 'CHUP', CHANNEL_DOWN: 'CHDOWN' },
               item: { name: 'channelStep', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -449,14 +449,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: {},
               item: { name: 'channel', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -502,14 +502,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' } },
               item: { name: 'channel', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -555,14 +555,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channelStep',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channelStep',
               parameters: { CHANNEL_UP: 'CHUP', CHANNEL_DOWN: 'CHDOWN' },
               item: { name: 'channelStep', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -594,14 +594,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channelStep',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channelStep',
               parameters: { CHANNEL_UP: 'CHUP', CHANNEL_DOWN: 'CHDOWN' },
               item: { name: 'channelStep', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -633,14 +633,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { channelMappings: { foo: 'FOO', bar: 'BAR' } },
               item: { name: 'channel', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -673,14 +673,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: { retrievable: false },
               item: { name: 'channel', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -712,14 +712,14 @@ module.exports = [
       endpoint: {
         endpointId: 'channel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ChannelController',
               property: 'channel',
               parameters: {},
               item: { name: 'channel', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {

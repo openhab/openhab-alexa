@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PlaybackController',
               property: 'playback',
               parameters: {},
               item: { name: 'speakerPlayer', type: 'Player' }
             }
-          ])
+          ]
         }
       }
     },
@@ -60,7 +60,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PlaybackController',
               property: 'playback',
@@ -73,7 +73,7 @@ module.exports = [
               parameters: {},
               item: { name: 'speakerPlayerStop', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -104,7 +104,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PlaybackController',
               property: 'playback',
@@ -117,7 +117,7 @@ module.exports = [
               parameters: { inverted: true },
               item: { name: 'speakerPlayerStop', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -148,14 +148,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PlaybackController',
               property: 'playbackAction',
               parameters: { RESUME: 'RESUME', PAUSE: 'PAUSE' },
               item: { name: 'vacuumControl', type: 'String' }
             }
-          ])
+          ]
         }
       }
     },
@@ -186,14 +186,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PlaybackController',
               property: 'playbackAction',
               parameters: { RESUME: 'RESUME' },
               item: { name: 'vacuumControl', type: 'String' }
             }
-          ])
+          ]
         }
       }
     },

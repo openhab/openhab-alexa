@@ -23,7 +23,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gWasher',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'Mode:WashCycle',
@@ -38,7 +38,7 @@ module.exports = [
               },
               item: { name: 'WashCycle', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -81,7 +81,7 @@ module.exports = [
       endpoint: {
         endpointId: 'GarageDoor',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'OpenState',
@@ -96,7 +96,7 @@ module.exports = [
               },
               item: { name: 'GarageDoor', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -139,7 +139,7 @@ module.exports = [
       endpoint: {
         endpointId: 'GarageDoor',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'OpenState',
@@ -160,7 +160,7 @@ module.exports = [
               parameters: {},
               item: { name: 'ObstacleAlert', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -225,7 +225,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gWasher',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'Mode:WashCycle',
@@ -240,7 +240,7 @@ module.exports = [
               },
               item: { name: 'WashCycle', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -273,7 +273,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gWasher',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'Mode:WashTemperature',
@@ -289,7 +289,7 @@ module.exports = [
               },
               item: { name: 'WashTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -366,7 +366,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gWasher',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'Mode:WashTemperature',
@@ -383,7 +383,7 @@ module.exports = [
               },
               item: { name: 'WashTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -416,7 +416,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gWasher',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'Mode:WashTemperature',
@@ -432,7 +432,7 @@ module.exports = [
               },
               item: { name: 'WashTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -466,7 +466,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gWasher',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'Mode:WashTemperature',
@@ -482,7 +482,7 @@ module.exports = [
               },
               item: { name: 'WashTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -515,7 +515,7 @@ module.exports = [
       endpoint: {
         endpointId: 'WindowBlind',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'Mode:WindowBlind',
@@ -543,7 +543,7 @@ module.exports = [
               },
               item: { name: 'WindowBlind', type: 'Rollershutter' }
             }
-          ])
+          ]
         }
       }
     },
@@ -579,7 +579,7 @@ module.exports = [
       endpoint: {
         endpointId: 'GarageDoor',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ModeController',
               instance: 'OpenState',
@@ -607,7 +607,7 @@ module.exports = [
               },
               item: { name: 'CurrentGarageDoor', type: 'Contact' }
             }
-          ])
+          ]
         }
       }
     },

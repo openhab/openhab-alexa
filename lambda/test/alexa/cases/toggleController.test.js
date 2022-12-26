@@ -23,7 +23,7 @@ module.exports = [
       endpoint: {
         endpointId: 'FanOscillate',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ToggleController',
               instance: 'Toggle:FanOscillate',
@@ -33,7 +33,7 @@ module.exports = [
               },
               item: { name: 'FanOscillate', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -73,7 +73,7 @@ module.exports = [
       endpoint: {
         endpointId: 'FanOscillate',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ToggleController',
               instance: 'Toggle:FanOscillate',
@@ -84,7 +84,7 @@ module.exports = [
               },
               item: { name: 'FanOscillate', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -124,7 +124,7 @@ module.exports = [
       endpoint: {
         endpointId: 'FanLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ToggleController',
               instance: 'Toggle:FanLight',
@@ -136,7 +136,7 @@ module.exports = [
               },
               item: { name: 'FanLight', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },
@@ -176,7 +176,7 @@ module.exports = [
       endpoint: {
         endpointId: 'FanOscillate',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ToggleController',
               instance: 'Toggle:FanOscillate',
@@ -187,7 +187,7 @@ module.exports = [
               },
               item: { name: 'FanOscillate', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -227,7 +227,7 @@ module.exports = [
       endpoint: {
         endpointId: 'FanLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ToggleController',
               instance: 'Toggle:FanLight',
@@ -239,7 +239,7 @@ module.exports = [
               },
               item: { name: 'FanLight', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },
@@ -279,7 +279,7 @@ module.exports = [
       endpoint: {
         endpointId: 'FanLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ToggleController',
               instance: 'Toggle:FanLight',
@@ -289,7 +289,7 @@ module.exports = [
               },
               item: { name: 'FanLight', type: 'String' }
             }
-          ])
+          ]
         }
       }
     },

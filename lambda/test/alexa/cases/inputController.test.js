@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'tvSource',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'InputController',
               property: 'input',
               parameters: { supportedInputs: ['HDMI 1', 'TV'] },
               item: { name: 'tvSource', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -70,14 +70,14 @@ module.exports = [
       endpoint: {
         endpointId: 'tvSource',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'InputController',
               property: 'input',
               parameters: { supportedInputs: ['HDMI 1', 'TV'] },
               item: { name: 'tvSource', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {

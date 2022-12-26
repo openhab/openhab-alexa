@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'cameraStream',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'CameraStreamController',
               property: 'cameraStream',
               parameters: { proxyBaseUrl: 'https://openhab.myserver.tld' },
               item: { name: 'cameraStream', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -79,7 +79,7 @@ module.exports = [
       endpoint: {
         endpointId: 'cameraStream',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'CameraStreamController',
               property: 'cameraStream',
@@ -91,7 +91,7 @@ module.exports = [
               },
               item: { name: 'cameraStream', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -141,14 +141,14 @@ module.exports = [
       endpoint: {
         endpointId: 'cameraStream',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'CameraStreamController',
               property: 'cameraStream',
               parameters: { proxyBaseUrl: 'https://openhab.myserver.tld:8443' },
               item: { name: 'cameraStream', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {

@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'BrightnessController',
               property: 'brightness',
               parameters: {},
               item: { name: 'light1', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -70,14 +70,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'BrightnessController',
               property: 'brightness',
               parameters: {},
               item: { name: 'light1', type: 'Color' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -118,14 +118,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'BrightnessController',
               property: 'brightness',
               parameters: {},
               item: { name: 'light1', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -169,14 +169,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'BrightnessController',
               property: 'brightness',
               parameters: {},
               item: { name: 'light1', type: 'Color' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -220,14 +220,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'BrightnessController',
               property: 'brightness',
               parameters: { retrievable: false },
               item: { name: 'light1', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -259,14 +259,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'BrightnessController',
               property: 'brightness',
               parameters: {},
               item: { name: 'light1', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {

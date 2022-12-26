@@ -13,7 +13,15 @@
 
 require('module-alias/register');
 const { expect } = require('chai');
-const { clamp, decamelize, isMACAddress, parseUrl, stripPunctuation } = require('@root/utils');
+const {
+  clamp,
+  compressJSON,
+  decompressJSON,
+  decamelize,
+  isMACAddress,
+  parseUrl,
+  stripPunctuation
+} = require('@root/utils');
 
 describe('Utilities Tests', () => {
   describe('clamp', () => {
@@ -27,6 +35,20 @@ describe('Utilities Tests', () => {
 
     it('above range', () => {
       expect(clamp(142, 0, 100)).to.equal(100);
+    });
+  });
+
+  describe('compress/decompress json', () => {
+    const object = { foo: 1, bar: 2 };
+
+    it('compressed json string', () => {
+      const string = compressJSON(object);
+      expect(decompressJSON(string)).to.deep.equal(object);
+    });
+
+    it('uncompressed json string', () => {
+      const string = JSON.stringify(object);
+      expect(decompressJSON(string)).to.deep.equal(object);
     });
   });
 

@@ -23,7 +23,7 @@ module.exports = [
       endpoint: {
         endpointId: 'BasementFan',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'RangeController',
               instance: 'Range:BasementFan',
@@ -34,7 +34,7 @@ module.exports = [
               },
               item: { name: 'BasementFan', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -77,7 +77,7 @@ module.exports = [
       endpoint: {
         endpointId: 'BasementFan',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'RangeController',
               instance: 'Range:BasementFan',
@@ -88,7 +88,7 @@ module.exports = [
               },
               item: { name: 'BasementFan', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -131,7 +131,7 @@ module.exports = [
       endpoint: {
         endpointId: 'WindowBlind',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'RangeController',
               instance: 'Range:WindowBlind',
@@ -142,7 +142,7 @@ module.exports = [
               },
               item: { name: 'WindowBlind', type: 'Rollershutter' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -216,7 +216,7 @@ module.exports = [
       endpoint: {
         endpointId: 'BasementFan',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'RangeController',
               instance: 'Range:BasementFan',
@@ -227,7 +227,7 @@ module.exports = [
               },
               item: { name: 'BasementFan', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -274,7 +274,7 @@ module.exports = [
       endpoint: {
         endpointId: 'BasementFan',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'RangeController',
               instance: 'Range:BasementFan',
@@ -286,7 +286,7 @@ module.exports = [
               },
               item: { name: 'BasementFan', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -365,7 +365,7 @@ module.exports = [
       endpoint: {
         endpointId: 'BasementFan',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'RangeController',
               instance: 'Range:BasementFan',
@@ -377,7 +377,7 @@ module.exports = [
               },
               item: { name: 'BasementFan', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -411,7 +411,7 @@ module.exports = [
       endpoint: {
         endpointId: 'BasementFan',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'RangeController',
               instance: 'Range:BasementFan',
@@ -422,7 +422,7 @@ module.exports = [
               },
               item: { name: 'BasementFan', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {

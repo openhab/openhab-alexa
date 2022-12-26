@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { range: [2700, 6500] },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -70,14 +70,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'hue' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -118,14 +118,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'hue:white' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -166,14 +166,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'lifx' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -214,14 +214,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'lifx:white' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -262,14 +262,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'milight' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -310,14 +310,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'milight:white' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -358,14 +358,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'tradfri' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -406,14 +406,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'tradfri:white' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -454,14 +454,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'tplinksmarthome' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -502,14 +502,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'tplinksmarthome:white' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -550,14 +550,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'yeelight' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -598,14 +598,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { binding: 'yeelight:white' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -646,14 +646,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: {},
               item: { name: 'colorTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -694,7 +694,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
@@ -707,7 +707,7 @@ module.exports = [
               parameters: { retrievable: false },
               item: { name: 'colorTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -741,14 +741,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { range: [2200, 4000] },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -784,14 +784,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: {},
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       }
     },
@@ -832,14 +832,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { increment: 10 },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       }
     },
@@ -880,14 +880,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: {},
               item: { name: 'colorTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },
@@ -928,14 +928,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: {},
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       }
     },
@@ -976,14 +976,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { increment: 10 },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       }
     },
@@ -1024,14 +1024,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { increment: 900 },
               item: { name: 'colorTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },
@@ -1072,14 +1072,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: { retrievable: false },
               item: { name: 'colorTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },
@@ -1108,14 +1108,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorTemperatureController',
               property: 'colorTemperatureInKelvin',
               parameters: {},
               item: { name: 'colorTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },
@@ -1145,7 +1145,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
@@ -1158,7 +1158,7 @@ module.exports = [
               parameters: {},
               item: { name: 'colorTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },

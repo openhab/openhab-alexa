@@ -84,6 +84,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
+          // backward compatibility cookie capabilities uncompressed load test
           capabilities: JSON.stringify([
             {
               name: 'ColorController',
@@ -139,7 +140,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
@@ -152,7 +153,7 @@ module.exports = [
               parameters: {},
               item: { name: 'colorTemperature', type: 'Dimmer', binding: 'hue' }
             }
-          ])
+          ]
         }
       }
     },
@@ -194,7 +195,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
@@ -207,7 +208,7 @@ module.exports = [
               parameters: { range: [2700, 6500], retrievable: false },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       }
     },
@@ -246,7 +247,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
@@ -259,7 +260,7 @@ module.exports = [
               parameters: { range: [2700, 6500] },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       }
     },
@@ -297,7 +298,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gColorLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
@@ -310,7 +311,7 @@ module.exports = [
               parameters: { binding: 'hue' },
               item: { name: 'colorTemperature', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       }
     },
@@ -397,14 +398,14 @@ module.exports = [
       endpoint: {
         endpointId: 'contact',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ContactSensor',
               property: 'detectionState',
               parameters: {},
               item: { name: 'contact', type: 'Contact' }
             }
-          ])
+          ]
         }
       }
     },
@@ -439,14 +440,14 @@ module.exports = [
       endpoint: {
         endpointId: 'contact',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ContactSensor',
               property: 'detectionState',
               parameters: { inverted: true },
               item: { name: 'contact', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -481,14 +482,14 @@ module.exports = [
       endpoint: {
         endpointId: 'motion',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'MotionSensor',
               property: 'detectionState',
               parameters: { inverted: true },
               item: { name: 'motion', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -523,14 +524,14 @@ module.exports = [
       endpoint: {
         endpointId: 'temperature',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'TemperatureSensor',
               property: 'temperature',
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'temperature', type: 'Number:Temperature' }
             }
-          ])
+          ]
         }
       }
     },
@@ -623,7 +624,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
@@ -663,7 +664,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },
@@ -711,7 +712,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
@@ -735,7 +736,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },
@@ -781,7 +782,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gLight',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
@@ -805,7 +806,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },
@@ -851,7 +852,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gLock',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'LockController',
               property: 'lockState',
@@ -875,7 +876,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },
@@ -921,7 +922,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSensor',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'MotionSensor',
               property: 'detectionState',
@@ -939,7 +940,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },
@@ -987,7 +988,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
@@ -1018,7 +1019,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },
@@ -1065,7 +1066,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSwitch',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
@@ -1089,7 +1090,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },
@@ -1135,7 +1136,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gTelevision',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
@@ -1159,7 +1160,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },
@@ -1205,7 +1206,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
@@ -1229,7 +1230,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },
@@ -1278,7 +1279,7 @@ module.exports = [
       endpoint: {
         endpointId: 'switch1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PowerController',
               property: 'powerState',
@@ -1290,7 +1291,7 @@ module.exports = [
               property: 'connectivity',
               parameters: {}
             }
-          ])
+          ]
         }
       }
     },

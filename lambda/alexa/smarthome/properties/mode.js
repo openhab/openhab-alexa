@@ -23,6 +23,12 @@ const Generic = require('./generic');
  */
 class Mode extends Generic {
   /**
+   * Defines supported modes limit
+   * @type {Number}
+   */
+  static #SUPPORTED_MODES_LIMIT = 150;
+
+  /**
    * Returns supported item types
    * @return {Array}
    */
@@ -199,6 +205,7 @@ class Mode extends Generic {
         )
       ])
       .filter(([, labels]) => labels.length > 0)
+      .slice(0, Mode.#SUPPORTED_MODES_LIMIT)
       .reduce((modes, [mode, labels]) => ({ ...modes, [mode]: labels }), undefined);
 
     // Delete supported commands parameter

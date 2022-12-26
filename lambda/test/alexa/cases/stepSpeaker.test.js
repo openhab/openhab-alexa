@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gStepSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'StepSpeaker',
               property: 'volume',
               parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
               item: { name: 'stepSpeakerVolume', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -67,14 +67,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gStepSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'StepSpeaker',
               property: 'volume',
               parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
               item: { name: 'stepSpeakerVolume', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -109,14 +109,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gStepSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'StepSpeaker',
               property: 'volume',
               parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
               item: { name: 'stepSpeakerVolume', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -151,14 +151,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gStepSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'StepSpeaker',
               property: 'muted',
               parameters: { MUTE: 'MUTE' },
               item: { name: 'stepSpeakerMute', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -191,14 +191,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gStepSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'StepSpeaker',
               property: 'muted',
               parameters: { MUTE: 'MUTE' },
               item: { name: 'stepSpeakerMute', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -232,14 +232,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gStepSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'StepSpeaker',
               property: 'volume',
               parameters: { VOLUME_UP: 'VOLUP', VOLUME_DOWN: 'VOLDOWN' },
               item: { name: 'stepSpeakerVolume', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {

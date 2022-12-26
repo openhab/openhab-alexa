@@ -22,7 +22,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'volume',
@@ -49,7 +49,7 @@ module.exports = [
               parameters: { supportedModes: ['MOVIE', 'TV'] },
               item: { name: 'equalizerMode', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -114,7 +114,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'bands',
@@ -129,7 +129,7 @@ module.exports = [
               parameters: { range: [-5, 5] },
               item: { name: 'equalizerTreble', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -183,7 +183,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'bands',
@@ -191,7 +191,7 @@ module.exports = [
               parameters: { range: [-5, 5], increment: 3 },
               item: { name: 'equalizerBass', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -240,7 +240,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'bands',
@@ -248,7 +248,7 @@ module.exports = [
               parameters: { range: [-5, 5] },
               item: { name: 'equalizerBass', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -297,7 +297,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'bands',
@@ -305,7 +305,7 @@ module.exports = [
               parameters: {},
               item: { name: 'equalizerBass', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -354,7 +354,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'bands',
@@ -362,7 +362,7 @@ module.exports = [
               parameters: {},
               item: { name: 'equalizerBass', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -411,7 +411,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'bands',
@@ -419,7 +419,7 @@ module.exports = [
               parameters: { range: [-5, 5], retrievable: false },
               item: { name: 'equalizerBass', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -451,7 +451,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'bands',
@@ -459,7 +459,7 @@ module.exports = [
               parameters: { range: [-5, 5] },
               item: { name: 'equalizerBass', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -492,7 +492,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'bands',
@@ -500,7 +500,7 @@ module.exports = [
               parameters: { range: [-5, 5], defaultLevel: 1 },
               item: { name: 'equalizerBass', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -546,14 +546,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'mode',
               parameters: { supportedModes: ['MOVIE', 'TV'] },
               item: { name: 'equalizerMode', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -594,14 +594,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'EqualizerController',
               property: 'mode',
               parameters: { supportedModes: ['MOVIE', 'TV'] },
               item: { name: 'equalizerMode', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {

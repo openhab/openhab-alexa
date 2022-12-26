@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'doorLock',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'LockController',
               property: 'lockState',
               parameters: {},
               item: { name: 'doorLock', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -67,14 +67,14 @@ module.exports = [
       endpoint: {
         endpointId: 'doorLock',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'LockController',
               property: 'lockState',
               parameters: { inverted: true },
               item: { name: 'doorLock', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -112,14 +112,14 @@ module.exports = [
       endpoint: {
         endpointId: 'doorLock',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'LockController',
               property: 'lockState',
               parameters: {},
               item: { name: 'doorLock', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -157,14 +157,14 @@ module.exports = [
       endpoint: {
         endpointId: 'doorLock',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'LockController',
               property: 'lockState',
               parameters: { inverted: true },
               item: { name: 'doorLock', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -202,7 +202,7 @@ module.exports = [
       endpoint: {
         endpointId: 'doorLock',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'LockController',
               property: 'lockState',
@@ -216,7 +216,7 @@ module.exports = [
               parameters: {},
               item: { name: 'currentDoorLock', type: 'Contact' }
             }
-          ])
+          ]
         }
       }
     },
@@ -254,7 +254,7 @@ module.exports = [
       endpoint: {
         endpointId: 'doorLock',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'LockController',
               property: 'lockState',
@@ -268,7 +268,7 @@ module.exports = [
               parameters: {},
               item: { name: 'currentDoorLock', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },
@@ -306,7 +306,7 @@ module.exports = [
       endpoint: {
         endpointId: 'doorLock',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'LockController',
               property: 'lockState',
@@ -320,7 +320,7 @@ module.exports = [
               parameters: {},
               item: { name: 'currentDoorLock', type: 'String' }
             }
-          ])
+          ]
         }
       }
     },
@@ -358,7 +358,7 @@ module.exports = [
       endpoint: {
         endpointId: 'doorLock',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'LockController',
               property: 'lockState',
@@ -372,7 +372,7 @@ module.exports = [
               parameters: { LOCKED: 1, UNLOCKED: 2, JAMMED: 42 },
               item: { name: 'currentDoorLock', type: 'Number' }
             }
-          ])
+          ]
         }
       }
     },

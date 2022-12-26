@@ -11,6 +11,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+const { deflateSync, inflateSync } = require('zlib');
+
 /**
  * Defines utility functions
  * @type {Object}
@@ -25,6 +27,28 @@ module.exports = {
    */
   clamp: (value, minValue, maxValue) => {
     return Math.min(Math.max(value, minValue), maxValue);
+  },
+
+  /**
+   * Returns compressed json string
+   * @param  {Object} object
+   * @return {String}
+   */
+  compressJSON: (object) => {
+    return deflateSync(Buffer.from(JSON.stringify(object))).toString('base64');
+  },
+
+  /**
+   * Returns decompressed json object
+   * @param  {String} string
+   * @return {Object}
+   */
+  decompressJSON: (string) => {
+    try {
+      return JSON.parse(inflateSync(Buffer.from(string, 'base64')).toString());
+    } catch {
+      return JSON.parse(string);
+    }
   },
 
   /**
