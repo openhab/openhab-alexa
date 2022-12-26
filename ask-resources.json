@@ -14,7 +14,7 @@
         "type": "@ask-cli/cfn-deployer",
         "userConfig": {
           "awsRegion": "us-east-1",
-          "runtime": "nodejs16.x",
+          "runtime": "nodejs18.x",
           "handler": "index.handler",
           "templatePath": "./infrastructure/cfn-deployer/skill-stack.json",
           "cfn": {
