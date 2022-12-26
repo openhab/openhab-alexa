@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+const { decompressJSON } = require('@root/utils');
 const { Interface } = require('./constants');
 const AlexaEndpoint = require('./endpoint');
 const AlexaResponse = require('./response');
@@ -136,7 +137,7 @@ class AlexaDirective {
       ...(this.hasEndpoint && {
         endpointId: this._directive.endpoint.endpointId,
         cookie: Object.entries(this._directive.endpoint.cookie || {}).reduce(
-          (cookie, [key, value]) => ({ ...cookie, [key]: JSON.parse(value) }),
+          (cookie, [key, value]) => ({ ...cookie, [key]: decompressJSON(value) }),
           {}
         ),
         payload: this.payload

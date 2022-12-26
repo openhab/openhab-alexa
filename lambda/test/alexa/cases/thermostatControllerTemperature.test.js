@@ -22,7 +22,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
@@ -41,7 +41,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -120,7 +120,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'upperSetpoint',
@@ -133,7 +133,7 @@ module.exports = [
               parameters: { scale: 'CELSIUS' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -194,7 +194,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'upperSetpoint',
@@ -207,7 +207,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -268,7 +268,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'upperSetpoint',
@@ -281,7 +281,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT', comfortRange: 5 },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -342,7 +342,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -375,7 +375,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'ecoLowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -449,7 +449,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -468,7 +468,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -525,7 +525,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -544,7 +544,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -601,7 +601,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -620,7 +620,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -679,7 +679,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -704,7 +704,7 @@ module.exports = [
               parameters: { scale: 'CELSIUS' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -762,7 +762,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -787,7 +787,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -845,14 +845,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -891,14 +891,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -943,7 +943,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -956,7 +956,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1030,14 +1030,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
               parameters: { OFF: '0', HEAT: '1', COOL: '2', AUTO: '3' },
               item: { name: 'thermostatMode', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1073,7 +1073,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -1098,7 +1098,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1138,7 +1138,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -1163,7 +1163,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1207,7 +1207,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'upperSetpoint',
@@ -1220,7 +1220,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1263,14 +1263,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1320,7 +1320,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'upperSetpoint',
@@ -1333,7 +1333,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1396,7 +1396,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -1415,7 +1415,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'lowTargetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1473,7 +1473,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -1492,7 +1492,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1552,14 +1552,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
               parameters: { scale: 'CELSIUS' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1609,14 +1609,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1666,14 +1666,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
               parameters: { scale: 'FAHRENHEIT', setpointRange: [60, 90] },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1723,7 +1723,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -1736,7 +1736,7 @@ module.exports = [
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1810,14 +1810,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
               parameters: { OFF: '0', HEAT: '1', COOL: '2', AUTO: '3' },
               item: { name: 'thermostatMode', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1853,14 +1853,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
               parameters: { scale: 'FAHRENHEIT', retrievable: false },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -1895,14 +1895,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {

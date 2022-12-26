@@ -14,7 +14,7 @@
 require('module-alias/register');
 const { expect, use } = require('chai');
 const sinon = require('sinon');
-const { decamelize } = require('@root/utils');
+const { compressJSON, decamelize } = require('@root/utils');
 const log = require('@root/log');
 const OpenHAB = require('@openhab');
 const AlexaSmarthome = require('@alexa/smarthome');
@@ -120,9 +120,16 @@ function getDirective({ header, endpoint, payload = {} }) {
     // add endpoint only if provided
     ...(endpoint && {
       endpoint: {
+        scope: { type: 'BearerToken', token: 'access-token-from-skill' },
         endpointId: endpoint.endpointId,
-        cookie: endpoint.cookie,
-        scope: { type: 'BearerToken', token: 'access-token-from-skill' }
+        ...(endpoint.cookie && {
+          cookie: {
+            ...endpoint.cookie,
+            ...(typeof endpoint.cookie.capabilities === 'object' && {
+              capabilities: compressJSON(endpoint.cookie.capabilities)
+            })
+          }
+        })
       }
     }),
     payload: {

@@ -11,7 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+require('module-alias/register');
 const Ajv = require('ajv');
+const { decompressJSON } = require('@root/utils');
 
 // Initialize the alexa smart home message json schema draft v4 validator
 const validate = new Ajv({ schemaId: 'auto', unknownFormats: ['double', 'int32'] })
@@ -222,7 +224,7 @@ module.exports = function (chai) {
             new Assertion(getCapabilitiesSemantics(endpoint.capabilities)).deep.includes(value);
             break;
           case 'cookie':
-            new Assertion(JSON.parse(endpoint.cookie.capabilities)).include.deep.members(value);
+            new Assertion(decompressJSON(endpoint.cookie.capabilities)).include.deep.members(value);
             break;
           default:
             if (typeof endpoint[key] === 'object') {

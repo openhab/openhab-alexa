@@ -12,7 +12,7 @@
  */
 
 const { v5: uuidv5 } = require('uuid');
-const { stripPunctuation } = require('@root/utils');
+const { compressJSON, decompressJSON, stripPunctuation } = require('@root/utils');
 const { ItemType } = require('@openhab/constants');
 const AlexaCapabilities = require('./capabilities');
 const AlexaDisplayCategory = require('./category');
@@ -270,7 +270,7 @@ class AlexaEndpoint {
    */
   getCookie() {
     const capabilities = this.capabilities.map((capability) => capability.toJSON()).flat();
-    return { ...(capabilities.length > 0 && { capabilities: JSON.stringify(capabilities) }) };
+    return { ...(capabilities.length > 0 && { capabilities: compressJSON(capabilities) }) };
   }
 
   /**
@@ -513,7 +513,7 @@ class AlexaEndpoint {
     // Load directive endpoint cookie capabilities if defined,
     //  otherwise load property map for backward compatibility if present
     if (cookie.capabilities) {
-      endpoint.loadCapabilities(JSON.parse(cookie.capabilities));
+      endpoint.loadCapabilities(decompressJSON(cookie.capabilities));
     } else if (cookie.propertyMap) {
       endpoint.loadPropertyMap(JSON.parse(cookie.propertyMap));
     }

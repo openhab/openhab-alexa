@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
               parameters: { OFF: '0', HEAT: '1', COOL: '2', AUTO: '3' },
               item: { name: 'thermostatMode', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -72,14 +72,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
               parameters: { OFF: 0, HEAT: 1, COOL: 2, AUTO: 3 },
               item: { name: 'thermostatMode', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -122,14 +122,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
               parameters: { binding: 'nest' },
               item: { name: 'thermostatMode', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -172,14 +172,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'targetSetpoint',
               parameters: { scale: 'FAHRENHEIT' },
               item: { name: 'targetTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -213,14 +213,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
               parameters: { OFF: '0', HEAT: '1', COOL: '2', AUTO: '3' },
               item: { name: 'thermostatMode', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -254,7 +254,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -267,7 +267,7 @@ module.exports = [
               parameters: {},
               item: { name: 'thermostatHold', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {}
@@ -309,7 +309,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -322,7 +322,7 @@ module.exports = [
               parameters: {},
               item: { name: 'thermostatHold', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {}
@@ -364,7 +364,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'TemperatureSensor',
               property: 'temperature',
@@ -383,7 +383,7 @@ module.exports = [
               parameters: { inverted: true },
               item: { name: 'thermostatHold', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {}
@@ -434,7 +434,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -447,7 +447,7 @@ module.exports = [
               parameters: {},
               item: { name: 'thermostatHold', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {}
@@ -479,14 +479,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
               parameters: { OFF: '0', HEAT: '1', COOL: '2', AUTO: '3' },
               item: { name: 'thermostatMode', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {}
@@ -516,7 +516,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gThermostat',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ThermostatController',
               property: 'thermostatMode',
@@ -529,7 +529,7 @@ module.exports = [
               parameters: {},
               item: { name: 'thermostatHold', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {}

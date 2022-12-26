@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
               parameters: {},
               item: { name: 'light1', type: 'Color' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -81,14 +81,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
               parameters: {},
               item: { name: 'light1', type: 'Color' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -140,14 +140,14 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
               parameters: { retrievable: false },
               item: { name: 'light1', type: 'Color' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -186,7 +186,7 @@ module.exports = [
       endpoint: {
         endpointId: 'light1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'ColorController',
               property: 'color',
@@ -199,7 +199,7 @@ module.exports = [
               parameters: { requiresSetColorReset: true },
               item: { name: 'colorTemperature', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {

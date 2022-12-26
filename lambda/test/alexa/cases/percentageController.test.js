@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'device1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PercentageController',
               property: 'percentage',
               parameters: {},
               item: { name: 'device1', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -70,14 +70,14 @@ module.exports = [
       endpoint: {
         endpointId: 'device1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PercentageController',
               property: 'percentage',
               parameters: {},
               item: { name: 'device1', type: 'Rollershutter' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -118,14 +118,14 @@ module.exports = [
       endpoint: {
         endpointId: 'device1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PercentageController',
               property: 'percentage',
               parameters: {},
               item: { name: 'device1', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -169,14 +169,14 @@ module.exports = [
       endpoint: {
         endpointId: 'device1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PercentageController',
               property: 'percentage',
               parameters: {},
               item: { name: 'device1', type: 'Rollershutter' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -220,14 +220,14 @@ module.exports = [
       endpoint: {
         endpointId: 'device1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PercentageController',
               property: 'percentage',
               parameters: { retrievable: false },
               item: { name: 'device1', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -259,14 +259,14 @@ module.exports = [
       endpoint: {
         endpointId: 'device1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'PercentageController',
               property: 'percentage',
               parameters: {},
               item: { name: 'device1', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {

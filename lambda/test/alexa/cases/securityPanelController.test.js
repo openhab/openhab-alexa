@@ -22,7 +22,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -43,7 +43,7 @@ module.exports = [
               parameters: { inverted: true },
               item: { name: 'BurglaryAlarm', type: 'Contact' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -97,7 +97,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -113,7 +113,7 @@ module.exports = [
               parameters: {},
               item: { name: 'AlarmAlert', type: 'Contact' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -161,7 +161,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -174,7 +174,7 @@ module.exports = [
               },
               item: { name: 'ArmMode', type: 'Number' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -254,14 +254,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'burglaryAlarm',
               parameters: {},
               item: { name: 'BurglaryAlarm', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -293,7 +293,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -304,7 +304,7 @@ module.exports = [
               },
               item: { name: 'ArmMode', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -336,7 +336,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -345,7 +345,7 @@ module.exports = [
               },
               item: { name: 'ArmMode', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -378,7 +378,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -393,7 +393,7 @@ module.exports = [
               parameters: { inverted: true },
               item: { name: 'ZonesAlert', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -429,7 +429,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -444,7 +444,7 @@ module.exports = [
               parameters: {},
               item: { name: 'ReadyAlert', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -480,7 +480,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -495,7 +495,7 @@ module.exports = [
               parameters: {},
               item: { name: 'AlarmAlert', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -531,7 +531,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -546,7 +546,7 @@ module.exports = [
               parameters: {},
               item: { name: 'TroubleAlert', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -582,7 +582,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -604,7 +604,7 @@ module.exports = [
               parameters: {},
               item: { name: 'FireAlarm', type: 'Contact' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -659,7 +659,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -668,7 +668,7 @@ module.exports = [
               },
               item: { name: 'ArmMode', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {}
@@ -740,14 +740,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'burglaryAlarm',
               parameters: {},
               item: { name: 'BurglaryAlarm', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {}
@@ -777,7 +777,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -787,7 +787,7 @@ module.exports = [
               },
               item: { name: 'ArmMode', type: 'String' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -822,7 +822,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gSecurityPanel',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -837,7 +837,7 @@ module.exports = [
               parameters: {},
               item: { name: 'ReadyAlert', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {}
@@ -868,7 +868,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gAlarmSystem',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SecurityPanelController',
               property: 'armState',
@@ -901,7 +901,7 @@ module.exports = [
               parameters: { inverted: true },
               item: { name: 'WaterAlarm', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },

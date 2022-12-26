@@ -22,7 +22,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gComputer',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'NetworkingConnectedDevice',
               property: 'connectedDevice',
@@ -39,7 +39,7 @@ module.exports = [
               parameters: {},
               item: { name: 'networkAccess', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -80,7 +80,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gComputer',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'NetworkingConnectedDevice',
               property: 'connectedDevice',
@@ -99,7 +99,7 @@ module.exports = [
               },
               item: { name: 'networkAccess', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -140,7 +140,7 @@ module.exports = [
       endpoint: {
         endpointId: 'gComputer',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'NetworkingConnectedDevice',
               property: 'connectedDevice',
@@ -159,7 +159,7 @@ module.exports = [
               },
               item: { name: 'networkAccess', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {

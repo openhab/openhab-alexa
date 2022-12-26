@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'volume',
               parameters: {},
               item: { name: 'speakerVolume', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -70,14 +70,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'muted',
               parameters: {},
               item: { name: 'speakerMute', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -109,14 +109,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'volume',
               parameters: {},
               item: { name: 'speakerVolume', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -161,14 +161,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'volume',
               parameters: {},
               item: { name: 'speakerVolume', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -213,14 +213,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'volume',
               parameters: { increment: 5 },
               item: { name: 'speakerVolume', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -265,14 +265,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'volume',
               parameters: { increment: 5 },
               item: { name: 'speakerVolume', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -317,14 +317,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'muted',
               parameters: {},
               item: { name: 'speakerMute', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -357,14 +357,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'volume',
               parameters: { increment: 5, retrievable: false },
               item: { name: 'speakerVolume', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -397,14 +397,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'volume',
               parameters: { increment: 5 },
               item: { name: 'speakerVolume', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -438,14 +438,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'muted',
               parameters: {},
               item: { name: 'speakerMute', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -486,14 +486,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'muted',
               parameters: { inverted: true },
               item: { name: 'speakerMute', type: 'Switch' }
             }
-          ])
+          ]
         }
       },
       payload: {
@@ -534,14 +534,14 @@ module.exports = [
       endpoint: {
         endpointId: 'gSpeaker',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'Speaker',
               property: 'volume',
               parameters: {},
               item: { name: 'speakerVolume', type: 'Dimmer' }
             }
-          ])
+          ]
         }
       },
       payload: {

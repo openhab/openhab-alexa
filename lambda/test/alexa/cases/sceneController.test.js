@@ -22,14 +22,14 @@ module.exports = [
       endpoint: {
         endpointId: 'scene1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SceneController',
               property: 'scene',
               parameters: {},
               item: { name: 'scene1', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },
@@ -65,14 +65,14 @@ module.exports = [
       endpoint: {
         endpointId: 'scene1',
         cookie: {
-          capabilities: JSON.stringify([
+          capabilities: [
             {
               name: 'SceneController',
               property: 'scene',
               parameters: {},
               item: { name: 'scene1', type: 'Switch' }
             }
-          ])
+          ]
         }
       }
     },

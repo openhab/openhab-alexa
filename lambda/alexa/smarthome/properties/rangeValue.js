@@ -23,6 +23,12 @@ const Generic = require('./generic');
  */
 class RangeValue extends Generic {
   /**
+   * Defines presets limit
+   * @type {Number}
+   */
+  static #PRESETS_LIMIT = 150;
+
+  /**
    * Returns supported item types
    * @return {Array}
    */
@@ -206,6 +212,7 @@ class RangeValue extends Generic {
           preset % this.supportedRange[2] === 0 &&
           labels.length > 0
       )
+      .slice(0, RangeValue.#PRESETS_LIMIT)
       .reduce((presets, [preset, labels]) => ({ ...presets, [preset]: labels }), undefined);
 
     // Define unit of measure as follow:
