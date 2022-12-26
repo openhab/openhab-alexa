@@ -41,9 +41,6 @@
     "LambdaRuntime": {
       "Type": "String"
     },
-    "LambdaRuntime": {
-      "Type": "String"
-    },
     "LambdaHandler": {
       "Type": "String"
     },
