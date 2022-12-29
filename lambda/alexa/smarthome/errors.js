@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+import { AxiosError } from 'axios';
 import { Interface } from './constants.js';
 
 /**
@@ -58,24 +59,25 @@ export class AlexaError extends Error {
    * @return {Object}
    */
   static from(error) {
-    switch (error.name) {
-      case 'RequestError':
-      case 'StatusCodeError':
-        switch (error.statusCode) {
-          case 400:
-            return new InvalidValueError('Invalid item command value');
-          case 401:
-            return new InvalidAuthorizationCredentialError('Failed to authenticate');
-          case 404:
-            return new InvalidEndpointError('Endpoint not found');
-          default:
-            return new BridgeUnreachableError('Server not accessible');
-        }
-      case 'SyntaxError':
-      case 'TypeError':
-        return new InternalError('Internal error');
-      default:
-        return new EndpointUnreachableError('Endpoint not reachable');
+    if (error instanceof AxiosError) {
+      switch (error.response?.status) {
+        case 400:
+          return new InvalidValueError('Invalid item command value');
+        case 401:
+          return new InvalidAuthorizationCredentialError('Failed to authenticate');
+        case 404:
+          return new InvalidEndpointError('Endpoint not found');
+        default:
+          return new BridgeUnreachableError('Server not accessible');
+      }
+    } else {
+      switch (error.name) {
+        case 'SyntaxError':
+        case 'TypeError':
+          return new InternalError('Internal error');
+        default:
+          return new EndpointUnreachableError('Endpoint not reachable');
+      }
     }
   }
 }

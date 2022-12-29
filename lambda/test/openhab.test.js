@@ -14,8 +14,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import nock from 'nock';
-import fs from 'fs';
-import Agent from 'agentkeepalive';
+import fs from 'node:fs';
+import { AxiosError } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import OpenHAB from '#openhab/index.js';
 
@@ -45,7 +45,7 @@ describe('OpenHAB Tests', () => {
       sinon.stub(fs, 'existsSync').returns(false);
       nock(baseURL).get('/').matchHeader('Authorization', `Bearer ${token}`).reply(200);
       // run test
-      await OpenHAB.getRequestDefaults({ baseURL }, token, timeout).get('/');
+      await OpenHAB.createClient({ baseURL }, token, timeout).get('/');
       expect(nock.isDone()).to.be.true;
     });
 
@@ -56,7 +56,7 @@ describe('OpenHAB Tests', () => {
       sinon.stub(fs, 'existsSync').returns(false);
       nock(baseURL).get('/').basicAuth({ user, pass }).reply(200);
       // run test
-      await OpenHAB.getRequestDefaults({ baseURL, user, pass }, token, timeout).get('/');
+      await OpenHAB.createClient({ baseURL, user, pass }, token, timeout).get('/');
       expect(nock.isDone()).to.be.true;
     });
 
@@ -71,31 +71,25 @@ describe('OpenHAB Tests', () => {
         .reply(200)
         .on('request', ({ headers, options, socket }) => {
           expect(headers).to.not.have.property('authorization');
-          expect(options).to.nested.include({
-            agentClass: Agent.HttpsAgent,
-            'agentOptions.pfx': 'pfx',
-            'agentOptions.passphrase': 'passphrase'
-          });
+          expect(options).to.nested.include({ 'agent.options.pfx': 'pfx', 'agent.options.passphrase': 'passphrase' });
           expect(socket).to.include({ timeout });
         });
       // run test
-      await OpenHAB.getRequestDefaults({ baseURL, certFile, certPass }, token, timeout).get('/');
+      await OpenHAB.createClient({ baseURL, certFile, certPass }, token, timeout).get('/');
       expect(nock.isDone()).to.be.true;
     });
 
-    it('http no auth', async () => {
+    it('https no auth', async () => {
       // set environment
-      const baseURL = 'http://foobar';
       sinon.stub(fs, 'existsSync').returns(false);
       nock(baseURL)
         .get('/')
         .reply(200)
-        .on('request', ({ headers, options }) => {
+        .on('request', ({ headers }) => {
           expect(headers).to.not.have.property('authorization');
-          expect(options).to.include({ agentClass: Agent });
         });
       // run test
-      await OpenHAB.getRequestDefaults({ baseURL }).get('/');
+      await OpenHAB.createClient({ baseURL }).get('/');
       expect(nock.isDone()).to.be.true;
     });
   });
@@ -195,7 +189,7 @@ describe('OpenHAB Tests', () => {
       try {
         await openhab.getItemState('foo');
       } catch (error) {
-        expect(error).to.include({ name: 'StatusCodeError', statusCode: 404 });
+        expect(error).to.be.instanceof(AxiosError).and.nested.include({ 'response.status': 404 });
       }
       expect(nock.isDone()).to.be.true;
     });
@@ -236,7 +230,9 @@ describe('OpenHAB Tests', () => {
       try {
         await openhab.getAllItems();
       } catch (error) {
-        expect(error).to.include({ name: 'TypeError', message: 'Failed to retrieve all items formatted array' });
+        expect(error)
+          .to.be.instanceof(TypeError)
+          .and.include({ message: 'Failed to retrieve all items formatted array' });
       }
       expect(nock.isDone()).to.be.true;
     });
@@ -248,7 +244,7 @@ describe('OpenHAB Tests', () => {
       try {
         await openhab.getAllItems();
       } catch (error) {
-        expect(error).to.include({ name: 'StatusCodeError', statusCode: 401 });
+        expect(error).to.be.instanceof(AxiosError).and.nested.include({ 'response.status': 401 });
       }
       expect(nock.isDone()).to.be.true;
     });
@@ -377,7 +373,7 @@ describe('OpenHAB Tests', () => {
       try {
         await openhab.getServerSettings();
       } catch (error) {
-        expect(error).to.include({ name: 'RequestError' });
+        expect(error).to.be.instanceof(AxiosError).and.include({ message: 'error' });
       }
       expect(nock.isDone()).to.be.true;
     });
@@ -399,7 +395,7 @@ describe('OpenHAB Tests', () => {
       try {
         await openhab.sendCommand('foo', 42);
       } catch (error) {
-        expect(error).to.include({ name: 'StatusCodeError', statusCode: 404 });
+        expect(error).to.be.instanceof(AxiosError).and.nested.include({ 'response.status': 404 });
       }
       expect(nock.isDone()).to.be.true;
     });
@@ -421,7 +417,7 @@ describe('OpenHAB Tests', () => {
       try {
         await openhab.postUpdate('foo', 'invalid');
       } catch (error) {
-        expect(error).to.include({ name: 'StatusCodeError', statusCode: 400 });
+        expect(error).to.be.instanceof(AxiosError).and.nested.include({ 'response.status': 400 });
       }
       expect(nock.isDone()).to.be.true;
     });

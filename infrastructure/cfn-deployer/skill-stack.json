@@ -3,7 +3,9 @@
   "Parameters": {
     "OpenHABBaseURL": {
       "Type": "String",
-      "Default": "https://myopenhab.org"
+      "Default": "https://myopenhab.org",
+      "AllowedPattern": "^https://.+",
+      "ConstraintDescription" : "must be a valid https url."
     },
     "OpenHABUsername": {
       "Type": "String",
@@ -36,7 +38,8 @@
         "warn",
         "info",
         "debug"
-      ]
+      ],
+      "ConstraintDescription" : "must be error, warn, info or debug."
     },
     "LambdaRuntime": {
       "Type": "String"

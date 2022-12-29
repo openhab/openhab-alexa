@@ -12,8 +12,8 @@
  */
 
 import fs from 'fs';
-import request from 'request-promise-native';
-import Agent from 'agentkeepalive';
+import axios from 'axios';
+import { HttpsAgent } from 'agentkeepalive';
 import { sprintf } from 'sprintf-js';
 import { validate as uuidValidate } from 'uuid';
 import { ItemType, ItemValue } from './constants.js';
@@ -29,7 +29,7 @@ export default class OpenHAB {
    * @param {Number} timeout
    */
   constructor(config, token, timeout) {
-    this._request = OpenHAB.getRequestDefaults(config, token, timeout);
+    this._client = OpenHAB.createClient(config, token, timeout);
   }
 
   /**
@@ -102,10 +102,9 @@ export default class OpenHAB {
   getItem(itemName) {
     const options = {
       method: 'GET',
-      uri: `/rest/items/${itemName}`,
-      json: true
+      url: `/rest/items/${itemName}`
     };
-    return this._request(options);
+    return this._client(options);
   }
 
   /**
@@ -115,14 +114,13 @@ export default class OpenHAB {
   getItems() {
     const options = {
       method: 'GET',
-      uri: '/rest/items',
-      qs: {
+      url: '/rest/items',
+      params: {
         fields: 'editable,groupNames,groupType,name,label,metadata,stateDescription,tags,type',
         metadata: 'alexa,autoupdate,channel,synonyms'
-      },
-      json: true
+      }
     };
-    return this._request(options);
+    return this._client(options);
   }
 
   /**
@@ -132,10 +130,9 @@ export default class OpenHAB {
   getRootResource() {
     const options = {
       method: 'GET',
-      uri: '/rest/',
-      json: true
+      url: '/rest/'
     };
-    return this._request(options);
+    return this._client(options);
   }
 
   /**
@@ -146,10 +143,9 @@ export default class OpenHAB {
   getServiceConfig(serviceId) {
     const options = {
       method: 'GET',
-      uri: `/rest/services/${serviceId}/config`,
-      json: true
+      url: `/rest/services/${serviceId}/config`
     };
-    return this._request(options);
+    return this._client(options);
   }
 
   /**
@@ -159,9 +155,9 @@ export default class OpenHAB {
   getUUID() {
     const options = {
       method: 'GET',
-      uri: '/rest/uuid'
+      url: '/rest/uuid'
     };
-    return this._request(options);
+    return this._client(options);
   }
 
   /**
@@ -173,13 +169,13 @@ export default class OpenHAB {
   sendCommand(itemName, command) {
     const options = {
       method: 'POST',
-      uri: `/rest/items/${itemName}`,
+      url: `/rest/items/${itemName}`,
       headers: {
         'Content-Type': 'text/plain'
       },
-      body: command.toString()
+      data: command.toString()
     };
-    return this._request(options);
+    return this._client(options);
   }
 
   /**
@@ -191,13 +187,54 @@ export default class OpenHAB {
   postUpdate(itemName, state) {
     const options = {
       method: 'PUT',
-      uri: `/rest/items/${itemName}/state`,
+      url: `/rest/items/${itemName}/state`,
       headers: {
         'Content-Type': 'text/plain'
       },
-      body: state.toString()
+      data: state.toString()
     };
-    return this._request(options);
+    return this._client(options);
+  }
+
+  /**
+   * Returns request client
+   * @param  {Object} config
+   * @param  {String} token
+   * @param  {Number} timeout
+   * @return {Object}
+   */
+  static createClient(config, token, timeout) {
+    const client = axios.create({
+      baseURL: config.baseURL,
+      headers: {
+        common: {
+          'Cache-Control': 'no-cache'
+        }
+      },
+      httpsAgent: new HttpsAgent({
+        // Set keep-alive free socket to timeout after 45s of inactivity
+        freeSocketTimeout: 45000,
+        timeout: parseInt(timeout)
+      })
+    });
+
+    // Add authentication options
+    if (fs.existsSync(config.certFile)) {
+      // SSL Certificate Authentication
+      client.defaults.httpsAgent.options.pfx = fs.readFileSync(config.certFile);
+      client.defaults.httpsAgent.options.passphrase = config.certPass;
+    } else if (config.user && config.pass) {
+      // Basic Authentication
+      client.defaults.auth = { username: config.user, password: config.pass };
+    } else if (token) {
+      // OAuth2 Authentication
+      client.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
+    // Set response interceptor
+    client.interceptors.response.use((response) => response.data);
+
+    return client;
   }
 
   /**
@@ -226,43 +263,5 @@ export default class OpenHAB {
     }
 
     return state;
-  }
-
-  /**
-   * Returns request defaults object
-   * @param  {Object} config
-   * @param  {String} token
-   * @param  {Number} timeout
-   * @return {Object}
-   */
-  static getRequestDefaults(config, token, timeout) {
-    const options = {
-      baseUrl: config.baseURL,
-      headers: {
-        'Cache-Control': 'no-cache'
-      },
-      gzip: true,
-      agentClass: config.baseURL.startsWith('https') ? Agent.HttpsAgent : Agent,
-      agentOptions: {
-        // Set keep-alive free socket to timeout after 45s of inactivity
-        freeSocketTimeout: 45000
-      },
-      timeout: parseInt(timeout)
-    };
-
-    // Add authentication options
-    if (fs.existsSync(config.certFile)) {
-      // SSL Certificate Authentication
-      options.agentOptions.pfx = fs.readFileSync(config.certFile);
-      options.agentOptions.passphrase = config.certPass;
-    } else if (config.user && config.pass) {
-      // Basic Authentication
-      options.auth = { user: config.user, pass: config.pass };
-    } else if (token) {
-      // OAuth2 Authentication
-      options.auth = { bearer: token };
-    }
-
-    return request.defaults(options);
   }
 }

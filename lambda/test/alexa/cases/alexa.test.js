@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import { RequestError, StatusCodeError } from 'request-promise-native/errors.js';
+import { AxiosError } from 'axios';
 
 export default [
   {
@@ -1329,7 +1329,7 @@ export default [
         endpointId: 'foobar1'
       }
     },
-    error: new RequestError(),
+    error: new AxiosError(),
     expected: {
       alexa: {
         event: {
@@ -1356,7 +1356,7 @@ export default [
         endpointId: 'foobar1'
       }
     },
-    error: new StatusCodeError(400),
+    error: new AxiosError(null, null, null, null, { status: 400 }),
     expected: {
       alexa: {
         event: {
@@ -1383,7 +1383,7 @@ export default [
         endpointId: 'foobar1'
       }
     },
-    error: new StatusCodeError(401),
+    error: new AxiosError(null, null, null, null, { status: 401 }),
     expected: {
       alexa: {
         event: {
@@ -1410,7 +1410,7 @@ export default [
         endpointId: 'foobar1'
       }
     },
-    error: new StatusCodeError(404),
+    error: new AxiosError(null, null, null, null, { status: 404 }),
     expected: {
       alexa: {
         event: {

@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+import { AxiosError } from 'axios';
 import config from '#root/config.js';
 import log from '#root/log.js';
 import OpenHAB from '#openhab/index.js';
@@ -78,12 +79,9 @@ const logError = (error, directive) => {
   let level, message;
 
   // Define log level channel and error message based on error type
-  if (error.name === 'RequestError') {
+  if (error instanceof AxiosError) {
     level = 'warn';
-    message = 'Request' + error.message;
-  } else if (error.name === 'StatusCodeError') {
-    level = 'warn';
-    message = 'StatusCodeError: ' + error.statusCode;
+    message = `RequestError: ${error.message}`;
   } else {
     level = 'error';
     message = error.stack.split(/\n\s+/).slice(0, 2).join(' ');
