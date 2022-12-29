@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const { CustomActionSemantic } = require('@alexa/smarthome/semantics');
-const DeviceAttribute = require('./attribute');
+import { ItemType } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import { CustomActionSemantic } from '#alexa/smarthome/semantics.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines vacuum mode attribute class
  * @extends DeviceAttribute
  */
-class VacuumMode extends DeviceAttribute {
+export default class VacuumMode extends DeviceAttribute {
   /**
    * Defines clean mode
    * @type {String}
@@ -156,5 +156,3 @@ class VacuumMode extends DeviceAttribute {
     }
   }
 }
-
-module.exports = VacuumMode;

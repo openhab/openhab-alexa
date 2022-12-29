@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const { Parameter, ParameterType } = require('@alexa/smarthome/metadata');
-const DeviceAttribute = require('./attribute');
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import { Parameter, ParameterType } from '#alexa/smarthome/metadata.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines fan direction attribute class
  * @extends DeviceAttribute
  */
-class FanDirection extends DeviceAttribute {
+export default class FanDirection extends DeviceAttribute {
   /**
    * Defines forward direction
    * @type {String}
@@ -101,5 +101,3 @@ class FanDirection extends DeviceAttribute {
     }
   }
 }
-
-module.exports = FanDirection;

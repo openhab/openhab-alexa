@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines camera stream authorization type enum
  *  https://developer.amazon.com/docs/device-apis/alexa-camerastreamcontroller.html#supported-authorization
  * @type {Object}
  */
-const AuthType = Object.freeze({
+export const AuthType = Object.freeze({
   BASIC: 'BASIC',
   DIGEST: 'DIGEST',
   NONE: 'NONE'
@@ -74,7 +74,7 @@ const AudioCodec = Object.freeze({
  * Defines camera stream property class
  * @extends AlexaProperty
  */
-class CameraStream extends AlexaProperty {
+export default class CameraStream extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -188,6 +188,3 @@ class CameraStream extends AlexaProperty {
     return this.parameters[Parameter.PASSWORD] || '';
   }
 }
-
-module.exports = CameraStream;
-module.exports.AuthType = AuthType;

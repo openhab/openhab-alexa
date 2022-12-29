@@ -11,18 +11,18 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { ItemType, ItemValue } = require('@openhab/constants');
-const { Interface, Property } = require('../constants');
-const { EndpointUnreachableError, InvalidValueError } = require('../errors');
-const AlexaHandler = require('./handler');
+import { clamp } from '#root/utils.js';
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import { Interface, Property } from '../constants.js';
+import { EndpointUnreachableError, InvalidValueError } from '../errors.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.EqualizerController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-equalizercontroller.html#directives
  * @extends AlexaHandler
  */
-class EqualizerController extends AlexaHandler {
+export default class EqualizerController extends AlexaHandler {
   /**
    * Defines set bands directive
    * @type {String}
@@ -79,6 +79,12 @@ class EqualizerController extends AlexaHandler {
       interface: directive.namespace,
       property: Property.EQUALIZER_BANDS
     });
+
+    // Throw invalid value error if no equalizer bands properties defined
+    if (typeof properties === 'undefined') {
+      throw new InvalidValueError('No equalizer bands properties defined.');
+    }
+
     const commands = [];
 
     for (const { component, item, defaultLevel } of properties) {
@@ -106,6 +112,12 @@ class EqualizerController extends AlexaHandler {
       interface: directive.namespace,
       property: Property.EQUALIZER_BANDS
     });
+
+    // Throw invalid value error if no equalizer bands properties defined
+    if (typeof properties === 'undefined') {
+      throw new InvalidValueError('No equalizer bands properties defined.');
+    }
+
     const commands = [];
 
     for (const { component, item, increment, range, isRetrievable } of properties) {
@@ -162,6 +174,12 @@ class EqualizerController extends AlexaHandler {
       interface: directive.namespace,
       property: Property.EQUALIZER_MODE
     });
+
+    // Throw invalid value error if no equalizer mode property defined
+    if (typeof property === 'undefined') {
+      throw new InvalidValueError('No equalizer mode property defined.');
+    }
+
     const { item, supportedModes } = property;
     const mode = directive.payload.mode;
 
@@ -177,5 +195,3 @@ class EqualizerController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = EqualizerController;

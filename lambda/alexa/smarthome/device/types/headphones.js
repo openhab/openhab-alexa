@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const BluetoothSpeaker = require('./bluetoothSpeaker');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import BluetoothSpeaker from './bluetoothSpeaker.js';
 
 /**
  * Defines headphones device type class
  * @extends BluetoothSpeaker
  */
-class Headphones extends BluetoothSpeaker {
+export default class Headphones extends BluetoothSpeaker {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Headphones extends BluetoothSpeaker {
     return [AlexaDisplayCategory.HEADPHONES];
   }
 }
-
-module.exports = Headphones;

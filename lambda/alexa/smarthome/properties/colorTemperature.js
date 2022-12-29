@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { Binding, ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { clamp } from '#root/utils.js';
+import { Binding, ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines color temperature property class
  * @extends AlexaProperty
  */
-class ColorTemperature extends AlexaProperty {
+export default class ColorTemperature extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -75,7 +75,7 @@ class ColorTemperature extends AlexaProperty {
 
   /**
    * Returns binding based on parameter
-   * @return {Array}
+   * @return {String}
    */
   get binding() {
     return this.parameters[Parameter.BINDING]?.split(':')[0];
@@ -83,7 +83,7 @@ class ColorTemperature extends AlexaProperty {
 
   /**
    * Returns thing type based on parameter
-   * @return {Array}
+   * @return {String}
    */
   get thingType() {
     return this.parameters[Parameter.BINDING]?.split(':')[1];
@@ -122,7 +122,7 @@ class ColorTemperature extends AlexaProperty {
     const [minValue, maxValue] = this.range;
 
     // Return converted value based on item type:
-    //  - Dimmer: colder (0%) to warmer (100%) [bindings integration]
+    //  - Dimmer: colder (0%) to warmer (100%) [binding integration]
     //  - Number: color temperature value in K [custom integration]
     return this.item.type === ItemType.DIMMER
       ? ((maxValue - clamp(value, minValue, maxValue)) / (maxValue - minValue)) * 100
@@ -191,5 +191,3 @@ class ColorTemperature extends AlexaProperty {
     parameters[Parameter.RANGE] = range[0] < range[1] ? range.map((value) => Math.round(value)) : undefined;
   }
 }
-
-module.exports = ColorTemperature;

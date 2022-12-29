@@ -11,86 +11,161 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-module.exports = {
-  Alexa: [require('./alexa.test.js')],
-  Authorization: [require('./authorization.test.js')],
-  BrightnessController: [require('./brightnessController.test.js')],
-  CameraStreamController: [require('./cameraStreamController.test.js')],
-  ChannelController: [require('./channelController.test.js')],
-  ColorController: [require('./colorController.test.js')],
-  ColorTemperatureController: [require('./colorTemperatureController.test.js')],
+import alexTest from './alexa.test.js';
+import authorizationTest from './authorization.test.js';
+import brightnessControllerTest from './brightnessController.test.js';
+import cameraStreamControllerTest from './cameraStreamController.test.js';
+import channelControllerTest from './channelController.test.js';
+import colorControllerTest from './colorController.test.js';
+import colorTemperatureControllerTest from './colorTemperatureController.test.js';
+import discoveryActivityTest from './discovery/activity.test.js';
+import discoveryAirConditionerTest from './discovery/airConditioner.test.js';
+import discoveryAirFreshenerTest from './discovery/airFreshener.test.js';
+import discoveryAirPurifierTest from './discovery/airPurifier.test.js';
+import discoveryAutomobileTest from './discovery/automobile.test.js';
+import discoveryAutomobileAccessoryTest from './discovery/automobileAccessory.test.js';
+import discoveryBlindTest from './discovery/blind.test.js';
+import discoveryBluetoothSpeakerTest from './discovery/bluetoothSpeaker.test.js';
+import discoveryCameraTest from './discovery/camera.test.js';
+import discoveryChristmasTreeTest from './discovery/christmasTree.test.js';
+import discoveryCoffeeMakerTest from './discovery/coffeeMaker.test.js';
+import discoveryComputerTest from './discovery/computer.test.js';
+import discoveryContactSensorTest from './discovery/contactSensor.test.js';
+import discoveryDishwasherTest from './discovery/dishwasher.test.js';
+import discoveryDoorTest from './discovery/door.test.js';
+import discoveryDoorbellTest from './discovery/doorbell.test.js';
+import discoveryDryerTest from './discovery/dryer.test.js';
+import discoveryFanTest from './discovery/fan.test.js';
+import discoveryGameConsoleTest from './discovery/gameConsole.test.js';
+import discoveryHeadphonesTest from './discovery/headphones.test.js';
+import discoveryHubTest from './discovery/hub.test.js';
+import discoveryLaptopTest from './discovery/laptop.test.js';
+import discoveryLightTest from './discovery/light.test.js';
+import discoveryLockTest from './discovery/lock.test.js';
+import discoveryMicrowaveTest from './discovery/microwave.test.js';
+import discoveryMobilePhoneTest from './discovery/mobilePhone.test.js';
+import discoveryMotionSensorTest from './discovery/motionSensor.test.js';
+import discoveryMusicSystemTest from './discovery/musicSystem.test.js';
+import discoveryNetworkHardwareTest from './discovery/networkHardware.test.js';
+import discoveryOtherTest from './discovery/other.test.js';
+import discoveryOutletTest from './discovery/outlet.test.js';
+import discoveryOvenTest from './discovery/oven.test.js';
+import discoveryPhoneTest from './discovery/phone.test.js';
+import discoveryPrinterTest from './discovery/printer.test.js';
+import discoveryRouterTest from './discovery/router.test.js';
+import discoverySceneTest from './discovery/scene.test.js';
+import discoveryScreenTest from './discovery/screen.test.js';
+import discoverySecurityPanelTest from './discovery/securityPanel.test.js';
+import discoverySecuritySystemTest from './discovery/securitySystem.test.js';
+import discoveryShutterTest from './discovery/shutter.test.js';
+import discoverySlowCookerTest from './discovery/slowCooker.test.js';
+import discoverySpeakerTest from './discovery/speaker.test.js';
+import discoveryStepSpeakerTest from './discovery/stepSpeaker.test.js';
+import discoveryStreamingDeviceTest from './discovery/streamingDevice.test.js';
+import discoverySwitchTest from './discovery/switch.test.js';
+import discoveryTabletTest from './discovery/tablet.test.js';
+import discoveryTelevisionTest from './discovery/television.test.js';
+import discoveryTemperatureSensorTest from './discovery/temperatureSensor.test.js';
+import discoveryThermostatTest from './discovery/thermostat.test.js';
+import discoveryVacuumCleanerTest from './discovery/vacuumCleaner.test.js';
+import discoveryWasherTest from './discovery/washer.test.js';
+import discoveryWaterHeaterTest from './discovery/waterHeater.test.js';
+import discoveryWearableTest from './discovery/wearable.test.js';
+import equalizerControllerTest from './equalizerController.test.js';
+import inputControllerTest from './inputController.test.js';
+import lockControllerTest from './lockController.test.js';
+import modeControllerTest from './modeController.test.js';
+import networkingAccessControllerTest from './networkingAccessController.test.js';
+import percentageControllerTest from './percentageController.test.js';
+import playbackControllerTest from './playbackController.test.js';
+import powerControllerTest from './powerController.test.js';
+import powerLevelControllerTest from './powerLevelController.test.js';
+import rangeControllerTest from './rangeController.test.js';
+import sceneControllerTest from './sceneController.test.js';
+import securityPanelControllerTest from './securityPanelController.test.js';
+import speakerTest from './speaker.test.js';
+import stepSpeakerTest from './stepSpeaker.test.js';
+import thermostatControllerModeTest from './thermostatControllerMode.test.js';
+import thermostatControllerTemperatureTest from './thermostatControllerTemperature.test.js';
+import toggleControllerTest from './toggleController.test.js';
+
+export default {
+  Alexa: [alexTest],
+  Authorization: [authorizationTest],
+  BrightnessController: [brightnessControllerTest],
+  CameraStreamController: [cameraStreamControllerTest],
+  ChannelController: [channelControllerTest],
+  ColorController: [colorControllerTest],
+  ColorTemperatureController: [colorTemperatureControllerTest],
   Discovery: [
-    require('./discovery/activity.test.js'),
-    require('./discovery/airConditioner.test.js'),
-    require('./discovery/airFreshener.test.js'),
-    require('./discovery/airPurifier.test.js'),
-    require('./discovery/automobile.test.js'),
-    require('./discovery/automobileAccessory.test.js'),
-    require('./discovery/blind.test.js'),
-    require('./discovery/bluetoothSpeaker.test.js'),
-    require('./discovery/camera.test.js'),
-    require('./discovery/christmasTree.test.js'),
-    require('./discovery/coffeeMaker.test.js'),
-    require('./discovery/computer.test.js'),
-    require('./discovery/contactSensor.test.js'),
-    require('./discovery/dishwasher.test.js'),
-    require('./discovery/door.test.js'),
-    require('./discovery/doorbell.test.js'),
-    require('./discovery/dryer.test.js'),
-    require('./discovery/fan.test.js'),
-    require('./discovery/gameConsole.test.js'),
-    require('./discovery/headphones.test.js'),
-    require('./discovery/hub.test.js'),
-    require('./discovery/laptop.test.js'),
-    require('./discovery/light.test.js'),
-    require('./discovery/lock.test.js'),
-    require('./discovery/microwave.test.js'),
-    require('./discovery/mobilePhone.test.js'),
-    require('./discovery/motionSensor.test.js'),
-    require('./discovery/musicSystem.test.js'),
-    require('./discovery/networkHardware.test.js'),
-    require('./discovery/other.test.js'),
-    require('./discovery/outlet.test.js'),
-    require('./discovery/oven.test.js'),
-    require('./discovery/phone.test.js'),
-    require('./discovery/printer.test.js'),
-    require('./discovery/router.test.js'),
-    require('./discovery/scene.test.js'),
-    require('./discovery/screen.test.js'),
-    require('./discovery/securityPanel.test.js'),
-    require('./discovery/securitySystem.test.js'),
-    require('./discovery/shutter.test.js'),
-    require('./discovery/slowCooker.test.js'),
-    require('./discovery/speaker.test.js'),
-    require('./discovery/stepSpeaker.test.js'),
-    require('./discovery/streamingDevice.test.js'),
-    require('./discovery/switch.test.js'),
-    require('./discovery/tablet.test.js'),
-    require('./discovery/television.test.js'),
-    require('./discovery/temperatureSensor.test.js'),
-    require('./discovery/thermostat.test.js'),
-    require('./discovery/vacuumCleaner.test.js'),
-    require('./discovery/washer.test.js'),
-    require('./discovery/waterHeater.test.js'),
-    require('./discovery/wearable.test.js')
+    discoveryActivityTest,
+    discoveryAirConditionerTest,
+    discoveryAirFreshenerTest,
+    discoveryAirPurifierTest,
+    discoveryAutomobileTest,
+    discoveryAutomobileAccessoryTest,
+    discoveryBlindTest,
+    discoveryBluetoothSpeakerTest,
+    discoveryCameraTest,
+    discoveryChristmasTreeTest,
+    discoveryCoffeeMakerTest,
+    discoveryComputerTest,
+    discoveryContactSensorTest,
+    discoveryDishwasherTest,
+    discoveryDoorTest,
+    discoveryDoorbellTest,
+    discoveryDryerTest,
+    discoveryFanTest,
+    discoveryGameConsoleTest,
+    discoveryHeadphonesTest,
+    discoveryHubTest,
+    discoveryLaptopTest,
+    discoveryLightTest,
+    discoveryLockTest,
+    discoveryMicrowaveTest,
+    discoveryMobilePhoneTest,
+    discoveryMotionSensorTest,
+    discoveryMusicSystemTest,
+    discoveryNetworkHardwareTest,
+    discoveryOtherTest,
+    discoveryOutletTest,
+    discoveryOvenTest,
+    discoveryPhoneTest,
+    discoveryPrinterTest,
+    discoveryRouterTest,
+    discoverySceneTest,
+    discoveryScreenTest,
+    discoverySecurityPanelTest,
+    discoverySecuritySystemTest,
+    discoveryShutterTest,
+    discoverySlowCookerTest,
+    discoverySpeakerTest,
+    discoveryStepSpeakerTest,
+    discoveryStreamingDeviceTest,
+    discoverySwitchTest,
+    discoveryTabletTest,
+    discoveryTelevisionTest,
+    discoveryTemperatureSensorTest,
+    discoveryThermostatTest,
+    discoveryVacuumCleanerTest,
+    discoveryWasherTest,
+    discoveryWaterHeaterTest,
+    discoveryWearableTest
   ],
-  EqualizerController: [require('./equalizerController.test.js')],
-  InputController: [require('./inputController.test.js')],
-  LockController: [require('./lockController.test.js')],
-  ModeController: [require('./modeController.test.js')],
-  NetworkingAccessController: [require('./networkingAccessController.test.js')],
-  PercentageController: [require('./percentageController.test.js')],
-  PlaybackController: [require('./playbackController.test.js')],
-  PowerController: [require('./powerController.test.js')],
-  PowerLevelController: [require('./powerLevelController.test.js')],
-  RangeController: [require('./rangeController.test.js')],
-  SceneController: [require('./sceneController.test.js')],
-  SecurityPanelController: [require('./securityPanelController.test.js')],
-  Speaker: [require('./speaker.test.js')],
-  StepSpeaker: [require('./stepSpeaker.test.js')],
-  ThermostatController: [
-    require('./thermostatControllerMode.test.js'),
-    require('./thermostatControllerTemperature.test.js')
-  ],
-  ToggleController: [require('./toggleController.test.js')]
+  EqualizerController: [equalizerControllerTest],
+  InputController: [inputControllerTest],
+  LockController: [lockControllerTest],
+  ModeController: [modeControllerTest],
+  NetworkingAccessController: [networkingAccessControllerTest],
+  PercentageController: [percentageControllerTest],
+  PlaybackController: [playbackControllerTest],
+  PowerController: [powerControllerTest],
+  PowerLevelController: [powerLevelControllerTest],
+  RangeController: [rangeControllerTest],
+  SceneController: [sceneControllerTest],
+  SecurityPanelController: [securityPanelControllerTest],
+  Speaker: [speakerTest],
+  StepSpeaker: [stepSpeakerTest],
+  ThermostatController: [thermostatControllerModeTest, thermostatControllerTemperatureTest],
+  ToggleController: [toggleControllerTest]
 };

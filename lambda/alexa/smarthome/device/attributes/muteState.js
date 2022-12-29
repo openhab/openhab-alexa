@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines mute state attribute class
  * @extends DeviceAttribute
  */
-class MuteState extends DeviceAttribute {
+export default class MuteState extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -38,5 +38,3 @@ class MuteState extends DeviceAttribute {
     return [{ name: Capability.SPEAKER, property: Property.MUTED }];
   }
 }
-
-module.exports = MuteState;

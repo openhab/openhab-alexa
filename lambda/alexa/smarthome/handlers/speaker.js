@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { Interface, Property } = require('../constants');
-const { EndpointUnreachableError, InvalidValueError } = require('../errors');
-const AlexaHandler = require('./handler');
+import { clamp } from '#root/utils.js';
+import { Interface, Property } from '../constants.js';
+import { EndpointUnreachableError, InvalidValueError } from '../errors.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.Speaker interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-speaker.html#directives
  * @extends AlexaHandler
  */
-class Speaker extends AlexaHandler {
+export default class Speaker extends AlexaHandler {
   /**
    * Defines set volume directive
    * @type {String}
@@ -152,5 +152,3 @@ class Speaker extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = Speaker;

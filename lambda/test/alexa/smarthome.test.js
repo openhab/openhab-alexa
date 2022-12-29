@@ -11,28 +11,29 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-require('module-alias/register');
-const { expect, use } = require('chai');
-const sinon = require('sinon');
-const { compressJSON, decamelize } = require('@root/utils');
-const log = require('@root/log');
-const OpenHAB = require('@openhab');
-const AlexaSmarthome = require('@alexa/smarthome');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const AlexaHandlers = require('@alexa/smarthome/handlers');
-const testCases = require('./cases');
+import { expect, use } from 'chai';
+import chaiSubset from 'chai-subset';
+import sinon from 'sinon';
+import { compressJSON, decamelize } from '#root/utils.js';
+import log from '#root/log.js';
+import OpenHAB from '#openhab/index.js';
+import { handleRequest } from '#alexa/smarthome/index.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import * as AlexaHandlers from '#alexa/smarthome/handlers/index.js';
+import testCases from './cases/index.js';
+import chaiCustom from './chai.js';
 
 // Set chai environment
-use(require('chai-subset'));
-use(require('./chai'));
+use(chaiSubset);
+use(chaiCustom);
 
 describe('Alexa Smart Home Tests', () => {
-  let commands, updates;
+  let commandStub, updateStub;
 
   beforeEach(() => {
     // set stub environment
-    commands = sinon.stub(OpenHAB.prototype, 'sendCommand');
-    updates = sinon.stub(OpenHAB.prototype, 'postUpdate');
+    commandStub = sinon.stub(OpenHAB.prototype, 'sendCommand');
+    updateStub = sinon.stub(OpenHAB.prototype, 'postUpdate');
   });
 
   afterEach(() => {
@@ -55,9 +56,9 @@ describe('Alexa Smart Home Tests', () => {
             sinon.stub(OpenHAB.prototype, 'getAllItems').resolves(items);
             sinon.stub(OpenHAB.prototype, 'getServerSettings').resolves(settings);
             // run test
-            const response = await AlexaSmarthome.handleRequest({ directive });
-            expect(commands.called).to.be.false;
-            expect(updates.called).to.be.false;
+            const response = await handleRequest({ directive });
+            expect(commandStub.called).to.be.false;
+            expect(updateStub.called).to.be.false;
             expect(response)
               .to.be.a.validSchema.that.nested.includes({
                 'event.header.namespace': 'Alexa.Discovery',
@@ -86,11 +87,11 @@ describe('Alexa Smart Home Tests', () => {
               sinon.stub(log, 'error');
             }
             // run test
-            const response = await AlexaSmarthome.handleRequest({ directive });
-            expect(commands.callCount).to.equal(expected.openhab.commands.length);
-            expect(commands.args.map(([name, value]) => ({ name, value }))).to.deep.equal(expected.openhab.commands);
-            expect(updates.callCount).to.equal(expected.openhab.updates.length);
-            expect(updates.args.map(([name, value]) => ({ name, value }))).to.deep.equal(expected.openhab.updates);
+            const response = await handleRequest({ directive });
+            expect(commandStub.callCount).to.equal(expected.openhab.commands.length);
+            expect(commandStub.args.map(([name, value]) => ({ name, value }))).to.deep.equal(expected.openhab.commands);
+            expect(updateStub.callCount).to.equal(expected.openhab.updates.length);
+            expect(updateStub.args.map(([name, value]) => ({ name, value }))).to.deep.equal(expected.openhab.updates);
             expect(response).to.be.a.validSchema.that.containSubset(expected.alexa);
           });
         }

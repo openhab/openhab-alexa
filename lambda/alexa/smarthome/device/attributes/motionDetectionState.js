@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines motion detection state attribute class
  * @extends DeviceAttribute
  */
-class MotionDetectionState extends DeviceAttribute {
+export default class MotionDetectionState extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class MotionDetectionState extends DeviceAttribute {
     return [{ name: Capability.MOTION_SENSOR, property: Property.DETECTION_STATE }];
   }
 }
-
-module.exports = MotionDetectionState;

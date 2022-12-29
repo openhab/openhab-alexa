@@ -11,18 +11,18 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { parseUrl } = require('@root/utils');
-const { Interface, Property } = require('../constants');
-const { CurrentModeNotSupportedError } = require('../errors');
-const { CameraStream } = require('../properties');
-const AlexaHandler = require('./handler');
+import { parseUrl } from '#root/utils.js';
+import { Interface, Property } from '../constants.js';
+import { CurrentModeNotSupportedError } from '../errors.js';
+import { AuthType } from '../properties/cameraStream.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.CameraStreamController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-camerastreamcontroller.html#directives
  * @extends AlexaHandler
  */
-class CameraStreamController extends AlexaHandler {
+export default class CameraStreamController extends AlexaHandler {
   /**
    * Defines initialize camera streams directive
    * @type {String}
@@ -68,7 +68,7 @@ class CameraStreamController extends AlexaHandler {
     }
 
     // Add basic auth credentials to camera stream url if necessary
-    if (authorizationType === CameraStream.AuthType.BASIC) {
+    if (authorizationType === AuthType.BASIC) {
       streamUrl.username = username;
       streamUrl.password = password;
     }
@@ -92,5 +92,3 @@ class CameraStreamController extends AlexaHandler {
     });
   }
 }
-
-module.exports = CameraStreamController;

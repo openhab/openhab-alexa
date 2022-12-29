@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Sensor = require('./sensor');
-const { MotionDetectionState } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Sensor from './sensor.js';
+import { MotionDetectionState } from '../attributes/index.js';
 
 /**
  * Defines motion sensor device type class
  * @extends Sensor
  */
-class MotionSensor extends Sensor {
+export default class MotionSensor extends Sensor {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class MotionSensor extends Sensor {
     return [AlexaDisplayCategory.MOTION_SENSOR];
   }
 }
-
-module.exports = MotionSensor;

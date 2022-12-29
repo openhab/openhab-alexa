@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const BinaryState = require('./binaryState');
+import BinaryState from './binaryState.js';
 
 /**
  * Defines network access property class
  * @extends BinaryState
  */
-class NetworkAccess extends BinaryState {
+export default class NetworkAccess extends BinaryState {
   /**
    * Defines allowed state
    * @type {String}
@@ -47,5 +47,3 @@ class NetworkAccess extends BinaryState {
     return true;
   }
 }
-
-module.exports = NetworkAccess;

@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { sprintf } = require('sprintf-js');
-const { Dimension, SymbolUnit, SystemUnit } = require('@openhab/constants');
+import { sprintf } from 'sprintf-js';
+import { Dimension, SymbolUnit, SystemUnit } from '#openhab/constants.js';
 
 /**
  * Defines Alexa unit of measure class
  */
-class AlexaUnitOfMeasure {
+export default class AlexaUnitOfMeasure {
   /**
    * Defines angle degrees id
    * @type {String}
@@ -506,5 +506,3 @@ class AlexaUnitOfMeasure {
     }
   }
 }
-
-module.exports = AlexaUnitOfMeasure;

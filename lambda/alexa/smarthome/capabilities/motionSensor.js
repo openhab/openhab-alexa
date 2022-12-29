@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { DetectionState } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { DetectionState } from '../properties/index.js';
 
 /**
  * Defines Alexa.MotionSensor interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-motionsensor.html
  * @extends AlexaCapability
  */
-class MotionSensor extends AlexaCapability {
+export default class MotionSensor extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.MOTION_SENSOR;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -48,5 +56,3 @@ class MotionSensor extends AlexaCapability {
     return [AlexaDisplayCategory.MOTION_SENSOR];
   }
 }
-
-module.exports = MotionSensor;

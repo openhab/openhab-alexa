@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
-const { TargetTemperature, Temperature } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
+import { TargetTemperature, Temperature } from '../attributes/index.js';
 
 /**
  * Defines water heater device type class
  * @extends GenericDevice
  */
-class WaterHeater extends GenericDevice {
+export default class WaterHeater extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -44,5 +44,3 @@ class WaterHeater extends GenericDevice {
     return [AlexaDisplayCategory.WATER_HEATER];
   }
 }
-
-module.exports = WaterHeater;

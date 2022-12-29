@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const NetworkDevice = require('./networkDevice');
-const { BatteryLevel } = require('../attributes');
+import NetworkDevice from './networkDevice.js';
+import { BatteryLevel } from '../attributes/index.js';
 
 /**
  * Defines mobile device type class
  * @extends NetworkDevice
  */
-class MobileDevice extends NetworkDevice {
+export default class MobileDevice extends NetworkDevice {
   /**
    * Returns supported attributes
    * @return {Array}
@@ -27,5 +27,3 @@ class MobileDevice extends NetworkDevice {
     return [BatteryLevel, ...super.supportedAttributes];
   }
 }
-
-module.exports = MobileDevice;

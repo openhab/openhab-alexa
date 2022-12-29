@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines color temperature attribute class
  * @extends DeviceAttribute
  */
-class ColorTemperature extends DeviceAttribute {
+export default class ColorTemperature extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class ColorTemperature extends DeviceAttribute {
     return [{ name: Capability.COLOR_TEMPERATURE_CONTROLLER, property: Property.COLOR_TEMPERATURE }];
   }
 }
-
-module.exports = ColorTemperature;

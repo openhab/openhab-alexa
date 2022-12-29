@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const DeviceType = require('./type');
-const { BatteryLevel, genericAttributes } = require('../attributes');
+import DeviceType from './type.js';
+import { BatteryLevel, genericAttributes } from '../attributes/index.js';
 
 /**
  * Defines sensor device type class
  * @extends DeviceType
  */
-class Sensor extends DeviceType {
+export default class Sensor extends DeviceType {
   /**
    * Returns supported attributes
    * @return {Array}
@@ -27,5 +27,3 @@ class Sensor extends DeviceType {
     return [BatteryLevel, ...genericAttributes];
   }
 }
-
-module.exports = Sensor;

@@ -11,18 +11,18 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const log = require('@root/log');
-const { ItemType } = require('@openhab/constants');
-const { Interface } = require('../constants');
-const AlexaEndpoint = require('../endpoint');
-const AlexaHandler = require('./handler');
+import log from '#root/log.js';
+import { ItemType } from '#openhab/constants.js';
+import { Interface } from '../constants.js';
+import AlexaEndpoint from '../endpoint.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.Discovery interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-discovery.html#directives
  * @extends AlexaHandler
  */
-class Discovery extends AlexaHandler {
+export default class Discovery extends AlexaHandler {
   /**
    * Defines alexa discovery endpoints limit
    *  https://developer.amazon.com/docs/device-apis/alexa-discovery.html#limits
@@ -117,5 +117,3 @@ class Discovery extends AlexaHandler {
     });
   }
 }
-
-module.exports = Discovery;

@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { Color } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { Color } from '../properties/index.js';
 
 /**
  * Defines Alexa.ColorController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-colorcontroller.html
  * @extends AlexaCapability
  */
-class ColorController extends AlexaCapability {
+export default class ColorController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.COLOR_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -72,5 +80,3 @@ class ColorController extends AlexaCapability {
     return super.getReportableProperties(items, properties);
   }
 }
-
-module.exports = ColorController;

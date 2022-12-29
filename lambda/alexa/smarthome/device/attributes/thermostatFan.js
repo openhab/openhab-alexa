@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { ItemType } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines thermostat fan attribute class
  * @extends DeviceAttribute
  */
-class ThermostatFan extends DeviceAttribute {
+export default class ThermostatFan extends DeviceAttribute {
   /**
    * Defines fan auto
    * @type {String}
@@ -89,5 +89,3 @@ class ThermostatFan extends DeviceAttribute {
     }
   }
 }
-
-module.exports = ThermostatFan;

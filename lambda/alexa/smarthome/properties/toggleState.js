@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const Generic = require('./generic');
+import { ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import Generic from './generic.js';
 
 /**
  * Defines toggle state property class
  * @extends Generic
  */
-class ToggleState extends Generic {
+export default class ToggleState extends Generic {
   /**
    * Defines on state
    * @type {String}
@@ -121,5 +121,3 @@ class ToggleState extends Generic {
     return value;
   }
 }
-
-module.exports = ToggleState;

@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const InteriorBlind = require('./interiorBlind');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import InteriorBlind from './interiorBlind.js';
 
 /**
  * Defines external blind device type class
  * @extends InteriorBlind
  */
-class ExteriorBlind extends InteriorBlind {
+export default class ExteriorBlind extends InteriorBlind {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class ExteriorBlind extends InteriorBlind {
     return [AlexaDisplayCategory.EXTERIOR_BLIND];
   }
 }
-
-module.exports = ExteriorBlind;

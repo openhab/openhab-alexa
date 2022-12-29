@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const MobileDevice = require('./mobileDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import MobileDevice from './mobileDevice.js';
 
 /**
  * Defines laptop device type class
  * @extends MobileDevice
  */
-class Laptop extends MobileDevice {
+export default class Laptop extends MobileDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Laptop extends MobileDevice {
     return [AlexaDisplayCategory.LAPTOP];
   }
 }
-
-module.exports = Laptop;

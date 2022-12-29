@@ -11,6 +11,10 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+
 /**
  * Defines alexa global catalog class
  *    https://developer.amazon.com/docs/device-apis/resources-and-assets.html#global-alexa-catalog
@@ -255,7 +259,7 @@ class AlexaGlobalCatalog {
  * Defines alexa asset catalog class
  * @extends AlexaGlobalCatalog
  */
-class AlexaAssetCatalog extends AlexaGlobalCatalog {
+export default class AlexaAssetCatalog extends AlexaGlobalCatalog {
   /**
    * Defines setting angle asset
    * @type {String}
@@ -447,7 +451,7 @@ class AlexaAssetCatalog extends AlexaGlobalCatalog {
    * @return {Object}
    */
   static get labelValues() {
-    return require('@root/catalog.json');
+    return require('#root/catalog.json');
   }
 
   /**
@@ -468,5 +472,3 @@ class AlexaAssetCatalog extends AlexaGlobalCatalog {
     return super.isSupported(assetId) ? super.getLabels(assetId) : this.labelValues[assetId];
   }
 }
-
-module.exports = AlexaAssetCatalog;

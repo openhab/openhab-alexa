@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const NetworkHardware = require('./networkHardware');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import NetworkHardware from './networkHardware.js';
 
 /**
  * Defines router device type class
  * @extends NetworkHardware
  */
-class Router extends NetworkHardware {
+export default class Router extends NetworkHardware {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Router extends NetworkHardware {
     return [AlexaDisplayCategory.ROUTER];
   }
 }
-
-module.exports = Router;

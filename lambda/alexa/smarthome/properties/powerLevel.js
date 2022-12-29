@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const AlexaProperty = require('./property');
+import { ItemType } from '#openhab/constants.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines power level property class
  * @extends AlexaProperty
  */
-class PowerLevel extends AlexaProperty {
+export default class PowerLevel extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -39,5 +39,3 @@ class PowerLevel extends AlexaProperty {
     }
   }
 }
-
-module.exports = PowerLevel;

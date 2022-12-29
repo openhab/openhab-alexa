@@ -11,9 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const DeviceType = require('./type');
-const {
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import DeviceType from './type.js';
+import {
   ArmState,
   BurglaryAlarm,
   CarbonMonoxideAlarm,
@@ -24,13 +24,13 @@ const {
   TroubleAlert,
   ZonesAlert,
   genericAttributes
-} = require('../attributes');
+} from '../attributes/index.js';
 
 /**
  * Defines security panel device type class
  * @extends DeviceType
  */
-class SecurityPanel extends DeviceType {
+export default class SecurityPanel extends DeviceType {
   /**
    * Returns supported names
    * @return {Array}
@@ -74,5 +74,3 @@ class SecurityPanel extends DeviceType {
     return [AlexaDisplayCategory.SECURITY_PANEL];
   }
 }
-
-module.exports = SecurityPanel;

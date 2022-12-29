@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface } = require('../constants');
-const { AuthorizationAcceptGrantError } = require('../errors');
-const AlexaHandler = require('./handler');
+import { Interface } from '../constants.js';
+import { AuthorizationAcceptGrantError } from '../errors.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.Authorization interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-authorization.html#directives
  * @extends AlexaHandler
  */
-class Authorization extends AlexaHandler {
+export default class Authorization extends AlexaHandler {
   /**
    * Defines accept grant directive
    * @type {String}
@@ -54,5 +54,3 @@ class Authorization extends AlexaHandler {
     throw new AuthorizationAcceptGrantError('Not supported');
   }
 }
-
-module.exports = Authorization;

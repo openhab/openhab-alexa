@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { Interface, Property } = require('../constants');
-const { EndpointUnreachableError, InvalidValueError } = require('../errors');
-const AlexaHandler = require('./handler');
+import { clamp } from '#root/utils.js';
+import { Interface, Property } from '../constants.js';
+import { EndpointUnreachableError, InvalidValueError } from '../errors.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.PowerLevelController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-powerlevelcontroller.html#directives
  * @extends AlexaHandler
  */
-class PowerLevelController extends AlexaHandler {
+export default class PowerLevelController extends AlexaHandler {
   /**
    * Defines set power level directive
    * @type {String}
@@ -103,5 +103,3 @@ class PowerLevelController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = PowerLevelController;

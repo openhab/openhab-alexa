@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const DeviceType = require('./type');
-const { OpenState, CurrentOpenState, genericAttributes } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import DeviceType from './type.js';
+import { OpenState, CurrentOpenState, genericAttributes } from '../attributes/index.js';
 
 /**
  * Defines door device type class
  * @extends DeviceType
  */
-class Door extends DeviceType {
+export default class Door extends DeviceType {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class Door extends DeviceType {
     return [AlexaDisplayCategory.DOOR];
   }
 }
-
-module.exports = Door;

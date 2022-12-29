@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const AlexaHandler = require('./handler');
+import { Interface, Property } from '../constants.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.Networking.AccessController interface handler class
  *  https://developer.amazon.com/docs/networking/alexa-networking-accesscontroller.html#directives
  * @extends AlexaHandler
  */
-class NetworkingAccessController extends AlexaHandler {
+export default class NetworkingAccessController extends AlexaHandler {
   /**
    * Defines set network access directive
    * @type {String}
@@ -62,5 +62,3 @@ class NetworkingAccessController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = NetworkingAccessController;

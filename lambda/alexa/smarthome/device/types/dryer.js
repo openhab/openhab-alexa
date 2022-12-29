@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
 
 /**
  * Defines dryer device type class
  * @extends GenericDevice
  */
-class Dryer extends GenericDevice {
+export default class Dryer extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Dryer extends GenericDevice {
     return [AlexaDisplayCategory.DRYER];
   }
 }
-
-module.exports = Dryer;

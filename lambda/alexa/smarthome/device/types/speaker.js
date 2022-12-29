@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Entertainment = require('./entertainment');
-const { VolumeLevel, PowerState } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Entertainment from './entertainment.js';
+import { VolumeLevel, PowerState } from '../attributes/index.js';
 
 /**
  * Defines speaker device type class
  * @extends Entertainment
  */
-class Speaker extends Entertainment {
+export default class Speaker extends Entertainment {
   /**
    * Returns supported names
    * @return {Array}
@@ -44,5 +44,3 @@ class Speaker extends Entertainment {
     return [AlexaDisplayCategory.SPEAKER];
   }
 }
-
-module.exports = Speaker;

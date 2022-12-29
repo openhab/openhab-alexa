@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaAssetCatalog = require('./catalog');
+import AlexaAssetCatalog from './catalog.js';
 
 /**
  * Defines alexa capability resources class
  *  https://developer.amazon.com/docs/device-apis/resources-and-assets.html#capability-resources
  */
-class AlexaCapabilityResources {
+export class AlexaCapabilityResources {
   /**
    * Defines asset label prefix
    * @type {String}
@@ -135,7 +135,7 @@ class AlexaCapabilityResources {
  *  https://developer.amazon.com/docs/device-apis/resources-and-assets.html#mode-resources
  * @extends AlexaCapabilityResource
  */
-class AlexaModeResources extends AlexaCapabilityResources {
+export class AlexaModeResources extends AlexaCapabilityResources {
   /**
    * Defines alexa reserved friendly names
    *  (None for mode resources)
@@ -149,7 +149,7 @@ class AlexaModeResources extends AlexaCapabilityResources {
  *  https://developer.amazon.com/docs/device-apis/resources-and-assets.html#preset-resources
  * @extends AlexaCapabilityResource
  */
-class AlexaPresetResources extends AlexaCapabilityResources {
+export class AlexaPresetResources extends AlexaCapabilityResources {
   /**
    * Defines alexa reserved friendly names
    *  (None for preset resources)
@@ -157,9 +157,3 @@ class AlexaPresetResources extends AlexaCapabilityResources {
    */
   static FRIENDLY_NAMES_RESERVED = [];
 }
-
-module.exports = {
-  AlexaCapabilityResources,
-  AlexaModeResources,
-  AlexaPresetResources
-};

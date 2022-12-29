@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { Playback, PlaybackStop, PlaybackAction } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { Playback, PlaybackStop, PlaybackAction } from '../properties/index.js';
 
 /**
  * Defines Alexa.PlaybackController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-playbackcontroller.html
  * @extends AlexaCapability
  */
-class PlaybackController extends AlexaCapability {
+export default class PlaybackController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.PLAYBACK_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -75,5 +83,3 @@ class PlaybackController extends AlexaCapability {
     return capability;
   }
 }
-
-module.exports = PlaybackController;

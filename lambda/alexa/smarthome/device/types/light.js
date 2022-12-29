@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
-const { Brightness, Color, ColorTemperature, PowerState } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
+import { Brightness, Color, ColorTemperature, PowerState } from '../attributes/index.js';
 
 /**
  * Defines Light device type class
  * @extends GenericDevice
  */
-class Light extends GenericDevice {
+export default class Light extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class Light extends GenericDevice {
     return [AlexaDisplayCategory.LIGHT];
   }
 }
-
-module.exports = Light;

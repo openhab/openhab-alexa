@@ -11,19 +11,19 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { ItemType } = require('@openhab/constants');
-const { Interface, Property } = require('../constants');
-const { EndpointUnreachableError, InvalidValueError, ValueOutOfRangeError } = require('../errors');
-const { ChannelStep } = require('../properties');
-const AlexaHandler = require('./handler');
+import { clamp } from '#root/utils.js';
+import { ItemType } from '#openhab/constants.js';
+import { Interface, Property } from '../constants.js';
+import { EndpointUnreachableError, InvalidValueError, ValueOutOfRangeError } from '../errors.js';
+import { ChannelStep } from '../properties/index.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.ChannelController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-channelcontroller.html#directives
  * @extends AlexaHandler
  */
-class ChannelController extends AlexaHandler {
+export default class ChannelController extends AlexaHandler {
   /**
    * Defines change channel directive
    * @type {String}
@@ -168,5 +168,3 @@ class ChannelController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = ChannelController;

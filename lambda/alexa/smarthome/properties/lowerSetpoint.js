@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Property } = require('../constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaUnitOfMeasure = require('../unitOfMeasure');
-const TargetSetpoint = require('./targetSetpoint');
-const ThermostatMode = require('./thermostatMode');
+import { Property } from '../constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaUnitOfMeasure from '../unitOfMeasure.js';
+import TargetSetpoint from './targetSetpoint.js';
+import ThermostatMode from './thermostatMode.js';
 
 /**
  * Defines lower setpoint property class
  * @extends TargetSetpoint
  */
-class LowerSetpoint extends TargetSetpoint {
+export default class LowerSetpoint extends TargetSetpoint {
   /**
    * Returns supported parameters and their type
    * @return {Object}
@@ -83,5 +83,3 @@ class LowerSetpoint extends TargetSetpoint {
     parameters[Parameter.COMFORT_RANGE] = range < maxRange ? range : undefined;
   }
 }
-
-module.exports = LowerSetpoint;

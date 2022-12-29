@@ -11,9 +11,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-require('module-alias/register');
-const { expect } = require('chai');
-const {
+import { expect } from 'chai';
+import {
   clamp,
   compressJSON,
   decompressJSON,
@@ -21,7 +20,7 @@ const {
   isMACAddress,
   parseUrl,
   stripPunctuation
-} = require('@root/utils');
+} from '#root/utils.js';
 
 describe('Utilities Tests', () => {
   describe('clamp', () => {

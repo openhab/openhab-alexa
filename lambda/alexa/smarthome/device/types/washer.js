@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
 
 /**
  * Defines washer device type class
  * @extends GenericDevice
  */
-class Washer extends GenericDevice {
+export default class Washer extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Washer extends GenericDevice {
     return [AlexaDisplayCategory.WASHER];
   }
 }
-
-module.exports = Washer;

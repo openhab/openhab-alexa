@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Property } = require('../constants');
-const LowerSetpoint = require('./lowerSetpoint');
+import { Property } from '../constants.js';
+import LowerSetpoint from './lowerSetpoint.js';
 
 /**
  * Defines upper setpoint property class
  * @extends LowerSetpoint
  */
-class UpperSetpoint extends LowerSetpoint {
+export default class UpperSetpoint extends LowerSetpoint {
   /**
    * Returns required linked properties
    * @return {Array}
@@ -27,5 +27,3 @@ class UpperSetpoint extends LowerSetpoint {
     return [{ name: Property.LOWER_SETPOINT, tag: this.tag }];
   }
 }
-
-module.exports = UpperSetpoint;

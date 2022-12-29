@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface } = require('../constants');
-const { InvalidValueError } = require('../errors');
-const AlexaHandler = require('./handler');
+import { Interface } from '../constants.js';
+import { InvalidValueError } from '../errors.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.PlaybackController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-playbackcontroller.html#directives
  * @extends AlexaHandler
  */
-class PlaybackController extends AlexaHandler {
+export default class PlaybackController extends AlexaHandler {
   /**
    * Defines fast forward directive
    * @type {String}
@@ -124,5 +124,3 @@ class PlaybackController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = PlaybackController;

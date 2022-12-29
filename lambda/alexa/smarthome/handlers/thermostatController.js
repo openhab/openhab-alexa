@@ -11,9 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp, decamelize } = require('@root/utils');
-const { Interface, Property } = require('../constants');
-const {
+import { clamp, decamelize } from '#root/utils.js';
+import { Interface, Property } from '../constants.js';
+import {
   EndpointUnreachableError,
   InvalidValueError,
   TemperatureOutOfRangeError,
@@ -22,16 +22,16 @@ const {
   ThermostatScheduleRequestError,
   ThermostatSetpointsTooCloseError,
   ThermostatSetpointsUnsupportedError
-} = require('../errors');
-const { ThermostatMode, ThermostatHold } = require('../properties');
-const AlexaHandler = require('./handler');
+} from '../errors.js';
+import { ThermostatMode, ThermostatHold } from '../properties/index.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.ThermostatController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-thermostatcontroller.html#directives
  * @extends AlexaHandler
  */
-class ThermostatController extends AlexaHandler {
+export default class ThermostatController extends AlexaHandler {
   /**
    * Defines set target temperature directive
    * @type {String}
@@ -351,5 +351,3 @@ class ThermostatController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = ThermostatController;

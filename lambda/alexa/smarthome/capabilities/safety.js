@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const { Capability, Interface, Property } = require('../constants');
-const { OpenState } = require('../device/attributes');
-const { AlertState } = require('../properties');
+import AlexaCapability from './capability.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { OpenState } from '../device/attributes/index.js';
+import { AlertState } from '../properties/index.js';
 
 /**
  * Defines Alexa.Safety interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-safety-errorresponse.html
  * @extends AlexaCapability
  */
-class Safety extends AlexaCapability {
+export default class Safety extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.SAFETY;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -57,5 +65,3 @@ class Safety extends AlexaCapability {
     return false;
   }
 }
-
-module.exports = Safety;

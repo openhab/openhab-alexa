@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines network access attribute class
  * @extends DeviceAttribute
  */
-class NetworkAccess extends DeviceAttribute {
+export default class NetworkAccess extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class NetworkAccess extends DeviceAttribute {
     return [{ name: Capability.NETWORKING_ACCESS_CONTROLLER, property: Property.NETWORK_ACCESS }];
   }
 }
-
-module.exports = NetworkAccess;

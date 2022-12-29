@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines channel attribute class
  * @extends DeviceAttribute
  */
-class Channel extends DeviceAttribute {
+export default class Channel extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -38,5 +38,3 @@ class Channel extends DeviceAttribute {
     return [{ name: Capability.CHANNEL_CONTROLLER, property: Property.CHANNEL }];
   }
 }
-
-module.exports = Channel;

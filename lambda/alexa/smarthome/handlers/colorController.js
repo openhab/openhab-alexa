@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const AlexaHandler = require('./handler');
+import { Interface, Property } from '../constants.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.ColorController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-colorcontroller.html#directives
  * @extends AlexaHandler
  */
-class ColorController extends AlexaHandler {
+export default class ColorController extends AlexaHandler {
   /**
    * Defines set color directive
    * @type {String}
@@ -79,5 +79,3 @@ class ColorController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = ColorController;

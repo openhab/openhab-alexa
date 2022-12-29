@@ -11,14 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-require('module-alias/register');
-const { expect } = require('chai');
-const sinon = require('sinon');
-const nock = require('nock');
-const fs = require('fs');
-const Agent = require('agentkeepalive');
-const { v4: uuidv4 } = require('uuid');
-const OpenHAB = require('@openhab');
+import { expect } from 'chai';
+import sinon from 'sinon';
+import nock from 'nock';
+import fs from 'fs';
+import Agent from 'agentkeepalive';
+import { v4 as uuidv4 } from 'uuid';
+import OpenHAB from '#openhab/index.js';
 
 describe('OpenHAB Tests', () => {
   // set default environment

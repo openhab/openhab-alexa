@@ -11,52 +11,35 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability } = require('../constants');
-
 /**
- * Defines supported capability classes
- * @type {Object}
+ * Exports supported capability classes
  */
-module.exports = {
-  [Capability.ALEXA]: require('./alexa'),
-  [Capability.BRIGHTNESS_CONTROLLER]: require('./brightnessController'),
-  [Capability.CAMERA_STREAM_CONTROLLER]: require('./cameraStreamController'),
-  [Capability.CHANNEL_CONTROLLER]: require('./channelController'),
-  [Capability.COLOR_CONTROLLER]: require('./colorController'),
-  [Capability.COLOR_TEMPERATURE_CONTROLLER]: require('./colorTemperatureController'),
-  [Capability.CONTACT_SENSOR]: require('./contactSensor'),
-  [Capability.ENDPOINT_HEALTH]: require('./endpointHealth'),
-  [Capability.EQUALIZER_CONTROLLER]: require('./equalizerController'),
-  [Capability.INPUT_CONTROLLER]: require('./inputController'),
-  [Capability.LOCK_CONTROLLER]: require('./lockController'),
-  [Capability.MODE_CONTROLLER]: require('./modeController'),
-  [Capability.MOTION_SENSOR]: require('./motionSensor'),
-  [Capability.NETWORKING_ACCESS_CONTROLLER]: require('./networkingAccessController'),
-  [Capability.NETWORKING_CONNECTED_DEVICE]: require('./networkingConnectedDevice'),
-  [Capability.NETWORKING_HOME_NETWORK_CONTROLLER]: require('./networkingHomeNetworkController'),
-  [Capability.PERCENTAGE_CONTROLLER]: require('./percentageController'),
-  [Capability.PLAYBACK_CONTROLLER]: require('./playbackController'),
-  [Capability.POWER_CONTROLLER]: require('./powerController'),
-  [Capability.POWER_LEVEL_CONTROLLER]: require('./powerLevelController'),
-  [Capability.RANGE_CONTROLLER]: require('./rangeController'),
-  [Capability.SAFETY]: require('./safety'),
-  [Capability.SCENE_CONTROLLER]: require('./sceneController'),
-  [Capability.SECURITY_PANEL_CONTROLLER]: require('./securityPanelController'),
-  [Capability.SPEAKER]: require('./speaker'),
-  [Capability.STEP_SPEAKER]: require('./stepSpeaker'),
-  [Capability.TEMPERATURE_SENSOR]: require('./temperatureSensor'),
-  [Capability.THERMOSTAT_CONTROLLER]: require('./thermostatController'),
-  [Capability.TOGGLE_CONTROLLER]: require('./toggleController')
-};
-
-/**
- * Returns new capability object for a given name and instance
- * @param  {String} name
- * @param  {String} instance
- * @return {Object}
- */
-module.exports.build = function (name, instance) {
-  if (typeof this[name] === 'function') {
-    return new this[name](name, instance);
-  }
-};
+export { default as Alexa } from './alexa.js';
+export { default as BrightnessController } from './brightnessController.js';
+export { default as CameraStreamController } from './cameraStreamController.js';
+export { default as ChannelController } from './channelController.js';
+export { default as ColorController } from './colorController.js';
+export { default as ColorTemperatureController } from './colorTemperatureController.js';
+export { default as ContactSensor } from './contactSensor.js';
+export { default as EndpointHealth } from './endpointHealth.js';
+export { default as EqualizerController } from './equalizerController.js';
+export { default as InputController } from './inputController.js';
+export { default as LockController } from './lockController.js';
+export { default as ModeController } from './modeController.js';
+export { default as MotionSensor } from './motionSensor.js';
+export { default as NetworkingAccessController } from './networkingAccessController.js';
+export { default as NetworkingConnectedDevice } from './networkingConnectedDevice.js';
+export { default as NetworkingHomeNetworkController } from './networkingHomeNetworkController.js';
+export { default as PercentageController } from './percentageController.js';
+export { default as PlaybackController } from './playbackController.js';
+export { default as PowerController } from './powerController.js';
+export { default as PowerLevelController } from './powerLevelController.js';
+export { default as RangeController } from './rangeController.js';
+export { default as Safety } from './safety.js';
+export { default as SceneController } from './sceneController.js';
+export { default as SecurityPanelController } from './securityPanelController.js';
+export { default as Speaker } from './speaker.js';
+export { default as StepSpeaker } from './stepSpeaker.js';
+export { default as TemperatureSensor } from './temperatureSensor.js';
+export { default as ThermostatController } from './thermostatController.js';
+export { default as ToggleController } from './toggleController.js';

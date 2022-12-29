@@ -11,17 +11,26 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { ArmState, AlarmState, SecurityAlert } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { ArmState, AlarmState, SecurityAlert } from '../properties/index.js';
+import { AuthType } from '../properties/armState.js';
 
 /**
  * Defines Alexa.SecurityPanelController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-securitypanelcontroller.html
  * @extends AlexaCapability
  */
-class SecurityPanelController extends AlexaCapability {
+export default class SecurityPanelController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.SECURITY_PANEL_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -70,12 +79,10 @@ class SecurityPanelController extends AlexaCapability {
       configuration.supportedArmStates = supportedArmStates.map((state) => ({ value: state }));
 
       if (pinCodes.length > 0) {
-        configuration.supportedAuthorizationTypes = [{ type: ArmState.AuthType.FOUR_DIGIT_PIN }];
+        configuration.supportedAuthorizationTypes = [{ type: AuthType.FOUR_DIGIT_PIN }];
       }
     }
 
     return configuration;
   }
 }
-
-module.exports = SecurityPanelController;

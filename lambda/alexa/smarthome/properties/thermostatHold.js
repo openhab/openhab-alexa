@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
-const { Property } = require('../constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import { Property } from '../constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines thermostat hold property class
  * @extends AlexaProperty
  */
-class ThermostatHold extends AlexaProperty {
+export default class ThermostatHold extends AlexaProperty {
   /**
    * Defines on state
    * @type {String}
@@ -124,5 +124,3 @@ class ThermostatHold extends AlexaProperty {
     return super.getCommand(value);
   }
 }
-
-module.exports = ThermostatHold;

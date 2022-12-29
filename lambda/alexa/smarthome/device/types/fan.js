@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
-const { FanDirection, FanOscillate, FanSpeed, PowerState } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
+import { FanDirection, FanOscillate, FanSpeed, PowerState } from '../attributes/index.js';
 
 /**
  * Defines fan device type class
  * @extends GenericDevice
  */
-class Fan extends GenericDevice {
+export default class Fan extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class Fan extends GenericDevice {
     return [AlexaDisplayCategory.FAN];
   }
 }
-
-module.exports = Fan;

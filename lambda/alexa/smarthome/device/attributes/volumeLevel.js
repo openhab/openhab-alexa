@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines volume level attribute class
  * @extends DeviceAttribute
  */
-class VolumeLevel extends DeviceAttribute {
+export default class VolumeLevel extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -38,5 +38,3 @@ class VolumeLevel extends DeviceAttribute {
     return [{ name: Capability.SPEAKER, property: Property.VOLUME }];
   }
 }
-
-module.exports = VolumeLevel;

@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Fan = require('./fan');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Fan from './fan.js';
 
 /**
  * Defines air purifier device type class
  * @extends Fan
  */
-class AirPurifier extends Fan {
+export default class AirPurifier extends Fan {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class AirPurifier extends Fan {
     return [AlexaDisplayCategory.AIR_PURIFIER];
   }
 }
-
-module.exports = AirPurifier;

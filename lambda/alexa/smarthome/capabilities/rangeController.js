@@ -11,19 +11,27 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const RangeControllerHandler = require('../handlers/rangeController');
-const { RangeValue } = require('../properties');
-const { AlexaPresetResources } = require('../resources');
-const AlexaSemantics = require('../semantics');
-const GenericController = require('./genericController');
+import { Capability, Interface, Property } from '../constants.js';
+import RangeControllerHandler from '../handlers/rangeController.js';
+import { RangeValue } from '../properties/index.js';
+import { AlexaPresetResources } from '../resources.js';
+import AlexaSemantics from '../semantics.js';
+import GenericController from './genericController.js';
 
 /**
  * Defines Alexa.RangeController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-rangecontroller.html
  * @extends GenericController
  */
-class RangeController extends GenericController {
+export default class RangeController extends GenericController {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.RANGE_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -119,5 +127,3 @@ class RangeController extends GenericController {
     return semantics.toJSON();
   }
 }
-
-module.exports = RangeController;

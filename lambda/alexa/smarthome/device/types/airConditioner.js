@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Fan = require('./fan');
-const { TargetTemperature, Temperature, PowerState } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Fan from './fan.js';
+import { TargetTemperature, Temperature, PowerState } from '../attributes/index.js';
 
 /**
  * Defines air conditioner device type class
  * @extends Fan
  */
-class AirConditioner extends Fan {
+export default class AirConditioner extends Fan {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class AirConditioner extends Fan {
     return [AlexaDisplayCategory.AIR_CONDITIONER];
   }
 }
-
-module.exports = AirConditioner;

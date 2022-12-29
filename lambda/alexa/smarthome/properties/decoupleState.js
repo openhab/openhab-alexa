@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaProperty = require('./property');
+import AlexaProperty from './property.js';
 
 /**
  * Defines decouple state property class
  * @extends AlexaProperty
  */
-class DecoupleState extends AlexaProperty {
+export default class DecoupleState extends AlexaProperty {
   /**
    * Defines decouple state tag name
    * @type {String}
@@ -41,5 +41,3 @@ class DecoupleState extends AlexaProperty {
     return [{ name: this.name, component: this.component, tag: undefined }];
   }
 }
-
-module.exports = DecoupleState;

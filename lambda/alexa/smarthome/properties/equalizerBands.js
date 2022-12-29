@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines equalizer bands property class
  * @extends AlexaProperty
  */
-class EqualizerBands extends AlexaProperty {
+export default class EqualizerBands extends AlexaProperty {
   /**
    * Defines bass equalizer band
    * @type {String}
@@ -140,5 +140,3 @@ class EqualizerBands extends AlexaProperty {
     parameters[Parameter.DEFAULT_LEVEL] = level >= this.range[0] && level <= this.range[1] ? level : undefined;
   }
 }
-
-module.exports = EqualizerBands;

@@ -11,19 +11,27 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const ModeControllerHandler = require('../handlers/modeController');
-const { Mode } = require('../properties');
-const { AlexaModeResources } = require('../resources');
-const AlexaSemantics = require('../semantics');
-const GenericController = require('./genericController');
+import { Capability, Interface, Property } from '../constants.js';
+import ModeControllerHandler from '../handlers/modeController.js';
+import { Mode } from '../properties/index.js';
+import { AlexaModeResources } from '../resources.js';
+import AlexaSemantics from '../semantics.js';
+import GenericController from './genericController.js';
 
 /**
  * Defines Alexa.ModeController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-modecontroller.html
  * @extends GenericController
  */
-class ModeController extends GenericController {
+export default class ModeController extends GenericController {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.MODE_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -103,5 +111,3 @@ class ModeController extends GenericController {
     return semantics.toJSON();
   }
 }
-
-module.exports = ModeController;

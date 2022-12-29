@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const DeviceAttributes = require('./attributes');
-const DeviceTypes = require('./types');
+import * as DeviceAttributes from './attributes/index.js';
+import * as DeviceTypes from './types/index.js';
 
 /**
  * Defines alexa device class
  */
-class AlexaDevice {
+export default class AlexaDevice {
   /**
    * Constructor
    * @param {Object} type
@@ -93,26 +93,26 @@ class AlexaDevice {
    * @param  {Object} groupType
    * @return {Object}
    */
-  static getDevice(value, groupType) {
-    const parameters = value.split('.');
+  static from(value, groupType) {
+    const parameters = value.split('.', 2);
     let type, attribute;
 
     // Determine device type and attribute based on metadata value parameters:
     //  1) Specific device type and undefined attribute (e.g. Light)
     //  2) Specific device type and attribute (e.g. Light.PowerState)
     //  3) Specific attribute only (e.g. PowerState)
-    if (DeviceTypes.get(parameters[0])) {
+    if (this.getDeviceType(parameters[0])) {
       if (parameters.length === 1) {
-        type = DeviceTypes.get(parameters[0]);
+        type = this.getDeviceType(parameters[0]);
         attribute = undefined;
-      } else if (DeviceAttributes.get(parameters[1])) {
-        type = DeviceTypes.get(parameters[0]);
-        attribute = DeviceAttributes.get(parameters[1]);
+      } else if (this.getDeviceAttributes(parameters[1])) {
+        type = this.getDeviceType(parameters[0]);
+        attribute = this.getDeviceAttributes(parameters[1]);
       }
-    } else if (DeviceAttributes.get(parameters[0])) {
+    } else if (this.getDeviceAttributes(parameters[0])) {
       // Use group or dummy device type when not found
       type = groupType || DeviceTypes.Dummy;
-      attribute = DeviceAttributes.get(parameters[0]);
+      attribute = this.getDeviceAttributes(parameters[0]);
     }
 
     // Return new device object if type defined
@@ -122,13 +122,25 @@ class AlexaDevice {
   }
 
   /**
+   * Returns device attribute based on given name
+   * @param  {String} name
+   * @return {Object}
+   */
+  static getDeviceAttributes(name) {
+    return Object.values(DeviceAttributes).find((attribute) => attribute.supportedNames?.includes(name));
+  }
+
+  /**
    * Returns device type based on given name
    * @param  {String} name
    * @return {Object}
    */
   static getDeviceType(name) {
-    return DeviceTypes.get(name);
+    return Object.values(DeviceTypes).find(
+      (type) =>
+        type.supportedNames?.includes(name) ||
+        // Fallback to display category for backward compatibility
+        type.displayCategories?.includes(name)
+    );
   }
 }
-
-module.exports = AlexaDevice;

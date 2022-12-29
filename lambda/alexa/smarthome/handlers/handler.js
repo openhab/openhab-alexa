@@ -14,7 +14,7 @@
 /**
  * Defines alexa handler base class
  */
-class AlexaHandler {
+export default class AlexaHandler {
   /**
    * Defines handler namespace
    * @return {String}
@@ -31,5 +31,3 @@ class AlexaHandler {
     return {};
   }
 }
-
-module.exports = AlexaHandler;

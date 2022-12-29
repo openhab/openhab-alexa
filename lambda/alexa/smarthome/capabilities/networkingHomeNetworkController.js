@@ -11,15 +11,23 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const { Interface } = require('../constants');
+import AlexaCapability from './capability.js';
+import { Capability, Interface } from '../constants.js';
 
 /**
  * Defines Alexa.Networking.HomeNetworkController interface capability class
  *  https://developer.amazon.com/docs/networking/alexa-networking-homenetworkcontroller.html
  * @extends AlexaCapability
  */
-class NetworkingHomeNetworkController extends AlexaCapability {
+export default class NetworkingHomeNetworkController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.NETWORKING_HOME_NETWORK_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -28,5 +36,3 @@ class NetworkingHomeNetworkController extends AlexaCapability {
     return Interface.ALEXA_NETWORKING_HOME_NETWORK_CONTROLLER;
   }
 }
-
-module.exports = NetworkingHomeNetworkController;

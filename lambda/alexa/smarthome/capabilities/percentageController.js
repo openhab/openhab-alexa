@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { Percentage } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { Percentage } from '../properties/index.js';
 
 /**
  * Defines Alexa.PercentageController interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-percentagecontroller.html
  * @extends AlexaCapability
  */
-class PercentageController extends AlexaCapability {
+export default class PercentageController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.PERCENTAGE_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -48,5 +56,3 @@ class PercentageController extends AlexaCapability {
     return [AlexaDisplayCategory.OTHER];
   }
 }
-
-module.exports = PercentageController;

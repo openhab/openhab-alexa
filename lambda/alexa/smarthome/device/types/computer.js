@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const NetworkDevice = require('./networkDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import NetworkDevice from './networkDevice.js';
 
 /**
  * Defines computer device type class
  * @extends NetworkDevice
  */
-class Computer extends NetworkDevice {
+export default class Computer extends NetworkDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Computer extends NetworkDevice {
     return [AlexaDisplayCategory.COMPUTER];
   }
 }
-
-module.exports = Computer;

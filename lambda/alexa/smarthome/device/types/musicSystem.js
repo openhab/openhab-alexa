@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const StreamingDevice = require('./streamingDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import StreamingDevice from './streamingDevice.js';
 
 /**
  * Defines music system device type class
  * @extends StreamingDevice
  */
-class MusicSystem extends StreamingDevice {
+export default class MusicSystem extends StreamingDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class MusicSystem extends StreamingDevice {
     return [AlexaDisplayCategory.MUSIC_SYSTEM];
   }
 }
-
-module.exports = MusicSystem;

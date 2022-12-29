@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const DeviceType = require('./type');
-const { PowerState, genericAttributes } = require('../attributes');
+import DeviceType from './type.js';
+import { PowerState, genericAttributes } from '../attributes/index.js';
 
 /**
  * Defines generic device type class
  * @extends DeviceType
  */
-class GenericDevice extends DeviceType {
+export default class GenericDevice extends DeviceType {
   /**
    * Returns supported attributes
    * @return {Array}
@@ -35,5 +35,3 @@ class GenericDevice extends DeviceType {
     return [PowerState];
   }
 }
-
-module.exports = GenericDevice;

@@ -11,18 +11,18 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { clamp } = require('@root/utils');
-const { Interface, Property } = require('../constants');
-const { InvalidValueError } = require('../errors');
-const { VolumeStep, MuteStep } = require('../properties');
-const AlexaHandler = require('./handler');
+import { clamp } from '#root/utils.js';
+import { Interface, Property } from '../constants.js';
+import { InvalidValueError } from '../errors.js';
+import { VolumeStep, MuteStep } from '../properties/index.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.StepSpeaker interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-stepspeaker.html#directives
  * @extends AlexaHandler
  */
-class StepSpeaker extends AlexaHandler {
+export default class StepSpeaker extends AlexaHandler {
   /**
    * Defines volume steps limit per request
    * @type {Number}
@@ -120,5 +120,3 @@ class StepSpeaker extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = StepSpeaker;

@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const { InvalidValueError } = require('../errors');
-const AlexaHandler = require('./handler');
+import { Interface, Property } from '../constants.js';
+import { InvalidValueError } from '../errors.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.InputController interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-inputcontroller.html#directives
  * @extends AlexaHandler
  */
-class InputController extends AlexaHandler {
+export default class InputController extends AlexaHandler {
   /**
    * Defines select input directive
    * @type {String}
@@ -71,5 +71,3 @@ class InputController extends AlexaHandler {
     return directive.response();
   }
 }
-
-module.exports = InputController;

@@ -11,17 +11,25 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const AlexaDisplayCategory = require('../category');
-const { Interface, Property } = require('../constants');
-const { MuteStep, VolumeStep } = require('../properties');
+import AlexaCapability from './capability.js';
+import AlexaDisplayCategory from '../category.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { MuteStep, VolumeStep } from '../properties/index.js';
 
 /**
  * Defines Alexa.StepSpeaker interface capability class
  *  https://developer.amazon.com/docs/device-apis/alexa-stepspeaker.html
  * @extends AlexaCapability
  */
-class StepSpeaker extends AlexaCapability {
+export default class StepSpeaker extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.STEP_SPEAKER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -49,5 +57,3 @@ class StepSpeaker extends AlexaCapability {
     return [AlexaDisplayCategory.SPEAKER];
   }
 }
-
-module.exports = StepSpeaker;

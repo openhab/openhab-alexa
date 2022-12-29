@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines binary state property class
  * @extends AlexaProperty
  */
-class BinaryState extends AlexaProperty {
+export default class BinaryState extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -101,5 +101,3 @@ class BinaryState extends AlexaProperty {
     return value;
   }
 }
-
-module.exports = BinaryState;

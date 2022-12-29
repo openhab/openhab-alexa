@@ -11,20 +11,19 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-require('module-alias/register');
-const log = require('./log');
-const AlexaSmarthome = require('./alexa/smarthome');
+import log from './log.js';
+import { handleRequest } from './alexa/smarthome/index.js';
 
 /**
  * Defines skill event handler
  * @param  {Object}  event
  * @return {Promise}
  */
-exports.handler = async (event) => {
+export const handler = async (event) => {
   log.info('Received event:', event);
 
   if (event.directive?.header.payloadVersion === '3') {
-    return AlexaSmarthome.handleRequest(event);
+    return handleRequest(event);
   }
 
   log.warn('Unsupported event:', event);

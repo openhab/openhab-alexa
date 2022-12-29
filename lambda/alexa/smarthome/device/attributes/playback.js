@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines playback attribute class
  * @extends DeviceAttribute
  */
-class Playback extends DeviceAttribute {
+export default class Playback extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -38,5 +38,3 @@ class Playback extends DeviceAttribute {
     return [{ name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK }];
   }
 }
-
-module.exports = Playback;

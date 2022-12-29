@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { ItemType } from '#openhab/constants.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines range value attribute class
  * @extends DeviceAttribute
  */
-class RangeValue extends DeviceAttribute {
+export default class RangeValue extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -68,5 +68,3 @@ class RangeValue extends DeviceAttribute {
     }
   }
 }
-
-module.exports = RangeValue;

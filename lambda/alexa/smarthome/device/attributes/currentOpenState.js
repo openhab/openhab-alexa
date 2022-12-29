@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const DecoupleState = require('@alexa/smarthome/properties/decoupleState');
-const OpenState = require('./openState');
+import { DecoupleState } from '#alexa/smarthome/properties/index.js';
+import OpenState from './openState.js';
 
 /**
  * Defines current open state attribute class
  * @extends OpenState
  */
-class CurrentOpenState extends OpenState {
+export default class CurrentOpenState extends OpenState {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class CurrentOpenState extends OpenState {
     return DecoupleState.TAG_NAME;
   }
 }
-
-module.exports = CurrentOpenState;

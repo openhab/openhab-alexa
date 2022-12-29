@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
 
 /**
  * Defines printer device type class
  * @extends GenericDevice
  */
-class Printer extends GenericDevice {
+export default class Printer extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Printer extends GenericDevice {
     return [AlexaDisplayCategory.PRINTER];
   }
 }
-
-module.exports = Printer;

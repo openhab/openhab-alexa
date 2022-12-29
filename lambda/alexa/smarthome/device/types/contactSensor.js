@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Sensor = require('./sensor');
-const { ContactDetectionState } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Sensor from './sensor.js';
+import { ContactDetectionState } from '../attributes/index.js';
 
 /**
  * Defines contact sensor device type class
  * @extends Sensor
  */
-class ContactSensor extends Sensor {
+export default class ContactSensor extends Sensor {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class ContactSensor extends Sensor {
     return [AlexaDisplayCategory.CONTACT_SENSOR];
   }
 }
-
-module.exports = ContactSensor;

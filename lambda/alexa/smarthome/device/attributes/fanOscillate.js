@@ -11,16 +11,16 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const DeviceAttribute = require('./attribute');
+import { ItemType } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines fan oscillate attribute class
  * @extends DeviceAttribute
  */
-class FanOscillate extends DeviceAttribute {
+export default class FanOscillate extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -61,5 +61,3 @@ class FanOscillate extends DeviceAttribute {
     }
   }
 }
-
-module.exports = FanOscillate;

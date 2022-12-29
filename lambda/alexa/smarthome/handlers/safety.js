@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Interface, Property } = require('../constants');
-const { SafetyObstacleDetectedError } = require('../errors');
-const { AlertState } = require('../properties');
-const AlexaHandler = require('./handler');
+import { Interface, Property } from '../constants.js';
+import { SafetyObstacleDetectedError } from '../errors.js';
+import { AlertState } from '../properties/index.js';
+import AlexaHandler from './handler.js';
 
 /**
  * Defines Alexa.Safety interface handler class
  *  https://developer.amazon.com/docs/device-apis/alexa-safety-errorresponse.html
  * @extends AlexaHandler
  */
-class Safety extends AlexaHandler {
+export default class Safety extends AlexaHandler {
   /**
    * Defines handler namespace
    * @return {String}
@@ -54,13 +54,9 @@ class Safety extends AlexaHandler {
       });
 
     // Throw relevant safety error based on alert name found
-    if (alert) {
-      switch (alert.name) {
-        case Property.OBSTACLE_ALERT:
-          throw new SafetyObstacleDetectedError('Unable to close door because an obstacle is detected.');
-      }
+    switch (alert?.name) {
+      case Property.OBSTACLE_ALERT:
+        throw new SafetyObstacleDetectedError('Unable to close door because an obstacle is detected.');
     }
   }
 }
-
-module.exports = Safety;

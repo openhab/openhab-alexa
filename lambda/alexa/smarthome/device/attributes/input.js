@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const { Parameter, ParameterType } = require('@alexa/smarthome/metadata');
-const DeviceAttribute = require('./attribute');
+import { ItemType } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import { Parameter, ParameterType } from '#alexa/smarthome/metadata.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines input attribute class
  * @extends DeviceAttribute
  */
-class Input extends DeviceAttribute {
+export default class Input extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -68,5 +68,3 @@ class Input extends DeviceAttribute {
     }
   }
 }
-
-module.exports = Input;

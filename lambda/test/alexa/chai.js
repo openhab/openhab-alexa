@@ -11,9 +11,11 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-require('module-alias/register');
-const Ajv = require('ajv');
-const { decompressJSON } = require('@root/utils');
+import Ajv from 'ajv';
+import { createRequire } from 'node:module';
+import { decompressJSON } from '#root/utils.js';
+
+const require = createRequire(import.meta.url);
 
 // Initialize the alexa smart home message json schema draft v4 validator
 const validate = new Ajv({ schemaId: 'auto', unknownFormats: ['double', 'int32'] })
@@ -187,7 +189,7 @@ function getCapabilitiesSemantics(capabilities) {
  * Adds smarthome related chai assertions
  * @param  {Object} chai
  */
-module.exports = function (chai) {
+export default function (chai) {
   const { Assertion } = chai;
 
   /**
@@ -250,4 +252,4 @@ module.exports = function (chai) {
       `Schema Validation Failed\nData: ${JSON.stringify(this._obj)}\n\nErrors: ${JSON.stringify(validate.errors)}`
     );
   });
-};
+}

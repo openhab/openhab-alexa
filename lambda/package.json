@@ -1,33 +1,33 @@
 {
-  "name": "openHAB.alexa-smarthome",
+  "name": "openhab-alexa",
   "version": "3.2.3",
   "description": "openHAB skill for Amazon Alexa",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/openhab/openhab-alexa.git"
-  },
+  "license": "EPL-2.0",
   "author": "openHAB",
   "contributors": [
     "Dan Cunningham",
     "Jeremy Setton"
   ],
-  "license": "EPL-2.0",
+  "homepage": "https://github.com/openhab/openhab-alexa",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openhab/openhab-alexa.git"
+  },
   "bugs": {
     "url": "https://github.com/openhab/openhab-alexa/issues"
   },
-  "homepage": "https://github.com/openhab/openhab-alexa",
+  "type": "module",
+  "exports": "./index.js",
   "scripts": {
-    "format": "prettier --write '**/*.js'",
     "fix": "eslint --fix .",
+    "format": "prettier --write '**/*.js'",
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "NODE_ENV=test mocha",
-    "test:coverage": "nyc npm test"
+    "test:coverage": "c8 npm test"
   },
   "dependencies": {
     "agentkeepalive": "^4.2.1",
-    "module-alias": "^2.2.2",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.9",
     "sprintf-js": "^1.1.2",
@@ -36,27 +36,23 @@
   },
   "devDependencies": {
     "ajv": "^6.12.6",
+    "c8": "^7.12.0",
     "chai": "^4.3.7",
     "chai-subset": "^1.6.0",
-    "eslint": "^8.28.0",
+    "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-n": "^15.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "mocha": "^10.1.0",
+    "esmock": "^2.1.0",
+    "mocha": "^10.2.0",
     "nock": "^13.2.9",
-    "nyc": "^15.1.0",
-    "prettier": "^2.8.0",
-    "sinon": "^15.0.0"
+    "prettier": "^2.8.1",
+    "sinon": "^15.0.1"
   },
   "engines": {
     "node": ">=14.0.0"
   },
-  "mocha": {
-    "recursive": true,
-    "reporter": "spec",
-    "slow": "600"
-  },
-  "nyc": {
+  "c8": {
     "check-coverage": true,
     "lines": 95,
     "statements": 95,
@@ -68,6 +64,18 @@
       "text"
     ]
   },
+  "imports": {
+    "#root/*": "./*",
+    "#alexa/*": "./alexa/*",
+    "#openhab/*": "./openhab/*"
+  },
+  "mocha": {
+    "loader": "esmock",
+    "no-warnings": true,
+    "recursive": true,
+    "reporter": "spec",
+    "slow": "600"
+  },
   "prettier": {
     "printWidth": 120,
     "tabWidth": 2,
@@ -75,10 +83,5 @@
     "singleQuote": true,
     "trailingComma": "none",
     "bracketSpacing": true
-  },
-  "_moduleAliases": {
-    "@root": ".",
-    "@alexa": "alexa",
-    "@openhab": "openhab"
   }
 }

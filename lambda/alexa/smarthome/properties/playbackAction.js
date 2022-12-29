@@ -11,17 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const { CustomActionSemantic } = require('../semantics');
-const AlexaProperty = require('./property');
-const Playback = require('./playback');
+import { ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import { CustomActionSemantic } from '../semantics.js';
+import AlexaProperty from './property.js';
+import Playback from './playback.js';
 
 /**
  * Defines playback action property class
  * @extends AlexaProperty
  */
-class PlaybackAction extends AlexaProperty {
+export default class PlaybackAction extends AlexaProperty {
   /**
    * Defines pause state
    * @type {String}
@@ -144,5 +144,3 @@ class PlaybackAction extends AlexaProperty {
     delete parameters[Parameter.ACTION_MAPPINGS];
   }
 }
-
-module.exports = PlaybackAction;

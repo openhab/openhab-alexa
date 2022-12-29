@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const GenericDevice = require('./genericDevice');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import GenericDevice from './genericDevice.js';
 
 /**
  * Defines phone device type class
  * @extends GenericDevice
  */
-class Phone extends GenericDevice {
+export default class Phone extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Phone extends GenericDevice {
     return [AlexaDisplayCategory.PHONE];
   }
 }
-
-module.exports = Phone;

@@ -11,16 +11,24 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const { Interface, Property } = require('../constants');
-const { ConnectedDevice } = require('../properties');
+import AlexaCapability from './capability.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { ConnectedDevice } from '../properties/index.js';
 
 /**
  * Defines Alexa.Networking.ConnectedDevice interface capability class
  *  https://developer.amazon.com/docs/networking/alexa-networking-connecteddevice.html
  * @extends AlexaCapability
  */
-class NetworkingConnectedDevice extends AlexaCapability {
+export default class NetworkingConnectedDevice extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.NETWORKING_CONNECTED_DEVICE;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -65,5 +73,3 @@ class NetworkingConnectedDevice extends AlexaCapability {
     return relationship;
   }
 }
-
-module.exports = NetworkingConnectedDevice;

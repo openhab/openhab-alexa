@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-module.exports = [
+export default [
   {
     description: 'arm away no delay string item',
     directive: {

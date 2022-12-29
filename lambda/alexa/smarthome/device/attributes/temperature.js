@@ -11,19 +11,19 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Dimension, ItemType } = require('@openhab/constants');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const { Parameter } = require('@alexa/smarthome/metadata');
-const AlexaUnitOfMeasure = require('@alexa/smarthome/unitOfMeasure');
-const DeviceAttribute = require('./attribute');
+import { Dimension, ItemType } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import { Parameter } from '#alexa/smarthome/metadata.js';
+import AlexaUnitOfMeasure from '#alexa/smarthome/unitOfMeasure.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines temperature attribute class
  * @extends DeviceAttribute
  */
-class Temperature extends DeviceAttribute {
+export default class Temperature extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
@@ -118,5 +118,3 @@ class Temperature extends DeviceAttribute {
       .find((value) => value === AlexaUnitOfMeasure.UNIT_CELSIUS || value === AlexaUnitOfMeasure.UNIT_FAHRENHEIT);
   }
 }
-
-module.exports = Temperature;

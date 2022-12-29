@@ -11,16 +11,24 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaCapability = require('./capability');
-const { Capability, Interface, Property } = require('../constants');
-const { NetworkAccess } = require('../properties');
+import AlexaCapability from './capability.js';
+import { Capability, Interface, Property } from '../constants.js';
+import { NetworkAccess } from '../properties/index.js';
 
 /**
  * Defines Alexa.Networking.AccessController interface capability class
  *  https://developer.amazon.com/docs/networking/alexa-networking-accesscontroller.html
  * @extends AlexaCapability
  */
-class NetworkingAccessController extends AlexaCapability {
+export default class NetworkingAccessController extends AlexaCapability {
+  /**
+   * Returns name
+   * @return {String}
+   */
+  static get name() {
+    return Capability.NETWORKING_ACCESS_CONTROLLER;
+  }
+
   /**
    * Returns interface
    * @return {String}
@@ -55,5 +63,3 @@ class NetworkingAccessController extends AlexaCapability {
     return { supportsScheduling: false };
   }
 }
-
-module.exports = NetworkingAccessController;

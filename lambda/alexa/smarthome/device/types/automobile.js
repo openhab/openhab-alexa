@@ -11,9 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const DeviceType = require('./type');
-const {
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import DeviceType from './type.js';
+import {
   BatteryLevel,
   FanSpeed,
   LockState,
@@ -21,13 +21,13 @@ const {
   TargetTemperature,
   Temperature,
   genericAttributes
-} = require('../attributes');
+} from '../attributes/index.js';
 
 /**
  * Defines automobile device type class
  * @extends DeviceType
  */
-class Automobile extends DeviceType {
+export default class Automobile extends DeviceType {
   /**
    * Returns supported names
    * @return {Array}
@@ -52,5 +52,3 @@ class Automobile extends DeviceType {
     return [AlexaDisplayCategory.VEHICLE];
   }
 }
-
-module.exports = Automobile;

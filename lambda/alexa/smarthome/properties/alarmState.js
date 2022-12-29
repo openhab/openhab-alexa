@@ -11,13 +11,13 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const BinaryState = require('./binaryState');
+import BinaryState from './binaryState.js';
 
 /**
  * Defines alarm state property class
  * @extends BinaryState
  */
-class AlarmState extends BinaryState {
+export default class AlarmState extends BinaryState {
   /**
    * Defines alarm state
    * @type {String}
@@ -53,5 +53,3 @@ class AlarmState extends BinaryState {
     }
   }
 }
-
-module.exports = AlarmState;

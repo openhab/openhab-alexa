@@ -11,9 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { RequestError, StatusCodeError } = require('request-promise-native/errors');
+import { RequestError, StatusCodeError } from 'request-promise-native/errors.js';
 
-module.exports = [
+export default [
   {
     description: 'report state color item',
     directive: {
@@ -592,7 +592,14 @@ module.exports = [
         }
       }
     },
-    items: [{ name: 'mode', state: 'FOO', type: 'String' }],
+    items: [
+      {
+        name: 'mode',
+        state: 'FOO',
+        type: 'String',
+        stateDescription: { pattern: '%d' } // invalid pattern
+      }
+    ],
     expected: {
       alexa: {
         context: {
@@ -1506,8 +1513,8 @@ module.exports = [
     description: 'invalid directive error',
     directive: {
       header: {
-        namespace: 'Alexa',
-        name: 'FooBar'
+        namespace: 'Alexa.Foo',
+        name: 'Bar'
       },
       endpoint: {
         endpointId: 'foobar1',
@@ -1523,7 +1530,7 @@ module.exports = [
           },
           payload: {
             type: 'INVALID_DIRECTIVE',
-            message: 'Unsupported directive Alexa/FooBar'
+            message: 'Unsupported directive Alexa.Foo/Bar'
           }
         }
       }

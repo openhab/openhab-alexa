@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Property } = require('../constants');
-const AlertState = require('./alertState');
+import { Property } from '../constants.js';
+import AlertState from './alertState.js';
 
 /**
  * Defines security alert property class
  * @extends AlertState
  */
-class SecurityAlert extends AlertState {
+export default class SecurityAlert extends AlertState {
   /**
    * Returns required linked properties
    * @return {Array}
@@ -27,5 +27,3 @@ class SecurityAlert extends AlertState {
     return [{ name: Property.ARM_STATE }];
   }
 }
-
-module.exports = SecurityAlert;

@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines playback property class
  * @extends AlexaProperty
  */
-class Playback extends AlexaProperty {
+export default class Playback extends AlexaProperty {
   /**
    * Defines play operation
    * @type {String}
@@ -152,5 +152,3 @@ class Playback extends AlexaProperty {
     parameters[Parameter.SUPPORTED_OPERATIONS] = operations?.filter((value) => this.defaultOperations.includes(value));
   }
 }
-
-module.exports = Playback;

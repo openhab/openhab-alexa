@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaUnitOfMeasure = require('../unitOfMeasure');
-const Temperature = require('./temperature');
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaUnitOfMeasure from '../unitOfMeasure.js';
+import Temperature from './temperature.js';
 
 /**
  * Defines target setpoint property class
  * @extends Temperature
  */
-class TargetSetpoint extends Temperature {
+export default class TargetSetpoint extends Temperature {
   /**
    * Defines default setpoint range in celsius
    * @type {Array}
@@ -77,5 +77,3 @@ class TargetSetpoint extends Temperature {
     parameters[Parameter.SETPOINT_RANGE] = range[0] < range[1] ? range : undefined;
   }
 }
-
-module.exports = TargetSetpoint;

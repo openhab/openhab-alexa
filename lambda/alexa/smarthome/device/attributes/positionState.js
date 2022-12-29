@@ -11,19 +11,19 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType, ItemValue } = require('@openhab/constants');
-const AlexaAssetCatalog = require('@alexa/smarthome/catalog');
-const { Capability, Property } = require('@alexa/smarthome/constants');
-const { Parameter, ParameterType } = require('@alexa/smarthome/metadata');
-const { AlexaActionSemantic, AlexaStateSemantic, CustomActionSemantic } = require('@alexa/smarthome/semantics');
-const AlexaUnitOfMeasure = require('@alexa/smarthome/unitOfMeasure');
-const DeviceAttribute = require('./attribute');
+import { ItemType, ItemValue } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import { Parameter, ParameterType } from '#alexa/smarthome/metadata.js';
+import { AlexaActionSemantic, AlexaStateSemantic, CustomActionSemantic } from '#alexa/smarthome/semantics.js';
+import AlexaUnitOfMeasure from '#alexa/smarthome/unitOfMeasure.js';
+import DeviceAttribute from './attribute.js';
 
 /**
  * Defines position state attribute class
  * @extends DeviceAttribute
  */
-class PositionState extends DeviceAttribute {
+export default class PositionState extends DeviceAttribute {
   /**
    * Defines position primary control
    * @type {String}
@@ -178,5 +178,3 @@ class PositionState extends DeviceAttribute {
     }
   }
 }
-
-module.exports = PositionState;

@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const { ItemType } = require('@openhab/constants');
-const { Parameter, ParameterType } = require('../metadata');
-const AlexaProperty = require('./property');
+import { ItemType } from '#openhab/constants.js';
+import { Parameter, ParameterType } from '../metadata.js';
+import AlexaProperty from './property.js';
 
 /**
  * Defines input property class
  * @extends AlexaProperty
  */
-class Input extends AlexaProperty {
+export default class Input extends AlexaProperty {
   /**
    * Returns supported item types
    * @return {Array}
@@ -99,5 +99,3 @@ class Input extends AlexaProperty {
       .filter(Boolean);
   }
 }
-
-module.exports = Input;

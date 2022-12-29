@@ -11,15 +11,15 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Door = require('./door');
-const { ObstacleAlert } = require('../attributes');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Door from './door.js';
+import { ObstacleAlert } from '../attributes/index.js';
 
 /**
  * Defines garage door device type class
  * @extends Door
  */
-class GarageDoor extends Door {
+export default class GarageDoor extends Door {
   /**
    * Returns supported names
    * @return {Array}
@@ -44,5 +44,3 @@ class GarageDoor extends Door {
     return [AlexaDisplayCategory.GARAGE_DOOR];
   }
 }
-
-module.exports = GarageDoor;

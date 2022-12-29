@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-const AlexaDisplayCategory = require('@alexa/smarthome/category');
-const Switch = require('./switch');
+import AlexaDisplayCategory from '#alexa/smarthome/category.js';
+import Switch from './switch.js';
 
 /**
  * Defines outlet device type class
  * @extends Switch
  */
-class Outlet extends Switch {
+export default class Outlet extends Switch {
   /**
    * Returns supported names
    * @return {Array}
@@ -35,5 +35,3 @@ class Outlet extends Switch {
     return [AlexaDisplayCategory.SMARTPLUG];
   }
 }
-
-module.exports = Outlet;
