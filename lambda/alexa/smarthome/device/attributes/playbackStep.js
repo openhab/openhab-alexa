@@ -11,27 +11,27 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import { DecoupleState } from '#alexa/smarthome/properties/index.js';
-import LockState from './lockState.js';
+import { Capability, Property } from '#alexa/smarthome/constants.js';
+import DeviceAttribute from './attribute.js';
 
 /**
- * Defines current lock state attribute class
- * @extends LockState
+ * Defines playback step attribute class
+ * @extends DeviceAttribute
  */
-export default class CurrentLockState extends LockState {
+export default class PlaybackStep extends DeviceAttribute {
   /**
    * Returns supported names
    * @return {Array}
    */
   static get supportedNames() {
-    return ['CurrentLockState'];
+    return ['PlaybackStep'];
   }
 
   /**
-   * Returns tag
-   * @type {String}
+   * Returns capabilities
+   * @return {Array}
    */
-  static get tag() {
-    return DecoupleState.TAG_SENSOR;
+  static getCapabilities() {
+    return [{ name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_STEP }];
   }
 }

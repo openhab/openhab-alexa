@@ -14,8 +14,8 @@
 import { ItemType } from '#openhab/constants.js';
 import { Parameter, ParameterType } from '../metadata.js';
 import { CustomActionSemantic } from '../semantics.js';
+import { PlaybackOperation } from './playback.js';
 import AlexaProperty from './property.js';
-import Playback from './playback.js';
 
 /**
  * Defines playback action property class
@@ -98,9 +98,9 @@ export default class PlaybackAction extends AlexaProperty {
    */
   get operationMappings() {
     return {
-      [Playback.PLAY]: PlaybackAction.RESUME,
-      [Playback.PAUSE]: PlaybackAction.PAUSE,
-      [Playback.STOP]: PlaybackAction.STOP
+      [PlaybackOperation.PLAY]: PlaybackAction.RESUME,
+      [PlaybackOperation.PAUSE]: PlaybackAction.PAUSE,
+      [PlaybackOperation.STOP]: PlaybackAction.STOP
     };
   }
 

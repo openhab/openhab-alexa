@@ -14,8 +14,8 @@
 import { ItemType, ItemValue } from '#openhab/constants.js';
 import { Property } from '../constants.js';
 import { Parameter, ParameterType } from '../metadata.js';
+import { PlaybackOperation } from './playback.js';
 import AlexaProperty from './property.js';
-import Playback from './playback.js';
 
 /**
  * Defines playback stop property class
@@ -61,7 +61,7 @@ export default class PlaybackStop extends AlexaProperty {
    * @return {Array}
    */
   get supportedOperations() {
-    return [Playback.STOP];
+    return [PlaybackOperation.STOP];
   }
 
   /**

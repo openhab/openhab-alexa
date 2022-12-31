@@ -89,7 +89,7 @@ export default class PlaybackController extends AlexaHandler {
       [PlaybackController.PLAY]: this.setPlayback,
       [PlaybackController.PREVIOUS]: this.setPlayback,
       [PlaybackController.REWIND]: this.setPlayback,
-      [PlaybackController.START_OVER]: undefined,
+      [PlaybackController.START_OVER]: this.setPlayback,
       [PlaybackController.STOP]: this.setPlayback
     };
   }

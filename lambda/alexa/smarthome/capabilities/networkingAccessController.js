@@ -52,7 +52,7 @@ export default class NetworkingAccessController extends AlexaCapability {
    * @return {Array}
    */
   get requiredLinkedCapabilities() {
-    return [{ name: Capability.NETWORKING_CONNECTED_DEVICE, property: Property.CONNECTED_DEVICE }];
+    return [{ name: Capability.NETWORKING_CONNECTED_DEVICE, property: { name: Property.CONNECTED_DEVICE } }];
   }
 
   /**

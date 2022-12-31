@@ -41,6 +41,8 @@ export { default as NetworkAccess } from './networkAccess.js';
 export { default as Percentage } from './percentage.js';
 export { default as Playback } from './playback.js';
 export { default as PlaybackAction } from './playbackAction.js';
+export { default as PlaybackState } from './playbackState.js';
+export { default as PlaybackStep } from './playbackStep.js';
 export { default as PlaybackStop } from './playbackStop.js';
 export { default as PowerLevel } from './powerLevel.js';
 export { default as PowerState } from './powerState.js';

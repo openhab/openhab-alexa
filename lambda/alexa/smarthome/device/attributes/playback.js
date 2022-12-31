@@ -35,6 +35,9 @@ export default class Playback extends DeviceAttribute {
    * @return {Array}
    */
   static getCapabilities() {
-    return [{ name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK }];
+    return [
+      { name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK },
+      { name: Capability.PLAYBACK_STATE_REPORTER, property: Property.PLAYBACK_STATE }
+    ];
   }
 }

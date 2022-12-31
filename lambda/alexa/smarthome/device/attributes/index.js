@@ -63,6 +63,7 @@ export { default as ObstacleAlert } from './obstacleAlert.js';
 export { default as OpenState } from './openState.js';
 export { default as Percentage } from './percentage.js';
 export { default as Playback } from './playback.js';
+export { default as PlaybackStep } from './playbackStep.js';
 export { default as PlaybackStop } from './playbackStop.js';
 export { default as PositionState } from './positionState.js';
 export { default as PowerLevel } from './powerLevel.js';

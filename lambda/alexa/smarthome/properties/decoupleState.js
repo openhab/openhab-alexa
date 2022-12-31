@@ -19,17 +19,17 @@ import AlexaProperty from './property.js';
  */
 export default class DecoupleState extends AlexaProperty {
   /**
-   * Defines decouple state tag name
+   * Defines sensor tag name
    * @type {String}
    */
-  static TAG_NAME = 'sensor';
+  static TAG_SENSOR = 'sensor';
 
   /**
    * Returns supported tags
    * @return {Array}
    */
   get supportedTags() {
-    return [DecoupleState.TAG_NAME];
+    return [DecoupleState.TAG_SENSOR];
   }
 
   /**
