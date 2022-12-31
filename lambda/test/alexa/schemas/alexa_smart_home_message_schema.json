@@ -2189,6 +2189,54 @@
                         "properties": {
                             "namespace": {
                                 "enum": [
+                                    "Alexa.PlaybackStateReporter"
+                                ]
+                            },
+                            "name": {
+                                "enum": [
+                                    "playbackState"
+                                ]
+                            },
+                            "instance": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "required": [
+                                    "state"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                    "state": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PLAYING",
+                                            "PAUSED",
+                                            "STOPPED"
+                                        ]
+                                    }
+                                }
+                            },
+                            "timeOfSample": {
+                                "$ref": "#/definitions/common/model.StatePropertyBase.TimeOfSample"
+                            },
+                            "uncertaintyInMilliseconds": {
+                                "$ref": "#/definitions/common/model.StatePropertyBase.UncertaintyInMilliseconds"
+                            }
+                        },
+                        "additionalProperties": false
+                    },
+                    {
+                        "required": [
+                            "name",
+                            "namespace",
+                            "timeOfSample",
+                            "uncertaintyInMilliseconds",
+                            "value"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "namespace": {
+                                "enum": [
                                     "Alexa.AutomationManagement"
                                 ]
                             },
@@ -7947,6 +7995,159 @@
                                                 "Skip"
                                             ]
                                         }
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "required": [
+                                    "interface",
+                                    "type",
+                                    "version"
+                                ],
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "pattern": "^[ a-zA-Z0-9_\\-=#;:?@&]+$",
+                                        "type": "string"
+                                    },
+                                    "interface": {
+                                        "type": "string"
+                                    },
+                                    "version": {
+                                        "oneOf": [
+                                            {
+                                                "type": "string"
+                                            },
+                                            {
+                                                "type": "number"
+                                            }
+                                        ]
+                                    },
+                                    "properties": {
+                                        "type": "object",
+                                        "properties": {
+                                            "supported": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "nullable": true
+                                                    },
+                                                    {
+                                                        "type": "array",
+                                                        "nullable": true,
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                ],
+                                                "items": {
+                                                    "type": "object",
+                                                    "required": [
+                                                        "name"
+                                                    ],
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "name": {
+                                                            "enum": [
+                                                                "playbackState"
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "proactivelyReported": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "true",
+                                                            "false",
+                                                            "True",
+                                                            "False",
+                                                            "TRUE",
+                                                            "FALSE"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "enum": [
+                                                            0,
+                                                            1
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "retrievable": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "true",
+                                                            "false",
+                                                            "True",
+                                                            "False",
+                                                            "TRUE",
+                                                            "FALSE"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "enum": [
+                                                            0,
+                                                            1
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "nullable": true
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "AlexaInterface"
+                                        ]
+                                    },
+                                    "interface": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Alexa.PlaybackStateReporter"
+                                        ]
+                                    },
+                                    "version": {
+                                        "oneOf": [
+                                            {
+                                                "type": "string",
+                                                "enum": [
+                                                    "3"
+                                                ]
+                                            },
+                                            {
+                                                "type": "integer",
+                                                "format": "int32",
+                                                "enum": [
+                                                    3
+                                                ]
+                                            }
+                                        ]
                                     }
                                 }
                             }

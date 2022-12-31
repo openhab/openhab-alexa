@@ -14,7 +14,7 @@
 import AlexaCapability from './capability.js';
 import AlexaDisplayCategory from '../category.js';
 import { Capability, Interface, Property } from '../constants.js';
-import { Playback, PlaybackStop, PlaybackAction } from '../properties/index.js';
+import { Playback, PlaybackStop, PlaybackStep, PlaybackAction } from '../properties/index.js';
 
 /**
  * Defines Alexa.PlaybackController interface capability class
@@ -46,6 +46,7 @@ export default class PlaybackController extends AlexaCapability {
     return {
       [Property.PLAYBACK]: Playback,
       [Property.PLAYBACK_STOP]: PlaybackStop,
+      [Property.PLAYBACK_STEP]: PlaybackStep,
       [Property.PLAYBACK_ACTION]: PlaybackAction
     };
   }

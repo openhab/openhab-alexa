@@ -16,52 +16,26 @@ import { Parameter, ParameterType } from '../metadata.js';
 import AlexaProperty from './property.js';
 
 /**
+ * Defines playback operation enum
+ *  https://developer.amazon.com/docs/device-apis/alexa-playbackcontroller.html#discovery
+ * @type {Object}
+ */
+export const PlaybackOperation = Object.freeze({
+  PLAY: 'Play',
+  PAUSE: 'Pause',
+  STOP: 'Stop',
+  START_OVER: 'StartOver',
+  PREVIOUS: 'Previous',
+  NEXT: 'Next',
+  REWIND: 'Rewind',
+  FAST_FORWARD: 'FastForward'
+});
+
+/**
  * Defines playback property class
  * @extends AlexaProperty
  */
 export default class Playback extends AlexaProperty {
-  /**
-   * Defines play operation
-   * @type {String}
-   */
-  static PLAY = 'Play';
-
-  /**
-   * Defines pause operation
-   * @type {String}
-   */
-  static PAUSE = 'Pause';
-
-  /**
-   * Defines next operation
-   * @type {String}
-   */
-  static NEXT = 'Next';
-
-  /**
-   * Defines previous operation
-   * @type {String}
-   */
-  static PREVIOUS = 'Previous';
-
-  /**
-   * Defines fast forward operation
-   * @type {String}
-   */
-  static FAST_FORWARD = 'FastForward';
-
-  /**
-   * Defines rewind operation
-   * @type {String}
-   */
-  static REWIND = 'Rewind';
-
-  /**
-   * Defines stop operation
-   * @type {String}
-   */
-  static STOP = 'Stop';
-
   /**
    * Returns supported item types
    * @return {Array}
@@ -101,7 +75,7 @@ export default class Playback extends AlexaProperty {
    * @return {Array}
    */
   get defaultOperations() {
-    return [Playback.PLAY, Playback.PAUSE, Playback.NEXT, Playback.PREVIOUS, Playback.FAST_FORWARD, Playback.REWIND];
+    return Object.keys(this.operationMappings);
   }
 
   /**
@@ -110,12 +84,12 @@ export default class Playback extends AlexaProperty {
    */
   get operationMappings() {
     return {
-      [Playback.PLAY]: ItemValue.PLAY,
-      [Playback.PAUSE]: ItemValue.PAUSE,
-      [Playback.NEXT]: ItemValue.NEXT,
-      [Playback.PREVIOUS]: ItemValue.PREVIOUS,
-      [Playback.FAST_FORWARD]: ItemValue.FAST_FORWARD,
-      [Playback.REWIND]: ItemValue.REWIND
+      [PlaybackOperation.PLAY]: ItemValue.PLAY,
+      [PlaybackOperation.PAUSE]: ItemValue.PAUSE,
+      [PlaybackOperation.PREVIOUS]: ItemValue.PREVIOUS,
+      [PlaybackOperation.NEXT]: ItemValue.NEXT,
+      [PlaybackOperation.REWIND]: ItemValue.REWIND,
+      [PlaybackOperation.FAST_FORWARD]: ItemValue.FAST_FORWARD
     };
   }
 

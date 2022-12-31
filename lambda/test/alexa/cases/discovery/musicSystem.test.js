@@ -27,7 +27,12 @@ export default {
   ],
   expected: {
     musicSystem: {
-      capabilities: ['Alexa.PlaybackController', 'Alexa'],
+      capabilities: [
+        'Alexa.PlaybackController',
+        'Alexa.PlaybackStateReporter.playbackState',
+        'Alexa.EndpointHealth.connectivity',
+        'Alexa'
+      ],
       displayCategories: ['MUSIC_SYSTEM'],
       friendlyName: 'Music System'
     }

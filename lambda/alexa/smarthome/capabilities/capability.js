@@ -138,8 +138,10 @@ export default class AlexaCapability {
    * @return {Boolean}
    */
   hasRequiredLinkedCapabilities(capabilities) {
-    return this.requiredLinkedCapabilities.every(({ name, instance }) =>
-      capabilities.find((capability) => capability.name === name && capability.instance === instance)
+    return this.requiredLinkedCapabilities.every(({ name, instance, property }) =>
+      capabilities.find(
+        (capability) => capability.name === name && capability.instance === instance && capability.hasProperty(property)
+      )
     );
   }
 
@@ -229,7 +231,7 @@ export default class AlexaCapability {
   getContextProperties() {
     return this.properties.filter(
       // Filter decouple state tagged property if defined, otherwise fallback to standard property
-      (property) => (this.getProperty({ ...property, tag: DecoupleState.TAG_NAME }) || property) === property
+      (property) => (this.getProperty({ ...property, tag: DecoupleState.TAG_SENSOR }) || property) === property
     );
   }
 

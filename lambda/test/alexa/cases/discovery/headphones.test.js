@@ -60,7 +60,13 @@ export default {
   ],
   expected: {
     gHeadphones1: {
-      capabilities: ['Alexa.PlaybackController', 'Alexa.Speaker.volume', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
+      capabilities: [
+        'Alexa.PlaybackController',
+        'Alexa.PlaybackStateReporter.playbackState',
+        'Alexa.Speaker.volume',
+        'Alexa.EndpointHealth.connectivity',
+        'Alexa'
+      ],
       displayCategories: ['HEADPHONES'],
       friendlyName: 'Headphones 1'
     },

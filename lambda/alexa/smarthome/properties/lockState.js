@@ -43,7 +43,7 @@ export default class LockState extends DecoupleState {
    * @return {Array}
    */
   get supportedItemTypes() {
-    return this.tag === DecoupleState.TAG_NAME
+    return this.tag === DecoupleState.TAG_SENSOR
       ? [ItemType.CONTACT, ItemType.NUMBER, ItemType.STRING, ItemType.SWITCH]
       : [ItemType.SWITCH];
   }

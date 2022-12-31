@@ -32,6 +32,6 @@ export default class CurrentOpenState extends OpenState {
    * @type {String}
    */
   static get tag() {
-    return DecoupleState.TAG_NAME;
+    return DecoupleState.TAG_SENSOR;
   }
 }

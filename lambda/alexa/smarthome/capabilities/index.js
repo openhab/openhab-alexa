@@ -32,6 +32,7 @@ export { default as NetworkingConnectedDevice } from './networkingConnectedDevic
 export { default as NetworkingHomeNetworkController } from './networkingHomeNetworkController.js';
 export { default as PercentageController } from './percentageController.js';
 export { default as PlaybackController } from './playbackController.js';
+export { default as PlaybackStateReporter } from './playbackStateReporter.js';
 export { default as PowerController } from './powerController.js';
 export { default as PowerLevelController } from './powerLevelController.js';
 export { default as RangeController } from './rangeController.js';

@@ -12,6 +12,7 @@
  */
 
 import { Capability, Property } from '#alexa/smarthome/constants.js';
+import { PlaybackState } from '#alexa/smarthome/properties/index.js';
 import DeviceAttribute from './attribute.js';
 
 /**
@@ -32,6 +33,9 @@ export default class PlaybackStop extends DeviceAttribute {
    * @return {Array}
    */
   static getCapabilities() {
-    return [{ name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_STOP }];
+    return [
+      { name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK_STOP },
+      { name: Capability.PLAYBACK_STATE_REPORTER, property: Property.PLAYBACK_STATE, tag: PlaybackState.TAG_STOP }
+    ];
   }
 }

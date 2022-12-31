@@ -67,7 +67,7 @@ export default class OpenState extends DeviceAttribute {
       case ItemType.CONTACT:
       case ItemType.NUMBER:
       case ItemType.STRING:
-        if (this.tag !== DecoupleState.TAG_NAME) return;
+        if (this.tag !== DecoupleState.TAG_SENSOR) return;
       // fall through
       case ItemType.SWITCH:
         return [
@@ -83,7 +83,7 @@ export default class OpenState extends DeviceAttribute {
                 [OpenState.CLOSED]: [AlexaAssetCatalog.VALUE_CLOSE]
               },
               // Add semantic mappings map if not decouple state tagged
-              ...(this.tag !== DecoupleState.TAG_NAME && {
+              ...(this.tag !== DecoupleState.TAG_SENSOR && {
                 actionMappings: {
                   [AlexaActionSemantic.CLOSE]: OpenState.CLOSED,
                   [AlexaActionSemantic.OPEN]: OpenState.OPEN,

@@ -32,7 +32,7 @@ export default {
         alexa: {
           value: 'Playback',
           config: {
-            supportedOperations: 'Play,Pause,Next,Previous,FOOBAR'
+            supportedOperations: 'Play,Pause,Previous,Next,FOOBAR'
           }
         }
       }
@@ -48,22 +48,22 @@ export default {
       }
     },
     {
-      type: 'Switch',
-      name: 'playbackAction1',
+      type: 'String',
+      name: 'playbackStep1',
       groupNames: ['gStreamingDevice1'],
       metadata: {
         alexa: {
           // code coverage test for unique supported operation among playback properties
-          value: 'PlaybackController.playbackAction',
+          value: 'PlaybackStep',
           config: {
-            actionMappings: 'Stop=OFF'
+            actionMappings: 'PLAYBACK_STOP=STOP'
           }
         }
       }
     },
     {
-      type: 'Player',
-      name: 'streamingDevice2',
+      type: 'Group',
+      name: 'gStreamingDevice2',
       label: 'Streaming Device 2',
       metadata: {
         alexa: {
@@ -72,44 +72,126 @@ export default {
       }
     },
     {
-      type: 'Player',
-      name: 'playback3',
-      label: 'Streaming Device Playback 3',
+      type: 'String',
+      name: 'playbackStep2',
+      groupNames: ['gStreamingDevice2'],
       metadata: {
         alexa: {
-          value: 'Playback'
+          value: 'PlaybackStep',
+          config: {
+            PLAY: 'PLAY',
+            PAUSE: 'PAUSE',
+            STOP: 'STOP',
+            START_OVER: 'START_OVER'
+          }
+        }
+      }
+    },
+    {
+      type: 'Player',
+      name: 'streamingDevice3',
+      label: 'Streaming Device 3',
+      metadata: {
+        alexa: {
+          value: 'StreamingDevice'
+        }
+      }
+    },
+    {
+      type: 'Player',
+      name: 'playback4',
+      label: 'Streaming Device Playback 4',
+      metadata: {
+        alexa: {
+          value: 'Playback',
+          config: {
+            retrievable: false
+          }
         }
       }
     }
   ],
   expected: {
     gStreamingDevice1: {
-      capabilities: ['Alexa.PlaybackController', 'Alexa'],
+      capabilities: [
+        'Alexa.PlaybackController',
+        'Alexa.PlaybackStateReporter.playbackState',
+        'Alexa.EndpointHealth.connectivity',
+        'Alexa'
+      ],
       displayCategories: ['STREAMING_DEVICE'],
       friendlyName: 'Streaming Device 1',
       parameters: {
-        'Alexa.PlaybackController.supportedOperations': ['Play', 'Pause', 'Next', 'Previous', 'Stop']
+        'Alexa.PlaybackController.supportedOperations': ['Play', 'Pause', 'Previous', 'Next', 'Stop']
       },
       cookie: [
         {
           name: 'PlaybackController',
           property: 'playback',
-          parameters: { supportedOperations: ['Play', 'Pause', 'Next', 'Previous'] },
+          parameters: { supportedOperations: ['Play', 'Pause', 'Previous', 'Next'] },
           item: { name: 'playback1', type: 'Player' }
+        },
+        {
+          name: 'PlaybackStateReporter',
+          property: 'playbackState',
+          parameters: {},
+          item: { name: 'playback1', type: 'Player' }
+        },
+        {
+          name: 'PlaybackController',
+          property: 'playbackStop',
+          parameters: {},
+          item: { name: 'playbackStop1', type: 'Switch' }
+        },
+        {
+          name: 'PlaybackStateReporter',
+          property: 'playbackState',
+          tag: 'stop',
+          parameters: {},
+          item: { name: 'playbackStop1', type: 'Switch' }
         }
       ]
     },
-    streamingDevice2: {
+    gStreamingDevice2: {
       capabilities: ['Alexa.PlaybackController', 'Alexa'],
       displayCategories: ['STREAMING_DEVICE'],
-      friendlyName: 'Streaming Device 2'
-    },
-    playback3: {
-      capabilities: ['Alexa.PlaybackController', 'Alexa'],
-      displayCategories: ['STREAMING_DEVICE'],
-      friendlyName: 'Streaming Device Playback 3',
+      friendlyName: 'Streaming Device 2',
       parameters: {
-        'Alexa.PlaybackController.supportedOperations': ['Play', 'Pause', 'Next', 'Previous', 'FastForward', 'Rewind']
+        'Alexa.PlaybackController.supportedOperations': ['Play', 'Pause', 'Stop', 'StartOver']
+      },
+      cookie: [
+        {
+          name: 'PlaybackController',
+          property: 'playbackStep',
+          parameters: {
+            PLAY: 'PLAY',
+            PAUSE: 'PAUSE',
+            STOP: 'STOP',
+            START_OVER: 'START_OVER'
+          },
+          item: { name: 'playbackStep2', type: 'String' }
+        }
+      ]
+    },
+    streamingDevice3: {
+      capabilities: [
+        'Alexa.PlaybackController',
+        'Alexa.PlaybackStateReporter.playbackState',
+        'Alexa.EndpointHealth.connectivity',
+        'Alexa'
+      ],
+      displayCategories: ['STREAMING_DEVICE'],
+      friendlyName: 'Streaming Device 3',
+      parameters: {
+        'Alexa.PlaybackController.supportedOperations': ['Play', 'Pause', 'Previous', 'Next', 'Rewind', 'FastForward']
+      }
+    },
+    playback4: {
+      capabilities: ['Alexa.PlaybackController', 'Alexa'],
+      displayCategories: ['STREAMING_DEVICE'],
+      friendlyName: 'Streaming Device Playback 4',
+      parameters: {
+        'Alexa.PlaybackController.supportedOperations': ['Play', 'Pause', 'Previous', 'Next', 'Rewind', 'FastForward']
       }
     }
   }
