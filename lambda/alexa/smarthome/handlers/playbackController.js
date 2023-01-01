@@ -95,7 +95,7 @@ export default class PlaybackController extends AlexaHandler {
   }
 
   /**
-   * Sets playback command
+   * Sets playback
    * @param  {Object}  directive
    * @param  {Object}  openhab
    * @return {Promise}
@@ -103,23 +103,18 @@ export default class PlaybackController extends AlexaHandler {
   static async setPlayback(directive, openhab) {
     const { properties } = directive.endpoint.getCapability({ interface: directive.namespace });
     const operation = directive.name;
-    let item, command;
 
-    // Determine playback item and command to send based on property supporting requested operation
-    for (const property of properties) {
-      if (property.supportedOperations.includes(operation)) {
-        item = property.item;
-        command = property.getCommand(operation);
-        break;
-      }
+    // Determine playback property based on requested operation
+    const property = properties.find((property) => property.supportedOperations.includes(operation));
+
+    // Throw invalid value error if playback property not defined
+    if (typeof property === 'undefined') {
+      throw new InvalidValueError(`Playback ${operation} is not supported.`);
     }
 
-    // Throw invalid value error if playback command not defined
-    if (typeof command === 'undefined') {
-      throw new InvalidValueError(`${operation} playback command is not supported.`);
-    }
+    const command = property.getCommand(operation);
 
-    await openhab.sendCommand(item.name, command);
+    await openhab.sendCommand(property.item.name, command);
 
     return directive.response();
   }
