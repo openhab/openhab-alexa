@@ -12,7 +12,7 @@
  */
 
 import AlexaDisplayCategory from '#alexa/smarthome/category.js';
-import { Parameter } from '#alexa/smarthome/metadata.js';
+import { Parameter } from '#alexa/smarthome/constants.js';
 import DeviceType from './type.js';
 import {
   HeatingCoolingMode,

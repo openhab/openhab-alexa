@@ -12,7 +12,7 @@
  */
 
 import { Dimension, ItemType } from '#openhab/constants.js';
-import { Parameter, ParameterType } from '../metadata.js';
+import { Parameter, ParameterType } from '../constants.js';
 import AlexaUnitOfMeasure from '../unitOfMeasure.js';
 import AlexaProperty from './property.js';
 

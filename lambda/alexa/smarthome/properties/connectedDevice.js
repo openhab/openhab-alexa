@@ -15,7 +15,7 @@ import { isMACAddress } from '#root/utils.js';
 import { ItemType } from '#openhab/constants.js';
 import { Capability } from '../constants.js';
 import AlexaDevice from '../device/index.js';
-import { Parameter, ParameterType } from '../metadata.js';
+import { Parameter, ParameterType } from '../constants.js';
 import AlexaProperty from './property.js';
 
 /**

@@ -14,8 +14,7 @@
 import { Dimension, ItemType } from '#openhab/constants.js';
 import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
 import AlexaDisplayCategory from '#alexa/smarthome/category.js';
-import { Capability, Property } from '#alexa/smarthome/constants.js';
-import { Parameter } from '#alexa/smarthome/metadata.js';
+import { Capability, Property, Parameter } from '#alexa/smarthome/constants.js';
 import AlexaUnitOfMeasure from '#alexa/smarthome/unitOfMeasure.js';
 import DeviceAttribute from './attribute.js';
 

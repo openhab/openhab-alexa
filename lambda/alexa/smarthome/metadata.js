@@ -11,67 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-/**
- * Defines alexa metadata parameter enum
- * @type {Object}
- */
-export const Parameter = Object.freeze({
-  ACTION_MAPPINGS: 'actionMappings',
-  BINDING: 'binding',
-  CAPABILITY_NAMES: 'capabilityNames',
-  CHANNEL_MAPPINGS: 'channelMappings',
-  COMFORT_RANGE: 'comfortRange',
-  CONNECTED_TO: 'connectedTo',
-  DEFAULT_LEVEL: 'defaultLevel',
-  DEVICE_NAME: 'deviceName',
-  EXIT_DELAY: 'exitDelay',
-  HOSTNAME: 'hostname',
-  INCREMENT: 'increment',
-  INVERTED: 'inverted',
-  LANGUAGE: 'language',
-  MAC_ADDRESS: 'macAddress',
-  NON_CONTROLLABLE: 'nonControllable',
-  ORDERED: 'ordered',
-  PASSWORD: 'password',
-  PIN_CODES: 'pinCodes',
-  PRESETS: 'presets',
-  PRIMARY_CONTROL: 'primaryControl',
-  PROXY_BASE_URL: 'proxyBaseUrl',
-  RANGE: 'range',
-  REQUIRES_SET_COLOR_RESET: 'requiresSetColorReset',
-  REQUIRES_SETPOINT_HOLD: 'requiresSetpointHold',
-  RESOLUTION: 'resolution',
-  RETRIEVABLE: 'retrievable',
-  SCALE: 'scale',
-  SETPOINT_RANGE: 'setpointRange',
-  SPEED_LEVELS: 'speedLevels',
-  STATE_MAPPINGS: 'stateMappings',
-  SUPPORTED_ARM_STATES: 'supportedArmStates',
-  SUPPORTED_COMMANDS: 'supportedCommands',
-  SUPPORTED_INPUTS: 'supportedInputs',
-  SUPPORTED_MODES: 'supportedModes',
-  SUPPORTED_OPERATIONS: 'supportedOperations',
-  SUPPORTED_RANGE: 'supportedRange',
-  SUPPORTS_CHANNEL_NUMBER: 'supportsChannelNumber',
-  SUPPORTS_DEACTIVATION: 'supportsDeactivation',
-  SUPPORTS_SETPOINT_MODE: 'supportsSetpointMode',
-  UNIT_OF_MEASURE: 'unitOfMeasure',
-  USERNAME: 'username'
-});
-
-/**
- * Defines alexa metadata parameter type enum
- * @type {Object}
- */
-export const ParameterType = Object.freeze({
-  BOOLEAN: 'boolean',
-  FLOAT: 'float',
-  INTEGER: 'integer',
-  LIST: 'list',
-  MAP: 'map',
-  RANGE: 'range',
-  STRING: 'string'
-});
+import { ParameterType } from './constants.js';
 
 /**
  * Defines alexa metadata class

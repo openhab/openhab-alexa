@@ -12,8 +12,7 @@
  */
 
 import { ItemType, ItemValue } from '#openhab/constants.js';
-import { Property } from '../constants.js';
-import { Parameter, ParameterType } from '../metadata.js';
+import { Property, Parameter, ParameterType } from '../constants.js';
 import AlexaProperty from './property.js';
 
 /**
