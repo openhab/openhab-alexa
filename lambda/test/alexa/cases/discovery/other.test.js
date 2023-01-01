@@ -161,6 +161,19 @@ export default {
       }
     },
     {
+      type: 'Number:Mass',
+      name: 'range7',
+      label: 'Range Value 7',
+      metadata: {
+        alexa: {
+          value: 'RangeValue',
+          config: {
+            nonControllable: true
+          }
+        }
+      }
+    },
+    {
       type: 'Number',
       name: 'range99',
       label: 'Range Value Invalid',
@@ -802,6 +815,42 @@ export default {
             unitOfMeasure: 'Angle.Degrees'
           },
           item: { name: 'range6', type: 'Number:Angle' }
+        }
+      ]
+    },
+    range7: {
+      capabilities: ['Alexa.RangeController:range7.rangeValue', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
+      displayCategories: ['OTHER'],
+      friendlyName: 'Range Value 7',
+      propertyFlags: {
+        'Alexa.RangeController:range7': {
+          proactivelyReported: false,
+          retrievable: true,
+          nonControllable: true
+        }
+      },
+      resources: {
+        'Alexa.RangeController:range7': {
+          friendlyNames: ['text:Range Value:en-US']
+        }
+      },
+      configuration: {
+        'Alexa.RangeController:range7': {
+          supportedRange: { minimumValue: 0, maximumValue: 10, precision: 1 },
+          unitOfMeasure: 'Alexa.Unit.Mass.Kilograms'
+        }
+      },
+      cookie: [
+        {
+          name: 'RangeController',
+          instance: 'Range:range7',
+          property: 'rangeValue',
+          parameters: {
+            capabilityNames: ['@Setting.RangeValue'],
+            nonControllable: true,
+            unitOfMeasure: 'Mass.Kilograms'
+          },
+          item: { name: 'range7', type: 'Number:Mass' }
         }
       ]
     },

@@ -244,8 +244,8 @@ export default class AlexaUnitOfMeasure {
    *
    *    {
    *      id: <alexaUnitOfMesureId>,             (Alexa unitOfMeasure id used by RangeController interface)
-   *      dimension: <ohUnitOfMeasureDimension>, (OH unit of measure item type number dimension)
    *      unit: <alexaUnit>,                     (Alexa unit properties naming convention)
+   *      dimension: <ohUnitOfMeasureDimension>, (OH unit of measure item type number dimension)
    *      symbol: <ohUnitOfMeasureSymbol>,       (OH unit of measure item state symbol)
    *      system: <ohUnitOfMeasureSystem>,       (OH unit of measure sytem)
    *      default: <ohUnitOfMesureDefault>,      (OH unit of measure default boolean)
@@ -258,31 +258,24 @@ export default class AlexaUnitOfMeasure {
       {
         id: this.ANGLE_DEGREES,
         dimension: Dimension.ANGLE,
-        unit: undefined,
         symbol: SymbolUnit.DEGREE,
-        system: SystemUnit.METRIC,
         default: true
       },
       {
         id: this.ANGLE_RADIANS,
         dimension: Dimension.ANGLE,
-        unit: undefined,
         symbol: SymbolUnit.RADIAN,
-        system: SystemUnit.METRIC,
         default: false
       },
       {
         id: this.PERCENT,
         dimension: Dimension.DIMENSIONLESS,
-        unit: undefined,
         symbol: SymbolUnit.PERCENT,
-        system: SystemUnit.METRIC,
         default: false
       },
       {
         id: this.DISTANCE_YARDS,
         dimension: Dimension.LENGTH,
-        unit: undefined,
         symbol: SymbolUnit.YARD,
         system: SystemUnit.IMPERIAL_US,
         default: false
@@ -290,23 +283,20 @@ export default class AlexaUnitOfMeasure {
       {
         id: this.DISTANCE_INCHES,
         dimension: Dimension.LENGTH,
-        unit: undefined,
         symbol: SymbolUnit.INCH,
-        system: SystemUnit.IMPERIAL_US,
-        default: true
-      },
-      {
-        id: this.DISTANCE_FEET,
-        dimension: Dimension.LENGTH,
-        unit: undefined,
-        symbol: SymbolUnit.FOOT,
         system: SystemUnit.IMPERIAL_US,
         default: false
       },
       {
+        id: this.DISTANCE_FEET,
+        dimension: Dimension.LENGTH,
+        symbol: SymbolUnit.FOOT,
+        system: SystemUnit.IMPERIAL_US,
+        default: true
+      },
+      {
         id: this.DISTANCE_MILES,
         dimension: Dimension.LENGTH,
-        unit: undefined,
         symbol: SymbolUnit.MILE,
         system: SystemUnit.IMPERIAL_US,
         default: false
@@ -314,7 +304,6 @@ export default class AlexaUnitOfMeasure {
       {
         id: this.DISTANCE_METERS,
         dimension: Dimension.LENGTH,
-        unit: undefined,
         symbol: SymbolUnit.METER,
         system: SystemUnit.METRIC,
         default: true
@@ -322,122 +311,119 @@ export default class AlexaUnitOfMeasure {
       {
         id: this.DISTANCE_KILOMETERS,
         dimension: Dimension.LENGTH,
-        unit: undefined,
         symbol: SymbolUnit.KILOMETER,
         system: SystemUnit.METRIC,
         default: false
       },
       {
         id: this.MASS_GRAMS,
-        dimension: Dimension.MASS,
         unit: this.UNIT_GRAM,
+        dimension: Dimension.MASS,
         symbol: SymbolUnit.GRAM,
         system: SystemUnit.METRIC,
         default: false
       },
       {
         id: this.MASS_KILOGRAMS,
-        dimension: Dimension.MASS,
         unit: this.UNIT_KILOGRAM,
+        dimension: Dimension.MASS,
         symbol: SymbolUnit.KILOGRAM,
         system: SystemUnit.METRIC,
-        default: false
+        default: true
       },
       {
         id: this.WEIGHT_OUNCES,
-        dimension: Dimension.MASS,
         unit: this.UNIT_OUNCE,
+        dimension: Dimension.MASS,
         symbol: SymbolUnit.OUNCE,
         system: SystemUnit.IMPERIAL_US,
         default: false
       },
       {
         id: this.WEIGHT_POUNDS,
-        dimension: Dimension.MASS,
         unit: this.UNIT_POUND,
+        dimension: Dimension.MASS,
         symbol: SymbolUnit.POUND,
         system: SystemUnit.IMPERIAL_US,
-        default: false
+        default: true
       },
       {
         id: this.TEMPERATURE_DEGREES,
         dimension: Dimension.TEMPERATURE,
-        unit: undefined,
         symbol: SymbolUnit.DEGREE,
-        system: SystemUnit.METRIC,
         default: false
       },
       {
         id: this.TEMPERATURE_CELSIUS,
-        dimension: Dimension.TEMPERATURE,
         unit: this.UNIT_CELSIUS,
+        dimension: Dimension.TEMPERATURE,
         symbol: SymbolUnit.CELSIUS,
         system: SystemUnit.METRIC,
         default: true
       },
       {
         id: this.TEMPERATURE_FAHRENHEIT,
-        dimension: Dimension.TEMPERATURE,
         unit: this.UNIT_FAHRENHEIT,
+        dimension: Dimension.TEMPERATURE,
         symbol: SymbolUnit.FAHRENHEIT,
         system: SystemUnit.IMPERIAL_US,
         default: true
       },
       {
         id: this.TEMPERATURE_KELVIN,
-        dimension: Dimension.TEMPERATURE,
         unit: this.UNIT_KELVIN,
+        dimension: Dimension.TEMPERATURE,
         symbol: SymbolUnit.KELVIN,
         system: SystemUnit.METRIC,
         default: false
       },
       {
         id: this.VOLUME_GALLONS,
-        dimension: Dimension.VOLUME,
         unit: this.UNIT_US_FLUID_GALLON,
+        dimension: Dimension.VOLUME,
         symbol: SymbolUnit.GALLON,
         system: SystemUnit.IMPERIAL_US,
-        default: false
+        default: true
       },
       {
         id: this.VOLUME_PINTS,
-        dimension: Dimension.VOLUME,
         unit: this.UNIT_US_FLUID_PINT,
+        dimension: Dimension.VOLUME,
         symbol: SymbolUnit.PINT,
         system: SystemUnit.IMPERIAL_US,
         default: false
       },
       {
         id: this.VOLUME_QUARTS,
-        dimension: Dimension.VOLUME,
         unit: this.UNIT_US_FLUID_QUART,
+        dimension: Dimension.VOLUME,
         symbol: SymbolUnit.QUART,
         system: SystemUnit.IMPERIAL_US,
         default: false
       },
       {
         id: this.VOLUME_LITERS,
-        dimension: Dimension.VOLUME,
         unit: this.UNIT_LITER,
+        dimension: Dimension.VOLUME,
         symbol: SymbolUnit.LITER,
         system: SystemUnit.METRIC,
         default: false
       },
       {
         id: this.VOLUME_CUBIC_FEET,
-        dimension: Dimension.VOLUME,
         unit: this.UNIT_CUBIC_FOOT,
+        dimension: Dimension.VOLUME,
         symbol: SymbolUnit.CUBIC_FOOT,
         system: SystemUnit.IMPERIAL_US,
         default: false
       },
       {
         id: this.VOLUME_CUBIC_METERS,
-        dimension: Dimension.VOLUME,
         unit: this.UNIT_CUBIC_METER,
+        dimension: Dimension.VOLUME,
         symbol: SymbolUnit.CUBIC_METER,
         system: SystemUnit.METRIC,
-        default: false
+        default: true
       }
     ];
   }
@@ -484,7 +470,9 @@ export default class AlexaUnitOfMeasure {
     // Return unit of measure using query symbol/dimension or fallback to default value using query dimension/system
     return (
       this.unitsOfMeasure.find((uom) => uom.symbol === symbol && (!dimension || uom.dimension === dimension)) ||
-      this.unitsOfMeasure.find((uom) => uom.dimension === dimension && uom.system === system && uom.default)
+      this.unitsOfMeasure.find(
+        (uom) => uom.default && uom.dimension === dimension && (!uom.system || uom.system === system)
+      )
     );
   }
 
