@@ -11,7 +11,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import AlexaMetadata, { Parameter, ParameterType } from '../metadata.js';
+import { Parameter, ParameterType } from '../constants.js';
+import AlexaMetadata from '../metadata.js';
 
 /**
  * Defines alexa property base class

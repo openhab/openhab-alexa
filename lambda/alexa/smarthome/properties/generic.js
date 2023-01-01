@@ -13,8 +13,7 @@
 
 import { stripPunctuation } from '#root/utils.js';
 import AlexaAssetCatalog from '../catalog.js';
-import { Property } from '../constants.js';
-import { Parameter, ParameterType } from '../metadata.js';
+import { Property, Parameter, ParameterType } from '../constants.js';
 import { AlexaCapabilityResources } from '../resources.js';
 import { AlexaActionSemantic, AlexaStateSemantic } from '../semantics.js';
 import DecoupleState from './decoupleState.js';

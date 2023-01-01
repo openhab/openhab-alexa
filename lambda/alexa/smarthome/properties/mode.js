@@ -13,7 +13,7 @@
 
 import { ItemType, ItemValue } from '#openhab/constants.js';
 import AlexaAssetCatalog from '../catalog.js';
-import { Parameter, ParameterType } from '../metadata.js';
+import { Parameter, ParameterType } from '../constants.js';
 import { AlexaModeResources } from '../resources.js';
 import Generic from './generic.js';
 

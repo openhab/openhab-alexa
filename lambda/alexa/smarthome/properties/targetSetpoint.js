@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import { Parameter, ParameterType } from '../metadata.js';
+import { Parameter, ParameterType } from '../constants.js';
 import AlexaUnitOfMeasure from '../unitOfMeasure.js';
 import Temperature from './temperature.js';
 

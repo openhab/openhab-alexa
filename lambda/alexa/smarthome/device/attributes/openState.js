@@ -13,8 +13,7 @@
 
 import { ItemType, ItemValue } from '#openhab/constants.js';
 import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
-import { Capability, Property } from '#alexa/smarthome/constants.js';
-import { Parameter, ParameterType } from '#alexa/smarthome/metadata.js';
+import { Capability, Property, Parameter, ParameterType } from '#alexa/smarthome/constants.js';
 import { DecoupleState } from '#alexa/smarthome/properties/index.js';
 import { AlexaActionSemantic, AlexaStateSemantic } from '#alexa/smarthome/semantics.js';
 import DeviceAttribute from './attribute.js';

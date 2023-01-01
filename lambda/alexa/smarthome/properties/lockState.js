@@ -12,7 +12,7 @@
  */
 
 import { ItemType, ItemValue } from '#openhab/constants.js';
-import { Parameter, ParameterType } from '../metadata.js';
+import { Parameter, ParameterType } from '../constants.js';
 import DecoupleState from './decoupleState.js';
 
 /**

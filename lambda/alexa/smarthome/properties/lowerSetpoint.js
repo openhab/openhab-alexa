@@ -12,7 +12,7 @@
  */
 
 import { Property } from '../constants.js';
-import { Parameter, ParameterType } from '../metadata.js';
+import { Parameter, ParameterType } from '../constants.js';
 import AlexaUnitOfMeasure from '../unitOfMeasure.js';
 import TargetSetpoint from './targetSetpoint.js';
 import ThermostatMode from './thermostatMode.js';
