@@ -378,7 +378,7 @@ export default [
           },
           payload: {
             type: 'INVALID_VALUE',
-            message: 'Pause playback command is not supported.'
+            message: 'Playback Pause is not supported.'
           }
         }
       }
