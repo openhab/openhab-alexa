@@ -52,7 +52,7 @@ export default class PlaybackStateReporter extends AlexaCapability {
    * @return {Array}
    */
   get requiredLinkedCapabilities() {
-    return [{ name: Capability.PLAYBACK_CONTROLLER, property: { name: Property.PLAYBACK } }];
+    return [{ name: Capability.PLAYBACK_CONTROLLER, property: Property.PLAYBACK }];
   }
 
   /**

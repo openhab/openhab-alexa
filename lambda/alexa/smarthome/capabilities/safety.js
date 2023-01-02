@@ -54,7 +54,7 @@ export default class Safety extends AlexaCapability {
    */
   get requiredLinkedCapabilities() {
     // Requires open state attribute mode controller capability to be linked
-    return [{ name: Capability.MODE_CONTROLLER, instance: OpenState.name, property: { name: Property.MODE } }];
+    return [{ name: Capability.MODE_CONTROLLER, instance: OpenState.name, property: Property.MODE }];
   }
 
   /**

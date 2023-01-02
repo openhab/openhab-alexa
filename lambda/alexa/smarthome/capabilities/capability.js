@@ -138,9 +138,12 @@ export default class AlexaCapability {
    * @return {Boolean}
    */
   hasRequiredLinkedCapabilities(capabilities) {
-    return this.requiredLinkedCapabilities.every(({ name, instance, property }) =>
-      capabilities.find(
-        (capability) => capability.name === name && capability.instance === instance && capability.hasProperty(property)
+    return this.requiredLinkedCapabilities.every(({ name, instance, property, component, tag }) =>
+      capabilities.some(
+        (capability) =>
+          capability.name === name &&
+          capability.instance === instance &&
+          capability.hasProperty({ name: property, component, tag })
       )
     );
   }
