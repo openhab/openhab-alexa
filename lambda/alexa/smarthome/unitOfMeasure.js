@@ -12,483 +12,505 @@
  */
 
 import { sprintf } from 'sprintf-js';
-import { Dimension, SymbolUnit, SystemUnit } from '#openhab/constants.js';
+import { Dimension, UnitSymbol, UnitSystem } from '#openhab/constants.js';
 
 /**
  * Defines Alexa unit of measure class
+ *   https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#units-of-measure
  */
-export default class AlexaUnitOfMeasure {
+export class AlexaUnitOfMeasure {
   /**
-   * Defines angle degrees id
+   * Defines angle degrees uom
    * @type {String}
    */
   static ANGLE_DEGREES = 'Angle.Degrees';
 
   /**
-   * Defines angle radians id
+   * Defines angle radians uom
    * @type {String}
    */
   static ANGLE_RADIANS = 'Angle.Radians';
 
   /**
-   * Defines distance yards id
+   * Defines distance yards uom
    * @type {String}
    */
   static DISTANCE_YARDS = 'Distance.Yards';
 
   /**
-   * Defines distance inches id
+   * Defines distance inches uom
    * @type {String}
    */
   static DISTANCE_INCHES = 'Distance.Inches';
 
   /**
-   * Defines distance feet id
+   * Defines distance feet uom
    * @type {String}
    */
   static DISTANCE_FEET = 'Distance.Feet';
 
   /**
-   * Defines distance miles id
+   * Defines distance miles uom
    * @type {String}
    */
   static DISTANCE_MILES = 'Distance.Miles';
 
   /**
-   * Defines distance meters id
+   * Defines distance meters uom
    * @type {String}
    */
   static DISTANCE_METERS = 'Distance.Meters';
 
   /**
-   * Defines distance kilometers id
+   * Defines distance kilometers uom
    * @type {String}
    */
   static DISTANCE_KILOMETERS = 'Distance.Kilometers';
 
   /**
-   * Defines mass gram id
+   * Defines mass gram uom
    * @type {String}
    */
   static MASS_GRAM = 'Mass.Grams';
 
   /**
-   * Defines mass kilograms id
+   * Defines mass kilograms uom
    * @type {String}
    */
   static MASS_KILOGRAMS = 'Mass.Kilograms';
 
   /**
-   * Defines weight ounces id
+   * Defines weight ounces uom
    * @type {String}
    */
   static WEIGHT_OUNCES = 'Weight.Ounces';
 
   /**
-   * Defines weight pounds id
+   * Defines weight pounds uom
    * @type {String}
    */
   static WEIGHT_POUNDS = 'Weight.Pounds';
 
   /**
-   * Defines percent id
+   * Defines percent uom
    * @type {String}
    */
   static PERCENT = 'Percent';
 
   /**
-   * Defines temperature degrees id
+   * Defines temperature degrees uom
    * @type {String}
    */
   static TEMPERATURE_DEGREES = 'Temperature.Degrees';
 
   /**
-   * Defines temperature celsius id
+   * Defines temperature celsius uom
    * @type {String}
    */
   static TEMPERATURE_CELSIUS = 'Temperature.Celsius';
 
   /**
-   * Defines temperature fahrenheit id
+   * Defines temperature fahrenheit uom
    * @type {String}
    */
   static TEMPERATURE_FAHRENHEIT = 'Temperature.Fahrenheit';
 
   /**
-   * Defines temperature kelvin id
+   * Defines temperature kelvin uom
    * @type {String}
    */
   static TEMPERATURE_KELVIN = 'Temperature.Kelvin';
 
   /**
-   * Defines volume gallon id
+   * Defines volume gallon uom
    * @type {String}
    */
   static VOLUME_GALLONS = 'Volume.Gallons';
 
   /**
-   * Defines volume pints id
+   * Defines volume pints uom
    * @type {String}
    */
   static VOLUME_PINTS = 'Volume.Pints';
 
   /**
-   * Defines volume quarts id
+   * Defines volume quarts uom
    * @type {String}
    */
   static VOLUME_QUARTS = 'Volume.Quarts';
 
   /**
-   * Defines volume liters id
+   * Defines volume liters uom
    * @type {String}
    */
   static VOLUME_LITERS = 'Volume.Liters';
 
   /**
-   * Defines volume cubic feet id
+   * Defines volume cubic feet uom
    * @type {String}
    */
   static VOLUME_CUBIC_FEET = 'Volume.CubicFeet';
 
   /**
-   * Defines volume cubic meters id
+   * Defines volume cubic meters uom
    * @type {String}
    */
   static VOLUME_CUBIC_METERS = 'Volume.CubicMeters';
 
   /**
-   * Defines kilogram unit
-   * @type {String}
+   * Returns if alexa unit of measure is supported
+   * @param  {String}  name
+   * @return {Boolean}
    */
-  static UNIT_KILOGRAM = 'KILOGRAM';
+  static isSupported(name) {
+    return Object.values(this).includes(name);
+  }
 
+  /**
+   * Returns alexa unit of measure id based on given name
+   * @param  {String} name
+   * @return {String}
+   */
+  static getId(name) {
+    return 'Alexa.Unit.' + name;
+  }
+
+  /**
+   * Returns alexa unit of measure based on given parameters
+   * @param  {Object} parameters
+   * @return {String}
+   */
+  static valueOf(parameters) {
+    const uom = UnitsOfMeasure.getUnitOfMeasure(parameters);
+    return uom?.name;
+  }
+}
+
+/**
+ * Defines alexa unit of mass class
+ *   https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#weight-unit
+ */
+class AlexaUnitOfMass {
   /**
    * Defines gram unit
    * @type {String}
    */
-  static UNIT_GRAM = 'GRAM';
+  static GRAM = 'GRAM';
 
   /**
-   * Defines pound unit
+   * Defines kilogram unit
    * @type {String}
    */
-  static UNIT_POUND = 'POUND';
+  static KILOGRAM = 'KILOGRAM';
 
   /**
    * Defines ounce unit
    * @type {String}
    */
-  static UNIT_OUNCE = 'OUNCE';
+  static OUNCE = 'OUNCE';
 
+  /**
+   * Defines pound unit
+   * @type {String}
+   */
+  static POUND = 'POUND';
+}
+
+/**
+ * Defines alexa unit of temperature class
+ *   https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#temperature-scales
+ */
+export class AlexaUnitOfTemperature {
   /**
    * Defines celsius unit
    * @type {String}
    */
-  static UNIT_CELSIUS = 'CELSIUS';
+  static CELSIUS = 'CELSIUS';
 
   /**
    * Defines fahrenheit unit
    * @type {String}
    */
-  static UNIT_FAHRENHEIT = 'FAHRENHEIT';
+  static FAHRENHEIT = 'FAHRENHEIT';
 
   /**
    * Defines kelvin unit
    * @type {String}
    */
-  static UNIT_KELVIN = 'KELVIN';
+  static KELVIN = 'KELVIN';
 
   /**
-   * Defines US fluid gallon unit
+   * Returns alexa unit of temperature based on given parameters
+   * @param  {Object} parameters
+   * @return {String}
+   */
+  static valueOf(parameters) {
+    const uom = UnitsOfMeasure.getUnitOfMeasure({ dimension: Dimension.TEMPERATURE, ...parameters });
+    return uom?.unit;
+  }
+}
+
+/**
+ * Defines alexa unit of volume class
+ *   https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#volume-unit
+ */
+class AlexaUnitOfVolume {
+  /**
+   * Defines us fluid gallon unit
    * @type {String}
    */
-  static UNIT_US_FLUID_GALLON = 'US_FLUID_GALLON';
+  static US_FLUID_GALLON = 'US_FLUID_GALLON';
 
   /**
-   * Defines US fluid pint unit
+   * Defines us fluid pint unit
    * @type {String}
    */
-  static UNIT_US_FLUID_PINT = 'US_FLUID_PINT';
+  static US_FLUID_PINT = 'US_FLUID_PINT';
 
   /**
-   * Defines US fluid quart unit
+   * Defines us fluid quart unit
    * @type {String}
    */
-  static UNIT_US_FLUID_QUART = 'US_FLUID_QUART';
+  static US_FLUID_QUART = 'US_FLUID_QUART';
 
   /**
    * Defines liter unit
    * @type {String}
    */
-  static UNIT_LITER = 'LITER';
+  static LITER = 'LITER';
 
   /**
-   * Defines cubic foot
+   * Defines cubic foot unit
    * @type {String}
    */
-  static UNIT_CUBIC_FOOT = 'CUBIC_FOOT';
+  static CUBIC_FOOT = 'CUBIC_FOOT';
 
   /**
    * Defines cubic meter unit
    * @type {String}
    */
-  static UNIT_CUBIC_METER = 'CUBIC_METER';
+  static CUBIC_METER = 'CUBIC_METER';
+}
 
+/**
+ * Defines units of measure class
+ */
+class UnitsOfMeasure {
   /**
-   * Returns units of measure
-   *    https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#units-of-measure (Alexa ids)
-   *    https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#temperature-scales (Alexa temperature units)
-   *    https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#volume-unit (Alexa volume units)
-   *    https://developer.amazon.com/docs/device-apis/alexa-property-schemas.html#weight-unit (Alexa weight units)
-   *    https://www.openhab.org/docs/concepts/units-of-measurement.html#list-of-units (OH symbols + defaults)
+   * Defines units of measure
    *
    *    {
-   *      id: <alexaUnitOfMesureId>,             (Alexa unitOfMeasure id used by RangeController interface)
-   *      unit: <alexaUnit>,                     (Alexa unit properties naming convention)
+   *      name: <alexaUnitOfMesure>,             (Alexa unit of measure name)
+   *      unit: <alexaUnit>,                     (Alexa unit name)
    *      dimension: <ohUnitOfMeasureDimension>, (OH unit of measure item type number dimension)
    *      symbol: <ohUnitOfMeasureSymbol>,       (OH unit of measure item state symbol)
    *      system: <ohUnitOfMeasureSystem>,       (OH unit of measure sytem)
    *      default: <ohUnitOfMesureDefault>,      (OH unit of measure default boolean)
    *    }
    *
-   * @return {Array}
+   * @type {Array}
    */
-  static get unitsOfMeasure() {
-    return [
-      {
-        id: this.ANGLE_DEGREES,
-        dimension: Dimension.ANGLE,
-        symbol: SymbolUnit.DEGREE,
-        default: true
-      },
-      {
-        id: this.ANGLE_RADIANS,
-        dimension: Dimension.ANGLE,
-        symbol: SymbolUnit.RADIAN,
-        default: false
-      },
-      {
-        id: this.PERCENT,
-        dimension: Dimension.DIMENSIONLESS,
-        symbol: SymbolUnit.PERCENT,
-        default: false
-      },
-      {
-        id: this.DISTANCE_YARDS,
-        dimension: Dimension.LENGTH,
-        symbol: SymbolUnit.YARD,
-        system: SystemUnit.IMPERIAL_US,
-        default: false
-      },
-      {
-        id: this.DISTANCE_INCHES,
-        dimension: Dimension.LENGTH,
-        symbol: SymbolUnit.INCH,
-        system: SystemUnit.IMPERIAL_US,
-        default: false
-      },
-      {
-        id: this.DISTANCE_FEET,
-        dimension: Dimension.LENGTH,
-        symbol: SymbolUnit.FOOT,
-        system: SystemUnit.IMPERIAL_US,
-        default: true
-      },
-      {
-        id: this.DISTANCE_MILES,
-        dimension: Dimension.LENGTH,
-        symbol: SymbolUnit.MILE,
-        system: SystemUnit.IMPERIAL_US,
-        default: false
-      },
-      {
-        id: this.DISTANCE_METERS,
-        dimension: Dimension.LENGTH,
-        symbol: SymbolUnit.METER,
-        system: SystemUnit.METRIC,
-        default: true
-      },
-      {
-        id: this.DISTANCE_KILOMETERS,
-        dimension: Dimension.LENGTH,
-        symbol: SymbolUnit.KILOMETER,
-        system: SystemUnit.METRIC,
-        default: false
-      },
-      {
-        id: this.MASS_GRAMS,
-        unit: this.UNIT_GRAM,
-        dimension: Dimension.MASS,
-        symbol: SymbolUnit.GRAM,
-        system: SystemUnit.METRIC,
-        default: false
-      },
-      {
-        id: this.MASS_KILOGRAMS,
-        unit: this.UNIT_KILOGRAM,
-        dimension: Dimension.MASS,
-        symbol: SymbolUnit.KILOGRAM,
-        system: SystemUnit.METRIC,
-        default: true
-      },
-      {
-        id: this.WEIGHT_OUNCES,
-        unit: this.UNIT_OUNCE,
-        dimension: Dimension.MASS,
-        symbol: SymbolUnit.OUNCE,
-        system: SystemUnit.IMPERIAL_US,
-        default: false
-      },
-      {
-        id: this.WEIGHT_POUNDS,
-        unit: this.UNIT_POUND,
-        dimension: Dimension.MASS,
-        symbol: SymbolUnit.POUND,
-        system: SystemUnit.IMPERIAL_US,
-        default: true
-      },
-      {
-        id: this.TEMPERATURE_DEGREES,
-        dimension: Dimension.TEMPERATURE,
-        symbol: SymbolUnit.DEGREE,
-        default: false
-      },
-      {
-        id: this.TEMPERATURE_CELSIUS,
-        unit: this.UNIT_CELSIUS,
-        dimension: Dimension.TEMPERATURE,
-        symbol: SymbolUnit.CELSIUS,
-        system: SystemUnit.METRIC,
-        default: true
-      },
-      {
-        id: this.TEMPERATURE_FAHRENHEIT,
-        unit: this.UNIT_FAHRENHEIT,
-        dimension: Dimension.TEMPERATURE,
-        symbol: SymbolUnit.FAHRENHEIT,
-        system: SystemUnit.IMPERIAL_US,
-        default: true
-      },
-      {
-        id: this.TEMPERATURE_KELVIN,
-        unit: this.UNIT_KELVIN,
-        dimension: Dimension.TEMPERATURE,
-        symbol: SymbolUnit.KELVIN,
-        system: SystemUnit.METRIC,
-        default: false
-      },
-      {
-        id: this.VOLUME_GALLONS,
-        unit: this.UNIT_US_FLUID_GALLON,
-        dimension: Dimension.VOLUME,
-        symbol: SymbolUnit.GALLON,
-        system: SystemUnit.IMPERIAL_US,
-        default: true
-      },
-      {
-        id: this.VOLUME_PINTS,
-        unit: this.UNIT_US_FLUID_PINT,
-        dimension: Dimension.VOLUME,
-        symbol: SymbolUnit.PINT,
-        system: SystemUnit.IMPERIAL_US,
-        default: false
-      },
-      {
-        id: this.VOLUME_QUARTS,
-        unit: this.UNIT_US_FLUID_QUART,
-        dimension: Dimension.VOLUME,
-        symbol: SymbolUnit.QUART,
-        system: SystemUnit.IMPERIAL_US,
-        default: false
-      },
-      {
-        id: this.VOLUME_LITERS,
-        unit: this.UNIT_LITER,
-        dimension: Dimension.VOLUME,
-        symbol: SymbolUnit.LITER,
-        system: SystemUnit.METRIC,
-        default: false
-      },
-      {
-        id: this.VOLUME_CUBIC_FEET,
-        unit: this.UNIT_CUBIC_FOOT,
-        dimension: Dimension.VOLUME,
-        symbol: SymbolUnit.CUBIC_FOOT,
-        system: SystemUnit.IMPERIAL_US,
-        default: false
-      },
-      {
-        id: this.VOLUME_CUBIC_METERS,
-        unit: this.UNIT_CUBIC_METER,
-        dimension: Dimension.VOLUME,
-        symbol: SymbolUnit.CUBIC_METER,
-        system: SystemUnit.METRIC,
-        default: true
-      }
-    ];
-  }
+  static #UOMS = [
+    {
+      name: AlexaUnitOfMeasure.ANGLE_DEGREES,
+      dimension: Dimension.ANGLE,
+      symbol: UnitSymbol.DEGREE,
+      default: true
+    },
+    {
+      name: AlexaUnitOfMeasure.ANGLE_RADIANS,
+      dimension: Dimension.ANGLE,
+      symbol: UnitSymbol.RADIAN,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.PERCENT,
+      dimension: Dimension.DIMENSIONLESS,
+      symbol: UnitSymbol.PERCENT,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.DISTANCE_YARDS,
+      dimension: Dimension.LENGTH,
+      symbol: UnitSymbol.YARD,
+      system: UnitSystem.IMPERIAL_US,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.DISTANCE_INCHES,
+      dimension: Dimension.LENGTH,
+      symbol: UnitSymbol.INCH,
+      system: UnitSystem.IMPERIAL_US,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.DISTANCE_FEET,
+      dimension: Dimension.LENGTH,
+      symbol: UnitSymbol.FOOT,
+      system: UnitSystem.IMPERIAL_US,
+      default: true
+    },
+    {
+      name: AlexaUnitOfMeasure.DISTANCE_MILES,
+      dimension: Dimension.LENGTH,
+      symbol: UnitSymbol.MILE,
+      system: UnitSystem.IMPERIAL_US,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.DISTANCE_METERS,
+      dimension: Dimension.LENGTH,
+      symbol: UnitSymbol.METER,
+      system: UnitSystem.METRIC,
+      default: true
+    },
+    {
+      name: AlexaUnitOfMeasure.DISTANCE_KILOMETERS,
+      dimension: Dimension.LENGTH,
+      symbol: UnitSymbol.KILOMETER,
+      system: UnitSystem.METRIC,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.MASS_GRAMS,
+      unit: AlexaUnitOfMass.GRAM,
+      dimension: Dimension.MASS,
+      symbol: UnitSymbol.GRAM,
+      system: UnitSystem.METRIC,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.MASS_KILOGRAMS,
+      unit: AlexaUnitOfMass.KILOGRAM,
+      dimension: Dimension.MASS,
+      symbol: UnitSymbol.KILOGRAM,
+      system: UnitSystem.METRIC,
+      default: true
+    },
+    {
+      name: AlexaUnitOfMeasure.WEIGHT_OUNCES,
+      unit: AlexaUnitOfMass.OUNCE,
+      dimension: Dimension.MASS,
+      symbol: UnitSymbol.OUNCE,
+      system: UnitSystem.IMPERIAL_US,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.WEIGHT_POUNDS,
+      unit: AlexaUnitOfMass.POUND,
+      dimension: Dimension.MASS,
+      symbol: UnitSymbol.POUND,
+      system: UnitSystem.IMPERIAL_US,
+      default: true
+    },
+    {
+      name: AlexaUnitOfMeasure.TEMPERATURE_DEGREES,
+      dimension: Dimension.TEMPERATURE,
+      symbol: UnitSymbol.DEGREE,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.TEMPERATURE_CELSIUS,
+      unit: AlexaUnitOfTemperature.CELSIUS,
+      dimension: Dimension.TEMPERATURE,
+      symbol: UnitSymbol.CELSIUS,
+      system: UnitSystem.METRIC,
+      default: true
+    },
+    {
+      name: AlexaUnitOfMeasure.TEMPERATURE_FAHRENHEIT,
+      unit: AlexaUnitOfTemperature.FAHRENHEIT,
+      dimension: Dimension.TEMPERATURE,
+      symbol: UnitSymbol.FAHRENHEIT,
+      system: UnitSystem.IMPERIAL_US,
+      default: true
+    },
+    {
+      name: AlexaUnitOfMeasure.TEMPERATURE_KELVIN,
+      unit: AlexaUnitOfTemperature.KELVIN,
+      dimension: Dimension.TEMPERATURE,
+      symbol: UnitSymbol.KELVIN,
+      system: UnitSystem.METRIC,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.VOLUME_GALLONS,
+      unit: AlexaUnitOfVolume.US_FLUID_GALLON,
+      dimension: Dimension.VOLUME,
+      symbol: UnitSymbol.GALLON,
+      system: UnitSystem.IMPERIAL_US,
+      default: true
+    },
+    {
+      name: AlexaUnitOfMeasure.VOLUME_PINTS,
+      unit: AlexaUnitOfVolume.US_FLUID_PINT,
+      dimension: Dimension.VOLUME,
+      symbol: UnitSymbol.PINT,
+      system: UnitSystem.IMPERIAL_US,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.VOLUME_QUARTS,
+      unit: AlexaUnitOfVolume.US_FLUID_QUART,
+      dimension: Dimension.VOLUME,
+      symbol: UnitSymbol.QUART,
+      system: UnitSystem.IMPERIAL_US,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.VOLUME_LITERS,
+      unit: AlexaUnitOfVolume.LITER,
+      dimension: Dimension.VOLUME,
+      symbol: UnitSymbol.LITER,
+      system: UnitSystem.METRIC,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.VOLUME_CUBIC_FEET,
+      unit: AlexaUnitOfVolume.CUBIC_FOOT,
+      dimension: Dimension.VOLUME,
+      symbol: UnitSymbol.CUBIC_FOOT,
+      system: UnitSystem.IMPERIAL_US,
+      default: false
+    },
+    {
+      name: AlexaUnitOfMeasure.VOLUME_CUBIC_METERS,
+      unit: AlexaUnitOfVolume.CUBIC_METER,
+      dimension: Dimension.VOLUME,
+      symbol: UnitSymbol.CUBIC_METER,
+      system: UnitSystem.METRIC,
+      default: true
+    }
+  ];
 
   /**
-   * Returns if alexa unit of measure id is supported
-   * @param  {String}  id
-   * @return {Boolean}
-   */
-  static isSupported(id) {
-    return this.unitsOfMeasure.some((uom) => uom.id === id);
-  }
-
-  /**
-   * Returns alexa unit of measure id based on given query
-   * @param  {Object} query
-   * @return {String}
-   */
-  static getId(query) {
-    const uom = this.getUnitOfMeasure(query);
-    return uom?.id;
-  }
-
-  /**
-   * Returns alexa unit name based on given query
-   * @param  {Object} query
-   * @return {String}
-   */
-  static getUnit(query) {
-    const uom = this.getUnitOfMeasure(query);
-    return uom?.unit;
-  }
-
-  /**
-   * Returns unit of measure based on given query
+   * Returns unit of measure based on given parameters
    * @param  {String} dimension
    * @param  {String} statePresentation
    * @param  {String} system
    * @return {Object}
    */
-  static getUnitOfMeasure({ dimension, statePresentation, system = SystemUnit.METRIC }) {
-    // Determine query symbol using item state presentation
-    const symbol = this.getSymbol(statePresentation);
-    // Return unit of measure using query symbol/dimension or fallback to default value using query dimension/system
+  static getUnitOfMeasure({ dimension, statePresentation, system = UnitSystem.METRIC }) {
+    // Determine symbol using item state presentation
+    const symbol = this.getUnitSymbol(statePresentation);
+    // Return unit of measure using symbol/dimension or fallback to default value using dimension/system
     return (
-      this.unitsOfMeasure.find((uom) => uom.symbol === symbol && (!dimension || uom.dimension === dimension)) ||
-      this.unitsOfMeasure.find(
-        (uom) => uom.default && uom.dimension === dimension && (!uom.system || uom.system === system)
-      )
+      this.#UOMS.find((uom) => uom.symbol === symbol && (!dimension || uom.dimension === dimension)) ||
+      this.#UOMS.find((uom) => uom.default && uom.dimension === dimension && (!uom.system || uom.system === system))
     );
   }
 
   /**
-   * Returns symbol based on given item state presentation pattern
+   * Returns unit symbol based on given item state presentation pattern
    * @param  {String} pattern
    * @return {String}
    */
-  static getSymbol(pattern) {
+  static getUnitSymbol(pattern) {
     try {
       // Use a random number to format the item state presentation
       const presentation = sprintf(pattern, Math.random());
       // Return symbol based on the supported list matching the formatted item state presentation
-      return this.unitsOfMeasure
-        .map((uom) => uom.symbol)
-        .find((symbol) => new RegExp(`\\d\\s*${symbol}$`).test(presentation));
+      return Object.values(UnitSymbol).find((symbol) => new RegExp(`\\d\\s*${symbol}$`).test(presentation));
     } catch {
       return undefined;
     }

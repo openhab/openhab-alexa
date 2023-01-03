@@ -11,11 +11,11 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import { Dimension, ItemType } from '#openhab/constants.js';
+import { ItemType } from '#openhab/constants.js';
 import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
 import AlexaDisplayCategory from '#alexa/smarthome/category.js';
 import { Capability, Property, Parameter } from '#alexa/smarthome/constants.js';
-import AlexaUnitOfMeasure from '#alexa/smarthome/unitOfMeasure.js';
+import { AlexaUnitOfMeasure, AlexaUnitOfTemperature } from '#alexa/smarthome/unitOfMeasure.js';
 import DeviceAttribute from './attribute.js';
 
 /**
@@ -75,9 +75,9 @@ export default class Temperature extends DeviceAttribute {
                 parameters: {
                   capabilityNames: Temperature.capabilityNames,
                   nonControllable: true,
-                  supportedRange: scale === AlexaUnitOfMeasure.UNIT_FAHRENHEIT ? [-58, 212, 1] : [-50, 100, 0.5],
+                  supportedRange: scale === AlexaUnitOfTemperature.FAHRENHEIT ? [-58, 212, 1] : [-50, 100, 0.5],
                   unitOfMeasure:
-                    scale === AlexaUnitOfMeasure.UNIT_FAHRENHEIT
+                    scale === AlexaUnitOfTemperature.FAHRENHEIT
                       ? AlexaUnitOfMeasure.TEMPERATURE_FAHRENHEIT
                       : AlexaUnitOfMeasure.TEMPERATURE_CELSIUS
                 }
@@ -99,8 +99,7 @@ export default class Temperature extends DeviceAttribute {
       return metadata.getConfigParameter(Parameter.SCALE).toUpperCase();
     }
     // Return scale based on item state description and server regional settings otherwise
-    return AlexaUnitOfMeasure.getUnit({
-      dimension: Dimension.TEMPERATURE,
+    return AlexaUnitOfTemperature.valueOf({
       statePresentation: item.stateDescription?.pattern,
       system: settings.regional?.measurementSystem || settings.regional?.region
     });
@@ -114,6 +113,6 @@ export default class Temperature extends DeviceAttribute {
   static getV2TemperatureScale(metadata) {
     return metadata.values
       .map((value) => value.toUpperCase())
-      .find((value) => value === AlexaUnitOfMeasure.UNIT_CELSIUS || value === AlexaUnitOfMeasure.UNIT_FAHRENHEIT);
+      .find((value) => value === AlexaUnitOfTemperature.CELSIUS || value === AlexaUnitOfTemperature.FAHRENHEIT);
   }
 }
