@@ -11,9 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import { Dimension, ItemType } from '#openhab/constants.js';
+import { ItemType } from '#openhab/constants.js';
 import { Parameter, ParameterType } from '../constants.js';
-import AlexaUnitOfMeasure from '../unitOfMeasure.js';
+import { AlexaUnitOfTemperature } from '../unitOfMeasure.js';
 import AlexaProperty from './property.js';
 
 /**
@@ -98,15 +98,12 @@ export default class Temperature extends AlexaProperty {
     //  2) using alexa unit name based on item state presentation and server regional settings
     const scale = parameters[Parameter.SCALE]
       ? parameters[Parameter.SCALE].toUpperCase()
-      : AlexaUnitOfMeasure.getUnit({
-          dimension: Dimension.TEMPERATURE,
+      : AlexaUnitOfTemperature.valueOf({
           statePresentation: item.stateDescription?.pattern,
           system: settings.regional?.measurementSystem || settings.regional?.region
         });
     // Update scale parameter
     parameters[Parameter.SCALE] =
-      scale === AlexaUnitOfMeasure.UNIT_FAHRENHEIT
-        ? AlexaUnitOfMeasure.UNIT_FAHRENHEIT
-        : AlexaUnitOfMeasure.UNIT_CELSIUS;
+      scale === AlexaUnitOfTemperature.FAHRENHEIT ? AlexaUnitOfTemperature.FAHRENHEIT : AlexaUnitOfTemperature.CELSIUS;
   }
 }

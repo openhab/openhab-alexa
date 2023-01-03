@@ -12,7 +12,7 @@
  */
 
 import { Parameter, ParameterType } from '../constants.js';
-import AlexaUnitOfMeasure from '../unitOfMeasure.js';
+import { AlexaUnitOfTemperature } from '../unitOfMeasure.js';
 import Temperature from './temperature.js';
 
 /**
@@ -48,7 +48,7 @@ export default class TargetSetpoint extends Temperature {
    * @return {Array}
    */
   get defaultSetpointRange() {
-    return this.scale === AlexaUnitOfMeasure.UNIT_FAHRENHEIT
+    return this.scale === AlexaUnitOfTemperature.FAHRENHEIT
       ? TargetSetpoint.DEFAULT_RANGE_FAHRENHEIT
       : TargetSetpoint.DEFAULT_RANGE_CELSIUS;
   }

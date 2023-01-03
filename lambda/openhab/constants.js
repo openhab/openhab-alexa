@@ -98,11 +98,11 @@ export const ItemValue = Object.freeze({
 });
 
 /**
- * Defines openHAB symbol unit enum
+ * Defines openHAB unit symbol enum
  *  https://www.openhab.org/docs/concepts/units-of-measurement.html#list-of-units
  * @type {Object}
  */
-export const SymbolUnit = Object.freeze({
+export const UnitSymbol = Object.freeze({
   DEGREE: '°',
   RADIAN: 'rad',
   PERCENT: '%',
@@ -128,11 +128,11 @@ export const SymbolUnit = Object.freeze({
 });
 
 /**
- * Defines openHAB system unit enum
+ * Defines openHAB unit system enum
  *  https://www.openhab.org/docs/concepts/units-of-measurement.html#list-of-units
  * @type {Object}
  */
-export const SystemUnit = Object.freeze({
+export const UnitSystem = Object.freeze({
   METRIC: 'SI',
   IMPERIAL_US: 'US'
 });

@@ -16,6 +16,7 @@ import RangeControllerHandler from '../handlers/rangeController.js';
 import { RangeValue } from '../properties/index.js';
 import { AlexaPresetResources } from '../resources.js';
 import AlexaSemantics from '../semantics.js';
+import { AlexaUnitOfMeasure } from '../unitOfMeasure.js';
 import GenericController from './genericController.js';
 
 /**
@@ -65,7 +66,7 @@ export default class RangeController extends GenericController {
     };
 
     if (unitOfMeasure) {
-      configuration.unitOfMeasure = 'Alexa.Unit.' + unitOfMeasure;
+      configuration.unitOfMeasure = AlexaUnitOfMeasure.getId(unitOfMeasure);
     }
 
     if (presets) {

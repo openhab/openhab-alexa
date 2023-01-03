@@ -14,7 +14,7 @@
 import { ItemType } from '#openhab/constants.js';
 import { Parameter, ParameterType } from '../constants.js';
 import { AlexaPresetResources } from '../resources.js';
-import AlexaUnitOfMeasure from '../unitOfMeasure.js';
+import { AlexaUnitOfMeasure } from '../unitOfMeasure.js';
 import Generic from './generic.js';
 
 /**
@@ -221,7 +221,7 @@ export default class RangeValue extends Generic {
     //    item type dimension, item state presentation and server regional settings
     const uom = parameters[Parameter.UNIT_OF_MEASURE]
       ? parameters[Parameter.UNIT_OF_MEASURE]
-      : AlexaUnitOfMeasure.getId({
+      : AlexaUnitOfMeasure.valueOf({
           dimension: item.type.split(':')[1],
           statePresentation: item.stateDescription?.pattern,
           system: settings.regional?.measurementSystem || settings.regional?.region

@@ -13,7 +13,7 @@
 
 import { Property } from '../constants.js';
 import { Parameter, ParameterType } from '../constants.js';
-import AlexaUnitOfMeasure from '../unitOfMeasure.js';
+import { AlexaUnitOfTemperature } from '../unitOfMeasure.js';
 import TargetSetpoint from './targetSetpoint.js';
 import ThermostatMode from './thermostatMode.js';
 
@@ -54,7 +54,7 @@ export default class LowerSetpoint extends TargetSetpoint {
    * @return {Number}
    */
   get defaultComfortRange() {
-    return this.scale === AlexaUnitOfMeasure.UNIT_FAHRENHEIT ? 2 : 1;
+    return this.scale === AlexaUnitOfTemperature.FAHRENHEIT ? 2 : 1;
   }
 
   /**
