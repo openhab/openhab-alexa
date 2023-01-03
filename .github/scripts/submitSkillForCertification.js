@@ -24,8 +24,8 @@ async function getSkillValidations(id) {
   const command = `ask smapi get-skill-validations -s ${process.env.SKILL_ID} -i ${id} -g development`;
   let validations;
 
-  // Retrieve skill validations up to 10 times every 30 seconds while status is in progress
-  for (let tries = 0; (!validations || validations.status === 'IN_PROGRESS') && tries < 10; tries++) {
+  // Retrieve skill validations up to 30 times every 30 seconds while status is in progress
+  for (let tries = 0; (!validations || validations.status === 'IN_PROGRESS') && tries < 30; tries++) {
     // Wait for 30 seconds
     await sleep(30000);
     // Get validations command output
