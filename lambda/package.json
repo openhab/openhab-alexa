@@ -1,6 +1,6 @@
 {
   "name": "openhab-alexa",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "openHAB skill for Amazon Alexa",
   "license": "EPL-2.0",
   "author": "openHAB",
