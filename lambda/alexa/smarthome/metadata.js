@@ -104,39 +104,43 @@ export default class AlexaMetadata {
     const current = Array.isArray(value) ? 'array' : typeof value;
     const conversion = current + '->' + type;
 
-    switch (conversion) {
-      case `number->${ParameterType.BOOLEAN}`:
-      case `string->${ParameterType.BOOLEAN}`:
-        return ['0', 'false', 'no'].includes(value.toString().toLowerCase()) === false;
-      case `number->${ParameterType.FLOAT}`:
-      case `string->${ParameterType.FLOAT}`:
-        return parseFloat(value);
-      case `number->${ParameterType.INTEGER}`:
-      case `string->${ParameterType.INTEGER}`:
-        return parseInt(value);
-      case `array->${ParameterType.LIST}`: // ['foo', 'bar', 'baz', 'foo', ''] => ['foo', 'bar', 'baz']
-      case `string->${ParameterType.LIST}`: // 'foo,bar,baz,foo,' => ['foo', 'bar', 'baz']
-        return (current === 'string' ? value.split(',') : value)
-          .map((value) => value.trim())
-          .filter((value, index, array) => value && array.indexOf(value) === index);
-      case `array->${ParameterType.MAP}`: // ['foo=1', 'bar=2', 'baz', 'foo=3', ''] => { foo: '1', bar: '2', baz: undefined }
-      case `string->${ParameterType.MAP}`: // 'foo=1,bar=2,baz,foo=3,' => { foo: '1', bar: '2', baz: undefined }
-        return (current === 'string' ? value.split(',') : value)
-          .map((value) => value.split('=', 2).map((value) => value.trim()))
-          .filter(([key], index, array) => key && array.map(([key]) => key).indexOf(key) === index)
-          .reduce((map, [key, value]) => ({ ...map, [key]: value }), {});
-      case `object->${ParameterType.RANGE}`: // { minimum: minRange, maximum: maxRange } => [minRange, maxRange]
-      case `string->${ParameterType.RANGE}`: // 'minRange:maxRange:precision' => [minRange, maxRange, precision]
-        return (current === 'string' ? value.split(':', 3) : Object.values(value)).map((value) => parseFloat(value));
-      case `number->${ParameterType.STRING}`:
-        return value.toString();
-      case `boolean->${ParameterType.BOOLEAN}`:
-      case `object->${ParameterType.MAP}`:
-      case `array->${ParameterType.RANGE}`:
-      case `string->${ParameterType.STRING}`:
-      case 'number->undefined':
-      case 'string->undefined':
-        return value;
+    try {
+      switch (conversion) {
+        case `number->${ParameterType.BOOLEAN}`:
+        case `string->${ParameterType.BOOLEAN}`:
+          return ['0', 'false', 'no'].includes(value.toString().toLowerCase()) === false;
+        case `number->${ParameterType.FLOAT}`:
+        case `string->${ParameterType.FLOAT}`:
+          return parseFloat(value);
+        case `number->${ParameterType.INTEGER}`:
+        case `string->${ParameterType.INTEGER}`:
+          return parseInt(value);
+        case `array->${ParameterType.LIST}`: // ['foo', 'bar', 'baz', 'foo', ''] => ['foo', 'bar', 'baz']
+        case `string->${ParameterType.LIST}`: // 'foo,bar,baz,foo,' => ['foo', 'bar', 'baz']
+          return (current === 'string' ? value.split(',') : value)
+            .map((value) => value.trim())
+            .filter((value, index, array) => value && array.indexOf(value) === index);
+        case `array->${ParameterType.MAP}`: // ['foo=1', 'bar=2', 'baz', 'foo=3', ''] => { foo: '1', bar: '2', baz: undefined }
+        case `string->${ParameterType.MAP}`: // 'foo=1,bar=2,baz,foo=3,' => { foo: '1', bar: '2', baz: undefined }
+          return (current === 'string' ? value.split(',') : value)
+            .map((value) => value.split('=', 2).map((value) => value.trim()))
+            .filter(([key], index, array) => key && array.map(([key]) => key).indexOf(key) === index)
+            .reduce((map, [key, value]) => ({ ...map, [key]: value }), {});
+        case `object->${ParameterType.RANGE}`: // { minimum: minRange, maximum: maxRange } => [minRange, maxRange]
+        case `string->${ParameterType.RANGE}`: // 'minRange:maxRange:precision' => [minRange, maxRange, precision]
+          return (current === 'string' ? value.split(':', 3) : Object.values(value)).map((value) => parseFloat(value));
+        case `number->${ParameterType.STRING}`:
+          return value.toString();
+        case `boolean->${ParameterType.BOOLEAN}`:
+        case `object->${ParameterType.MAP}`:
+        case `array->${ParameterType.RANGE}`:
+        case `string->${ParameterType.STRING}`:
+        case 'number->undefined':
+        case 'string->undefined':
+          return value;
+      }
+    } catch {
+      // ignore conversion errors
     }
   }
 
