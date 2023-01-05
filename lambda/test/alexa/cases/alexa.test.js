@@ -581,8 +581,16 @@ export default [
             'ModeController:mode1': {
               mode: {
                 parameters: {
-                  supportedModes: 'FOO=foo,BAR=bar',
-                  friendlyNames: '@Setting.Preset'
+                  supportedModes: ['FOO=foo', 'BAR=bar'],
+                  friendlyNames: ['@Setting.Preset'],
+                  actionMappings: [
+                    { name: 'Close', directive: { name: 'SetMode', payload: { mode: 'FOO' } } },
+                    { name: 'Open', directive: { name: 'SetMode', payload: { mode: 'BAR' } } }
+                  ],
+                  stateMappings: [
+                    { name: 'Closed', value: 'FOO' },
+                    { name: 'Open', value: 'BAR' }
+                  ]
                 },
                 item: { name: 'mode1', type: 'String' },
                 schema: { name: 'mode' }
