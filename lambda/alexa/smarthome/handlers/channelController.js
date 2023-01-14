@@ -81,9 +81,11 @@ export default class ChannelController extends AlexaHandler {
     //  2) using directive payload channel number if supported
     //  3) undefined
     const command = channelName
-      ? Object.keys(channelMappings).find(
-          (channel) => channelMappings[channel].toUpperCase() === channelName.toUpperCase()
-        )
+      ? Object.keys(channelMappings).find((channel) => {
+          const mapping = channelMappings[channel].replace(/\s/g, '');
+          const name = channelName.replace(/\s/g, '');
+          return new RegExp(`^${name}`, 'i').test(mapping);
+        })
       : supportsChannelNumber
       ? channelNumber
       : undefined;
