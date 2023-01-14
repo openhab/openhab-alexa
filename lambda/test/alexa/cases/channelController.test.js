@@ -132,7 +132,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' } },
+              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2', baz: 'BAZ 3' } },
               item: { name: 'channel', type: 'String' }
             }
           ]
@@ -220,7 +220,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { 12: 'FOO', 34: 'BAR', 56: 'BAZ' } },
+              parameters: { channelMappings: { 12: 'FOO 1', 34: 'BAR 2', 56: 'BAZ 3' } },
               item: { name: 'channel', type: 'Number' }
             }
           ]
@@ -243,7 +243,7 @@ export default [
               name: 'channel',
               value: {
                 number: '56',
-                callSign: 'BAZ'
+                callSign: 'BAZ 3'
               }
             }
           ]
@@ -274,7 +274,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' } },
+              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2', baz: 'BAZ 3' } },
               item: { name: 'channel', type: 'String' }
             }
           ]
@@ -283,7 +283,7 @@ export default [
       payload: {
         channel: {},
         channelMetadata: {
-          name: 'baz'
+          name: 'baz3'
         }
       }
     },
@@ -296,7 +296,7 @@ export default [
               namespace: 'Alexa.ChannelController',
               name: 'channel',
               value: {
-                callSign: 'BAZ'
+                callSign: 'BAZ 3'
               }
             }
           ]
@@ -327,7 +327,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { 12: 'FOO', 34: 'BAR' } },
+              parameters: { channelMappings: { 12: 'FOO 1', 34: 'BAR 2' } },
               item: { name: 'channel', type: 'Number' }
             }
           ]
@@ -369,7 +369,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' } },
+              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2', baz: 'BAZ 3' } },
               item: { name: 'channel', type: 'Number' }
             }
           ]
@@ -506,7 +506,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO', bar: 'BAR', baz: 'BAZ' } },
+              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2', baz: 'BAZ 3' } },
               item: { name: 'channel', type: 'String' }
             }
           ]
@@ -528,7 +528,7 @@ export default [
               namespace: 'Alexa.ChannelController',
               name: 'channel',
               value: {
-                callSign: 'BAZ'
+                callSign: 'BAZ 3'
               }
             }
           ]
@@ -637,7 +637,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO', bar: 'BAR' } },
+              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2' } },
               item: { name: 'channel', type: 'String' }
             }
           ]
