@@ -186,16 +186,6 @@ export class InvalidEndpointError extends AlexaError {
  */
 export class CurrentModeNotSupportedError extends AlexaError {
   /**
-   * Constructor
-   * @param {String} message
-   * @param {Object} parameters   [currentDeviceMode]
-   */
-  constructor(message, parameters = {}) {
-    super(message);
-    this._parameters = parameters;
-  }
-
-  /**
    * Returns error type
    * @return {String}
    */
@@ -208,19 +198,43 @@ export class CurrentModeNotSupportedError extends AlexaError {
    * @return {Object}
    */
   get payload() {
-    return {
-      currentDeviceMode: this.supportedDeviceModes.includes(this._parameters.currentDeviceMode)
-        ? this._parameters.currentDeviceMode
-        : 'OTHER'
-    };
+    return { currentDeviceMode: this.currentDeviceMode };
   }
 
   /**
-   * Returns supported device modes
-   * @return {Array}
+   * Returns current device mode
+   * @return {String}
    */
-  get supportedDeviceModes() {
-    return ['COLOR', 'ASLEEP', 'NOT_PROVISIONED', 'OTHER'];
+  get currentDeviceMode() {
+    return 'OTHER';
+  }
+}
+
+/**
+ * Defines current mode color error class
+ * @extends CurrentModeNotSupportedError
+ */
+export class CurrentModeColorError extends CurrentModeNotSupportedError {
+  /**
+   * Returns current device mode
+   * @return {String}
+   */
+  get currentDeviceMode() {
+    return 'COLOR';
+  }
+}
+
+/**
+ * Defines current mode not provisioned error class
+ * @extends CurrentModeNotSupportedError
+ */
+export class CurrentModeNotProvisionedError extends CurrentModeNotSupportedError {
+  /**
+   * Returns current device mode
+   * @return {String}
+   */
+  get currentDeviceMode() {
+    return 'NOT_PROVISIONED';
   }
 }
 
@@ -530,7 +544,7 @@ export class ThermostatSetpointsUnsupportedError extends ThermostatError {
   /**
    * Constructor
    * @param {String} message
-   * @param {Object} parameters   [setpointMode]
+   * @param {Object} parameters   [isDualSetpoints]
    */
   constructor(message, parameters = {}) {
     super(message);
@@ -541,7 +555,7 @@ export class ThermostatSetpointsUnsupportedError extends ThermostatError {
    * @return {String}
    */
   get type() {
-    return this._parameters.setpointMode === 'dual' ? 'DUAL_SETPOINTS_UNSUPPORTED' : 'TRIPLE_SETPOINTS_UNSUPPORTED';
+    return this._parameters.isDualSetpoints ? 'DUAL_SETPOINTS_UNSUPPORTED' : 'TRIPLE_SETPOINTS_UNSUPPORTED';
   }
 }
 
