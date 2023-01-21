@@ -29,6 +29,7 @@
   "dependencies": {
     "agentkeepalive": "^4.2.1",
     "axios": "^1.2.2",
+    "fuse.js": "^6.6.2",
     "sprintf-js": "^1.1.2",
     "uuid": "^9.0.0",
     "winston": "^3.8.2"

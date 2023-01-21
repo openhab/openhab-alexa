@@ -755,7 +755,7 @@ If paired with [`PositionState`](#positionstate), the primary controls (open/clo
 
 Items that represent a channel. For String, by default, only requests by name are supported. To enable support for requests by number, set parameter `supportsChannelNumber=true`. For adjustment requests, by default, the increment is linear within the `range` parameter for Number, or the `channelMappings` parameter for String, based on the current state. For adjustment in incremental discrete steps, add [`ChannelStep`](#channelstep) to your entertainment group endpoint.
 
-It is important to note that only well-known channel names can be used as these are matched against a database on the Alexa side when requested. While Amazon doesn't provide a list of supported channel names, it is recommended using the names listed on [TV Channel Lists](https://www.tvchannellists.com) for your regional channel lineup.
+It is important to note that only well-known channel names can be used as these are matched against a database on the Alexa side when requested. While Amazon doesn't provide a list of supported channel names, it is recommended using the names listed on [TV Channel Lists](https://www.tvchannellists.com) for your regional channel lineup. The skill will match to the closest channel mapping when possible.
 
 * Supported item types:
   * Number

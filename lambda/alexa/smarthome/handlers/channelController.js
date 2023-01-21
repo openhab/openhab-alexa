@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+import Fuse from 'fuse.js';
 import { clamp } from '#root/utils.js';
 import { ItemType } from '#openhab/constants.js';
 import { Interface, Property } from '../constants.js';
@@ -75,20 +76,17 @@ export default class ChannelController extends AlexaHandler {
     const { item, channelMappings, range, supportsChannelNumber } = property;
     const channelName = directive.payload.channelMetadata.name;
     const channelNumber = directive.payload.channel.number;
+    let command;
 
-    // Determine command as follow:
-    //  1) using directive payload channel metadata name if defined
-    //  2) using directive payload channel number if supported
-    //  3) undefined
-    const command = channelName
-      ? Object.keys(channelMappings).find((channel) => {
-          const mapping = channelMappings[channel].replace(/\s/g, '');
-          const name = channelName.replace(/\s/g, '');
-          return new RegExp(`^${name}`, 'i').test(mapping);
-        })
-      : supportsChannelNumber
-      ? channelNumber
-      : undefined;
+    if (channelName) {
+      const channels = Object.entries(channelMappings).map(([value, name]) => ({ name, value }));
+      const fuse = new Fuse(channels, { keys: ['name'], minMatchCharLength: 3 });
+      // Determine command using directive payload channel metadata name fuzzy search result
+      command = fuse.search(channelName)[0]?.item.value;
+    } else if (supportsChannelNumber) {
+      // Determine command using directive payload channel number
+      command = channelNumber;
+    }
 
     // Throw invalid value error if command not defined
     if (typeof command === 'undefined') {
