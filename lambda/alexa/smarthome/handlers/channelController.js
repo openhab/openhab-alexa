@@ -82,8 +82,9 @@ export default class ChannelController extends AlexaHandler {
     //  3) undefined
     const command = channelName
       ? Object.keys(channelMappings).find((channel) => {
-          const mapping = channelMappings[channel].replace(/\s/g, '');
-          const name = channelName.replace(/\s/g, '');
+          const pattern = /[\s_.-]+/g;
+          const mapping = channelMappings[channel].replace(pattern, '');
+          const name = channelName.replace(pattern, '');
           return new RegExp(`^${name}`, 'i').test(mapping);
         })
       : supportsChannelNumber
