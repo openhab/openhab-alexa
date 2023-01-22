@@ -14,12 +14,7 @@
 import { clamp } from '#root/utils.js';
 import { ItemType, ItemValue } from '#openhab/constants.js';
 import { Interface, Property } from '../constants.js';
-import {
-  CurrentModeNotSupportedError,
-  EndpointUnreachableError,
-  InvalidValueError,
-  ValueOutOfRangeError
-} from '../errors.js';
+import { CurrentModeColorError, EndpointUnreachableError, InvalidValueError, ValueOutOfRangeError } from '../errors.js';
 import AlexaHandler from './handler.js';
 
 /**
@@ -124,9 +119,9 @@ export default class ColorTemperatureController extends AlexaHandler {
       throw new EndpointUnreachableError(`Could not get numeric state for item ${temperature.item.name}.`);
     }
 
-    // Throw current mode not supported error if in color mode
+    // Throw current mode color error if in color mode
     if (temperature.isInColorMode(colorState, temperatureState)) {
-      throw new CurrentModeNotSupportedError('The light is currently set to a color.', { currentDeviceMode: 'COLOR' });
+      throw new CurrentModeColorError('The light is currently set to a color.');
     }
 
     const isIncreaseRequest = directive.name === ColorTemperatureController.INCREASE_COLOR_TEMPERATURE;

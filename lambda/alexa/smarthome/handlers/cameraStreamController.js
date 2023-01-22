@@ -13,7 +13,7 @@
 
 import { parseUrl } from '#root/utils.js';
 import { Interface, Property } from '../constants.js';
-import { CurrentModeNotSupportedError } from '../errors.js';
+import { CurrentModeNotProvisionedError } from '../errors.js';
 import { AuthType } from '../properties/cameraStream.js';
 import AlexaHandler from './handler.js';
 
@@ -62,9 +62,9 @@ export default class CameraStreamController extends AlexaHandler {
     // Determine camera stream url based on item current state
     const streamUrl = await openhab.getItemState(item.name).then((state) => parseUrl(state, proxyBaseUrl));
 
-    // Throw current mode not supported error if stream url not defined, not https protocol or has non-standard port
+    // Throw current mode not provisioned error if stream url not defined, not https protocol or has non-standard port
     if (!streamUrl || streamUrl.protocol !== 'https:' || streamUrl.port) {
-      throw new CurrentModeNotSupportedError('Invalid camera stream URL', { currentDeviceMode: 'NOT_PROVISIONED' });
+      throw new CurrentModeNotProvisionedError('Invalid camera stream URL');
     }
 
     // Add basic auth credentials to camera stream url if necessary
