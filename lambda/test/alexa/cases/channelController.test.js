@@ -132,7 +132,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2', baz: 'BAZ 3' } },
+              parameters: { channelMappings: { foo1: 'FOO 1', foo2: 'FOO 2' } },
               item: { name: 'channel', type: 'String' }
             }
           ]
@@ -220,7 +220,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { 12: 'FOO 1', 34: 'BAR 2', 56: 'BAZ 3' } },
+              parameters: { channelMappings: { 12: 'FOO 1', 34: 'FOO 2' } },
               item: { name: 'channel', type: 'Number' }
             }
           ]
@@ -229,11 +229,11 @@ export default [
       payload: {
         channel: {},
         channelMetadata: {
-          name: 'baz'
+          name: 'foo'
         }
       }
     },
-    items: [{ name: 'channel', state: '56', type: 'Number' }],
+    items: [{ name: 'channel', state: '12', type: 'Number' }],
     expected: {
       alexa: {
         context: {
@@ -242,8 +242,8 @@ export default [
               namespace: 'Alexa.ChannelController',
               name: 'channel',
               value: {
-                number: '56',
-                callSign: 'BAZ 3'
+                number: '12',
+                callSign: 'FOO 1'
               }
             }
           ]
@@ -256,7 +256,7 @@ export default [
         }
       },
       openhab: {
-        commands: [{ name: 'channel', value: '56' }]
+        commands: [{ name: 'channel', value: '12' }]
       }
     }
   },
@@ -274,7 +274,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2', baz: 'BAZ 3' } },
+              parameters: { channelMappings: { foo1: 'FOO 1', foo2: 'FOO 2' } },
               item: { name: 'channel', type: 'String' }
             }
           ]
@@ -283,11 +283,11 @@ export default [
       payload: {
         channel: {},
         channelMetadata: {
-          name: 'baz3'
+          name: 'foo2'
         }
       }
     },
-    items: [{ name: 'channel', state: 'baz', type: 'String' }],
+    items: [{ name: 'channel', state: 'foo2', type: 'String' }],
     expected: {
       alexa: {
         context: {
@@ -296,7 +296,7 @@ export default [
               namespace: 'Alexa.ChannelController',
               name: 'channel',
               value: {
-                callSign: 'BAZ 3'
+                callSign: 'FOO 2'
               }
             }
           ]
@@ -309,7 +309,7 @@ export default [
         }
       },
       openhab: {
-        commands: [{ name: 'channel', value: 'baz' }]
+        commands: [{ name: 'channel', value: 'foo2' }]
       }
     }
   },
@@ -327,7 +327,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { 12: 'FOO 1', 34: 'BAR 2' } },
+              parameters: { channelMappings: { 12: 'FOO 1', 34: 'FOO 2' } },
               item: { name: 'channel', type: 'Number' }
             }
           ]
@@ -336,7 +336,7 @@ export default [
       payload: {
         channel: {},
         channelMetadata: {
-          name: 'baz'
+          name: 'bar'
         }
       }
     },
@@ -349,7 +349,7 @@ export default [
           },
           payload: {
             type: 'INVALID_VALUE',
-            message: 'The channel cannot be changed to baz.'
+            message: 'The channel cannot be changed to bar.'
           }
         }
       }
@@ -369,7 +369,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2', baz: 'BAZ 3' } },
+              parameters: { channelMappings: { foo1: 'FOO 1', foo2: 'FOO 2' } },
               item: { name: 'channel', type: 'Number' }
             }
           ]
@@ -378,7 +378,7 @@ export default [
       payload: {
         channel: {},
         channelMetadata: {
-          name: 'baz'
+          name: 'foo.2'
         }
       }
     },
@@ -391,7 +391,7 @@ export default [
           },
           payload: {
             type: 'INVALID_VALUE',
-            message: 'The channel cannot be changed to baz.'
+            message: 'The channel cannot be changed to foo2.'
           }
         }
       }
@@ -506,7 +506,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2', baz: 'BAZ 3' } },
+              parameters: { channelMappings: { foo1: 'FOO 1', foo2: 'FOO 2' } },
               item: { name: 'channel', type: 'String' }
             }
           ]
@@ -517,8 +517,8 @@ export default [
       }
     },
     items: [
-      { name: 'channel', state: 'bar', type: 'String' },
-      { name: 'channel', state: 'baz', type: 'String' }
+      { name: 'channel', state: 'foo1', type: 'String' },
+      { name: 'channel', state: 'foo2', type: 'String' }
     ],
     expected: {
       alexa: {
@@ -528,7 +528,7 @@ export default [
               namespace: 'Alexa.ChannelController',
               name: 'channel',
               value: {
-                callSign: 'BAZ 3'
+                callSign: 'FOO 2'
               }
             }
           ]
@@ -541,7 +541,7 @@ export default [
         }
       },
       openhab: {
-        commands: [{ name: 'channel', value: 'baz' }]
+        commands: [{ name: 'channel', value: 'foo2' }]
       }
     }
   },
@@ -637,7 +637,7 @@ export default [
             {
               name: 'ChannelController',
               property: 'channel',
-              parameters: { channelMappings: { foo: 'FOO 1', bar: 'BAR 2' } },
+              parameters: { channelMappings: { foo1: 'FOO 1', foo2: 'FOO 2' } },
               item: { name: 'channel', type: 'String' }
             }
           ]
@@ -647,7 +647,7 @@ export default [
         channelCount: -1
       }
     },
-    items: [{ name: 'channel', state: 'baz', type: 'String' }],
+    items: [{ name: 'channel', state: 'bar', type: 'String' }],
     expected: {
       alexa: {
         event: {
@@ -657,7 +657,7 @@ export default [
           },
           payload: {
             type: 'INVALID_VALUE',
-            message: 'Current channel baz is not defined in channel mappings.'
+            message: 'Current channel bar is not defined in channel mappings.'
           }
         }
       }
