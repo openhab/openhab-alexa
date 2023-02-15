@@ -165,13 +165,15 @@ export default class Generic extends DecoupleState {
     // Upate non-controllable parameter using item state description read only property if not defined
     parameters[Parameter.NON_CONTROLLABLE] = nonControllable ?? item.stateDescription?.readOnly;
 
-    const actionMappings = parameters[Parameter.ACTION_MAPPINGS] || {};
+    // Define action mappings using parameter values if property is controllable
+    const actionMappings = (!this.isNonControllable && parameters[Parameter.ACTION_MAPPINGS]) || {};
     // Update action mappings parameter removing unsupported action semantics
     parameters[Parameter.ACTION_MAPPINGS] = Object.entries(actionMappings)
       .filter(([action]) => this.supportedActionSemantics.includes(action))
       .reduce((actions, [action, mapping]) => ({ ...actions, [action]: mapping }), undefined);
 
-    const stateMappings = parameters[Parameter.STATE_MAPPINGS] || {};
+    // Define state mappings using parameter values if property is retrievable
+    const stateMappings = (this.isRetrievable && parameters[Parameter.STATE_MAPPINGS]) || {};
     // Update state mappings parameter removing unsupported state semantics
     parameters[Parameter.STATE_MAPPINGS] = Object.entries(stateMappings)
       .filter(([state]) => this.supportedStateSemantics.includes(state))

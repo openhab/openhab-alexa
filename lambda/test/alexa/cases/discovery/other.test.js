@@ -61,6 +61,22 @@ export default {
       }
     },
     {
+      type: 'Switch',
+      name: 'mode4',
+      label: 'Mode 4',
+      metadata: {
+        alexa: {
+          value: 'Mode',
+          config: {
+            supportedModes: 'OFF=@Value.Close,ON=@Value.Open',
+            retrievable: false,
+            // No state mappings support if not retrievable
+            stateMappings: 'Closed=OFF,Open=ON'
+          }
+        }
+      }
+    },
+    {
       type: 'String',
       name: 'mode99',
       label: 'Mode Invalid',
@@ -155,7 +171,9 @@ export default {
         alexa: {
           value: 'RangeValue',
           config: {
-            nonControllable: true
+            nonControllable: true,
+            // No action mappings support if non controllable
+            actionMappings: 'Close=0'
           }
         }
       }
@@ -511,6 +529,40 @@ export default {
         }
       ]
     },
+    mode4: {
+      capabilities: ['Alexa.ModeController:mode4', 'Alexa'],
+      displayCategories: ['OTHER'],
+      friendlyName: 'Mode 4',
+      propertyFlags: {}, // no property flags expected
+      resources: {
+        'Alexa.ModeController:mode4': {
+          friendlyNames: ['asset:Alexa.Setting.Mode']
+        }
+      },
+      configuration: {
+        'Alexa.ModeController:mode4': {
+          ordered: false,
+          supportedModes: {
+            OFF: { friendlyNames: ['asset:Alexa.Value.Close'] },
+            ON: { friendlyNames: ['asset:Alexa.Value.Open'] }
+          }
+        }
+      },
+      semantics: {}, // no semantics expected
+      cookie: [
+        {
+          name: 'ModeController',
+          instance: 'Mode:mode4',
+          property: 'mode',
+          parameters: {
+            capabilityNames: ['@Setting.Mode'],
+            supportedModes: { OFF: ['@Value.Close'], ON: ['@Value.Open'] },
+            retrievable: false
+          },
+          item: { name: 'mode4', type: 'Switch' }
+        }
+      ]
+    },
     range1: {
       capabilities: [
         'Alexa.ModeController:range1',
@@ -804,6 +856,7 @@ export default {
           unitOfMeasure: 'Alexa.Unit.Angle.Degrees'
         }
       },
+      semantics: {}, // no semantics expected
       cookie: [
         {
           name: 'RangeController',
