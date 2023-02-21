@@ -110,9 +110,9 @@ To configure your server path and credentials, you will need to setup the CloudF
         ```
 
 4. Enable the skill on your Alexa account:
-    * Go to your [Alexa skill console](https://alexa.amazon.com/spa/index.html#skills/your-skills/?ref-suffix=ysa_gw)
-    * Click on the "openHAB" skill under the "Dev Skills" tab
-    * Click "Enable" and go through the account linking process
+    * In your Alexa app, go to More > Skills & Games page
+    * Select the "openHAB" skill under Your Skills > Dev tab
+    * Tap "Enable to Use" and go through the account linking process
 
 ### Update Smart Home Skill and Lambda Function
 
