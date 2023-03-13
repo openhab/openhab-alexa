@@ -98,7 +98,7 @@ To configure your server path and credentials, you will need to setup the CloudF
             "clientSecret": "<clientSecret>",
             "scopes": [
               "profile"
-            ],
+            ]
           }
         }
         ```
