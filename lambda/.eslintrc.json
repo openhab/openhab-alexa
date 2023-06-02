@@ -9,6 +9,6 @@
   },
   "rules": {
     "no-console": "warn",
-    "n/no-missing-import": "off"
+    "n/no-extraneous-import": "off"
   }
 }
