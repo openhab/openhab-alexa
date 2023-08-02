@@ -39,7 +39,7 @@
     "chai": "^4.3.7",
     "chai-subset": "^1.6.0",
     "eslint": "^8.46.0",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-prettier": "^8.9.0",
     "eslint-plugin-n": "^16.0.1",
     "eslint-plugin-prettier": "^4.2.1",
     "esmock": "^2.3.5",
