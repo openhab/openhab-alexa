@@ -1,6 +1,6 @@
 .ask
+accountLinking.json
 lambda/ssl/
-skill-package/accountLinking.json
 
 # VS Code
 .vscode
