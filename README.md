@@ -84,7 +84,7 @@ To configure your server path and credentials, you will need to setup the CloudF
     ```
 
 3. Setup the skill account linking:
-    1. Create the skill account linking request file as `skill-package/accountLinking.json`, adding your [OAuth2 provider](#oauth2-provider) client credentials:
+    1. Create the skill account linking request file as `accountLinking.json`, adding your [OAuth2 provider](#oauth2-provider) client credentials:
 
         ```json
         {
@@ -106,7 +106,7 @@ To configure your server path and credentials, you will need to setup the CloudF
     2. Update the skill account linking information, using the skill ID displayed in the deploy step:
 
         ```shell
-        ask smapi update-account-linking-info -s <skillId> --account-linking-request file:skill-package/accountLinking.json
+        ask smapi update-account-linking-info -s <skillId> --account-linking-request file:accountLinking.json
         ```
 
 4. Enable the skill on your Alexa account:
