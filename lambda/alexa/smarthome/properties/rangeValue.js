@@ -217,12 +217,12 @@ export default class RangeValue extends Generic {
 
     // Define unit of measure as follow:
     //  1) using parameter value if defined
-    //  2) using alexa unit of measure id based on
-    //    item type dimension, item state presentation and server regional settings
+    //  2) using alexa unit of measure id based on item and regional server settings
     const uom = parameters[Parameter.UNIT_OF_MEASURE]
       ? parameters[Parameter.UNIT_OF_MEASURE]
       : AlexaUnitOfMeasure.valueOf({
           dimension: item.type.split(':')[1],
+          unitSymbol: item.unitSymbol,
           statePresentation: item.stateDescription?.pattern,
           system: settings.regional?.measurementSystem || settings.regional?.region
         });

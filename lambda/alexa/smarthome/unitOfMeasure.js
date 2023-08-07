@@ -341,14 +341,14 @@ class UnitsOfMeasure {
       dimension: Dimension.LENGTH,
       symbol: UnitSymbol.INCH,
       system: UnitSystem.IMPERIAL_US,
-      default: false
+      default: true
     },
     {
       name: AlexaUnitOfMeasure.DISTANCE_FEET,
       dimension: Dimension.LENGTH,
       symbol: UnitSymbol.FOOT,
       system: UnitSystem.IMPERIAL_US,
-      default: true
+      default: false
     },
     {
       name: AlexaUnitOfMeasure.DISTANCE_MILES,
@@ -486,13 +486,14 @@ class UnitsOfMeasure {
   /**
    * Returns unit of measure based on given parameters
    * @param  {String} dimension
+   * @param  {String} unitSymbol
    * @param  {String} statePresentation
    * @param  {String} system
    * @return {Object}
    */
-  static getUnitOfMeasure({ dimension, statePresentation, system = UnitSystem.METRIC }) {
-    // Determine symbol using item state presentation
-    const symbol = this.getUnitSymbol(statePresentation);
+  static getUnitOfMeasure({ dimension, unitSymbol, statePresentation, system = UnitSystem.METRIC }) {
+    // Determine symbol using item unit symbol or item state presentation pattern
+    const symbol = unitSymbol ?? this.getUnitSymbol(statePresentation);
     // Return unit of measure using symbol/dimension or fallback to default value using dimension/system
     return (
       this.#UOMS.find((uom) => uom.symbol === symbol && (!dimension || uom.dimension === dimension)) ||

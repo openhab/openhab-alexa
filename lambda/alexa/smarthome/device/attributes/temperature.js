@@ -98,8 +98,9 @@ export default class Temperature extends DeviceAttribute {
     if (metadata.getConfigParameter(Parameter.SCALE)) {
       return metadata.getConfigParameter(Parameter.SCALE).toUpperCase();
     }
-    // Return scale based on item state description and server regional settings otherwise
+    // Return scale based on item and regional server settings otherwise
     return AlexaUnitOfTemperature.valueOf({
+      unitSymbol: item.unitSymbol,
       statePresentation: item.stateDescription?.pattern,
       system: settings.regional?.measurementSystem || settings.regional?.region
     });

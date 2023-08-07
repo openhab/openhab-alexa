@@ -198,7 +198,7 @@ describe('OpenHAB Tests', () => {
   describe('get all items', () => {
     // set default environment
     const qs = {
-      fields: 'editable,groupNames,groupType,name,label,metadata,stateDescription,tags,type',
+      fields: 'editable,groupNames,groupType,name,label,metadata,stateDescription,tags,type,unitSymbol',
       metadata: 'alexa,autoupdate,channel,synonyms'
     };
 
