@@ -95,10 +95,11 @@ export default class Temperature extends AlexaProperty {
 
     // Define scale as follow:
     //  1) using parameter uppercased value if defined
-    //  2) using alexa unit name based on item state presentation and server regional settings
+    //  2) using alexa unit name based on item and regional server settings
     const scale = parameters[Parameter.SCALE]
       ? parameters[Parameter.SCALE].toUpperCase()
       : AlexaUnitOfTemperature.valueOf({
+          unitSymbol: item.unitSymbol,
           statePresentation: item.stateDescription?.pattern,
           system: settings.regional?.measurementSystem || settings.regional?.region
         });

@@ -116,7 +116,7 @@ export default class OpenHAB {
       method: 'GET',
       url: '/rest/items',
       params: {
-        fields: 'editable,groupNames,groupType,name,label,metadata,stateDescription,tags,type',
+        fields: 'editable,groupNames,groupType,name,label,metadata,stateDescription,tags,type,unitSymbol',
         metadata: 'alexa,autoupdate,channel,synonyms'
       }
     };

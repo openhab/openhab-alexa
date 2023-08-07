@@ -64,9 +64,20 @@ export default {
       }
     },
     {
-      type: 'Number',
+      type: 'Number:Temperature',
       name: 'temperature5',
       label: 'Temperature Sensor 5',
+      unitSymbol: '°F',
+      metadata: {
+        alexa: {
+          value: 'CurrentTemperature'
+        }
+      }
+    },
+    {
+      type: 'Number',
+      name: 'temperature6',
+      label: 'Temperature Sensor 6',
       metadata: {
         alexa: {
           value: 'TemperatureSensor.temperature' // backward compatibility
@@ -122,7 +133,20 @@ export default {
     temperature5: {
       capabilities: ['Alexa.TemperatureSensor.temperature', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
       displayCategories: ['TEMPERATURE_SENSOR'],
-      friendlyName: 'Temperature Sensor 5'
+      friendlyName: 'Temperature Sensor 5',
+      cookie: [
+        {
+          name: 'TemperatureSensor',
+          property: 'temperature',
+          parameters: { scale: 'FAHRENHEIT' },
+          item: { name: 'temperature5', type: 'Number:Temperature' }
+        }
+      ]
+    },
+    temperature6: {
+      capabilities: ['Alexa.TemperatureSensor.temperature', 'Alexa.EndpointHealth.connectivity', 'Alexa'],
+      displayCategories: ['TEMPERATURE_SENSOR'],
+      friendlyName: 'Temperature Sensor 6'
     }
   }
 };

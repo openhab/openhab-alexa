@@ -11,8 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import { Property } from '../constants.js';
-import { Parameter, ParameterType } from '../constants.js';
+import { Property, Parameter, ParameterType } from '../constants.js';
 import { AlexaUnitOfTemperature } from '../unitOfMeasure.js';
 import TargetSetpoint from './targetSetpoint.js';
 import ThermostatMode from './thermostatMode.js';
