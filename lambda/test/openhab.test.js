@@ -167,16 +167,9 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('string state with pattern', async () => {
+    it('string state with no state description', async () => {
       // set environment
-      nock(baseURL)
-        .get('/rest/items/foo')
-        .reply(200, {
-          name: 'foo',
-          state: 'bar',
-          stateDescription: { pattern: '%s' },
-          type: 'String'
-        });
+      nock(baseURL).get('/rest/items/foo').reply(200, { name: 'foo', state: 'bar', type: 'String' });
       // run test
       expect(await openhab.getItemState('foo')).to.equal('bar');
       expect(nock.isDone()).to.be.true;
