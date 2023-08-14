@@ -243,25 +243,17 @@ export default class OpenHAB {
    * @return {String}
    */
   static formatItemState(item) {
-    const format = item.stateDescription?.pattern?.match(/%(?:[.0]\d+)?[dfs]/);
+    const format = item.stateDescription?.pattern?.match(/%(?:[.0]\d+)?[df]/)?.[0] || '%f';
     const state = item.state;
     const type = item.groupType || item.type;
 
-    if (format) {
-      try {
-        switch (type.split(':')[0]) {
-          case ItemType.DIMMER:
-          case ItemType.NUMBER:
-          case ItemType.ROLLERSHUTTER:
-            return sprintf(format[0], parseFloat(state));
-          case ItemType.STRING:
-            return sprintf(format[0], state);
-        }
-      } catch {
-        // ignore formatting errors
-      }
+    switch (type.split(':')[0]) {
+      case ItemType.DIMMER:
+      case ItemType.NUMBER:
+      case ItemType.ROLLERSHUTTER:
+        return sprintf(format, parseFloat(state));
+      default:
+        return state;
     }
-
-    return state;
   }
 }
