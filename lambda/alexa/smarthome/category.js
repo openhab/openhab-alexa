@@ -41,6 +41,12 @@ export default class AlexaDisplayCategory {
   static AIR_PURIFIER = 'AIR_PURIFIER';
 
   /**
+   * Defines air quality monitor display category
+   * @type {String}
+   */
+  static AIR_QUALITY_MONITOR = 'AIR_QUALITY_MONITOR';
+
+  /**
    * Defines auto accessory display category
    * @type {String}
    */
@@ -213,6 +219,12 @@ export default class AlexaDisplayCategory {
    * @type {String}
    */
   static PRINTER = 'PRINTER';
+
+  /**
+   * Defines remote display category
+   * @type {String}
+   */
+  static REMOTE = 'REMOTE';
 
   /**
    * Defines router display category
