@@ -21,6 +21,168 @@ const require = createRequire(import.meta.url);
  */
 class AlexaGlobalCatalog {
   /**
+   * Defines button off button asset
+   * @type {String}
+   */
+  static BUTTON_OFF_BUTTON = '@Button.OffButton';
+
+  /**
+   * Defines button on button asset
+   * @type {String}
+   */
+  static BUTTON_ON_BUTTON = '@Button.OnButton';
+
+  /**
+   * Defines button brigthen button asset
+   * @type {String}
+   */
+  static BUTTON_BRIGHTEN_BUTTON = '@Button.BrightenButton';
+
+  /**
+   * Defines button dim button asset
+   * @type {String}
+   */
+  static BUTTON_DIM_BUTTON = '@Button.DimButton';
+
+  /**
+   * Defines button main button asset
+   * @type {String}
+   */
+  static BUTTON_MAIN_BUTTON = '@Button.MainButton';
+
+  /**
+   * Defines button top button asset
+   * @type {String}
+   */
+  static BUTTON_TOP_BUTTON = '@Button.TopButton';
+
+  /**
+   * Defines button bottom button asset
+   * @type {String}
+   */
+  static BUTTON_BOTTOM_BOTTON = '@Button.BottomButton';
+
+  /**
+   * Defines button center button asset
+   * @type {String}
+   */
+  static BUTTON_CENTER_BUTTON = 'Button.CenterButton';
+
+  /**
+   * Defines button middle button asset
+   * @type {String}
+   */
+  static BUTTON_MIDDLE_BUTTON = '@Button.MiddleButton';
+
+  /**
+   * Defines button up button asset
+   * @type {String}
+   */
+  static BUTTON_UP_BOTTON = '@Button.UpButton';
+
+  /**
+   * Defines button down button asset
+   * @type {String}
+   */
+  static BUTTON_DOWN_BUTTON = '@Button.DownButton';
+
+  /**
+   * Defines button left button asset
+   * @type {String}
+   */
+  static BUTTON_LEFT_BUTTON = '@Button.LeftButton';
+
+  /**
+   * Defines button right button asset
+   * @type {String}
+   */
+  static BUTTON_RIGHT_BUTTON = '@Button.RightButton';
+
+  /**
+   * Defines button first button asset
+   * @type {String}
+   */
+  static BUTTON_FIRST_BUTTON = '@Button.FirstButton';
+
+  /**
+   * Defines button second button asset
+   * @type {String}
+   */
+  static BUTTON_SECOND_BUTTON = '@Button.SecondButton';
+
+  /**
+   * Defines button third button asset
+   * @type {String}
+   */
+  static BUTTON_THIRD_BUTTON = '@Button.ThirdButton';
+
+  /**
+   * Defines button fourth button asset
+   * @type {String}
+   */
+  static BUTTON_FOURTH_BUTTON = '@Button.FourthButton';
+
+  /**
+   * Defines button fifth button asset
+   * @type {String}
+   */
+  static BUTTON_FIFTH_BUTTON = '@Button.FifthButton';
+
+  /**
+   * Defines button sixth button asset
+   * @type {String}
+   */
+  static BUTTON_SIXTH_BUTTON = '@Button.SixthButton';
+
+  /**
+   * Defines button seventh button asset
+   * @type {String}
+   */
+  static BUTTON_SEVENTH_BUTTON = '@Button.SeventhButton';
+
+  /**
+   * Defines button eighth button asset
+   * @type {String}
+   */
+  static BUTTON_EIGHTH_BUTTON = '@Button.EighthButton';
+
+  /**
+   * Defines button double press asset
+   * @type {String}
+   */
+  static BUTTON_DOUBLE_PRESS = '@Button.DoublePress';
+
+  /**
+   * Defines button double push asset
+   * @type {String}
+   */
+  static BUTTON_DOUBLE_PUSH = '@Button.DoublePush';
+
+  /**
+   * Defines button long press asset
+   * @type {String}
+   */
+  static BUTTON_LONG_PRESS = '@Button.LongPress';
+
+  /**
+   * Defines button long push asset
+   * @type {String}
+   */
+  static BUTTON_LONG_PUSH = '@Button.LongPush';
+
+  /**
+   * Defines button single press asset
+   * @type {String}
+   */
+  static BUTTON_SINGLE_PRESS = '@Button.SinglePress';
+
+  /**
+   * Defines button single push asset
+   * @type {String}
+   */
+  static BUTTON_SINGLE_PUSH = '@Button.SinglePush';
+
+  /**
    * Defines device name air purifier asset
    * @type {String}
    */
@@ -67,6 +229,54 @@ class AlexaGlobalCatalog {
    * @type {String}
    */
   static DEVICE_NAME_WASHER = '@DeviceName.Washer';
+
+  /**
+   * Defines gesture double click asset
+   * @type {String}
+   */
+  static GESTURE_DOUBLE_CLICK = '@Gesture.DoubleClick';
+
+  /**
+   * Defines gesture double tap asset
+   * @type {String}
+   */
+  static GESTURE_DOUBLE_TAP = '@Gesture.DoubleTap';
+
+  /**
+   * Defines gesture single click asset
+   * @type {String}
+   */
+  static GESTURE_SINGLE_CLICK = '@Gesture.SingleClick';
+
+  /**
+   * Defines gesture swipe down asset
+   * @type {String}
+   */
+  static GESTURE_SWIPE_DOWN = '@Gesture.SwipeDown';
+
+  /**
+   * Defines gesture swipe left asset
+   * @type {String}
+   */
+  static GESTURE_SWIPE_LEFT = '@Gesture.SwipeLeft';
+
+  /**
+   * Defines gesture swipe right asset
+   * @type {String}
+   */
+  static GESTURE_SWIPE_RIGHT = '@Gesture.SwipeRight';
+
+  /**
+   * Defines gesture swipe up asset
+   * @type {String}
+   */
+  static GESTURE_SWIPE_UP = '@Gesture.SwipeUp';
+
+  /**
+   * Defines gesture tap asset
+   * @type {String}
+   */
+  static GESTURE_TAP = '@Gesture.Tap';
 
   /**
    * Defines setting 2g guest wifi asset
@@ -181,6 +391,144 @@ class AlexaGlobalCatalog {
    * @type {String}
    */
   static SHOWER_RAIN_HEAD = '@Shower.RainHead';
+
+  /**
+   * Defines unit angle degrees asset
+   * @type {String}
+   */
+  static UNIT_ANGLE_DEGREES = '@Unit.Angle.Degrees';
+
+  /**
+   * Defines unit angle radians asset
+   * @type {String}
+   */
+  static UNIT_ANGLE_RADIANS = '@Unit.Angle.Radians';
+
+  /**
+   * Defines unit distance feet asset
+   * @type {String}
+   */
+  static UNIT_DISTANCE_FEET = '@Unit.Distance.Feet';
+
+  /**
+   * Defines unit distance inches asset
+   * @type {String}
+   */
+  static UNIT_DISTANCE_INCHES = '@Unit.Distance.Inches';
+
+  /**
+   * Defines unit distance kilometers asset
+   * @type {String}
+   */
+  static UNIT_DISTANCE_KILOMETERS = '@Unit.Distance.Kilometers';
+
+  /**
+   * Defines unit distance meters asset
+   * @type {String}
+   */
+  static UNIT_DISTANCE_METERS = '@Unit.Distance.Meters';
+
+  /**
+   * Defines unit distance miles asset
+   * @type {String}
+   */
+  static UNIT_DISTANCE_MILES = '@Unit.Distance.Miles';
+
+  /**
+   * Defines unit distance yards asset
+   * @type {String}
+   */
+  static UNIT_DISTANCE_YARDS = '@Unit.Distance.Yards';
+
+  /**
+   * Defines unit mass grams asset
+   * @type {String}
+   */
+  static UNIT_MASS_GRAMS = '@Unit.Mass.Grams';
+
+  /**
+   * Defines unit mass kilogram asset
+   * @type {String}
+   */
+  static UNIT_MASS_KILOGRAMS = '@Unit.Mass.Kilograms';
+
+  /**
+   * Defines unit percent asset
+   * @type {String}
+   */
+  static UNIT_PERCENT = '@Unit.Percent';
+
+  /**
+   * Defines unit temperature celsius asset
+   * @type {String}
+   */
+  static UNIT_TEMPERATURE_CELSIUS = '@Unit.Temperature.Celsius';
+
+  /**
+   * Defines unit temperature degrees asset
+   * @type {String}
+   */
+  static UNIT_TEMPERATURE_DEGREES = '@Unit.Temperature.Degrees';
+
+  /**
+   * Defines unit temperature fahrenheit asset
+   * @type {String}
+   */
+  static UNIT_TEMPERATURE_FAHRENHEIT = '@Unit.Temperature.Fahrenheit';
+
+  /**
+   * Defines unit temperature kelvin asset
+   * @type {String}
+   */
+  static UNIT_TEMPERATURE_KELVIN = '@Unit.Temperature.Kelvin';
+
+  /**
+   * Defines unit volume cubic feet asset
+   * @type {String}
+   */
+  static UNIT_VOLUME_CUBIC_FEET = '@Unit.Volume.CubicFeet';
+
+  /**
+   * Defines unit volume cubic meters asset
+   * @type {String}
+   */
+  static UNIT_VOLUME_CUBIC_METERS = '@Unit.Volume.CubicMeters';
+
+  /**
+   * Defines unit volume gallons asset
+   * @type {String}
+   */
+  static UNIT_VOLUME_GALLONS = '@Unit.Volume.Gallons';
+
+  /**
+   * Defines unit volume liters asset
+   * @type {String}
+   */
+  static UNIT_VOLUME_LITERS = '@Unit.Volume.Liters';
+
+  /**
+   * Defines unit volume pints asset
+   * @type {String}
+   */
+  static UNIT_VOLUME_PINTS = '@Unit.Volume.Pints';
+
+  /**
+   * Defines unit volume quarts asset
+   * @type {String}
+   */
+  static UNIT_VOLUME_QUARTS = '@Unit.Volume.Quarts';
+
+  /**
+   * Defines unit weight ounces asset
+   * @type {String}
+   */
+  static UNIT_WEIGHT_OUNCES = '@Unit.Weight.Ounces';
+
+  /**
+   * Defines unit weight pounds asset
+   * @type {String}
+   */
+  static UNIT_WEIGHT_POUNDS = '@Unit.Weight.Pounds';
 
   /**
    * Defines value close asset
