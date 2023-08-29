@@ -512,6 +512,7 @@ Device Types | Supported Attributes | Description
 `AirConditioner` | *[`PowerState`](#powerstate)*, [`TargetTemperature`](#targettemperature), [`CurrentTemperature`](#currenttemperature), [`FanSpeed`](#fanspeed), [`FanDirection`](#fandirection), [`FanOscillate`](#fanoscillate) | A device that cools the air in interior spaces.
 `AirFreshener` | Same as `Fan` | A device that emits pleasant odors and masks unpleasant odors in interior spaces.
 `AirPurifier` | Same as `Fan` | A device that improves the quality of air in interior spaces.
+`AirQualityMonitor` | [`CurrentTemperature`](#currenttemperature), [`CurrentHumidity`](#currenthumidity), [`BatteryLevel`](#batterylevel) | A device that measures air quality in interior spaces.
 `Automobile` | [`BatteryLevel`](#batterylevel), [`FanSpeed`](#fanspeed), [`LockState`](#lockstate), [`PowerState`](#powerstate), [`TargetTemperature`](#targettemperature), [`CurrentTemperature`](#currenttemperature) | A motor vehicle (automobile, car).
 `AutomobileAccessory` | [`BatteryLevel`](#batterylevel), [`CameraStream`](#camerastream), [`FanSpeed`](#fanspeed), [`PowerState`](#powerstate) | A smart device in an automobile, such as a dash camera.
 `Blind`, `Curtain`, `Shade` | *[`OpenState`](#openstate)*, *[`PositionState`](#positionstate)*, [`TiltAngle`](#tiltangle), [`TargetOpenState`](#targetopenstate), [`CurrentOpenState`](#currentopenstate) | A window covering on the inside of a structure.
@@ -542,6 +543,7 @@ Device Types | Supported Attributes | Description
 `Oven` | *[`PowerState`](#powerstate)* | An oven cooking appliance.
 `Phone` | *[`PowerState`](#powerstate)* | A non-mobile phone, such as landline or an IP phone.
 `Printer` | *[`PowerState`](#powerstate)* | A device that prints.
+`Remote` | *[`PowerState`](#powerstate)* | A device that support stateless events, such as a remote switch or smart button.
 `Router` | Same as `NetworkHardware` | A network router.
 `Screen` | Same as `Television` | A projector screen.
 `SecurityPanel` | *[`ArmState`](#armstate)*, [`BurglaryAlarm`](#burglaryalarm), [`CarbonMonoxideAlarm`](#carbonmonoxidealarm), [`FireAlarm`](#firealarm), [`WaterAlarm`](#wateralarm), [`AlarmAlert`](#alarmalert), [`ReadyAlert`](#readyalert), [`TroubleAlert`](#troublealert), [`ZonesAlert`](#zonesalert) | A security panel.

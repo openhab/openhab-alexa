@@ -22,6 +22,7 @@ import discoveryActivityTest from './discovery/activity.test.js';
 import discoveryAirConditionerTest from './discovery/airConditioner.test.js';
 import discoveryAirFreshenerTest from './discovery/airFreshener.test.js';
 import discoveryAirPurifierTest from './discovery/airPurifier.test.js';
+import discoveryAirQualityMonitorTest from './discovery/airQualityMonitor.test.js';
 import discoveryAutomobileTest from './discovery/automobile.test.js';
 import discoveryAutomobileAccessoryTest from './discovery/automobileAccessory.test.js';
 import discoveryBlindTest from './discovery/blind.test.js';
@@ -52,6 +53,7 @@ import discoveryOutletTest from './discovery/outlet.test.js';
 import discoveryOvenTest from './discovery/oven.test.js';
 import discoveryPhoneTest from './discovery/phone.test.js';
 import discoveryPrinterTest from './discovery/printer.test.js';
+import discoveryRemoteTest from './discovery/remote.test.js';
 import discoveryRouterTest from './discovery/router.test.js';
 import discoverySceneTest from './discovery/scene.test.js';
 import discoveryScreenTest from './discovery/screen.test.js';
@@ -102,6 +104,7 @@ export default {
     discoveryAirConditionerTest,
     discoveryAirFreshenerTest,
     discoveryAirPurifierTest,
+    discoveryAirQualityMonitorTest,
     discoveryAutomobileTest,
     discoveryAutomobileAccessoryTest,
     discoveryBlindTest,
@@ -132,6 +135,7 @@ export default {
     discoveryOvenTest,
     discoveryPhoneTest,
     discoveryPrinterTest,
+    discoveryRemoteTest,
     discoveryRouterTest,
     discoverySceneTest,
     discoveryScreenTest,
