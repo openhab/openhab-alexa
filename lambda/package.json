@@ -27,7 +27,7 @@
     "test:coverage": "c8 npm test"
   },
   "dependencies": {
-    "agentkeepalive": "^4.3.0",
+    "agentkeepalive": "^4.5.0",
     "axios": "^1.5.0",
     "sprintf-js": "^1.1.2",
     "uuid": "^9.0.0",
