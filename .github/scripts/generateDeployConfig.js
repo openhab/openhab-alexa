@@ -118,8 +118,6 @@ function updateSkillManifest() {
   const schema = loadSchema(SKILL_MANIFEST_FILE);
   // Extract publishing information from manifest
   const { publishingInformation } = schema.manifest;
-  // Set publishing distribution mode as public
-  publishingInformation.distributionMode = 'PUBLIC';
   // Set publishing testing instructions username and passowrd
   publishingInformation.testingInstructions = publishingInformation.testingInstructions
     .replace('%TESTING_USERNAME%', process.env.TESTING_USERNAME)
