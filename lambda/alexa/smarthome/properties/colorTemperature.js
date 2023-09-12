@@ -26,7 +26,7 @@ export default class ColorTemperature extends AlexaProperty {
    * @return {Array}
    */
   get supportedItemTypes() {
-    return [ItemType.DIMMER, ItemType.NUMBER];
+    return [ItemType.DIMMER, ItemType.NUMBER, ItemType.NUMBER_TEMPERATURE];
   }
 
   /**
@@ -110,7 +110,7 @@ export default class ColorTemperature extends AlexaProperty {
    * @return {Boolean}
    */
   get requiresSetColorReset() {
-    return this.item.type === ItemType.NUMBER && this.parameters[Parameter.REQUIRES_SET_COLOR_RESET] === true;
+    return this.item.type !== ItemType.DIMMER && this.parameters[Parameter.REQUIRES_SET_COLOR_RESET] === true;
   }
 
   /**

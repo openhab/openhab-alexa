@@ -180,6 +180,16 @@ export default {
       }
     },
     {
+      type: 'Number:Temperature',
+      name: 'colorTemperature11',
+      label: 'Color Temperature 11',
+      metadata: {
+        alexa: {
+          value: 'ColorTemperature'
+        }
+      }
+    },
+    {
       type: 'Color',
       name: 'light99',
       label: '', // Item skipped because no label or synonyms metadata value
@@ -371,6 +381,15 @@ export default {
           item: { name: 'colorTemperature10', type: 'Number' }
         }
       ]
+    },
+    colorTemperature11: {
+      capabilities: [
+        'Alexa.ColorTemperatureController.colorTemperatureInKelvin',
+        'Alexa.EndpointHealth.connectivity',
+        'Alexa'
+      ],
+      displayCategories: ['LIGHT'],
+      friendlyName: 'Color Temperature 11'
     }
   }
 };
