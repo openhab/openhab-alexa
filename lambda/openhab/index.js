@@ -14,7 +14,6 @@
 import fs from 'node:fs';
 import axios from 'axios';
 import { HttpsAgent } from 'agentkeepalive';
-import { sprintf } from 'sprintf-js';
 import { validate as uuidValidate } from 'uuid';
 import { ItemType, ItemValue } from './constants.js';
 
@@ -243,17 +242,17 @@ export default class OpenHAB {
    * @return {String}
    */
   static formatItemState(item) {
-    const format = item.stateDescription?.pattern?.match(/%(?:[.0]\d+)?[df]/)?.[0] || '%f';
     const state = item.state;
-    const type = item.groupType || item.type;
+    const type = (item.groupType || item.type).split(':')[0];
 
-    switch (type.split(':')[0]) {
-      case ItemType.DIMMER:
-      case ItemType.NUMBER:
-      case ItemType.ROLLERSHUTTER:
-        return sprintf(format, parseFloat(state));
-      default:
-        return state;
+    if (type === ItemType.DIMMER || type === ItemType.NUMBER || type === ItemType.ROLLERSHUTTER) {
+      const { precision, specifier } =
+        item.stateDescription?.pattern?.match(/%\d*(?:\.(?<precision>\d+))?(?<specifier>[df])/)?.groups || {};
+      const value = parseFloat(state);
+
+      return specifier === 'd' ? value.toFixed() : precision <= 16 ? value.toFixed(precision) : value.toString();
     }
+
+    return state;
   }
 }
