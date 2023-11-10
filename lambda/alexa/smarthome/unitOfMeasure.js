@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import { sprintf } from 'sprintf-js';
 import { Dimension, UnitSymbol, UnitSystem } from '#openhab/constants.js';
 
 /**
@@ -492,28 +491,16 @@ class UnitsOfMeasure {
    * @return {Object}
    */
   static getUnitOfMeasure({ dimension, unitSymbol, statePresentation, system = UnitSystem.METRIC }) {
-    // Determine symbol using item unit symbol or item state presentation pattern
-    const symbol = unitSymbol ?? this.getUnitSymbol(statePresentation);
+    // Determine symbol using item unit symbol or matching item state presentation with supported list
+    const symbol =
+      unitSymbol ??
+      Object.values(UnitSymbol).find((symbol) =>
+        new RegExp(`%\\d*(?:\\.\\d+)?[df]\\s*[%]?${symbol}$`).test(statePresentation)
+      );
     // Return unit of measure using symbol/dimension or fallback to default value using dimension/system
     return (
       this.#UOMS.find((uom) => uom.symbol === symbol && (!dimension || uom.dimension === dimension)) ||
       this.#UOMS.find((uom) => uom.default && uom.dimension === dimension && (!uom.system || uom.system === system))
     );
-  }
-
-  /**
-   * Returns unit symbol based on given item state presentation pattern
-   * @param  {String} pattern
-   * @return {String}
-   */
-  static getUnitSymbol(pattern) {
-    try {
-      // Use a random number to format the item state presentation
-      const presentation = sprintf(pattern, Math.random());
-      // Return symbol based on the supported list matching the formatted item state presentation
-      return Object.values(UnitSymbol).find((symbol) => new RegExp(`\\d\\s*${symbol}$`).test(presentation));
-    } catch {
-      return undefined;
-    }
   }
 }
