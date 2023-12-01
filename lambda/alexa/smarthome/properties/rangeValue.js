@@ -175,8 +175,8 @@ export default class RangeValue extends Generic {
     const range = parameters[Parameter.SUPPORTED_RANGE]
       ? parameters[Parameter.SUPPORTED_RANGE]
       : item.stateDescription
-      ? [item.stateDescription.minimum, item.stateDescription.maximum, item.stateDescription.step]
-      : [];
+        ? [item.stateDescription.minimum, item.stateDescription.maximum, item.stateDescription.step]
+        : [];
     // Update supported range values if valid (min < max; max - min > prec), otherwise set to undefined
     parameters[Parameter.SUPPORTED_RANGE] =
       range[0] < range[1] && range[1] - range[0] > Math.abs(range[2]) ? range : undefined;
@@ -188,8 +188,8 @@ export default class RangeValue extends Generic {
     const presets = parameters[Parameter.PRESETS]
       ? parameters[Parameter.PRESETS]
       : item.stateDescription?.options
-      ? Object.fromEntries(item.stateDescription.options.map((option) => [option.value, option.label]))
-      : {};
+        ? Object.fromEntries(item.stateDescription.options.map((option) => [option.value, option.label]))
+        : {};
     // Update presets parameter, removing duplicate labels and entries
     //  with out of range values, not multiple of range precision, or with no valid labels
     parameters[Parameter.PRESETS] = Object.entries(presets)

@@ -118,12 +118,12 @@ export default class FanSpeed extends DeviceAttribute {
                       ...(level === 0
                         ? { 0: [AlexaAssetCatalog.VALUE_OFF] }
                         : level === 1
-                        ? { 1: [AlexaAssetCatalog.VALUE_LOW, AlexaAssetCatalog.VALUE_MINIMUM] }
-                        : level === Math.ceil(speedLevels / 2)
-                        ? { [level]: [AlexaAssetCatalog.VALUE_MEDIUM] }
-                        : level === speedLevels
-                        ? { [level]: [AlexaAssetCatalog.VALUE_HIGH, AlexaAssetCatalog.VALUE_MAXIMUM] }
-                        : {})
+                          ? { 1: [AlexaAssetCatalog.VALUE_LOW, AlexaAssetCatalog.VALUE_MINIMUM] }
+                          : level === Math.ceil(speedLevels / 2)
+                            ? { [level]: [AlexaAssetCatalog.VALUE_MEDIUM] }
+                            : level === speedLevels
+                              ? { [level]: [AlexaAssetCatalog.VALUE_HIGH, AlexaAssetCatalog.VALUE_MAXIMUM] }
+                              : {})
                     }),
                     {}
                   )

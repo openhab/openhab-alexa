@@ -146,8 +146,8 @@ export default class Generic extends DecoupleState {
     const capabilityNames = parameters[Parameter.CAPABILITY_NAMES]
       ? parameters[Parameter.CAPABILITY_NAMES]
       : metadata.isPartOfGroupEndpoint
-      ? [].concat(item.label, item.metadata?.synonyms?.value.split(','))
-      : this.defaultCapabilityNames;
+        ? [].concat(item.label, item.metadata?.synonyms?.value.split(','))
+        : this.defaultCapabilityNames;
     // Update capability names parameter removing duplicate and invalid labels
     parameters[Parameter.CAPABILITY_NAMES] = capabilityNames
       .filter((label) => typeof label === 'string')
