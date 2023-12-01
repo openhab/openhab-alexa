@@ -88,8 +88,8 @@ export default class ChannelController extends AlexaHandler {
           return new RegExp(`^${name}`, 'i').test(mapping);
         })
       : supportsChannelNumber
-      ? channelNumber
-      : undefined;
+        ? channelNumber
+        : undefined;
 
     // Throw invalid value error if command not defined
     if (typeof command === 'undefined') {

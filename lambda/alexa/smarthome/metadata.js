@@ -42,8 +42,8 @@ export default class AlexaMetadata {
       values: item.metadata?.alexa
         ? AlexaMetadata.convertValue(item.metadata.alexa.value, ParameterType.LIST)
         : item.tags && settings.runtime.version === '2'
-        ? item.tags
-        : [],
+          ? item.tags
+          : [],
       // Use item alexa metadata config if defined
       config: item.metadata?.alexa?.config || {},
       // Add group config if defined

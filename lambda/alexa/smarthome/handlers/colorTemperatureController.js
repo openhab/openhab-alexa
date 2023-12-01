@@ -133,8 +133,8 @@ export default class ColorTemperatureController extends AlexaHandler {
       command = !isNaN(increment)
         ? clamp(parseInt(temperatureState) + (isIncreaseRequest ? -1 : 1) * increment, 0, 100)
         : isIncreaseRequest
-        ? ItemValue.DECREASE
-        : ItemValue.INCREASE;
+          ? ItemValue.DECREASE
+          : ItemValue.INCREASE;
     } else {
       // Increment current state by defined value as Number doesn't support IncreaseDecreaseType commands
       command = clamp(

@@ -183,10 +183,10 @@ export default class Mode extends Generic {
           .map(([command, labels]) => [command, labels || this.defautCommandLabels[command]])
           .reduce((modes, [command, labels]) => ({ ...modes, [command]: labels }), {})
       : parameters[Parameter.SUPPORTED_MODES]
-      ? parameters[Parameter.SUPPORTED_MODES]
-      : item.stateDescription?.options
-      ? Object.fromEntries(item.stateDescription.options.map((option) => [option.value, option.label]))
-      : {};
+        ? parameters[Parameter.SUPPORTED_MODES]
+        : item.stateDescription?.options
+          ? Object.fromEntries(item.stateDescription.options.map((option) => [option.value, option.label]))
+          : {};
 
     // Update supported modes parameter, removing duplicate labels and entries with no valid labels,
     //  and updating labels shortened format (e.g. Normal=:Cottons,Whites => Normal=Normal:Cottons,Whites=Whites)
