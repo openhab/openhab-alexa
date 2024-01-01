@@ -35,7 +35,7 @@
   "devDependencies": {
     "ajv": "^6.12.6",
     "c8": "^8.0.1",
-    "chai": "^4.3.10",
+    "chai": "^5.0.0",
     "chai-subset": "^1.6.0",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
