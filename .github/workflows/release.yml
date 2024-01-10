@@ -10,6 +10,9 @@ on:
         type: choice
         options: [ major, minor, patch, premajor, preminor, prepatch, prerelease ]
 
+permissions:
+  contents: read
+
 jobs:
   pkg-update:
     name: Package Version Update

@@ -5,10 +5,16 @@ on:
     branches: [ main ]
     paths: [ 'resources/locales/**' ]
 
+permissions:
+  contents: read
+
 jobs:
   update:
     name: Locale Updates
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout repository
