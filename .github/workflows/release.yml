@@ -1,0 +1,62 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-type:
+        description: Release Type
+        required: true
+        default: patch
+        type: choice
+        options: [ major, minor, patch, premajor, preminor, prepatch, prerelease ]
+
+jobs:
+  pkg-update:
+    name: Package Version Update
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    outputs:
+      version: ${{ steps.pkg-version.outputs.version }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+
+    - name: Bump package version
+      id: pkg-version
+      run: echo "version=$(npm version ${{ github.event.inputs.release-type }} --no-git-tag-version --preid=beta --tag-version-prefix=)" >> $GITHUB_OUTPUT
+      working-directory: lambda
+
+    - name: Commit and push changes
+      run: |
+        git config user.name openhab-bot
+        git config user.email bot@openhab.org
+        git commit -a -m "Bump version to ${{ steps.pkg-version.outputs.version }}"
+        git push
+
+  publish:
+    name: Release Publishing
+    runs-on: ubuntu-latest
+    needs: pkg-update
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - name: Draft and publish a new release
+      uses: release-drafter/release-drafter@v5
+      with:
+        version: ${{ needs.pkg-update.outputs.version }}
+        prerelease: ${{ startsWith(github.event.inputs.release-type, 'pre') }}
+        publish: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
