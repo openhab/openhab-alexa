@@ -182,12 +182,13 @@ export default {
       type: 'Number:Mass',
       name: 'range7',
       label: 'Range Value 7',
+      stateDescription: {
+        pattern: '%.1f %unit%',
+        readOnly: true
+      },
       metadata: {
         alexa: {
-          value: 'RangeValue',
-          config: {
-            nonControllable: true
-          }
+          value: 'RangeValue'
         }
       }
     },
@@ -852,7 +853,7 @@ export default {
       },
       configuration: {
         'Alexa.RangeController:range6': {
-          supportedRange: { minimumValue: 0, maximumValue: 10, precision: 1 },
+          supportedRange: { minimumValue: 0, maximumValue: 10, precision: 0.01 },
           unitOfMeasure: 'Alexa.Unit.Angle.Degrees'
         }
       },
@@ -889,7 +890,7 @@ export default {
       },
       configuration: {
         'Alexa.RangeController:range7': {
-          supportedRange: { minimumValue: 0, maximumValue: 10, precision: 1 },
+          supportedRange: { minimumValue: 0, maximumValue: 10, precision: 0.1 },
           unitOfMeasure: 'Alexa.Unit.Mass.Kilograms'
         }
       },
@@ -901,6 +902,7 @@ export default {
           parameters: {
             capabilityNames: ['@Setting.RangeValue'],
             nonControllable: true,
+            supportedRange: [0, 10, 0.1],
             unitOfMeasure: 'Mass.Kilograms'
           },
           item: { name: 'range7', type: 'Number:Mass' }

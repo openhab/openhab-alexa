@@ -15,7 +15,7 @@ import fs from 'node:fs';
 import axios from 'axios';
 import { HttpsAgent } from 'agentkeepalive';
 import { validate as uuidValidate } from 'uuid';
-import { ItemType, ItemValue } from './constants.js';
+import { ItemType, ItemValue, UnitSymbol } from './constants.js';
 
 /**
  * Defines openHAB class
@@ -246,13 +246,35 @@ export default class OpenHAB {
     const type = (item.groupType || item.type).split(':')[0];
 
     if (type === ItemType.DIMMER || type === ItemType.NUMBER || type === ItemType.ROLLERSHUTTER) {
-      const { precision, specifier } =
-        item.stateDescription?.pattern?.match(/%\d*(?:\.(?<precision>\d+))?(?<specifier>[df])/)?.groups || {};
+      const precision = OpenHAB.getStatePresentationPrecision(item.stateDescription?.pattern);
       const value = parseFloat(state);
 
-      return specifier === 'd' ? value.toFixed() : precision <= 16 ? value.toFixed(precision) : value.toString();
+      return isNaN(precision) ? value.toString() : value.toFixed(precision);
     }
 
     return state;
+  }
+
+  /**
+   * Returns state presentation precision for a given item state description pattern
+   *
+   * @param  {String} pattern
+   * @return {Number}
+   */
+  static getStatePresentationPrecision(pattern) {
+    const { precision, specifier } = pattern?.match(/%\d*(?:\.(?<precision>\d+))?(?<specifier>[df])/)?.groups || {};
+    return specifier === 'd' ? 0 : precision <= 16 ? parseInt(precision) : NaN;
+  }
+
+  /**
+   * Returns state presentation unit system for a given item state description pattern
+   *
+   * @param  {String} pattern
+   * @return {String}
+   */
+  static getStatePresentationUnitSymbol(pattern) {
+    return Object.values(UnitSymbol).find((symbol) =>
+      new RegExp(`%\\d*(?:\\.\\d+)?[df]\\s*[%]?${symbol}$`).test(pattern)
+    );
   }
 }

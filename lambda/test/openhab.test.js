@@ -63,15 +63,16 @@ describe('OpenHAB Tests', () => {
     it('https client cert', async () => {
       // set environment
       const certFile = 'cert.pfx';
+      const certData = 'data';
       const certPass = 'passphrase';
       sinon.stub(fs, 'existsSync').withArgs(certFile).returns(true);
-      sinon.stub(fs, 'readFileSync').withArgs(certFile).returns('pfx');
+      sinon.stub(fs, 'readFileSync').withArgs(certFile).returns(certData);
       nock(baseURL)
         .get('/')
         .reply(200)
         .on('request', ({ headers, options, socket }) => {
           expect(headers).to.not.have.property('authorization');
-          expect(options).to.nested.include({ 'agent.options.pfx': 'pfx', 'agent.options.passphrase': 'passphrase' });
+          expect(options).to.nested.include({ 'agent.options.pfx': certData, 'agent.options.passphrase': certPass });
           expect(socket).to.include({ timeout });
         });
       // run test
@@ -413,6 +414,42 @@ describe('OpenHAB Tests', () => {
         expect(error).to.be.instanceof(AxiosError).and.nested.include({ 'response.status': 400 });
       }
       expect(nock.isDone()).to.be.true;
+    });
+  });
+
+  describe('get state presentation precision', () => {
+    it('integer', async () => {
+      expect(OpenHAB.getStatePresentationPrecision('%d %%')).to.equal(0);
+    });
+
+    it('float', async () => {
+      expect(OpenHAB.getStatePresentationPrecision('%.1f °F')).to.equal(1);
+    });
+
+    it('no precision', async () => {
+      expect(OpenHAB.getStatePresentationPrecision('foo')).to.be.NaN;
+    });
+
+    it('undefined', async () => {
+      expect(OpenHAB.getStatePresentationPrecision(undefined)).to.be.NaN;
+    });
+  });
+
+  describe('get state presentation unit symbol', () => {
+    it('percent', async () => {
+      expect(OpenHAB.getStatePresentationUnitSymbol('%d %%')).to.equal('%');
+    });
+
+    it('temperature', async () => {
+      expect(OpenHAB.getStatePresentationUnitSymbol('%.1f °F')).to.equal('°F');
+    });
+
+    it('no symbol', async () => {
+      expect(OpenHAB.getStatePresentationUnitSymbol('%.1f')).to.be.undefined;
+    });
+
+    it('undefined', async () => {
+      expect(OpenHAB.getStatePresentationUnitSymbol(undefined)).to.be.undefined;
     });
   });
 });
