@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+import OpenHAB from '#openhab/index.js';
 import { ItemType } from '#openhab/constants.js';
 import { Parameter, ParameterType } from '../constants.js';
 import { AlexaPresetResources } from '../resources.js';
@@ -63,7 +64,9 @@ export default class RangeValue extends Generic {
    * @return {Array}
    */
   get defaultRange() {
-    return this.item.type === ItemType.DIMMER || this.item.type === ItemType.ROLLERSHUTTER ? [0, 100, 1] : [0, 10, 1];
+    return this.item.type === ItemType.DIMMER || this.item.type === ItemType.ROLLERSHUTTER
+      ? [0, 100, 1]
+      : [0, 10, this.isNonControllable ? 0.01 : 1];
   }
 
   /**
@@ -171,12 +174,17 @@ export default class RangeValue extends Generic {
     // Define supported range as follow:
     //  1) using parameter values if defined
     //  2) using item state description minimum, maximum & step values if available
-    //  3) empty array
+    //  3) using item state presentation precision for number item type non-controllable property if available
     const range = parameters[Parameter.SUPPORTED_RANGE]
       ? parameters[Parameter.SUPPORTED_RANGE]
-      : item.stateDescription
-        ? [item.stateDescription.minimum, item.stateDescription.maximum, item.stateDescription.step]
-        : [];
+      : [
+          item.stateDescription?.minimum ?? this.defaultRange[0],
+          item.stateDescription?.maximum ?? this.defaultRange[1],
+          item.stateDescription?.step ??
+            (item.type.split(':')[0] === ItemType.NUMBER && this.isNonControllable
+              ? 1 / 10 ** OpenHAB.getStatePresentationPrecision(item.stateDescription?.pattern)
+              : undefined)
+        ];
     // Update supported range values if valid (min < max; max - min > prec), otherwise set to undefined
     parameters[Parameter.SUPPORTED_RANGE] =
       range[0] < range[1] && range[1] - range[0] > Math.abs(range[2]) ? range : undefined;

@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+import OpenHAB from '#openhab/index.js';
 import { Dimension, UnitSymbol, UnitSystem } from '#openhab/constants.js';
 
 /**
@@ -491,12 +492,8 @@ class UnitsOfMeasure {
    * @return {Object}
    */
   static getUnitOfMeasure({ dimension, unitSymbol, statePresentation, system = UnitSystem.METRIC }) {
-    // Determine symbol using item unit symbol or matching item state presentation with supported list
-    const symbol =
-      unitSymbol ??
-      Object.values(UnitSymbol).find((symbol) =>
-        new RegExp(`%\\d*(?:\\.\\d+)?[df]\\s*[%]?${symbol}$`).test(statePresentation)
-      );
+    // Determine symbol using item unit symbol or state presentation
+    const symbol = unitSymbol || OpenHAB.getStatePresentationUnitSymbol(statePresentation);
     // Return unit of measure using symbol/dimension or fallback to default value using dimension/system
     return (
       this.#UOMS.find((uom) => uom.symbol === symbol && (!dimension || uom.dimension === dimension)) ||
