@@ -122,9 +122,6 @@ export default {
       type: 'Number:Dimensionless',
       name: 'range3',
       label: 'Range Value 3',
-      stateDescription: {
-        pattern: '%d %unit%' // Unit placeholder in state presentation
-      },
       metadata: {
         alexa: {
           value: 'RangeValue',
@@ -172,7 +169,8 @@ export default {
           value: 'RangeValue',
           config: {
             nonControllable: true,
-            // No action mappings support if non controllable
+            // No presets or action mappings support if non controllable
+            presets: '0=@Value.Close',
             actionMappings: 'Close=0'
           }
         }
