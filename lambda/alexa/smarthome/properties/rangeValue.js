@@ -192,12 +192,12 @@ export default class RangeValue extends Generic {
     // Define presets as follow:
     //  1) using parameter values if defined
     //  2) using item state options if available
-    //  3) empty object
-    const presets = parameters[Parameter.PRESETS]
+    //  3) empty object if non-controllable property
+    const presets = !this.isNonControllable
       ? parameters[Parameter.PRESETS]
-      : item.stateDescription?.options
-        ? Object.fromEntries(item.stateDescription.options.map((option) => [option.value, option.label]))
-        : {};
+        ? parameters[Parameter.PRESETS]
+        : Object.fromEntries(item.stateDescription?.options?.map((option) => [option.value, option.label]) || [])
+      : {};
     // Update presets parameter, removing duplicate labels and entries
     //  with out of range values, not multiple of range precision, or with no valid labels
     parameters[Parameter.PRESETS] = Object.entries(presets)
