@@ -22,6 +22,13 @@ import { ItemType, ItemValue, UnitSymbol } from './constants.js';
  */
 export default class OpenHAB {
   /**
+   * Defines item state presentation format pattern
+   * @type {RegExp}
+   */
+  static #STATE_PRESENTATION_PATTERN =
+    /%\d*(?:\.(?<precision>\d+))?(?<specifier>[df])\s*(?:%unit%|[%]?(?<symbol>.+))?$/;
+
+  /**
    * Constructor
    * @param {Object} config
    * @param {String} token
@@ -246,7 +253,7 @@ export default class OpenHAB {
     const type = (item.groupType || item.type).split(':')[0];
 
     if (type === ItemType.DIMMER || type === ItemType.NUMBER || type === ItemType.ROLLERSHUTTER) {
-      const precision = OpenHAB.getStatePresentationPrecision(item.stateDescription?.pattern);
+      const precision = this.getStatePresentationPrecision(item.stateDescription?.pattern);
       const value = parseFloat(state);
 
       return isNaN(precision) ? value.toString() : value.toFixed(precision);
@@ -262,7 +269,7 @@ export default class OpenHAB {
    * @return {Number}
    */
   static getStatePresentationPrecision(pattern) {
-    const { precision, specifier } = pattern?.match(/%\d*(?:\.(?<precision>\d+))?(?<specifier>[df])/)?.groups || {};
+    const { precision, specifier } = pattern?.match(this.#STATE_PRESENTATION_PATTERN)?.groups || {};
     return specifier === 'd' ? 0 : precision <= 16 ? parseInt(precision) : NaN;
   }
 
@@ -273,8 +280,7 @@ export default class OpenHAB {
    * @return {String}
    */
   static getStatePresentationUnitSymbol(pattern) {
-    return Object.values(UnitSymbol).find((symbol) =>
-      new RegExp(`%\\d*(?:\\.\\d+)?[df]\\s*[%]?${symbol}$`).test(pattern)
-    );
+    const { symbol } = pattern?.match(this.#STATE_PRESENTATION_PATTERN)?.groups || {};
+    return Object.values(UnitSymbol).includes(symbol) ? symbol : undefined;
   }
 }
