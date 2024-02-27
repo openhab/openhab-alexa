@@ -469,6 +469,72 @@
       "locale": "pt-BR"
     }
   ],
+  "@Setting.NetworkAccess": [
+    {
+      "text": "الوصول إلى الشبكة",
+      "locale": "ar-SA"
+    },
+    {
+      "text": "Netzwerkzugang",
+      "locale": "de-DE"
+    },
+    {
+      "text": "Network Access",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Network Access",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Network Access",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Network Access",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Network Access",
+      "locale": "en-US"
+    },
+    {
+      "text": "Acceso a Red",
+      "locale": "es-ES"
+    },
+    {
+      "text": "Acceso a Red",
+      "locale": "es-MX"
+    },
+    {
+      "text": "Acceso a Red",
+      "locale": "es-US"
+    },
+    {
+      "text": "Accès réseau",
+      "locale": "fr-CA"
+    },
+    {
+      "text": "Accès réseau",
+      "locale": "fr-FR"
+    },
+    {
+      "text": "नेटवर्क का उपयोग",
+      "locale": "hi-IN"
+    },
+    {
+      "text": "Accesso alla Rete",
+      "locale": "it-IT"
+    },
+    {
+      "text": "ネットワークアクセス",
+      "locale": "ja-JP"
+    },
+    {
+      "text": "Acesso à Rede",
+      "locale": "pt-BR"
+    }
+  ],
   "@Setting.Position": [
     {
       "text": "الموضع",
@@ -1923,28 +1989,6 @@
     {
       "text": "Acima",
       "locale": "pt-BR"
-    }
-  ],
-  "@Setting.NetworkAccess": [
-    {
-      "text": "Network Access",
-      "locale": "en-AU"
-    },
-    {
-      "text": "Network Access",
-      "locale": "en-CA"
-    },
-    {
-      "text": "Network Access",
-      "locale": "en-GB"
-    },
-    {
-      "text": "Network Access",
-      "locale": "en-IN"
-    },
-    {
-      "text": "Network Access",
-      "locale": "en-US"
     }
   ]
 }
