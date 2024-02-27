@@ -7,6 +7,7 @@
     "@Setting.Forward": "前方",
     "@Setting.Humidity": "湿度",
     "@Setting.Input": "入力",
+    "@Setting.NetworkAccess": "ネットワークアクセス",
     "@Setting.Position": "ポジション",
     "@Setting.RangeValue": "範囲値",
     "@Setting.Reverse": "逆",
