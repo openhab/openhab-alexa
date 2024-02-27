@@ -42,7 +42,6 @@ export default {
   expected: {
     gWirelessRouter: {
       capabilities: [
-        'Alexa.Networking.HomeNetworkController',
         'Alexa.ToggleController:guestNetwork.toggleState',
         'Alexa.PlaybackController',
         'Alexa.EndpointHealth.connectivity',

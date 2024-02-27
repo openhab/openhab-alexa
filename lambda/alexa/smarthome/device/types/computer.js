@@ -12,13 +12,13 @@
  */
 
 import AlexaDisplayCategory from '#alexa/smarthome/category.js';
-import NetworkDevice from './networkDevice.js';
+import GenericDevice from './genericDevice.js';
 
 /**
  * Defines computer device type class
- * @extends NetworkDevice
+ * @extends GenericDevice
  */
-export default class Computer extends NetworkDevice {
+export default class Computer extends GenericDevice {
   /**
    * Returns supported names
    * @return {Array}

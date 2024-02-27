@@ -58,7 +58,6 @@ export { default as Mode } from './mode.js';
 export { default as MotionDetectionState } from './motionDetectionState.js';
 export { default as MuteState } from './muteState.js';
 export { default as MuteStep } from './muteStep.js';
-export { default as NetworkAccess } from './networkAccess.js';
 export { default as ObstacleAlert } from './obstacleAlert.js';
 export { default as OpenState } from './openState.js';
 export { default as Percentage } from './percentage.js';

@@ -785,7 +785,7 @@ export default class AlexaAssetCatalog extends AlexaGlobalCatalog {
   /**
    * Returns custom catalog label values
    *  This is a temporary solution until Amazon provides the ability to upload our own catalog:
-   *    https://developer.amazon.com/docs/device-apis/resources-and-assets.html#upload-your-own-catalog
+   *    https://developer.amazon.com/docs/device-apis/resources-and-assets.html#upload-catalog
    *
    *  {
    *    '<assetId>': [

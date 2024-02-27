@@ -11,14 +11,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import NetworkDevice from './networkDevice.js';
+import GenericDevice from './genericDevice.js';
 import { BatteryLevel } from '../attributes/index.js';
 
 /**
  * Defines mobile device type class
- * @extends NetworkDevice
+ * @extends GenericDevice
  */
-export default class MobileDevice extends NetworkDevice {
+export default class MobileDevice extends GenericDevice {
   /**
    * Returns supported attributes
    * @return {Array}

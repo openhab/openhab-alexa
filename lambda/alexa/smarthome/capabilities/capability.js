@@ -248,7 +248,7 @@ export default class AlexaCapability {
 
   /**
    * Adds property for a given config object
-   * @param {Object}  config    [name, component, tag, parameters, item, metadata, settings, groups]
+   * @param {Object}  config    [name, component, tag, parameters, item, metadata, settings]
    */
   addProperty(config) {
     const { name } = config;
