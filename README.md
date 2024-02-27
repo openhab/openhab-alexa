@@ -123,7 +123,7 @@ To configure your server path and credentials, you will need to setup the CloudF
     ```
 
 2. If updating from ASK CLI v1:
-    1. Copy relevant settings from `lambda/smarthome/config.js` (ask-cli-v1) to [`ask-resources.json`](ask-resources.json) (ask-cli-v2). If configuring `OpenHABBaseURL`, be aware that it should now point to your server root level and not the rest endpoint. Additionally, move your client certificate to `lambda/ssl` if using that authentication method.
+    1. Copy relevant settings from `lambda/smarthome/config.js` (ask-cli-v1) to [`ask-resources.json`](ask-resources.json) (ask-cli-v2). If configuring `OpenHABBaseURL`, beware that it should now point to your server root level and not the rest endpoint. Additionally, move your client certificate to `lambda/ssl` if using that authentication method.
 
     2. Create the ASK CLI states file as `.ask/ask-states.json`, adding the skill ID listed in your [Alexa developer console](https://developer.amazon.com/alexa/console/ask). This will prevent duplicate skills from being created in your account.
 

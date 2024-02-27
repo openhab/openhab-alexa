@@ -12,7 +12,6 @@
  */
 
 import AlexaDisplayCategory from '#alexa/smarthome/category.js';
-import { Capability } from '#alexa/smarthome/constants.js';
 import GenericDevice from './genericDevice.js';
 
 /**
@@ -26,14 +25,6 @@ export default class NetworkHardware extends GenericDevice {
    */
   static get supportedNames() {
     return ['NetworkHardware'];
-  }
-
-  /**
-   * Returns group capabilities
-   * @return {Array}
-   */
-  static get groupCapabilities() {
-    return [{ name: Capability.NETWORKING_HOME_NETWORK_CONTROLLER }];
   }
 
   /**

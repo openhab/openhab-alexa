@@ -274,17 +274,6 @@ export default class AlexaEndpoint {
   }
 
   /**
-   * Returns relationships
-   * @return {Object}
-   */
-  getRelationships() {
-    return this.discoverableCapabilities.reduce(
-      (relationships, capability) => ({ ...relationships, ...capability.getRelationship() }),
-      {}
-    );
-  }
-
-  /**
    * Adds unique supported display categories
    * @param {Array} categories
    */
@@ -307,9 +296,8 @@ export default class AlexaEndpoint {
    * @param {Object} item
    * @param {Object} metadata
    * @param {Object} settings
-   * @param {Array}  groups
    */
-  addCapability({ name, instance, property, component, tag, parameters, item, metadata, settings, groups }) {
+  addCapability({ name, instance, property, component, tag, parameters, item, metadata, settings }) {
     // Define instance name for generic capabilities using capability/item names, if not defined already
     if (!instance && item) {
       instance = `${name.replace(/Controller$/, '')}:${item.name}`;
@@ -325,7 +313,7 @@ export default class AlexaEndpoint {
     if (typeof capability !== 'undefined') {
       // Add property to capability if name defined
       if (typeof property !== 'undefined') {
-        capability.addProperty({ name: property, component, tag, parameters, item, metadata, settings, groups });
+        capability.addProperty({ name: property, component, tag, parameters, item, metadata, settings });
       }
       // Add capability to list if new instance
       if (index === -1) {
@@ -449,9 +437,8 @@ export default class AlexaEndpoint {
    * Sets group endpoint based on given item
    * @param {Object} item
    * @param {Object} settings
-   * @param {Array}  groups
    */
-  setGroup(item, settings, groups) {
+  setGroup(item, settings) {
     // Initialize alexa metadata object
     const metadata = new AlexaMetadata(item, settings);
 
@@ -464,10 +451,6 @@ export default class AlexaEndpoint {
       // Set endpoint group properties if device type defined
       if (deviceType) {
         this.group = { deviceType, config: deviceType.getConfig(metadata) };
-        // Add device type group capabilities
-        for (const capability of deviceType.groupCapabilities) {
-          this.addCapability({ ...capability, item, metadata, settings, groups });
-        }
         // Add device type display categories
         this.addDisplayCategories(deviceType.displayCategories);
         break;
@@ -482,7 +465,6 @@ export default class AlexaEndpoint {
    */
   toJSON() {
     const cookie = this.getCookie();
-    const relationships = this.getRelationships();
 
     return {
       endpointId: this.id,
@@ -497,7 +479,6 @@ export default class AlexaEndpoint {
         customIdentifier: this.customIdentifier
       },
       ...(Object.keys(cookie).length > 0 && { cookie }),
-      ...(Object.keys(relationships).length > 0 && { relationships }),
       capabilities: this.getCapabilityInterfaces()
     };
   }
@@ -541,10 +522,9 @@ export default class AlexaEndpoint {
    * Returns new endpoint object based on item object
    * @param  {Object} item
    * @param  {Object} settings
-   * @param  {Array}  groups
    * @return {Object}
    */
-  static fromItem(item, settings, groups) {
+  static fromItem(item, settings) {
     // Initialize alexa endpoint object using item name as id
     const endpoint = new AlexaEndpoint(item.name);
     // Set endpoint details
@@ -552,7 +532,7 @@ export default class AlexaEndpoint {
 
     // Set group endpoint if is group type, otherwise add item capabilities to endpoint
     if (endpoint.type === ItemType.GROUP) {
-      endpoint.setGroup(item, settings, groups);
+      endpoint.setGroup(item, settings);
     } else {
       endpoint.addItemCapabilities(item, settings);
     }

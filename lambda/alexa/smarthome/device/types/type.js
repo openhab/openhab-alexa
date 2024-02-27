@@ -40,14 +40,6 @@ export default class DeviceType {
   }
 
   /**
-   * Returns group capabilities
-   * @return {Array}
-   */
-  static get groupCapabilities() {
-    return [];
-  }
-
-  /**
    * Returns display categories
    * @return {Array}
    */

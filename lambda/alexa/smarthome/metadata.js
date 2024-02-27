@@ -150,8 +150,7 @@ export default class AlexaMetadata {
    * @return {Object}
    */
   static parseCapability(value) {
-    const match = value.match(this.#CAPABILITY_PATTERN);
-    return match?.groups;
+    return value.match(this.#CAPABILITY_PATTERN)?.groups;
   }
 
   /**
@@ -160,7 +159,6 @@ export default class AlexaMetadata {
    * @return {Object}
    */
   static parseGroupEndpoint(value) {
-    const match = value.match(this.#GROUP_ENDPOINT_PATTERN);
-    return match?.groups;
+    return value.match(this.#GROUP_ENDPOINT_PATTERN)?.groups;
   }
 }

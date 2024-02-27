@@ -18,24 +18,9 @@ export default {
       type: 'Group',
       name: 'gComputer1',
       label: 'Computer',
-      groupNames: ['gRouter1'],
       metadata: {
         alexa: {
-          value: 'Computer',
-          config: {
-            hostname: 'workstation',
-            macAddress: '00:21:86:B5:6E:10'
-          }
-        }
-      }
-    },
-    {
-      type: 'Group',
-      name: 'gRouter1',
-      label: 'Router',
-      metadata: {
-        alexa: {
-          value: 'Router'
+          value: 'Computer'
         }
       }
     },
@@ -51,83 +36,62 @@ export default {
     },
     {
       type: 'Switch',
-      name: 'power',
+      name: 'power1',
       groupNames: ['gComputer1'],
       metadata: {
         alexa: {
           value: 'PowerState'
         }
       }
-    },
-    {
-      type: 'Group',
-      name: 'gComputer99',
-      label: 'Invalid Computer',
-      groupNames: ['gRouter99'],
-      metadata: {
-        alexa: {
-          value: 'Computer',
-          config: {
-            hostname: 'workstation',
-            macAddress: '00:21:86:B5:6E:10'
-          }
-        }
-      }
-    },
-    {
-      type: 'Group',
-      name: 'gRouter99',
-      label: 'Invalid Router',
-      metadata: {
-        alexa: {
-          value: 'Invalid'
-        }
-      }
-    },
-    {
-      type: 'Switch',
-      name: 'networkAccess99',
-      groupNames: ['gComputer99'],
-      metadata: {
-        alexa: {
-          value: 'NetworkAccess'
-        }
-      }
     }
   ],
+  catalog: {
+    '@Setting.NetworkAccess': [
+      {
+        text: 'Network Access',
+        locale: 'en-US'
+      }
+    ]
+  },
   expected: {
     gComputer1: {
       capabilities: [
-        'Alexa.Networking.ConnectedDevice',
-        'Alexa.Networking.AccessController.networkAccess',
+        'Alexa.ToggleController:NetworkAccess.toggleState',
         'Alexa.PowerController.powerState',
         'Alexa.EndpointHealth.connectivity',
         'Alexa'
       ],
       displayCategories: ['COMPUTER'],
       friendlyName: 'Computer',
-      configuration: {
-        'Alexa.Networking.ConnectedDevice': {
-          staticDeviceInformation: {
-            deviceName: 'Computer',
-            hostname: 'workstation',
-            macAddress: '00:21:86:B5:6E:10'
-          }
-        },
-        'Alexa.Networking.AccessController': {
-          supportsScheduling: false
+      propertyFlags: {
+        'Alexa.ToggleController:NetworkAccess': {
+          proactivelyReported: false,
+          retrievable: true,
+          nonControllable: false
         }
       },
-      relationships: {
-        isConnectedBy: {
-          endpointId: 'gRouter1'
+      resources: {
+        'Alexa.ToggleController:NetworkAccess': {
+          friendlyNames: ['text:Network Access:en-US']
         }
-      }
-    },
-    gRouter1: {
-      capabilities: ['Alexa.Networking.HomeNetworkController', 'Alexa'],
-      displayCategories: ['ROUTER'],
-      friendlyName: 'Router'
+      },
+      cookie: [
+        {
+          name: 'ToggleController',
+          instance: 'NetworkAccess',
+          property: 'toggleState',
+          parameters: {
+            capabilityNames: ['@Setting.NetworkAccess']
+          },
+          item: { name: 'networkAccess1', type: 'Switch' }
+        },
+        {
+          name: 'PowerController',
+          property: 'powerState',
+          parameters: {},
+          item: { name: 'power1', type: 'Switch' }
+        }
+      ]
     }
   }
 };

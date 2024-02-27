@@ -11,6 +11,8 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+import { ItemType } from '#openhab/constants.js';
+import AlexaAssetCatalog from '#alexa/smarthome/catalog.js';
 import { Capability, Property } from '#alexa/smarthome/constants.js';
 import DeviceAttribute from './attribute.js';
 
@@ -28,10 +30,34 @@ export default class NetworkAccess extends DeviceAttribute {
   }
 
   /**
-   * Returns capabilities
+   * Returns capability names
    * @return {Array}
    */
-  static getCapabilities() {
-    return [{ name: Capability.NETWORKING_ACCESS_CONTROLLER, property: Property.NETWORK_ACCESS }];
+  static get capabilityNames() {
+    return [AlexaAssetCatalog.SETTING_NETWORK_ACCESS];
+  }
+
+  /**
+   * Returns capabilities
+   * @param  {Object} item
+   * @return {Array}
+   */
+  static getCapabilities(item) {
+    const itemType = item.groupType || item.type;
+
+    switch (itemType) {
+      // Switch on/off control
+      case ItemType.SWITCH:
+        return [
+          {
+            name: Capability.TOGGLE_CONTROLLER,
+            instance: NetworkAccess.name,
+            property: Property.TOGGLE_STATE,
+            parameters: {
+              capabilityNames: NetworkAccess.capabilityNames
+            }
+          }
+        ];
+    }
   }
 }
