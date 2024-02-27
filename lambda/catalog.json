@@ -1924,5 +1924,27 @@
       "text": "Acima",
       "locale": "pt-BR"
     }
+  ],
+  "@Setting.NetworkAccess": [
+    {
+      "text": "Network Access",
+      "locale": "en-AU"
+    },
+    {
+      "text": "Network Access",
+      "locale": "en-CA"
+    },
+    {
+      "text": "Network Access",
+      "locale": "en-GB"
+    },
+    {
+      "text": "Network Access",
+      "locale": "en-IN"
+    },
+    {
+      "text": "Network Access",
+      "locale": "en-US"
+    }
   ]
 }
