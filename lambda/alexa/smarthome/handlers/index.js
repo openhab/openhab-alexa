@@ -26,7 +26,6 @@ export { default as EqualizerController } from './equalizerController.js';
 export { default as InputController } from './inputController.js';
 export { default as LockController } from './lockController.js';
 export { default as ModeController } from './modeController.js';
-export { default as NetworkingAccessController } from './networkingAccessController.js';
 export { default as PercentageController } from './percentageController.js';
 export { default as PlaybackController } from './playbackController.js';
 export { default as PowerController } from './powerController.js';

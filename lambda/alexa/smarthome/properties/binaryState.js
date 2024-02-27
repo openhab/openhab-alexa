@@ -25,7 +25,7 @@ export default class BinaryState extends AlexaProperty {
    * @return {Array}
    */
   get supportedItemTypes() {
-    return this.supportsCommands ? [ItemType.SWITCH] : [ItemType.CONTACT, ItemType.SWITCH];
+    return [ItemType.CONTACT, ItemType.SWITCH];
   }
 
   /**
@@ -36,14 +36,6 @@ export default class BinaryState extends AlexaProperty {
     return {
       [Parameter.INVERTED]: ParameterType.BOOLEAN
     };
-  }
-
-  /**
-   * Returns if supports commands
-   * @return {Boolean}
-   */
-  get supportsCommands() {
-    return false;
   }
 
   /**
@@ -62,21 +54,6 @@ export default class BinaryState extends AlexaProperty {
    */
   get inverted() {
     return this.parameters[Parameter.INVERTED] === true;
-  }
-
-  /**
-   * Returns openhab command
-   * @param  {String} value
-   * @return {String}
-   */
-  getCommand(value) {
-    // Invert command value if property inverted
-    if (this.inverted) {
-      value = this.supportedValues[0] === value ? this.supportedValues[1] : this.supportedValues[0];
-    }
-
-    // Return command map value from parent method
-    return super.getCommand(value);
   }
 
   /**

@@ -12,15 +12,7 @@
  */
 
 import { expect } from 'chai';
-import {
-  clamp,
-  compressJSON,
-  decompressJSON,
-  decamelize,
-  isMACAddress,
-  parseUrl,
-  stripPunctuation
-} from '#root/utils.js';
+import { clamp, compressJSON, decompressJSON, decamelize, parseUrl, stripPunctuation } from '#root/utils.js';
 
 describe('Utilities Tests', () => {
   describe('clamp', () => {
@@ -58,20 +50,6 @@ describe('Utilities Tests', () => {
 
     it('space separator', () => {
       expect(decamelize('FooBar', ' ')).to.equal('foo bar');
-    });
-  });
-
-  describe('is mac address', () => {
-    it('eui-48 format with colon separator', () => {
-      expect(isMACAddress('00:21:86:B5:6E:10')).to.be.true;
-    });
-
-    it('eui-64 format with dash separator', () => {
-      expect(isMACAddress('00-21-86-FF-FE-B5-6E-10')).to.be.true;
-    });
-
-    it('invalid format', () => {
-      expect(isMACAddress('invalid')).to.be.false;
     });
   });
 

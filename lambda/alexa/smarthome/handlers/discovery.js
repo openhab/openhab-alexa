@@ -65,7 +65,6 @@ export default class Discovery extends AlexaHandler {
     //  - all items
     //  - server settings
     const [items, settings] = await Promise.all([openhab.getAllItems(), openhab.getServerSettings()]);
-    const groups = items.filter((item) => item.type === ItemType.GROUP && !item.groupType);
     const endpoints = [];
     const groupItems = [];
 
@@ -74,7 +73,7 @@ export default class Discovery extends AlexaHandler {
     // Iterate over items retrieved
     for (const item of items) {
       // Create new endpoint from item
-      const endpoint = AlexaEndpoint.fromItem(item, settings, groups);
+      const endpoint = AlexaEndpoint.fromItem(item, settings);
       // Skip item if endpoint friendly name not defined or if already part of a group
       if (!endpoint.friendlyName || groupItems.includes(item.name)) {
         continue;

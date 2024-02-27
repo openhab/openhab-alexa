@@ -220,14 +220,6 @@ export default class AlexaCapability {
   }
 
   /**
-   * Returns relationship
-   * @return {Object}
-   */
-  getRelationship() {
-    return {};
-  }
-
-  /**
    * Returns context properties
    * @return {Array}
    */
@@ -248,7 +240,7 @@ export default class AlexaCapability {
 
   /**
    * Adds property for a given config object
-   * @param {Object}  config    [name, component, tag, parameters, item, metadata, settings, groups]
+   * @param {Object}  config    [name, component, tag, parameters, item, metadata, settings]
    */
   addProperty(config) {
     const { name } = config;

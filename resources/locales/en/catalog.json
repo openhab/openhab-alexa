@@ -7,6 +7,7 @@
     "@Setting.Forward": "Forward",
     "@Setting.Humidity": "Humidity",
     "@Setting.Input": "Input",
+    "@Setting.NetworkAccess": "Network Access",
     "@Setting.Position": "Position",
     "@Setting.RangeValue": "Range Value",
     "@Setting.Reverse": "Reverse",

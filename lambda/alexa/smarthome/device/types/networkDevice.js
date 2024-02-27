@@ -11,7 +11,6 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import { Capability, Property } from '#alexa/smarthome/constants.js';
 import GenericDevice from './genericDevice.js';
 import { NetworkAccess } from '../attributes/index.js';
 
@@ -26,13 +25,5 @@ export default class NetworkDevice extends GenericDevice {
    */
   static get supportedAttributes() {
     return [NetworkAccess, ...super.supportedAttributes];
-  }
-
-  /**
-   * Returns group capabilities
-   * @return {Array}
-   */
-  static get groupCapabilities() {
-    return [{ name: Capability.NETWORKING_CONNECTED_DEVICE, property: Property.CONNECTED_DEVICE }];
   }
 }

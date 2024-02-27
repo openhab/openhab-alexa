@@ -60,15 +60,6 @@ export const decamelize = (string, separator = '_') => {
 };
 
 /**
- * Returns if given string is a mac address
- * @param  {String}  string
- * @return {Boolean}
- */
-export const isMACAddress = (string) => {
-  return /^([0-9a-fA-F]{2}(-|:)){7}[0-9a-fA-F]{2}$|^([0-9a-fA-F]{2}(-|:)){5}[0-9a-fA-F]{2}$/.test(string);
-};
-
-/**
  * Returns parsed url object
  * @param  {String} url
  * @param  {String} base

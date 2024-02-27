@@ -651,6 +651,12 @@ export default class AlexaAssetCatalog extends AlexaGlobalCatalog {
   static SETTING_INPUT = '@Setting.Input';
 
   /**
+   * Defines setting network access
+   * @type {String}
+   */
+  static SETTING_NETWORK_ACCESS = '@Setting.NetworkAccess';
+
+  /**
    * Defines setting position asset
    * @type {String}
    */
@@ -785,7 +791,7 @@ export default class AlexaAssetCatalog extends AlexaGlobalCatalog {
   /**
    * Returns custom catalog label values
    *  This is a temporary solution until Amazon provides the ability to upload our own catalog:
-   *    https://developer.amazon.com/docs/device-apis/resources-and-assets.html#upload-your-own-catalog
+   *    https://developer.amazon.com/docs/device-apis/resources-and-assets.html#upload-catalog
    *
    *  {
    *    '<assetId>': [

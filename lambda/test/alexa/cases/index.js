@@ -77,7 +77,6 @@ import equalizerControllerTest from './equalizerController.test.js';
 import inputControllerTest from './inputController.test.js';
 import lockControllerTest from './lockController.test.js';
 import modeControllerTest from './modeController.test.js';
-import networkingAccessControllerTest from './networkingAccessController.test.js';
 import percentageControllerTest from './percentageController.test.js';
 import playbackControllerTest from './playbackController.test.js';
 import powerControllerTest from './powerController.test.js';
@@ -160,7 +159,6 @@ export default {
   InputController: [inputControllerTest],
   LockController: [lockControllerTest],
   ModeController: [modeControllerTest],
-  NetworkingAccessController: [networkingAccessControllerTest],
   PercentageController: [percentageControllerTest],
   PlaybackController: [playbackControllerTest],
   PowerController: [powerControllerTest],

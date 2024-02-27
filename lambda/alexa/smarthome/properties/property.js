@@ -318,10 +318,9 @@ export default class AlexaProperty {
    * @param  {Object} item
    * @param  {Object} metadata
    * @param  {Object} settings
-   * @param  {Array}  groups
    * @return {Object}
    */
-  static create({ name, component, tag, parameters, item, metadata, settings, groups }) {
+  static create({ name, component, tag, parameters, item, metadata, settings }) {
     const property = new this(name, component, tag, parameters, item);
 
     // Return if property has not required component or supported item type
@@ -331,7 +330,7 @@ export default class AlexaProperty {
 
     // Update property parameters based on metadata if provided, otherwise normalize existing parameters
     if (metadata) {
-      property.updateParameters(item, metadata, settings, groups);
+      property.updateParameters(item, metadata, settings);
     } else {
       property.normalizeParameters();
     }
