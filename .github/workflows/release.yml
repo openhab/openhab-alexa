@@ -56,7 +56,7 @@ jobs:
 
     steps:
     - name: Draft a new release
-      uses: release-drafter/release-drafter@v5
+      uses: release-drafter/release-drafter@v6
       with:
         version: ${{ needs.pkg-update.outputs.version }}
         prerelease: ${{ startsWith(github.event.inputs.release-type, 'pre') }}
