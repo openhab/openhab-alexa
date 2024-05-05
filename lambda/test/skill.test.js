@@ -16,10 +16,10 @@ import sinon from 'sinon';
 import esmock from 'esmock';
 import log from '#root/log.js';
 
-describe('Skill Event Tests', () => {
+describe('Skill Event Tests', function () {
   let smarthomeStub, skill;
 
-  beforeEach(async () => {
+  beforeEach(async function () {
     // set stub environment
     smarthomeStub = sinon.stub();
     skill = await esmock('#root/index.js', {
@@ -29,13 +29,13 @@ describe('Skill Event Tests', () => {
     });
   });
 
-  afterEach(() => {
+  afterEach(function () {
     // restore stub environment
     sinon.restore();
   });
 
-  describe('smarthome', () => {
-    it('payload version 3', async () => {
+  describe('smarthome', function () {
+    it('payload version 3', async function () {
       // set environment
       const event = {
         directive: {
@@ -52,7 +52,7 @@ describe('Skill Event Tests', () => {
       expect(smarthomeStub.firstCall.args).to.deep.equal([event]);
     });
 
-    it('payload version 2', async () => {
+    it('payload version 2', async function () {
       // set environment
       const event = {
         header: {
