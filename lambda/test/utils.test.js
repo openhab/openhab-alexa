@@ -14,75 +14,75 @@
 import { expect } from 'chai';
 import { clamp, compressJSON, decompressJSON, decamelize, parseUrl, stripPunctuation } from '#root/utils.js';
 
-describe('Utilities Tests', () => {
-  describe('clamp', () => {
-    it('within range', () => {
+describe('Utilities Tests', function () {
+  describe('clamp', function () {
+    it('within range', function () {
       expect(clamp(42, 0, 100)).to.equal(42);
     });
 
-    it('below range', () => {
+    it('below range', function () {
       expect(clamp(-42, 0, 100)).to.equal(0);
     });
 
-    it('above range', () => {
+    it('above range', function () {
       expect(clamp(142, 0, 100)).to.equal(100);
     });
   });
 
-  describe('compress/decompress json', () => {
+  describe('compress/decompress json', function () {
     const object = { foo: 1, bar: 2 };
 
-    it('compressed json string', () => {
+    it('compressed json string', function () {
       const string = compressJSON(object);
       expect(decompressJSON(string)).to.deep.equal(object);
     });
 
-    it('uncompressed json string', () => {
+    it('uncompressed json string', function () {
       const string = JSON.stringify(object);
       expect(decompressJSON(string)).to.deep.equal(object);
     });
   });
 
-  describe('decamelize', () => {
-    it('default separator', () => {
+  describe('decamelize', function () {
+    it('default separator', function () {
       expect(decamelize('fooBar')).to.equal('foo_bar');
     });
 
-    it('space separator', () => {
+    it('space separator', function () {
       expect(decamelize('FooBar', ' ')).to.equal('foo bar');
     });
   });
 
-  describe('parse url', () => {
-    it('url only', () => {
+  describe('parse url', function () {
+    it('url only', function () {
       expect(parseUrl('https://foo/bar'))
         .to.be.instanceof(URL)
         .and.to.have.property('href')
         .that.equals('https://foo/bar');
     });
 
-    it('url with base', () => {
+    it('url with base', function () {
       expect(parseUrl('https://foo/bar', 'https://bar'))
         .to.be.instanceof(URL)
         .and.to.have.property('href')
         .that.equals('https://bar/bar');
     });
 
-    it('url invalid', () => {
+    it('url invalid', function () {
       expect(parseUrl('invalid')).to.be.undefined;
     });
   });
 
-  describe('strip punctuation', () => {
-    it('no change', () => {
+  describe('strip punctuation', function () {
+    it('no change', function () {
       expect(stripPunctuation('foo bar')).to.equal('foo bar');
     });
 
-    it('with punctuation no extra space', () => {
+    it('with punctuation no extra space', function () {
       expect(stripPunctuation('foo_bar')).to.equal('foo bar');
     });
 
-    it('with punctuation and extra space', () => {
+    it('with punctuation and extra space', function () {
       expect(stripPunctuation('[ foo | bar ]')).to.equal('foo bar');
     });
   });

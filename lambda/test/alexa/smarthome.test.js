@@ -27,31 +27,31 @@ import chaiCustom from './chai.js';
 use(chaiSubset);
 use(chaiCustom);
 
-describe('Alexa Smart Home Tests', () => {
+/* eslint-disable mocha/no-setup-in-describe */
+describe('Alexa Smart Home Tests', function () {
   let commandStub, updateStub;
 
-  beforeEach(() => {
+  beforeEach(function () {
     // set stub environment
     commandStub = sinon.stub(OpenHAB.prototype, 'sendCommand');
     updateStub = sinon.stub(OpenHAB.prototype, 'postUpdate');
   });
 
-  afterEach(() => {
+  afterEach(function () {
     // restore stub environment
     sinon.restore();
   });
 
   for (const [name, tests] of Object.entries(testCases)) {
-    describe(`${decamelize(name, ' ')} request`, () => {
+    describe(`${decamelize(name, ' ')} request`, function () {
       for (const test of tests.flat()) {
         if (name === 'Discovery') {
           // Discovery Test
-          const { description, catalog = {}, items = [], expected = {} } = test;
-          const directive = getDirective({ header: { namespace: 'Alexa.Discovery', name: 'Discover' } });
-          const settings = { regional: {}, runtime: {}, ...test.settings };
-
-          it(description, async () => {
-            // set stub environment
+          it(test.description, async function () {
+            // set environment
+            const { catalog = {}, items = [], expected = {} } = test;
+            const directive = getDirective({ header: { namespace: 'Alexa.Discovery', name: 'Discover' } });
+            const settings = { regional: {}, runtime: {}, ...test.settings };
             sinon.stub(AlexaAssetCatalog, 'labelValues').value(catalog);
             sinon.stub(OpenHAB.prototype, 'getAllItems').resolves(items);
             sinon.stub(OpenHAB.prototype, 'getServerSettings').resolves(settings);
@@ -69,15 +69,14 @@ describe('Alexa Smart Home Tests', () => {
           });
         } else {
           // Controller Test
-          const { description, error, items = [] } = test;
-          const directive = getDirective(test.directive);
-          const expected = {
-            alexa: { ...test.expected.alexa },
-            openhab: { commands: [], updates: [], ...test.expected.openhab }
-          };
-
-          it(description, async () => {
-            // set stub environment
+          it(test.description, async function () {
+            // set environment
+            const { error, items = [] } = test;
+            const directive = getDirective(test.directive);
+            const expected = {
+              alexa: { ...test.expected.alexa },
+              openhab: { commands: [], updates: [], ...test.expected.openhab }
+            };
             sinon.stub(OpenHAB.prototype, 'getItem').callsFake(() => items.shift());
             if (error instanceof Error) {
               const { namespace, name } = directive.header;

@@ -19,7 +19,7 @@ import { AxiosError } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import OpenHAB from '#openhab/index.js';
 
-describe('OpenHAB Tests', () => {
+describe('OpenHAB Tests', function () {
   // set default environment
   const baseURL = 'https://foobar';
   const token = 'token';
@@ -27,20 +27,20 @@ describe('OpenHAB Tests', () => {
 
   let openhab;
 
-  beforeEach(() => {
+  beforeEach(function () {
     // create new openhab instance
     openhab = new OpenHAB({ baseURL }, token, timeout);
   });
 
-  afterEach(() => {
+  afterEach(function () {
     // restore stub environment
     sinon.restore();
     // clean up nock environment
     nock.cleanAll();
   });
 
-  describe('authentication request', () => {
-    it('https oauth2 token', async () => {
+  describe('authentication request', function () {
+    it('https oauth2 token', async function () {
       // set environment
       sinon.stub(fs, 'existsSync').returns(false);
       nock(baseURL).get('/').matchHeader('Authorization', `Bearer ${token}`).reply(200);
@@ -49,7 +49,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('https basic auth', async () => {
+    it('https basic auth', async function () {
       // set environment
       const user = 'username';
       const pass = 'password';
@@ -60,7 +60,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('https client cert', async () => {
+    it('https client cert', async function () {
       // set environment
       const certFile = 'cert.pfx';
       const certData = 'data';
@@ -80,7 +80,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('https no auth', async () => {
+    it('https no auth', async function () {
       // set environment
       sinon.stub(fs, 'existsSync').returns(false);
       nock(baseURL)
@@ -95,8 +95,8 @@ describe('OpenHAB Tests', () => {
     });
   });
 
-  describe('get item state', () => {
-    it('defined state', async () => {
+  describe('get item state', function () {
+    it('defined state', async function () {
       // set environment
       nock(baseURL).get('/rest/items/foo').reply(200, { name: 'foo', state: '42', type: 'Dimmer' });
       // run test
@@ -104,7 +104,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('defined state with state description but no pattern', async () => {
+    it('defined state with state description but no pattern', async function () {
       // set environment
       nock(baseURL)
         .get('/rest/items/foo')
@@ -114,7 +114,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('undefined state', async () => {
+    it('undefined state', async function () {
       // set environment
       nock(baseURL).get('/rest/items/foo').reply(200, { name: 'foo', state: 'NULL', type: 'Dimmer' });
       // run test
@@ -122,7 +122,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('dimmer state with pattern', async () => {
+    it('dimmer state with pattern', async function () {
       // set environment
       nock(baseURL)
         .get('/rest/items/foo')
@@ -137,7 +137,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('number dimensionless group state with pattern', async () => {
+    it('number dimensionless group state with pattern', async function () {
       // set environment
       nock(baseURL)
         .get('/rest/items/foo')
@@ -153,7 +153,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('rollershutter state with pattern', async () => {
+    it('rollershutter state with pattern', async function () {
       // set environment
       nock(baseURL)
         .get('/rest/items/foo')
@@ -168,7 +168,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('string state with no state description', async () => {
+    it('string state with no state description', async function () {
       // set environment
       nock(baseURL).get('/rest/items/foo').reply(200, { name: 'foo', state: 'bar', type: 'String' });
       // run test
@@ -176,7 +176,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('item not found error', async () => {
+    it('item not found error', async function () {
       // set environment
       nock(baseURL).get('/rest/items/foo').reply(404);
       // run test
@@ -189,14 +189,14 @@ describe('OpenHAB Tests', () => {
     });
   });
 
-  describe('get all items', () => {
+  describe('get all items', function () {
     // set default environment
     const qs = {
       fields: 'editable,groupNames,groupType,name,label,metadata,stateDescription,tags,type,unitSymbol',
       metadata: 'alexa,autoupdate,channel,synonyms'
     };
 
-    it('successful', async () => {
+    it('successful', async function () {
       // set environment
       const items = [
         { name: 'foo', type: 'Dimmer' },
@@ -208,7 +208,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('type error', async () => {
+    it('type error', async function () {
       // set environment
       nock(baseURL)
         .get('/rest/items')
@@ -231,7 +231,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('unauthorized error', async () => {
+    it('unauthorized error', async function () {
       // set environment
       nock(baseURL).get('/rest/items').query(qs).reply(401);
       // run test
@@ -244,15 +244,20 @@ describe('OpenHAB Tests', () => {
     });
   });
 
-  describe('get server settings', () => {
+  describe('get server settings', function () {
     // set default environment
     const language = 'en';
     const measurementSystem = 'US';
     const region = 'US';
     const locale = `${language}_${region}`;
-    const uuid = uuidv4();
 
-    it('oh2.4', async () => {
+    let uuid;
+
+    beforeEach(function () {
+      uuid = uuidv4();
+    });
+
+    it('oh2.4', async function () {
       // set environment
       nock(baseURL)
         // root resource
@@ -272,7 +277,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('oh2.5', async () => {
+    it('oh2.5', async function () {
       // set environment
       nock(baseURL)
         // root resource
@@ -292,7 +297,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('oh3.x', async () => {
+    it('oh3.x', async function () {
       // set environment
       nock(baseURL)
         // root resource
@@ -309,7 +314,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('oh3.x with invalid uuid', async () => {
+    it('oh3.x with invalid uuid', async function () {
       // set environment
       nock(baseURL)
         // root resource
@@ -326,7 +331,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('oh3.x with unauthorized uuid', async () => {
+    it('oh3.x with unauthorized uuid', async function () {
       // set environment
       nock(baseURL)
         // root resource
@@ -343,7 +348,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('undefined root resource', async () => {
+    it('undefined root resource', async function () {
       // set environment
       nock(baseURL)
         // root resource
@@ -357,7 +362,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('request error', async () => {
+    it('request error', async function () {
       // set environment
       nock(baseURL)
         // root resource
@@ -373,8 +378,8 @@ describe('OpenHAB Tests', () => {
     });
   });
 
-  describe('send item command', () => {
-    it('successful', async () => {
+  describe('send item command', function () {
+    it('successful', async function () {
       // set environment
       nock(baseURL).post('/rest/items/foo', '42').reply(200);
       // run test
@@ -382,7 +387,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('item not found error', async () => {
+    it('item not found error', async function () {
       // set environment
       nock(baseURL).post('/rest/items/foo', '42').reply(404);
       // run test
@@ -395,8 +400,8 @@ describe('OpenHAB Tests', () => {
     });
   });
 
-  describe('update item state', () => {
-    it('successful', async () => {
+  describe('update item state', function () {
+    it('successful', async function () {
       // set environment
       nock(baseURL).put('/rest/items/foo/state', '42').reply(202);
       // run test
@@ -404,7 +409,7 @@ describe('OpenHAB Tests', () => {
       expect(nock.isDone()).to.be.true;
     });
 
-    it('item state null error', async () => {
+    it('item state null error', async function () {
       // set environment
       nock(baseURL).put('/rest/items/foo/state', 'invalid').reply(400);
       // run test
@@ -417,38 +422,38 @@ describe('OpenHAB Tests', () => {
     });
   });
 
-  describe('get state presentation precision', () => {
-    it('integer', async () => {
+  describe('get state presentation precision', function () {
+    it('integer', async function () {
       expect(OpenHAB.getStatePresentationPrecision('%d %%')).to.equal(0);
     });
 
-    it('float', async () => {
+    it('float', async function () {
       expect(OpenHAB.getStatePresentationPrecision('%.1f °F')).to.equal(1);
     });
 
-    it('no precision', async () => {
+    it('no precision', async function () {
       expect(OpenHAB.getStatePresentationPrecision('foo')).to.be.NaN;
     });
 
-    it('undefined', async () => {
+    it('undefined', async function () {
       expect(OpenHAB.getStatePresentationPrecision(undefined)).to.be.NaN;
     });
   });
 
-  describe('get state presentation unit symbol', () => {
-    it('percent', async () => {
+  describe('get state presentation unit symbol', function () {
+    it('percent', async function () {
       expect(OpenHAB.getStatePresentationUnitSymbol('%d %%')).to.equal('%');
     });
 
-    it('temperature', async () => {
+    it('temperature', async function () {
       expect(OpenHAB.getStatePresentationUnitSymbol('%.1f °F')).to.equal('°F');
     });
 
-    it('no symbol', async () => {
+    it('no symbol', async function () {
       expect(OpenHAB.getStatePresentationUnitSymbol('%.1f')).to.be.undefined;
     });
 
-    it('undefined', async () => {
+    it('undefined', async function () {
       expect(OpenHAB.getStatePresentationUnitSymbol(undefined)).to.be.undefined;
     });
   });
