@@ -64,12 +64,5 @@ module.exports = {
     } catch {
       throw new Error(`Failed to save schema: ${file}`);
     }
-  },
-
-  /**
-   * Sleeps for a given number of milliseconds
-   * @param  {Number} msec
-   * @return {Promise}
-   */
-  sleep: (msec) => new Promise((resolve) => setTimeout(resolve, msec))
+  }
 };
