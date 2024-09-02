@@ -41,7 +41,7 @@
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-mocha": "^10.4.3",
-    "eslint-plugin-n": "^17.9.0",
+    "eslint-plugin-n": "^17.10.2",
     "eslint-plugin-prettier": "^5.2.1",
     "esmock": "^2.6.7",
     "mocha": "^10.4.0",
