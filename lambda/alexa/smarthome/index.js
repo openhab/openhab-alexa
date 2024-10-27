@@ -80,7 +80,7 @@ const logError = (error, directive) => {
 
   // Define log level channel and error message based on error type
   if (error instanceof AxiosError) {
-    level = 'warn';
+    level = error.response?.status ? 'warn' : 'error';
     message = `RequestError: ${error.message}`;
   } else {
     level = 'error';
