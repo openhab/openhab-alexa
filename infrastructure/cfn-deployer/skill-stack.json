@@ -130,7 +130,7 @@
             "Arn"
           ]
         },
-        "MemorySize": 128,
+        "MemorySize": 256,
         "Timeout": 10,
         "Environment": {
           "Variables": {
