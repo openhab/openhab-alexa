@@ -33,7 +33,7 @@
     "winston": "^3.15.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
+    "@eslint/js": "^9.14.0",
     "ajv": "^6.12.6",
     "c8": "^10.1.2",
     "chai": "^5.1.1",
