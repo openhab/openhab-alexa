@@ -29,7 +29,7 @@
   "dependencies": {
     "agentkeepalive": "^4.5.0",
     "axios": "^1.7.7",
-    "uuid": "^10.0.0",
+    "uuid": "^11.0.2",
     "winston": "^3.15.0"
   },
   "devDependencies": {
