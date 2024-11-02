@@ -81,6 +81,7 @@ export class AlexaCapabilityResources {
     'hi-IN',
     'it-IT',
     'ja-JP',
+    'nl-NL',
     'pt-BR'
   ];
 
@@ -133,7 +134,7 @@ export class AlexaCapabilityResources {
 /**
  * Defines alexa mode resources class
  *  https://developer.amazon.com/docs/device-apis/resources-and-assets.html#mode-resources
- * @extends AlexaCapabilityResource
+ * @extends AlexaCapabilityResources
  */
 export class AlexaModeResources extends AlexaCapabilityResources {
   /**
@@ -147,7 +148,7 @@ export class AlexaModeResources extends AlexaCapabilityResources {
 /**
  * Defines alexa preset resources class
  *  https://developer.amazon.com/docs/device-apis/resources-and-assets.html#preset-resources
- * @extends AlexaCapabilityResource
+ * @extends AlexaCapabilityResources
  */
 export class AlexaPresetResources extends AlexaCapabilityResources {
   /**
