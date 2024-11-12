@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "agentkeepalive": "^4.5.0",
+    "aws-xray-sdk": "^3.10.1",
     "axios": "^1.7.7",
     "uuid": "^11.0.2",
     "winston": "^3.16.0"

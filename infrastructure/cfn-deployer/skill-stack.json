@@ -93,6 +93,14 @@
                   "Resource": {
                     "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${LambdaFunctionName}:*"
                   }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "xray:PutTraceSegments",
+                    "xray:PutTelemetryRecords"
+                  ],
+                  "Resource": "*"
                 }
               ]
             }
@@ -132,6 +140,9 @@
         },
         "MemorySize": 256,
         "Timeout": 10,
+        "TracingConfig": {
+          "Mode": "Active"
+        },
         "Environment": {
           "Variables": {
             "LOG_LEVEL": {

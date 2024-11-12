@@ -11,6 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+import AWSXRay from 'aws-xray-sdk';
 import { AxiosError } from 'axios';
 import config from '#root/config.js';
 import log from '#root/log.js';
@@ -22,9 +23,10 @@ import { AlexaError, InvalidDirectiveError } from './errors.js';
 /**
  * Handles alexa smart home skill request
  * @param  {Object}  request
+ * @param  {Object}  context
  * @return {Promise}
  */
-export const handleRequest = async (request) => {
+export const handleRequest = async (request, context) => {
   // Initialize directive object
   const directive = new AlexaDirective(request.directive);
   // Initialize openhab object
@@ -47,12 +49,23 @@ export const handleRequest = async (request) => {
     }
 
     // Get alexa response from handler function
-    response = await handler(directive, openhab);
+    await AWSXRay.captureAsyncFunc(handler.name, async (subsegment) => {
+      const timeoutId = setTimeout(() => subsegment.close("Timed out"), context.getRemainingTimeInMillis() - 250);
+      subsegment.addAnnotation('handler', handler.name);
+      response = await handler(directive, openhab);
+      clearTimeout(timeoutId);
+      subsegment.close();
+    });
 
     // Add response context properties if directive has endpoint
     if (directive.hasEndpoint) {
-      const properties = await directive.endpoint.getContextProperties(openhab);
-      response.setContextProperties(properties);
+      await AWSXRay.captureAsyncFunc('addContextProperties', async (subsegment) => {
+        const timeoutId = setTimeout(() => subsegment.close("Timed out"), context.getRemainingTimeInMillis() - 250);
+        const properties = await directive.endpoint.getContextProperties(openhab);
+        response.setContextProperties(properties);
+        clearTimeout(timeoutId);
+        subsegment.close();
+      });
     }
   } catch (error) {
     // Log error if not alexa error

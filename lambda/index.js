@@ -11,19 +11,32 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+import https from 'node:https';
+import AWSXRay from 'aws-xray-sdk';
 import log from './log.js';
 import { handleRequest } from './alexa/smarthome/index.js';
 
 /**
  * Defines skill event handler
  * @param  {Object}  event
+ * @param  {Object}  context
  * @return {Promise}
  */
-export const handler = async (event) => {
+export const handler = async (event, context) => {
+  AWSXRay.captureHTTPsGlobal(https);
+  AWSXRay.capturePromise();
+
   log.info('Received event:', event);
 
   if (event.directive?.header.payloadVersion === '3') {
-    return handleRequest(event);
+    return AWSXRay.captureAsyncFunc('handleRequest', async (subsegment) => {
+      const timeoutId = setTimeout(() => subsegment.close("Timed out"), context.getRemainingTimeInMillis() - 250);
+      subsegment.addMetadata('event', event);
+      const response = await handleRequest(event, context);
+      clearTimeout(timeoutId);
+      subsegment.close();
+      return response;
+    });
   }
 
   log.warn('Unsupported event:', event);
