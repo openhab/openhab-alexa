@@ -11,7 +11,7 @@ permissions:
 jobs:
   docs:
     name: Documentation Deployment
-    if: github.event.release.prerelease != true
+    if: github.event_name == 'release' && !github.event.release.prerelease
     runs-on: ubuntu-latest
 
     steps:
@@ -44,9 +44,9 @@ jobs:
     - name: Generate deployment config
       run: node .github/scripts/generateDeployConfig.js
       env:
-        DEPLOY_ENV: ${{ github.event.release.prerelease && 'development' || 'live' }}
+        DEPLOY_ENV: ${{ github.event_name == 'release' && !github.event.release.prerelease && 'live' || 'development' }}
         FUNCTION_NAME: openhab-alexa
-        LOG_LEVEL: ${{ github.event.release.prerelease && 'info' || 'error' }}
+        LOG_LEVEL: ${{ github.event_name == 'release' && !github.event.release.prerelease && 'error' || 'info' }}
         OPENHAB_BASE_URL: https://myopenhab.org
         RELEASE_VERSION: ${{ github.event.release.tag_name }}
         SKILL_ID: ${{ secrets.SKILL_ID }}
@@ -69,7 +69,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Submit skill for certification
-      if: github.event.release.prerelease != true
+      if: github.event_name == 'release' && !github.event.release.prerelease
       run: >
         ask smapi submit-skill-for-certification
         --skill-id "${{ secrets.SKILL_ID }}"
