@@ -93,19 +93,28 @@ function updateSkillInfraTemplate() {
       Description: `${schema.Resources.AlexaSkillFunction.Properties.Description} (${process.env.RELEASE_VERSION})`
     }
   };
-  // Define skill function version permission resource name
-  const permissionResource = `AlexaSkillFunctionPermission${revision}`;
-  // Add skill function version permission resource
-  schema.Resources[permissionResource] = {
+  // Add skill function alias resource
+  schema.Resources.AlexaSkillFunctionAlias = {
+    Type: 'AWS::Lambda::Alias',
+    DeletionPolicy: 'Retain',
+    Properties: {
+      Name: 'live',
+      FunctionName: { Ref: 'AlexaSkillFunction' },
+      FunctionVersion: { 'Fn::GetAtt': [versionResource, 'Version'] },
+      Description: `${schema.Resources.AlexaSkillFunction.Properties.Description} (Live)`
+    }
+  };
+  // Add skill function alias permission resource
+  schema.Resources.AlexaSkillFunctionAliasPermission = {
     Type: 'AWS::Lambda::Permission',
     DeletionPolicy: 'Retain',
     Properties: {
       ...schema.Resources.AlexaSkillFunctionPermission.Properties,
-      FunctionName: { Ref: versionResource }
+      FunctionName: { Ref: 'AlexaSkillFunctionAlias' }
     }
   };
   // Update skill endpoint output value
-  schema.Outputs.SkillEndpoint.Value = { Ref: versionResource };
+  schema.Outputs.SkillEndpoint.Value = { Ref: 'AlexaSkillFunctionAlias' };
   // Save skill infrastructure template schema
   saveSchema(schema, SKILL_INFRA_TEMPLATE_FILE);
 }
