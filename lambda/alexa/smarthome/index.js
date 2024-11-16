@@ -13,6 +13,7 @@
 
 import { AxiosError } from 'axios';
 import config from '#root/config.js';
+import Debug from '#root/debug.js';
 import log from '#root/log.js';
 import OpenHAB from '#openhab/index.js';
 import AlexaDirective from './directive.js';
@@ -22,15 +23,21 @@ import { AlexaError, InvalidDirectiveError } from './errors.js';
 /**
  * Handles alexa smart home skill request
  * @param  {Object}  request
+ * @param  {Object}  context
  * @return {Promise}
  */
-export const handleRequest = async (request) => {
+export const handleRequest = async (request, context) => {
+  // Initialize debug object
+  const debug = new Debug();
   // Initialize directive object
   const directive = new AlexaDirective(request.directive);
   // Initialize openhab object
-  const openhab = new OpenHAB(config.openhab, directive.auth.token, AlexaResponse.TIMEOUT);
+  const openhab = new OpenHAB(config.openhab, debug, directive.auth.token, AlexaResponse.TIMEOUT);
 
   let response;
+
+  // Start debug timeout timer
+  debug.startTimer(directive, context);
 
   try {
     // Get directive handler function
@@ -47,12 +54,16 @@ export const handleRequest = async (request) => {
     }
 
     // Get alexa response from handler function
-    response = await handler(directive, openhab);
+    await debug.captureAsyncFunc(handler.name, async () => {
+      response = await handler(directive, openhab);
+    });
 
     // Add response context properties if directive has endpoint
     if (directive.hasEndpoint) {
-      const properties = await directive.endpoint.getContextProperties(openhab);
-      response.setContextProperties(properties);
+      await debug.captureAsyncFunc('addContextProperties', async () => {
+        const properties = await directive.endpoint.getContextProperties(openhab);
+        response.setContextProperties(properties);
+      });
     }
   } catch (error) {
     // Log error if not alexa error
@@ -63,6 +74,9 @@ export const handleRequest = async (request) => {
     // Get alexa error response
     response = directive.error(error instanceof AlexaError ? error : AlexaError.from(error));
   }
+
+  // Cancel debug timeout timer
+  debug.cancelTimer();
 
   // Log response object
   log.info('Response:', response.toJSON());

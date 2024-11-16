@@ -31,11 +31,12 @@ export default class OpenHAB {
   /**
    * Constructor
    * @param {Object} config
+   * @param {Object} debug
    * @param {String} token
    * @param {Number} timeout
    */
-  constructor(config, token, timeout) {
-    this._client = OpenHAB.createClient(config, token, timeout);
+  constructor(config, debug, token, timeout) {
+    this._client = OpenHAB.createClient(config, debug, token, timeout);
   }
 
   /**
@@ -205,11 +206,12 @@ export default class OpenHAB {
   /**
    * Returns request client
    * @param  {Object} config
+   * @param  {Object} debug
    * @param  {String} token
    * @param  {Number} timeout
    * @return {Object}
    */
-  static createClient(config, token, timeout) {
+  static createClient(config, debug, token, timeout) {
     const client = axios.create({
       baseURL: config.baseURL,
       headers: {
@@ -237,8 +239,22 @@ export default class OpenHAB {
       client.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
 
+    // Set request interceptor
+    client.interceptors.request.use((config) => {
+      debug.startTrace(`${config.method.toUpperCase()} ${config.url}`);
+      return config;
+    });
     // Set response interceptor
-    client.interceptors.response.use((response) => response.data);
+    client.interceptors.response.use(
+      (response) => {
+        debug.endTrace(`${response.config.method.toUpperCase()} ${response.config.url}`);
+        return response.data;
+      },
+      (error) => {
+        debug.endTrace(`${error.config.method.toUpperCase()} ${error.config.url}`, error.message);
+        return Promise.reject(error);
+      }
+    );
 
     return client;
   }
