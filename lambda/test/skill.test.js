@@ -17,6 +17,9 @@ import esmock from 'esmock';
 import log from '#root/log.js';
 
 describe('Skill Event Tests', function () {
+  // set default environment
+  const context = { awsRequestId: 'request-id' };
+
   let smarthomeStub, skill;
 
   beforeEach(async function () {
@@ -47,9 +50,9 @@ describe('Skill Event Tests', function () {
         }
       };
       // run test
-      await skill.handler(event);
+      await skill.handler(event, context);
       expect(smarthomeStub.called).to.be.true;
-      expect(smarthomeStub.firstCall.args).to.deep.equal([event]);
+      expect(smarthomeStub.firstCall.args).to.deep.equal([event, context]);
     });
 
     it('payload version 2', async function () {
@@ -63,7 +66,7 @@ describe('Skill Event Tests', function () {
       };
       const logWarn = sinon.stub(log, 'warn');
       // run test
-      await skill.handler(event);
+      await skill.handler(event, context);
       expect(smarthomeStub.called).to.be.false;
       expect(logWarn.called).to.be.true;
       expect(logWarn.firstCall.args).to.deep.equal(['Unsupported event:', event]);

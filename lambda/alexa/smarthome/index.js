@@ -12,7 +12,6 @@
  */
 
 import { AxiosError } from 'axios';
-import config from '#root/config.js';
 import log from '#root/log.js';
 import OpenHAB from '#openhab/index.js';
 import AlexaDirective from './directive.js';
@@ -22,13 +21,14 @@ import { AlexaError, InvalidDirectiveError } from './errors.js';
 /**
  * Handles alexa smart home skill request
  * @param  {Object}  request
+ * @param  {Object}  context
  * @return {Promise}
  */
-export const handleRequest = async (request) => {
+export const handleRequest = async (request, context) => {
   // Initialize directive object
   const directive = new AlexaDirective(request.directive);
   // Initialize openhab object
-  const openhab = new OpenHAB(config.openhab, directive.auth.token, AlexaResponse.TIMEOUT);
+  const openhab = new OpenHAB(context.awsRequestId, directive.auth.token, AlexaResponse.TIMEOUT);
 
   let response;
 

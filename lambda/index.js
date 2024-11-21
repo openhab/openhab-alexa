@@ -17,13 +17,14 @@ import { handleRequest } from './alexa/smarthome/index.js';
 /**
  * Defines skill event handler
  * @param  {Object}  event
+ * @param  {Object}  context
  * @return {Promise}
  */
-export const handler = async (event) => {
+export const handler = async (event, context) => {
   log.info('Received event:', event);
 
   if (event.directive?.header.payloadVersion === '3') {
-    return handleRequest(event);
+    return handleRequest(event, context);
   }
 
   log.warn('Unsupported event:', event);
