@@ -12,7 +12,6 @@
  */
 
 import { AxiosError } from 'axios';
-import config from '#root/config.js';
 import Debug from '#root/debug.js';
 import log from '#root/log.js';
 import OpenHAB from '#openhab/index.js';
@@ -32,7 +31,7 @@ export const handleRequest = async (request, context) => {
   // Initialize directive object
   const directive = new AlexaDirective(request.directive);
   // Initialize openhab object
-  const openhab = new OpenHAB(config.openhab, debug, directive.auth.token, AlexaResponse.TIMEOUT);
+  const openhab = new OpenHAB(debug, context.awsRequestId, directive.auth.token, AlexaResponse.TIMEOUT);
 
   let response;
 
