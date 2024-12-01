@@ -46,7 +46,7 @@
     "esmock": "^2.6.9",
     "mocha": "^10.7.3",
     "nock": "^13.5.5",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.1",
     "sinon": "^19.0.2"
   },
   "engines": {
