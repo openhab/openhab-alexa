@@ -482,6 +482,36 @@
             "منزل متصل"
           ],
           "updatesDescription": "تم تقديم صيغة بيانات وصفية مبسطة جديدة. يرجى مراجعة أحدث الوثائق لمزيد من المعلومات: https://www.openhab.org/link/alexa"
+        },
+        "nl-NL": {
+          "name": "openHAB",
+          "summary": "Beheer je openHAB systeem met Amazon Alexa en myopenHAB.org.",
+          "description": "Met de openHAB Skill voor Amazon Alexa kunt u lampen, thermostaten en andere aangesloten items op een openHAB-systeem bedienen via de myopenHAB.org cloudservice.\n\nHet open Home Automation Bus (openHAB)-project heeft als doel een universeel integratieplatform te bieden voor alles rondom huisautomatisering. Het is ontworpen om absoluut leveranciersonafhankelijk en hardware-/protocolonafhankelijk te zijn. openHAB brengt verschillende bussystemen, hardwareapparaten en interfaceprotocollen samen. Ondersteunde technologieën zijn onder andere KNX, Modbus, DMX, Philips Hue, PLCBus, Sonos, Plugwise, IHC/Elko, RFXCOM, Homematic, Koubachi, Pulseaudio, Samsung TV, Bluetooth, One-Wire, Novelan, Asterisk, generieke seriële apparaten en nog veel meer. U vindt openHAB op http://www.openhab.org/\n\nAAN DE SLAG\n\nZorg er eerst voor dat uw openHAB-systeem is geconfigureerd en verbonden met de openHAB Cloudservice. openHAB Cloud-accounts zijn gratis, ga naar https://myopenhab.org voor meer informatie.\n\nVoeg in uw openHAB-configuratie de Alexa-metadata toe aan de items die u wilt blootstellen aan Amazon Alexa. Elk nummer, dimmer, schakelaar of thermostaatmodus (string of nummer) wordt ondersteund.\n\nSchakel ten slotte de openHAB-vaardigheid in voor Amazon Alexa. Gebruik, wanneer daarom wordt gevraagd, uw openHAB Cloud-accountgegevens om uw systeem te koppelen aan Amazon Alexa.\n\nZodra deze is gekoppeld, zijn alle items die u hebt geconfigureerd met de Alexa-metadata vindbaar en automatisch beschikbaar voor Amazon Alexa. Als u na het koppelen extra items toevoegt, vraagt ​​u Alexa gewoon om \"Apparaten te ontdekken\" om ze toe te voegen aan uw Amazon Alexa-account.\n\nU kunt items in uw openHAB-systeem rechtstreeks bedienen, bijvoorbeeld:\n- Alexa, zet keuken aan\n\nU kunt uw items ook toevoegen aan Alexa-groepen om meerdere items tegelijk te bedienen, bijvoorbeeld:\n- Alexa, zet slaapkamer op 50 procent\n\nScènes en routines kunnen ook worden gebruikt om meerdere openHAB-items te bedienen, bijvoorbeeld:\n- Alexa, zet bedtijd aan.",
+          "smallIconUri": "file://assets/images/openhab_smallIcon.png",
+          "largeIconUri": "file://assets/images/openhab_largeIcon.png",
+          "examplePhrases": [
+            "Alexa, zet keuken aan",
+            "Alexa, zet slaapkamer op 50 procent",
+            "Alexa, verhoog de thermostaat met 2 graden"
+          ],
+          "keywords": [
+            "openHAB",
+            "KNX",
+            "hue",
+            "z-wave",
+            "zwave",
+            "insteon",
+            "homematic",
+            "thuis",
+            "automatisering",
+            "1-wire",
+            "Bluetooth",
+            "smarthome",
+            "Domotica",
+            "Slim huis",
+            "Verbonden huis"
+          ],
+          "updatesDescription": "Nieuwe vereenvoudigde metadata syntaxis ingevoerd. Controleer de nieuwste documentatie voor meer informatie: https://www.openhab.org/link/alexa"
         }
       },
       "distributionCountries": [],
@@ -543,6 +573,9 @@
           "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
         },
         "ar-SA": {
+          "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
+        },
+        "nl-NL": {
           "privacyPolicyUrl": "https://www.openhabfoundation.org/privacy.html"
         }
       }

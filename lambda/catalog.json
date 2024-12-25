@@ -65,6 +65,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Hoek",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Ângulo",
       "locale": "pt-BR"
     }
@@ -131,6 +135,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Batterijniveau",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Nível da bateria",
       "locale": "pt-BR"
     }
@@ -195,6 +203,10 @@
     {
       "text": "掃除",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Schoonmaken",
+      "locale": "nl-NL"
     },
     {
       "text": "Limpo",
@@ -264,6 +276,10 @@
     },
     {
       "text": "Dock",
+      "locale": "nl-NL"
+    },
+    {
+      "text": "Dock",
       "locale": "pt-BR"
     }
   ],
@@ -327,6 +343,10 @@
     {
       "text": "前方",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Voorwaarts",
+      "locale": "nl-NL"
     },
     {
       "text": "Adiante",
@@ -399,6 +419,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Vochtigheid",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Humidade",
       "locale": "pt-BR"
     }
@@ -463,6 +487,10 @@
     {
       "text": "入力",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Ingang",
+      "locale": "nl-NL"
     },
     {
       "text": "Entrada",
@@ -531,6 +559,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Netwerktoegang",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Acesso à Rede",
       "locale": "pt-BR"
     }
@@ -595,6 +627,10 @@
     {
       "text": "ポジション",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Positie",
+      "locale": "nl-NL"
     },
     {
       "text": "Posição",
@@ -663,6 +699,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Bereik Waarde",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Valor do Intervalo",
       "locale": "pt-BR"
     }
@@ -727,6 +767,10 @@
     {
       "text": "逆",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Omgekeerde",
+      "locale": "nl-NL"
     },
     {
       "text": "Reverso",
@@ -795,6 +839,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Snelheid",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Velocidade",
       "locale": "pt-BR"
     }
@@ -859,6 +907,10 @@
     {
       "text": "スポット",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Spot",
+      "locale": "nl-NL"
     },
     {
       "text": "Spot",
@@ -931,6 +983,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Doeltemperatuur",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Temperatura alvo",
       "locale": "pt-BR"
     }
@@ -995,6 +1051,10 @@
     {
       "text": "傾ける",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Kantelen",
+      "locale": "nl-NL"
     },
     {
       "text": "Inclinação",
@@ -1063,6 +1123,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Schakel Status",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Alternar Estado",
       "locale": "pt-BR"
     }
@@ -1127,6 +1191,10 @@
     {
       "text": "減少",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Verminderen",
+      "locale": "nl-NL"
     },
     {
       "text": "Diminuição",
@@ -1195,6 +1263,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Standaard",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Predefinição",
       "locale": "pt-BR"
     }
@@ -1259,6 +1331,10 @@
     {
       "text": "下",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Omlaag",
+      "locale": "nl-NL"
     },
     {
       "text": "Baixo",
@@ -1327,6 +1403,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Verhogen",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Aumento",
       "locale": "pt-BR"
     }
@@ -1391,6 +1471,10 @@
     {
       "text": "左",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Links",
+      "locale": "nl-NL"
     },
     {
       "text": "Esquerdo",
@@ -1459,6 +1543,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Verplaats",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Mover",
       "locale": "pt-BR"
     }
@@ -1523,6 +1611,10 @@
     {
       "text": "オフ",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Uit",
+      "locale": "nl-NL"
     },
     {
       "text": "Desligado",
@@ -1591,6 +1683,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Aan",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Ligado",
       "locale": "pt-BR"
     }
@@ -1655,6 +1751,10 @@
     {
       "text": "一時停止",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Pauzeren",
+      "locale": "nl-NL"
     },
     {
       "text": "Pausa",
@@ -1723,6 +1823,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Hervatten",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Retomar",
       "locale": "pt-BR"
     }
@@ -1787,6 +1891,10 @@
     {
       "text": "右",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Rechts",
+      "locale": "nl-NL"
     },
     {
       "text": "Direita",
@@ -1855,6 +1963,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Begin",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Início",
       "locale": "pt-BR"
     }
@@ -1921,6 +2033,10 @@
       "locale": "ja-JP"
     },
     {
+      "text": "Stop",
+      "locale": "nl-NL"
+    },
+    {
       "text": "Pare",
       "locale": "pt-BR"
     }
@@ -1985,6 +2101,10 @@
     {
       "text": "アップ",
       "locale": "ja-JP"
+    },
+    {
+      "text": "Omhoog",
+      "locale": "nl-NL"
     },
     {
       "text": "Acima",
