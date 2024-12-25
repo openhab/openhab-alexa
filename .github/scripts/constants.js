@@ -89,6 +89,7 @@ module.exports = {
     'hi-IN',
     'it-IT',
     'ja-JP',
+    'nl-NL',
     'pt-BR'
   ]
 };
