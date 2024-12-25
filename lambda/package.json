@@ -30,7 +30,7 @@
     "agentkeepalive": "^4.5.0",
     "axios": "^1.7.9",
     "uuid": "^11.0.3",
-    "winston": "^3.16.0"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
