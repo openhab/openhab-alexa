@@ -20,8 +20,6 @@ import { v4 as uuidv4 } from 'uuid';
 import config from '#root/config.js';
 import OpenHAB from '#openhab/index.js';
 
-const packageInfo = JSON.parse(fs.readFileSync('./package.json'));
-
 describe('OpenHAB Tests', function () {
   // set default environment
   const baseURL = 'https://foobar';
@@ -29,13 +27,18 @@ describe('OpenHAB Tests', function () {
   const token = 'token';
   const timeout = 42;
 
-  let openhab;
+  let openhab, scope;
 
   beforeEach(function () {
     // set stub environment
     sinon.stub(config.openhab, 'baseURL').value(baseURL);
     // create new openhab instance
     openhab = new OpenHAB(requestId, token, timeout);
+    // define nock scope
+    scope = nock(baseURL)
+      .matchHeader('Cache-Control', 'no-cache')
+      .matchHeader('User-Agent', /^openhab-alexa\/\d\.\d\.\d$/)
+      .matchHeader('X-Amzn-RequestId', requestId);
   });
 
   afterEach(function () {
@@ -49,38 +52,21 @@ describe('OpenHAB Tests', function () {
     it('https oauth2 token', async function () {
       // set environment
       sinon.stub(fs, 'existsSync').returns(false);
-      nock(baseURL)
-        .get('/')
-        .matchHeader('Authorization', `Bearer ${token}`)
-        .reply(200)
-        .on('request', ({ headers }) => {
-          expect(headers).to.include({
-            authorization: `Bearer ${token}`,
-            'user-agent': `${packageInfo.name}/${packageInfo.version}`,
-            'x-amzn-requestid': requestId
-          });
-        });
+      scope.get('/').matchHeader('Authorization', `Bearer ${token}`).reply(200);
       // run test
       await OpenHAB.createClient({ baseURL }, requestId, token, timeout).get('/');
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('https basic auth', async function () {
       // set environment
       const user = 'username';
       const pass = 'password';
-      const token = Buffer.from(`${user}:${pass}`).toString('base64');
       sinon.stub(fs, 'existsSync').returns(false);
-      nock(baseURL)
-        .get('/')
-        .basicAuth({ user, pass })
-        .reply(200)
-        .on('request', ({ headers }) => {
-          expect(headers).to.include({ authorization: `Basic ${token}` });
-        });
+      scope.get('/').basicAuth({ user, pass }).reply(200);
       // run test
       await OpenHAB.createClient({ baseURL, user, pass }, requestId, token, timeout).get('/');
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('https client cert', async function () {
@@ -90,7 +76,7 @@ describe('OpenHAB Tests', function () {
       const certPass = 'passphrase';
       sinon.stub(fs, 'existsSync').withArgs(certFile).returns(true);
       sinon.stub(fs, 'readFileSync').withArgs(certFile).returns(certData);
-      nock(baseURL)
+      scope
         .get('/')
         .reply(200)
         .on('request', ({ headers, options, socket }) => {
@@ -100,115 +86,107 @@ describe('OpenHAB Tests', function () {
         });
       // run test
       await OpenHAB.createClient({ baseURL, certFile, certPass }, requestId, token, timeout).get('/');
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('https no auth', async function () {
       // set environment
       sinon.stub(fs, 'existsSync').returns(false);
-      nock(baseURL)
+      scope
         .get('/')
         .reply(200)
         .on('request', ({ headers }) => {
           expect(headers).to.not.have.property('authorization');
         });
       // run test
-      await OpenHAB.createClient({ baseURL }).get('/');
-      expect(nock.isDone()).to.be.true;
+      await OpenHAB.createClient({ baseURL }, requestId).get('/');
+      expect(scope.isDone()).to.be.true;
     });
   });
 
   describe('get item state', function () {
     it('defined state', async function () {
       // set environment
-      nock(baseURL).get('/rest/items/foo').reply(200, { name: 'foo', state: '42', type: 'Dimmer' });
+      scope.get('/rest/items/foo').reply(200, { name: 'foo', state: '42', type: 'Dimmer' });
       // run test
       expect(await openhab.getItemState('foo')).to.equal('42');
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('defined state with state description but no pattern', async function () {
       // set environment
-      nock(baseURL)
-        .get('/rest/items/foo')
-        .reply(200, { name: 'foo', state: '42', stateDescription: {}, type: 'Dimmer' });
+      scope.get('/rest/items/foo').reply(200, { name: 'foo', state: '42', stateDescription: {}, type: 'Dimmer' });
       // run test
       expect(await openhab.getItemState('foo')).to.equal('42');
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('undefined state', async function () {
       // set environment
-      nock(baseURL).get('/rest/items/foo').reply(200, { name: 'foo', state: 'NULL', type: 'Dimmer' });
+      scope.get('/rest/items/foo').reply(200, { name: 'foo', state: 'NULL', type: 'Dimmer' });
       // run test
       expect(await openhab.getItemState('foo')).to.be.undefined;
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('dimmer state with pattern', async function () {
       // set environment
-      nock(baseURL)
-        .get('/rest/items/foo')
-        .reply(200, {
-          name: 'foo',
-          state: '42.4242',
-          stateDescription: { pattern: '%d' },
-          type: 'Dimmer'
-        });
+      scope.get('/rest/items/foo').reply(200, {
+        name: 'foo',
+        state: '42.4242',
+        stateDescription: { pattern: '%d' },
+        type: 'Dimmer'
+      });
       // run test
       expect(await openhab.getItemState('foo')).to.equal('42');
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('number dimensionless group state with pattern', async function () {
       // set environment
-      nock(baseURL)
-        .get('/rest/items/foo')
-        .reply(200, {
-          name: 'foo',
-          state: '42.4242 %',
-          stateDescription: { pattern: '%.2f %' },
-          type: 'Group',
-          groupType: 'Number:Dimensionless'
-        });
+      scope.get('/rest/items/foo').reply(200, {
+        name: 'foo',
+        state: '42.4242 %',
+        stateDescription: { pattern: '%.2f %' },
+        type: 'Group',
+        groupType: 'Number:Dimensionless'
+      });
       // run test
       expect(await openhab.getItemState('foo')).to.equal('42.42');
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('rollershutter state with pattern', async function () {
       // set environment
-      nock(baseURL)
-        .get('/rest/items/foo')
-        .reply(200, {
-          name: 'foo',
-          state: '42.4242',
-          stateDescription: { pattern: '%f' },
-          type: 'Rollershutter'
-        });
+      scope.get('/rest/items/foo').reply(200, {
+        name: 'foo',
+        state: '42.4242',
+        stateDescription: { pattern: '%f' },
+        type: 'Rollershutter'
+      });
       // run test
       expect(await openhab.getItemState('foo')).to.equal('42.4242');
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('string state with no state description', async function () {
       // set environment
-      nock(baseURL).get('/rest/items/foo').reply(200, { name: 'foo', state: 'bar', type: 'String' });
+      scope.get('/rest/items/foo').reply(200, { name: 'foo', state: 'bar', type: 'String' });
       // run test
       expect(await openhab.getItemState('foo')).to.equal('bar');
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('item not found error', async function () {
       // set environment
-      nock(baseURL).get('/rest/items/foo').reply(404);
+      scope.get('/rest/items/foo').reply(404);
       // run test
       try {
         await openhab.getItemState('foo');
       } catch (error) {
         expect(error).to.be.instanceof(AxiosError).and.nested.include({ 'response.status': 404 });
       }
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
   });
 
@@ -225,24 +203,15 @@ describe('OpenHAB Tests', function () {
         { name: 'foo', type: 'Dimmer' },
         { name: 'bar', type: 'Switch' }
       ];
-      nock(baseURL).get('/rest/items').query(qs).reply(200, items);
+      scope.get('/rest/items').query(qs).reply(200, items);
       // run test
       expect(await openhab.getAllItems()).to.deep.equal(items);
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('type error', async function () {
       // set environment
-      nock(baseURL)
-        .get('/rest/items')
-        .query(qs)
-        .reply(200, 'invalid 1')
-        .get('/rest/items')
-        .query(qs)
-        .reply(200, 'invalid 2')
-        .get('/rest/items')
-        .query(qs)
-        .reply(200, 'invalid 3');
+      scope.get('/rest/items').query(qs).thrice().reply(200, 'invalid');
       // run test
       try {
         await openhab.getAllItems();
@@ -251,19 +220,19 @@ describe('OpenHAB Tests', function () {
           .to.be.instanceof(TypeError)
           .and.include({ message: 'Failed to retrieve all items formatted array' });
       }
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('unauthorized error', async function () {
       // set environment
-      nock(baseURL).get('/rest/items').query(qs).reply(401);
+      scope.get('/rest/items').query(qs).reply(401);
       // run test
       try {
         await openhab.getAllItems();
       } catch (error) {
         expect(error).to.be.instanceof(AxiosError).and.nested.include({ 'response.status': 401 });
       }
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
   });
 
@@ -282,7 +251,7 @@ describe('OpenHAB Tests', function () {
 
     it('oh2.4', async function () {
       // set environment
-      nock(baseURL)
+      scope
         // root resource
         .get('/rest/')
         .reply(200, { version: '2' })
@@ -297,12 +266,12 @@ describe('OpenHAB Tests', function () {
         regional: { language, measurementSystem, region },
         runtime: { uuid, version: '2' }
       });
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('oh2.5', async function () {
       // set environment
-      nock(baseURL)
+      scope
         // root resource
         .get('/rest/')
         .reply(200, { version: '3' })
@@ -317,12 +286,12 @@ describe('OpenHAB Tests', function () {
         regional: { language, measurementSystem, region },
         runtime: { uuid, version: '2' }
       });
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('oh3.x', async function () {
       // set environment
-      nock(baseURL)
+      scope
         // root resource
         .get('/rest/')
         .reply(200, { version: '4', locale, measurementSystem, runtimeInfo: { version: '3.0.0' } })
@@ -334,12 +303,12 @@ describe('OpenHAB Tests', function () {
         regional: { language, measurementSystem, region },
         runtime: { uuid, version: '3.0.0' }
       });
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('oh3.x with invalid uuid', async function () {
       // set environment
-      nock(baseURL)
+      scope
         // root resource
         .get('/rest/')
         .reply(200, { version: '4', locale, measurementSystem, runtimeInfo: { version: '3.0.0' } })
@@ -351,12 +320,12 @@ describe('OpenHAB Tests', function () {
         regional: { language, measurementSystem, region },
         runtime: { version: '3.0.0' }
       });
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('oh3.x with unauthorized uuid', async function () {
       // set environment
-      nock(baseURL)
+      scope
         // root resource
         .get('/rest/')
         .reply(200, { version: '4', locale, measurementSystem, runtimeInfo: { version: '3.0.0' } })
@@ -368,12 +337,12 @@ describe('OpenHAB Tests', function () {
         regional: { language, measurementSystem, region },
         runtime: { version: '3.0.0' }
       });
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('undefined root resource', async function () {
       // set environment
-      nock(baseURL)
+      scope
         // root resource
         .get('/rest/')
         .reply(200)
@@ -382,12 +351,12 @@ describe('OpenHAB Tests', function () {
         .reply(200, uuid);
       // run test
       expect(await openhab.getServerSettings()).to.deep.equal({ regional: {}, runtime: { uuid } });
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('request error', async function () {
       // set environment
-      nock(baseURL)
+      scope
         // root resource
         .get('/rest/')
         .replyWithError('error');
@@ -397,51 +366,51 @@ describe('OpenHAB Tests', function () {
       } catch (error) {
         expect(error).to.be.instanceof(AxiosError).and.include({ message: 'error' });
       }
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
   });
 
   describe('send item command', function () {
     it('successful', async function () {
       // set environment
-      nock(baseURL).post('/rest/items/foo', '42').reply(200);
+      scope.post('/rest/items/foo', '42').reply(200);
       // run test
       await openhab.sendCommand('foo', 42);
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('item not found error', async function () {
       // set environment
-      nock(baseURL).post('/rest/items/foo', '42').reply(404);
+      scope.post('/rest/items/foo', '42').reply(404);
       // run test
       try {
         await openhab.sendCommand('foo', 42);
       } catch (error) {
         expect(error).to.be.instanceof(AxiosError).and.nested.include({ 'response.status': 404 });
       }
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
   });
 
   describe('update item state', function () {
     it('successful', async function () {
       // set environment
-      nock(baseURL).put('/rest/items/foo/state', '42').reply(202);
+      scope.put('/rest/items/foo/state', '42').reply(202);
       // run test
       await openhab.postUpdate('foo', 42);
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
 
     it('item state null error', async function () {
       // set environment
-      nock(baseURL).put('/rest/items/foo/state', 'invalid').reply(400);
+      scope.put('/rest/items/foo/state', 'invalid').reply(400);
       // run test
       try {
         await openhab.postUpdate('foo', 'invalid');
       } catch (error) {
         expect(error).to.be.instanceof(AxiosError).and.nested.include({ 'response.status': 400 });
       }
-      expect(nock.isDone()).to.be.true;
+      expect(scope.isDone()).to.be.true;
     });
   });
 
