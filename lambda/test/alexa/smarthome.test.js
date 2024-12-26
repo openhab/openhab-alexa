@@ -29,6 +29,9 @@ use(chaiCustom);
 
 /* eslint-disable mocha/no-setup-in-describe */
 describe('Alexa Smart Home Tests', function () {
+  // set default environment
+  const context = { awsRequestId: 'request-id' };
+
   let commandStub, updateStub;
 
   beforeEach(function () {
@@ -56,7 +59,7 @@ describe('Alexa Smart Home Tests', function () {
             sinon.stub(OpenHAB.prototype, 'getAllItems').resolves(items);
             sinon.stub(OpenHAB.prototype, 'getServerSettings').resolves(settings);
             // run test
-            const response = await handleRequest({ directive });
+            const response = await handleRequest({ directive }, context);
             expect(commandStub.called).to.be.false;
             expect(updateStub.called).to.be.false;
             expect(response)
@@ -86,7 +89,7 @@ describe('Alexa Smart Home Tests', function () {
               sinon.stub(log, 'error');
             }
             // run test
-            const response = await handleRequest({ directive });
+            const response = await handleRequest({ directive }, context);
             expect(commandStub.callCount).to.equal(expected.openhab.commands.length);
             expect(commandStub.args.map(([name, value]) => ({ name, value }))).to.deep.equal(expected.openhab.commands);
             expect(updateStub.callCount).to.equal(expected.openhab.updates.length);

@@ -17,19 +17,25 @@ import nock from 'nock';
 import fs from 'node:fs';
 import { AxiosError } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import config from '#root/config.js';
 import OpenHAB from '#openhab/index.js';
+
+const packageInfo = JSON.parse(fs.readFileSync('./package.json'));
 
 describe('OpenHAB Tests', function () {
   // set default environment
   const baseURL = 'https://foobar';
+  const requestId = 'request-id';
   const token = 'token';
   const timeout = 42;
 
   let openhab;
 
   beforeEach(function () {
+    // set stub environment
+    sinon.stub(config.openhab, 'baseURL').value(baseURL);
     // create new openhab instance
-    openhab = new OpenHAB({ baseURL }, token, timeout);
+    openhab = new OpenHAB(requestId, token, timeout);
   });
 
   afterEach(function () {
@@ -43,9 +49,19 @@ describe('OpenHAB Tests', function () {
     it('https oauth2 token', async function () {
       // set environment
       sinon.stub(fs, 'existsSync').returns(false);
-      nock(baseURL).get('/').matchHeader('Authorization', `Bearer ${token}`).reply(200);
+      nock(baseURL)
+        .get('/')
+        .matchHeader('Authorization', `Bearer ${token}`)
+        .reply(200)
+        .on('request', ({ headers }) => {
+          expect(headers).to.include({
+            authorization: `Bearer ${token}`,
+            'user-agent': `${packageInfo.name}/${packageInfo.version}`,
+            'x-amzn-requestid': requestId
+          });
+        });
       // run test
-      await OpenHAB.createClient({ baseURL }, token, timeout).get('/');
+      await OpenHAB.createClient({ baseURL }, requestId, token, timeout).get('/');
       expect(nock.isDone()).to.be.true;
     });
 
@@ -53,10 +69,17 @@ describe('OpenHAB Tests', function () {
       // set environment
       const user = 'username';
       const pass = 'password';
+      const token = Buffer.from(`${user}:${pass}`).toString('base64');
       sinon.stub(fs, 'existsSync').returns(false);
-      nock(baseURL).get('/').basicAuth({ user, pass }).reply(200);
+      nock(baseURL)
+        .get('/')
+        .basicAuth({ user, pass })
+        .reply(200)
+        .on('request', ({ headers }) => {
+          expect(headers).to.include({ authorization: `Basic ${token}` });
+        });
       // run test
-      await OpenHAB.createClient({ baseURL, user, pass }, token, timeout).get('/');
+      await OpenHAB.createClient({ baseURL, user, pass }, requestId, token, timeout).get('/');
       expect(nock.isDone()).to.be.true;
     });
 
@@ -76,7 +99,7 @@ describe('OpenHAB Tests', function () {
           expect(socket).to.include({ timeout });
         });
       // run test
-      await OpenHAB.createClient({ baseURL, certFile, certPass }, token, timeout).get('/');
+      await OpenHAB.createClient({ baseURL, certFile, certPass }, requestId, token, timeout).get('/');
       expect(nock.isDone()).to.be.true;
     });
 

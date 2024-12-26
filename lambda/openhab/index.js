@@ -15,7 +15,10 @@ import fs from 'node:fs';
 import axios from 'axios';
 import { HttpsAgent } from 'agentkeepalive';
 import { validate as uuidValidate } from 'uuid';
+import config from '#root/config.js';
 import { ItemType, ItemValue, UnitSymbol } from './constants.js';
+
+const packageInfo = JSON.parse(fs.readFileSync('./package.json'));
 
 /**
  * Defines openHAB class
@@ -30,12 +33,12 @@ export default class OpenHAB {
 
   /**
    * Constructor
-   * @param {Object} config
+   * @param {String} requestId
    * @param {String} token
    * @param {Number} timeout
    */
-  constructor(config, token, timeout) {
-    this._client = OpenHAB.createClient(config, token, timeout);
+  constructor(requestId, token, timeout) {
+    this._client = OpenHAB.createClient(config.openhab, requestId, token, timeout);
   }
 
   /**
@@ -205,16 +208,19 @@ export default class OpenHAB {
   /**
    * Returns request client
    * @param  {Object} config
+   * @param  {String} requestId
    * @param  {String} token
    * @param  {Number} timeout
    * @return {Object}
    */
-  static createClient(config, token, timeout) {
+  static createClient(config, requestId, token, timeout) {
     const client = axios.create({
       baseURL: config.baseURL,
       headers: {
         common: {
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache',
+          'User-Agent': `${packageInfo.name}/${packageInfo.version}`,
+          'X-Amzn-RequestId': requestId
         }
       },
       httpsAgent: new HttpsAgent({
