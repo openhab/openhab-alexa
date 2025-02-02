@@ -225,9 +225,9 @@ export default class OpenHAB {
       },
       httpsAgent: new HttpsAgent({
         // Set keep-alive free socket to timeout after 45s of inactivity
-        freeSocketTimeout: 45000,
-        timeout: parseInt(timeout)
-      })
+        freeSocketTimeout: 45000
+      }),
+      timeout: parseInt(timeout)
     });
 
     // Add authentication options
