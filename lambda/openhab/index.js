@@ -16,9 +16,8 @@ import axios from 'axios';
 import { HttpsAgent } from 'agentkeepalive';
 import { validate as uuidValidate } from 'uuid';
 import config from '#root/config.js';
+import packageInfo from '#root/package.json' with { type: 'json' };
 import { ItemType, ItemValue, UnitSymbol } from './constants.js';
-
-const packageInfo = JSON.parse(fs.readFileSync('./package.json'));
 
 /**
  * Defines openHAB class
@@ -33,12 +32,13 @@ export default class OpenHAB {
 
   /**
    * Constructor
+   * @param {Object} debug
    * @param {String} requestId
    * @param {String} token
    * @param {Number} timeout
    */
-  constructor(requestId, token, timeout) {
-    this._client = OpenHAB.createClient(config.openhab, requestId, token, timeout);
+  constructor(debug, requestId, token, timeout) {
+    this._client = OpenHAB.createClient(config.openhab, debug, requestId, token, timeout);
   }
 
   /**
@@ -208,12 +208,13 @@ export default class OpenHAB {
   /**
    * Returns request client
    * @param  {Object} config
+   * @param  {Object} debug
    * @param  {String} requestId
    * @param  {String} token
    * @param  {Number} timeout
    * @return {Object}
    */
-  static createClient(config, requestId, token, timeout) {
+  static createClient(config, debug, requestId, token, timeout) {
     const client = axios.create({
       baseURL: config.baseURL,
       headers: {
@@ -243,8 +244,22 @@ export default class OpenHAB {
       client.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
 
+    // Set request interceptor
+    client.interceptors.request.use((config) => {
+      debug.startTrace(`${config.method.toUpperCase()} ${config.url}`);
+      return config;
+    });
     // Set response interceptor
-    client.interceptors.response.use((response) => response.data);
+    client.interceptors.response.use(
+      (response) => {
+        debug.endTrace(`${response.config.method.toUpperCase()} ${response.config.url}`);
+        return response.data;
+      },
+      (error) => {
+        debug.endTrace(`${error.config.method.toUpperCase()} ${error.config.url}`, error.message);
+        return Promise.reject(error);
+      }
+    );
 
     return client;
   }
