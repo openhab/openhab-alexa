@@ -11,9 +11,7 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-import { createRequire } from 'node:module';
-
-const require = createRequire(import.meta.url);
+import catalog from '#root/catalog.json' with { type: 'json' };
 
 /**
  * Defines alexa global catalog class
@@ -594,7 +592,7 @@ class AlexaGlobalCatalog {
   }
 
   /**
-   * Returns list of label object values
+   * Returns list of label objects
    * @param  {String} assetId
    * @return {Array}
    */
@@ -789,7 +787,7 @@ export default class AlexaAssetCatalog extends AlexaGlobalCatalog {
   static VALUE_UP = '@Value.Up';
 
   /**
-   * Returns custom catalog label values
+   * Returns list of custom catalog label objects
    *  This is a temporary solution until Amazon provides the ability to upload our own catalog:
    *    https://developer.amazon.com/docs/device-apis/resources-and-assets.html#upload-catalog
    *
@@ -802,10 +800,11 @@ export default class AlexaAssetCatalog extends AlexaGlobalCatalog {
    *    ]
    *  }
    *
-   * @return {Object}
+   * @param  {String} assetId
+   * @return {Array}
    */
-  static get labelValues() {
-    return require('#root/catalog.json');
+  static getCustomLabels(assetId) {
+    return catalog[assetId];
   }
 
   /**
@@ -818,11 +817,11 @@ export default class AlexaAssetCatalog extends AlexaGlobalCatalog {
   }
 
   /**
-   * Returns list of label object values
+   * Returns list of label objects
    * @param  {String} assetId
    * @return {Array}
    */
   static getLabels(assetId) {
-    return super.isSupported(assetId) ? super.getLabels(assetId) : this.labelValues[assetId];
+    return super.isSupported(assetId) ? super.getLabels(assetId) : this.getCustomLabels(assetId);
   }
 }

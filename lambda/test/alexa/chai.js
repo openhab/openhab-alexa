@@ -12,15 +12,14 @@
  */
 
 import Ajv from 'ajv';
-import { createRequire } from 'node:module';
+import metaSchema from 'ajv/lib/refs/json-schema-draft-04.json' with { type: 'json' };
+import alexaSchema from './schemas/alexa_smart_home_message_schema.json' with { type: 'json' };
 import { decompressJSON } from '#root/utils.js';
-
-const require = createRequire(import.meta.url);
 
 // Initialize the alexa smart home message json schema draft v4 validator
 const validate = new Ajv({ schemaId: 'auto', unknownFormats: ['double', 'int32'] })
-  .addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'))
-  .compile(require('./schemas/alexa_smart_home_message_schema.json'));
+  .addMetaSchema(metaSchema)
+  .compile(alexaSchema);
 
 /**
  * Returns capability interface formatted name

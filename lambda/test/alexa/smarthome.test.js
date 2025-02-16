@@ -55,7 +55,7 @@ describe('Alexa Smart Home Tests', function () {
             const { catalog = {}, items = [], expected = {} } = test;
             const directive = getDirective({ header: { namespace: 'Alexa.Discovery', name: 'Discover' } });
             const settings = { regional: {}, runtime: {}, ...test.settings };
-            sinon.stub(AlexaAssetCatalog, 'labelValues').value(catalog);
+            sinon.stub(AlexaAssetCatalog, 'getCustomLabels').callsFake((assetId) => catalog[assetId]);
             sinon.stub(OpenHAB.prototype, 'getAllItems').resolves(items);
             sinon.stub(OpenHAB.prototype, 'getServerSettings').resolves(settings);
             // run test
