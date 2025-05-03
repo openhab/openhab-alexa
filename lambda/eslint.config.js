@@ -18,7 +18,7 @@ import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
   js.configs.recommended,
-  pluginMocha.configs.flat.recommended,
+  pluginMocha.configs.recommended,
   pluginNode.configs['flat/recommended-script'],
   pluginPrettierRecommended,
   {
