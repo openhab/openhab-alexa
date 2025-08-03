@@ -27,6 +27,7 @@ import chaiCustom from './chai.js';
 use(chaiSubset);
 use(chaiCustom);
 
+/* eslint-disable mocha/consistent-spacing-between-blocks */
 /* eslint-disable mocha/no-setup-in-describe */
 describe('Alexa Smart Home Tests', function () {
   // set default environment
