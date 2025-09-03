@@ -42,7 +42,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-mocha": "^11.1.0",
     "eslint-plugin-n": "^17.21.3",
-    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-prettier": "^5.5.4",
     "esmock": "^2.7.2",
     "mocha": "^11.7.2",
     "nock": "^13.5.6",
