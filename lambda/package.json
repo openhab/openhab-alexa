@@ -45,7 +45,7 @@
     "eslint-plugin-prettier": "^5.5.5",
     "esmock": "^2.7.3",
     "mocha": "^11.7.5",
-    "nock": "^13.5.6",
+    "nock": "^14.0.11",
     "prettier": "^3.7.4",
     "sinon": "^21.0.1"
   },
