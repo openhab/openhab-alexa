@@ -38,7 +38,7 @@
     "c8": "^11.0.0",
     "chai": "^6.2.2",
     "chai-subset": "^1.6.0",
-    "eslint": "^10.1.0",
+    "eslint": "^10.3.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-mocha": "^11.2.0",
     "eslint-plugin-n": "^17.24.0",
