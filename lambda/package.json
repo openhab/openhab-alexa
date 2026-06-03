@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "agentkeepalive": "^4.6.0",
-    "axios": "^1.16.0",
+    "axios": "^1.17.0",
     "uuid": "^14.0.0",
     "winston": "^3.19.0"
   },
