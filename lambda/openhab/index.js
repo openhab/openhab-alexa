@@ -180,7 +180,8 @@ export default class OpenHAB {
       method: 'POST',
       url: `/rest/items/${itemName}`,
       headers: {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'text/plain',
+        'X-OpenHAB-Source': 'org.openhab.alexa'
       },
       data: command.toString()
     };
@@ -198,7 +199,8 @@ export default class OpenHAB {
       method: 'PUT',
       url: `/rest/items/${itemName}/state`,
       headers: {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'text/plain',
+        'X-OpenHAB-Source': 'org.openhab.alexa'
       },
       data: state.toString()
     };
